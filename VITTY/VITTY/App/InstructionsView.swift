@@ -81,5 +81,8 @@ struct InstructionsView: View {
 struct InstructionsView_Previews: PreviewProvider {
     static var previews: some View {
         InstructionsView()
+            .environmentObject(AuthService())
+            .environmentObject(TimetableViewModel())
+            .environmentObject(NotificationsViewModel())
     }
 }

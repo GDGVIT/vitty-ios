@@ -55,6 +55,7 @@ struct SplashScreen: View {
 struct SplashScreen_Previews: PreviewProvider {
     static var previews: some View {
         SplashScreen()
+            .environmentObject(AuthService())
     }
 }
 

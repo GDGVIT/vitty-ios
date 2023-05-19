@@ -8,6 +8,6 @@
 import Foundation
 
 class UserNameViewModel : ObservableObject{
-    @Published var isFirstLogin : Bool = true
+    @Published var isFirstLogin : Bool = false
     @Published var usernameTF : String = ""
 }

@@ -21,8 +21,6 @@ struct UserName: View {
                 textField()
                 Spacer()
                 continueButton()
-
-
             }
 
         }.toolbar {
@@ -54,7 +52,7 @@ struct UserName_Previews: PreviewProvider {
 extension UserName {
     private func headerText() -> some View {
         VStack {
-            Text("Let's Sign you in.")
+            Text(vm.isFirstLogin ? "Let's Sign you in." : "Let’s add you’r user name")
                 .font(.custom("Poppins-Medium", size: 32))
                 .fontWeight(.semibold)
                 .foregroundColor(.white)

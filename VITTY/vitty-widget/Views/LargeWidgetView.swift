@@ -6,19 +6,33 @@
 //
 
 import SwiftUI
+import WidgetKit
 
 struct LargeWidgetView: View {
-    var widgetData: VITTYWidgetDataModel
+    
+    var widgetData: VITTYWidgetDataModel = VITTYWidgetDataModel(classInfo: StringConstants.dummyClassArray,
+    classesCompleted: 0,
+    error: nil)
+
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             if widgetData.classesCompleted < widgetData.classInfo.count && widgetData.error == nil {
                 VStack(alignment: .leading, spacing: 0) {
-                    Text("Your next class")
-                        .font(Font.custom("Poppins-Regular",size:14))
-                        .foregroundColor(Color.vprimary)
-                        .padding(.leading, 15)
-                        .padding(.top, 10)
+                    HStack {
+                        Text("Today's Schedule")
+                            .font(Font.custom("Poppins-Regular", size: 14))
+                            .foregroundColor(Color.vprimary)
+                            .padding(.leading, 15)
+                            .padding(.top, 10)
                         .padding(.bottom, 5)
+                        Spacer()
+                        Text("VITTY")
+                            .font(Font.custom("Poppins-Regular", size: 14))
+                            .foregroundColor(Color.vprimary)
+                            .padding(.top, 10)
+                            .padding(.trailing,15)
+                        .padding(.bottom, 5)
+                    }
                     ZStack {
                         RoundedRectangle(cornerRadius: 12)
                             .fill(LinearGradient.secGrad)
@@ -58,8 +72,8 @@ struct LargeWidgetView: View {
                         Text("No more class today!")
                             .font(Font.custom("Poppins-Bold", size: 15))
                         Text(RemoteConfigManager.sharedInstance.onlineMode
-                             ? StringConstants.noClassQuotesOnline.randomElement() ?? "Have fun today!" : StringConstants.noClassQuotesOffline.randomElement() ?? "Have fun today!")
-                            .font(Font.custom("Poppins-Regular",size:12))
+                            ? StringConstants.noClassQuotesOnline.randomElement() ?? "Have fun today!" : StringConstants.noClassQuotesOffline.randomElement() ?? "Have fun today!")
+                            .font(Font.custom("Poppins-Regular", size: 12))
                     }
                     .foregroundColor(Color.white)
                 }
@@ -70,8 +84,12 @@ struct LargeWidgetView: View {
     }
 }
 
-//struct LargeWidgetView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        LargeWidgetView()
-//    }
-//}
+struct LargeWidgetView_Previews: PreviewProvider {
+    static var previews: some View {
+        LargeWidgetView(widgetData: VITTYWidgetDataModel(classInfo: StringConstants.dummyClassArray,
+        classesCompleted: 0,
+        error: nil)
+        )
+        
+    }
+}

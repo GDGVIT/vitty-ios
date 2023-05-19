@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import WidgetKit
 
 struct MediumWidgetView: View {
     var widgetData: VITTYWidgetDataModel
@@ -13,11 +14,7 @@ struct MediumWidgetView: View {
         VStack(alignment: .leading, spacing: 0) {
             if widgetData.classesCompleted < widgetData.classInfo.count && widgetData.error == nil {
                 VStack(alignment: .leading, spacing: 0) {
-                    Text("Your next class")
-                        .font(Font.custom("Poppins-Regular",size:14))
-                        .foregroundColor(Color.vprimary)
-                        .padding(.leading, 15)
-                        .padding(.top, 10)
+                    WidgetHeader()
                     ZStack {
                         RoundedRectangle(cornerRadius: 12)
                             .fill(LinearGradient.secGrad)
@@ -33,8 +30,8 @@ struct MediumWidgetView: View {
                         Text("No more class today!")
                             .font(Font.custom("Poppins-Bold", size: 15))
                         Text(RemoteConfigManager.sharedInstance.onlineMode
-                             ? StringConstants.noClassQuotesOnline.randomElement() ?? "Have fun today!" : StringConstants.noClassQuotesOffline.randomElement() ?? "Have fun today!")
-                            .font(Font.custom("Poppins-Regular",size:12))
+                            ? StringConstants.noClassQuotesOnline.randomElement() ?? "Have fun today!" : StringConstants.noClassQuotesOffline.randomElement() ?? "Have fun today!")
+                            .font(Font.custom("Poppins-Regular", size: 12))
                     }
                     .foregroundColor(Color.white)
                 }
@@ -45,8 +42,9 @@ struct MediumWidgetView: View {
     }
 }
 
-//struct MediumWidgetView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        MediumWidgetView()
-//    }
-//}
+struct MediumWidgetView_Previews: PreviewProvider {
+    static var previews: some View {
+        MediumWidgetView(widgetData: VITTYWidgetDataModel(classInfo: StringConstants.dummyClassArray, classesCompleted: 0, error: nil))
+            
+    }
+}

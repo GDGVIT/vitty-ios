@@ -109,6 +109,11 @@
 		31EC946A2788BCDF00EA07BE /* Classes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EC94692788BCDF00EA07BE /* Classes.swift */; };
 		31EC946E2789409D00EA07BE /* TimetableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EC946D2789409D00EA07BE /* TimetableViewModel.swift */; };
 		31F9B733279AA342006D1012 /* TimeTableScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F9B732279AA342006D1012 /* TimeTableScrollView.swift */; };
+		5D3D92542A1817010013803E /* UserName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3D92532A1817010013803E /* UserName.swift */; };
+		5D3D92562A18170E0013803E /* UserNameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3D92552A18170E0013803E /* UserNameViewModel.swift */; };
+		5D3D92592A1818150013803E /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3D92582A1818150013803E /* Color.swift */; };
+		5DD41A892A0F84FA00B32C49 /* WidgetHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD41A882A0F84FA00B32C49 /* WidgetHeader.swift */; };
+		5DD41A8A2A0F84FA00B32C49 /* WidgetHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD41A882A0F84FA00B32C49 /* WidgetHeader.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -204,6 +209,10 @@
 		31EC94692788BCDF00EA07BE /* Classes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Classes.swift; sourceTree = "<group>"; };
 		31EC946D2789409D00EA07BE /* TimetableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimetableViewModel.swift; sourceTree = "<group>"; };
 		31F9B732279AA342006D1012 /* TimeTableScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTableScrollView.swift; sourceTree = "<group>"; };
+		5D3D92532A1817010013803E /* UserName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserName.swift; sourceTree = "<group>"; };
+		5D3D92552A18170E0013803E /* UserNameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNameViewModel.swift; sourceTree = "<group>"; };
+		5D3D92582A1818150013803E /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
+		5DD41A882A0F84FA00B32C49 /* WidgetHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetHeader.swift; sourceTree = "<group>"; };
 		5DE173CB298D7E1300B8A2D3 /* Confidential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Confidential.swift; sourceTree = "<group>"; };
 		AFEFCB6B27C90042007B2029 /* VITTYRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = VITTYRelease.entitlements; sourceTree = "<group>"; };
 		AFEFCB6C27C90233007B2029 /* VITTY.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = VITTY.entitlements; sourceTree = "<group>"; };
@@ -362,19 +371,17 @@
 		314A408D27383BEC0058082F /* VITTY */ = {
 			isa = PBXGroup;
 			children = (
+				5D3D92572A1818080013803E /* Extensions */,
+				314A408E27383BEC0058082F /* VITTYApp.swift */,
+				314A409027383BEC0058082F /* ContentView.swift */,
+				314A409227383BEE0058082F /* Assets.xcassets */,
 				AFEFCB7327C9065B007B2029 /* Firebase */,
+				5D3D924F2A1816980013803E /* Core */,
 				AFEFCB6C27C90233007B2029 /* VITTY.entitlements */,
 				AFEFCB6B27C90042007B2029 /* VITTYRelease.entitlements */,
 				3109637F278227580009A29C /* Services */,
 				31128CF02772F0210084C9EA /* Info.plist */,
-				314A40A627383C540058082F /* App */,
-				314A40A527383C3F0058082F /* Model */,
-				314A40A427383C370058082F /* View */,
-				314A40A327383C280058082F /* ViewModel */,
 				314A40A127383C0A0058082F /* Utilities */,
-				314A408E27383BEC0058082F /* VITTYApp.swift */,
-				314A409027383BEC0058082F /* ContentView.swift */,
-				314A409227383BEE0058082F /* Assets.xcassets */,
 				314A409427383BEE0058082F /* Preview Content */,
 			);
 			path = VITTY;
@@ -470,6 +477,7 @@
 				3164C44927CB590D00D6B53F /* WidgetSmallClassCard.swift */,
 				3164C46627CBC96700D6B53F /* WidgetLClassCard.swift */,
 				31A3BF4227D0BAE800B6BB97 /* WidgetMClassCard.swift */,
+				5DD41A882A0F84FA00B32C49 /* WidgetHeader.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -511,6 +519,51 @@
 				317715E127A0427B009A532E /* CustomNotifsListView.swift */,
 			);
 			path = NotificationsView;
+			sourceTree = "<group>";
+		};
+		5D3D924F2A1816980013803E /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				5D3D92502A1816CC0013803E /* Username */,
+				314A40A627383C540058082F /* App */,
+				314A40A527383C3F0058082F /* Model */,
+				314A40A427383C370058082F /* View */,
+				314A40A327383C280058082F /* ViewModel */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		5D3D92502A1816CC0013803E /* Username */ = {
+			isa = PBXGroup;
+			children = (
+				5D3D92522A1816D90013803E /* ViewModel */,
+				5D3D92512A1816D40013803E /* View */,
+			);
+			path = Username;
+			sourceTree = "<group>";
+		};
+		5D3D92512A1816D40013803E /* View */ = {
+			isa = PBXGroup;
+			children = (
+				5D3D92532A1817010013803E /* UserName.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		5D3D92522A1816D90013803E /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				5D3D92552A18170E0013803E /* UserNameViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		5D3D92572A1818080013803E /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				5D3D92582A1818150013803E /* Color.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		AFEFCB7327C9065B007B2029 /* Firebase */ = {
@@ -728,6 +781,7 @@
 				3164C45527CB5B9C00D6B53F /* VITTYWidgetView.swift in Sources */,
 				3164C45427CB5B7400D6B53F /* RemoteConfigManager.swift in Sources */,
 				3164C44327CB51C900D6B53F /* TimetableWidgetService.swift in Sources */,
+				5DD41A8A2A0F84FA00B32C49 /* WidgetHeader.swift in Sources */,
 				3164C46A27CBD29100D6B53F /* AppStorageConstants.swift in Sources */,
 				3164C44A27CB590D00D6B53F /* WidgetSmallClassCard.swift in Sources */,
 				3164C45727CB718D00D6B53F /* NoDetailsAvailableView.swift in Sources */,
@@ -746,7 +800,9 @@
 			files = (
 				317EE1932775B819008AEB31 /* InstructionsCards.swift in Sources */,
 				31096381278227730009A29C /* AuthService.swift in Sources */,
+				5D3D92562A18170E0013803E /* UserNameViewModel.swift in Sources */,
 				31BAB52D279AE398008E20BB /* NotificationsViewHeader.swift in Sources */,
+				5D3D92592A1818150013803E /* Color.swift in Sources */,
 				31BAB528279AD8CA008E20BB /* SettingsHeader.swift in Sources */,
 				317EE1992775D3C6008AEB31 /* SettingsView.swift in Sources */,
 				31A3BF4027D09AF300B6BB97 /* Date+Extension.swift in Sources */,
@@ -782,8 +838,10 @@
 				31128D09277300130084C9EA /* SplashScreenIllustration.swift in Sources */,
 				31900F0527746A400014A58D /* HomePageHeader.swift in Sources */,
 				317EE1952775C555008AEB31 /* LogoutPopup.swift in Sources */,
+				5D3D92542A1817010013803E /* UserName.swift in Sources */,
 				314A408F27383BEC0058082F /* VITTYApp.swift in Sources */,
 				3164C45B27CB71DA00D6B53F /* LargeWidgetView.swift in Sources */,
+				5DD41A892A0F84FA00B32C49 /* WidgetHeader.swift in Sources */,
 				31900F0C2775A6080014A58D /* ClassCards.swift in Sources */,
 				3164C45927CB71BF00D6B53F /* SmallWidgetView.swift in Sources */,
 				317715E227A0427B009A532E /* CustomNotifsListView.swift in Sources */,

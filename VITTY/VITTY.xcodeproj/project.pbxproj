@@ -109,6 +109,9 @@
 		31EC946A2788BCDF00EA07BE /* Classes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EC94692788BCDF00EA07BE /* Classes.swift */; };
 		31EC946E2789409D00EA07BE /* TimetableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EC946D2789409D00EA07BE /* TimetableViewModel.swift */; };
 		31F9B733279AA342006D1012 /* TimeTableScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F9B732279AA342006D1012 /* TimeTableScrollView.swift */; };
+		5D141B052A2658CD005977F8 /* textField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D141B042A2658CD005977F8 /* textField.swift */; };
+		5D141B0A2A265B15005977F8 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D141B092A265B15005977F8 /* Profile.swift */; };
+		5D141B0C2A265B32005977F8 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D141B0B2A265B32005977F8 /* ProfileViewModel.swift */; };
 		5D3D92542A1817010013803E /* UserName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3D92532A1817010013803E /* UserName.swift */; };
 		5D3D92562A18170E0013803E /* UserNameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3D92552A18170E0013803E /* UserNameViewModel.swift */; };
 		5D3D92592A1818150013803E /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3D92582A1818150013803E /* Color.swift */; };
@@ -209,6 +212,9 @@
 		31EC94692788BCDF00EA07BE /* Classes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Classes.swift; sourceTree = "<group>"; };
 		31EC946D2789409D00EA07BE /* TimetableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimetableViewModel.swift; sourceTree = "<group>"; };
 		31F9B732279AA342006D1012 /* TimeTableScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTableScrollView.swift; sourceTree = "<group>"; };
+		5D141B042A2658CD005977F8 /* textField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = textField.swift; sourceTree = "<group>"; };
+		5D141B092A265B15005977F8 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
+		5D141B0B2A265B32005977F8 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		5D3D92532A1817010013803E /* UserName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserName.swift; sourceTree = "<group>"; };
 		5D3D92552A18170E0013803E /* UserNameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNameViewModel.swift; sourceTree = "<group>"; };
 		5D3D92582A1818150013803E /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
@@ -521,9 +527,44 @@
 			path = NotificationsView;
 			sourceTree = "<group>";
 		};
+		5D141B032A2658BE005977F8 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				5D141B042A2658CD005977F8 /* textField.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		5D141B062A265AF0005977F8 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				5D141B082A265B09005977F8 /* View */,
+				5D141B072A265B03005977F8 /* ViewModel */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
+		5D141B072A265B03005977F8 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				5D141B0B2A265B32005977F8 /* ProfileViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		5D141B082A265B09005977F8 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				5D141B092A265B15005977F8 /* Profile.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		5D3D924F2A1816980013803E /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				5D141B062A265AF0005977F8 /* Profile */,
+				5D141B032A2658BE005977F8 /* Components */,
 				5D3D92502A1816CC0013803E /* Username */,
 				314A40A627383C540058082F /* App */,
 				314A40A527383C3F0058082F /* Model */,
@@ -804,6 +845,7 @@
 				31BAB52D279AE398008E20BB /* NotificationsViewHeader.swift in Sources */,
 				5D3D92592A1818150013803E /* Color.swift in Sources */,
 				31BAB528279AD8CA008E20BB /* SettingsHeader.swift in Sources */,
+				5D141B0C2A265B32005977F8 /* ProfileViewModel.swift in Sources */,
 				317EE1992775D3C6008AEB31 /* SettingsView.swift in Sources */,
 				31A3BF4027D09AF300B6BB97 /* Date+Extension.swift in Sources */,
 				3164C45C27CB71DD00D6B53F /* NoDetailsAvailableView.swift in Sources */,
@@ -815,6 +857,7 @@
 				317EE1972775C8BE008AEB31 /* ExamHolidayMode.swift in Sources */,
 				31128D0C277300470084C9EA /* StringConstants.swift in Sources */,
 				3164C45A27CB71D700D6B53F /* MediumWidgetView.swift in Sources */,
+				5D141B0A2A265B15005977F8 /* Profile.swift in Sources */,
 				31128D042772F8E90084C9EA /* CustomButton.swift in Sources */,
 				3109639F27824F6F0009A29C /* AppStorageConstants.swift in Sources */,
 				31BAB533279D3F49008E20BB /* NotificationsManager.swift in Sources */,
@@ -843,6 +886,7 @@
 				3164C45B27CB71DA00D6B53F /* LargeWidgetView.swift in Sources */,
 				5DD41A892A0F84FA00B32C49 /* WidgetHeader.swift in Sources */,
 				31900F0C2775A6080014A58D /* ClassCards.swift in Sources */,
+				5D141B052A2658CD005977F8 /* textField.swift in Sources */,
 				3164C45927CB71BF00D6B53F /* SmallWidgetView.swift in Sources */,
 				317715E227A0427B009A532E /* CustomNotifsListView.swift in Sources */,
 				31F9B733279AA342006D1012 /* TimeTableScrollView.swift in Sources */,

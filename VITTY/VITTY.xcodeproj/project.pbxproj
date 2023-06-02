@@ -115,6 +115,9 @@
 		5D3D92542A1817010013803E /* UserName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3D92532A1817010013803E /* UserName.swift */; };
 		5D3D92562A18170E0013803E /* UserNameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3D92552A18170E0013803E /* UserNameViewModel.swift */; };
 		5D3D92592A1818150013803E /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3D92582A1818150013803E /* Color.swift */; };
+		5D44FFFA2A2A69DD0005A1E4 /* SetStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D44FFF92A2A69DD0005A1E4 /* SetStatusView.swift */; };
+		5D44FFFC2A2A6ECE0005A1E4 /* StatusRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D44FFFB2A2A6ECE0005A1E4 /* StatusRowView.swift */; };
+		5D44FFFF2A2A76CE0005A1E4 /* SetStatusViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D44FFFE2A2A76CE0005A1E4 /* SetStatusViewModel.swift */; };
 		5DD41A892A0F84FA00B32C49 /* WidgetHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD41A882A0F84FA00B32C49 /* WidgetHeader.swift */; };
 		5DD41A8A2A0F84FA00B32C49 /* WidgetHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD41A882A0F84FA00B32C49 /* WidgetHeader.swift */; };
 /* End PBXBuildFile section */
@@ -218,6 +221,9 @@
 		5D3D92532A1817010013803E /* UserName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserName.swift; sourceTree = "<group>"; };
 		5D3D92552A18170E0013803E /* UserNameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNameViewModel.swift; sourceTree = "<group>"; };
 		5D3D92582A1818150013803E /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
+		5D44FFF92A2A69DD0005A1E4 /* SetStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetStatusView.swift; sourceTree = "<group>"; };
+		5D44FFFB2A2A6ECE0005A1E4 /* StatusRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusRowView.swift; sourceTree = "<group>"; };
+		5D44FFFE2A2A76CE0005A1E4 /* SetStatusViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetStatusViewModel.swift; sourceTree = "<group>"; };
 		5DD41A882A0F84FA00B32C49 /* WidgetHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetHeader.swift; sourceTree = "<group>"; };
 		5DE173CB298D7E1300B8A2D3 /* Confidential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Confidential.swift; sourceTree = "<group>"; };
 		AFEFCB6B27C90042007B2029 /* VITTYRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = VITTYRelease.entitlements; sourceTree = "<group>"; };
@@ -563,6 +569,7 @@
 		5D3D924F2A1816980013803E /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				5D44FFF72A2A69C70005A1E4 /* SetStatus */,
 				5D141B032A2658BE005977F8 /* Components */,
 				5D141B062A265AF0005977F8 /* Profile */,
 				5D3D92502A1816CC0013803E /* Username */,
@@ -605,6 +612,32 @@
 				5D3D92582A1818150013803E /* Color.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		5D44FFF72A2A69C70005A1E4 /* SetStatus */ = {
+			isa = PBXGroup;
+			children = (
+				5D44FFFD2A2A76C00005A1E4 /* ViewModel */,
+				5D44FFF82A2A69D00005A1E4 /* View */,
+			);
+			path = SetStatus;
+			sourceTree = "<group>";
+		};
+		5D44FFF82A2A69D00005A1E4 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				5D44FFF92A2A69DD0005A1E4 /* SetStatusView.swift */,
+				5D44FFFB2A2A6ECE0005A1E4 /* StatusRowView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		5D44FFFD2A2A76C00005A1E4 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				5D44FFFE2A2A76CE0005A1E4 /* SetStatusViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		AFEFCB7327C9065B007B2029 /* Firebase */ = {
@@ -842,6 +875,7 @@
 				317EE1932775B819008AEB31 /* InstructionsCards.swift in Sources */,
 				31096381278227730009A29C /* AuthService.swift in Sources */,
 				5D3D92562A18170E0013803E /* UserNameViewModel.swift in Sources */,
+				5D44FFFA2A2A69DD0005A1E4 /* SetStatusView.swift in Sources */,
 				31BAB52D279AE398008E20BB /* NotificationsViewHeader.swift in Sources */,
 				5D3D92592A1818150013803E /* Color.swift in Sources */,
 				31BAB528279AD8CA008E20BB /* SettingsHeader.swift in Sources */,
@@ -864,6 +898,7 @@
 				317715E0279FE778009A532E /* CustomNotificationButton.swift in Sources */,
 				3168511F277319480046A9AC /* SignupOR.swift in Sources */,
 				31128D12277306860084C9EA /* SplashScreenTabIndicator.swift in Sources */,
+				5D44FFFF2A2A76CE0005A1E4 /* SetStatusViewModel.swift in Sources */,
 				31BAB531279D318F008E20BB /* NotificationsSettingsModel.swift in Sources */,
 				31128D072772FA120084C9EA /* Colors.swift in Sources */,
 				314A409127383BEC0058082F /* ContentView.swift in Sources */,
@@ -883,6 +918,7 @@
 				317EE1952775C555008AEB31 /* LogoutPopup.swift in Sources */,
 				5D3D92542A1817010013803E /* UserName.swift in Sources */,
 				314A408F27383BEC0058082F /* VITTYApp.swift in Sources */,
+				5D44FFFC2A2A6ECE0005A1E4 /* StatusRowView.swift in Sources */,
 				3164C45B27CB71DA00D6B53F /* LargeWidgetView.swift in Sources */,
 				5DD41A892A0F84FA00B32C49 /* WidgetHeader.swift in Sources */,
 				31900F0C2775A6080014A58D /* ClassCards.swift in Sources */,

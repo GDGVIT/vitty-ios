@@ -11,6 +11,7 @@ struct SplashScreen: View {
     @State var selectedTab: Int = 0
     @State var onboardingComplete: Bool = false
     @EnvironmentObject var authState: AuthService
+    
     var body: some View {
         VStack {
             TabView(selection: $selectedTab){

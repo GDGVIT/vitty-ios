@@ -319,13 +319,13 @@
 			path = Poppins;
 			sourceTree = "<group>";
 		};
-		31128CFF2772F81E0084C9EA /* SplashScreen */ = {
+		31128CFF2772F81E0084C9EA /* Components */ = {
 			isa = PBXGroup;
 			children = (
 				31128D08277300130084C9EA /* SplashScreenIllustration.swift */,
 				31128D11277306860084C9EA /* SplashScreenTabIndicator.swift */,
 			);
-			path = SplashScreen;
+			path = Components;
 			sourceTree = "<group>";
 		};
 		31128D022772F8DA0084C9EA /* Common */ = {
@@ -363,6 +363,9 @@
 			isa = PBXGroup;
 			children = (
 				5DE173CB298D7E1300B8A2D3 /* Confidential.swift */,
+				314A408E27383BEC0058082F /* VITTYApp.swift */,
+				314A409027383BEC0058082F /* ContentView.swift */,
+				314A409227383BEE0058082F /* Assets.xcassets */,
 				3164C46927CBCFBE00D6B53F /* vitty-widgetExtension.entitlements */,
 				314A408D27383BEC0058082F /* VITTY */,
 				3105871E27A3ECBB00C2FC41 /* vitty-widget */,
@@ -384,9 +387,6 @@
 			isa = PBXGroup;
 			children = (
 				5D3D92572A1818080013803E /* Extensions */,
-				314A408E27383BEC0058082F /* VITTYApp.swift */,
-				314A409027383BEC0058082F /* ContentView.swift */,
-				314A409227383BEE0058082F /* Assets.xcassets */,
 				AFEFCB7327C9065B007B2029 /* Firebase */,
 				5D3D924F2A1816980013803E /* Core */,
 				AFEFCB6C27C90233007B2029 /* VITTY.entitlements */,
@@ -421,7 +421,6 @@
 			isa = PBXGroup;
 			children = (
 				31EC946D2789409D00EA07BE /* TimetableViewModel.swift */,
-				31BAB52E279BCC7D008E20BB /* NotificationsViewModel.swift */,
 				313E6AFC27BEAED9006F5944 /* ClassCardViewModel.swift */,
 			);
 			path = ViewModel;
@@ -430,13 +429,7 @@
 		314A40A427383C370058082F /* View */ = {
 			isa = PBXGroup;
 			children = (
-				31BAB52B279AE36D008E20BB /* NotificationsView */,
-				31BAB526279AD8B5008E20BB /* Settings */,
-				31900F0627746B130014A58D /* HomePage */,
-				31128D022772F8DA0084C9EA /* Common */,
-				31128CFF2772F81E0084C9EA /* SplashScreen */,
 				3168511E277319480046A9AC /* SignupOR.swift */,
-				317EE1922775B819008AEB31 /* InstructionsCards.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -449,18 +442,6 @@
 				31BAB530279D318F008E20BB /* NotificationsSettingsModel.swift */,
 			);
 			path = Model;
-			sourceTree = "<group>";
-		};
-		314A40A627383C540058082F /* App */ = {
-			isa = PBXGroup;
-			children = (
-				31128D002772F8370084C9EA /* SplashScreen.swift */,
-				31900F00277467460014A58D /* InstructionsView.swift */,
-				31900F02277468790014A58D /* HomePage.swift */,
-				317EE1982775D3C6008AEB31 /* SettingsView.swift */,
-				31BAB529279AE34B008E20BB /* NotificationsView.swift */,
-			);
-			path = App;
 			sourceTree = "<group>";
 		};
 		3164C42F27C9F7F800D6B53F /* Model */ = {
@@ -502,7 +483,7 @@
 			path = Services;
 			sourceTree = "<group>";
 		};
-		31900F0627746B130014A58D /* HomePage */ = {
+		31900F0627746B130014A58D /* Components */ = {
 			isa = PBXGroup;
 			children = (
 				31900F0427746A400014A58D /* HomePageHeader.swift */,
@@ -511,18 +492,18 @@
 				31A2A4A727899EE3005679EB /* TabBarDay.swift */,
 				31F9B732279AA342006D1012 /* TimeTableScrollView.swift */,
 			);
-			path = HomePage;
+			path = Components;
 			sourceTree = "<group>";
 		};
-		31BAB526279AD8B5008E20BB /* Settings */ = {
+		31BAB526279AD8B5008E20BB /* Components */ = {
 			isa = PBXGroup;
 			children = (
 				31BAB527279AD8CA008E20BB /* SettingsHeader.swift */,
 			);
-			path = Settings;
+			path = Components;
 			sourceTree = "<group>";
 		};
-		31BAB52B279AE36D008E20BB /* NotificationsView */ = {
+		31BAB52B279AE36D008E20BB /* Components */ = {
 			isa = PBXGroup;
 			children = (
 				31BAB52C279AE398008E20BB /* NotificationsViewHeader.swift */,
@@ -530,12 +511,13 @@
 				317715DF279FE778009A532E /* CustomNotificationButton.swift */,
 				317715E127A0427B009A532E /* CustomNotifsListView.swift */,
 			);
-			path = NotificationsView;
+			path = Components;
 			sourceTree = "<group>";
 		};
 		5D141B032A2658BE005977F8 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				31128D022772F8DA0084C9EA /* Common */,
 				5D141B042A2658CD005977F8 /* textField.swift */,
 			);
 			path = Components;
@@ -566,14 +548,112 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		5D1FF25D2A32637D00B0620A /* HomePage */ = {
+			isa = PBXGroup;
+			children = (
+				5D1FF25E2A32638800B0620A /* View */,
+			);
+			path = HomePage;
+			sourceTree = "<group>";
+		};
+		5D1FF25E2A32638800B0620A /* View */ = {
+			isa = PBXGroup;
+			children = (
+				31900F02277468790014A58D /* HomePage.swift */,
+				31900F0627746B130014A58D /* Components */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		5D1FF25F2A3263CA00B0620A /* SplashScreen */ = {
+			isa = PBXGroup;
+			children = (
+				5D1FF2602A3263D300B0620A /* View */,
+			);
+			path = SplashScreen;
+			sourceTree = "<group>";
+		};
+		5D1FF2602A3263D300B0620A /* View */ = {
+			isa = PBXGroup;
+			children = (
+				31128D002772F8370084C9EA /* SplashScreen.swift */,
+				31128CFF2772F81E0084C9EA /* Components */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		5D1FF2612A3263FE00B0620A /* NotificationView */ = {
+			isa = PBXGroup;
+			children = (
+				5D1FF2652A32652600B0620A /* ViewModel */,
+				5D1FF2622A32640700B0620A /* View */,
+			);
+			path = NotificationView;
+			sourceTree = "<group>";
+		};
+		5D1FF2622A32640700B0620A /* View */ = {
+			isa = PBXGroup;
+			children = (
+				31BAB529279AE34B008E20BB /* NotificationsView.swift */,
+				31BAB52B279AE36D008E20BB /* Components */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		5D1FF2632A32643400B0620A /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				5D1FF2642A32643B00B0620A /* View */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		5D1FF2642A32643B00B0620A /* View */ = {
+			isa = PBXGroup;
+			children = (
+				317EE1982775D3C6008AEB31 /* SettingsView.swift */,
+				31BAB526279AD8B5008E20BB /* Components */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		5D1FF2652A32652600B0620A /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				31BAB52E279BCC7D008E20BB /* NotificationsViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		5D1FF2662A32653400B0620A /* Instructions */ = {
+			isa = PBXGroup;
+			children = (
+				5D1FF2672A32653E00B0620A /* View */,
+			);
+			path = Instructions;
+			sourceTree = "<group>";
+		};
+		5D1FF2672A32653E00B0620A /* View */ = {
+			isa = PBXGroup;
+			children = (
+				317EE1922775B819008AEB31 /* InstructionsCards.swift */,
+				31900F00277467460014A58D /* InstructionsView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		5D3D924F2A1816980013803E /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				5D44FFF72A2A69C70005A1E4 /* SetStatus */,
+				5D1FF2662A32653400B0620A /* Instructions */,
 				5D141B032A2658BE005977F8 /* Components */,
+				5D1FF2632A32643400B0620A /* Settings */,
+				5D1FF2612A3263FE00B0620A /* NotificationView */,
+				5D1FF25F2A3263CA00B0620A /* SplashScreen */,
+				5D1FF25D2A32637D00B0620A /* HomePage */,
+				5D44FFF72A2A69C70005A1E4 /* SetStatus */,
 				5D141B062A265AF0005977F8 /* Profile */,
 				5D3D92502A1816CC0013803E /* Username */,
-				314A40A627383C540058082F /* App */,
 				314A40A527383C3F0058082F /* Model */,
 				314A40A427383C370058082F /* View */,
 				314A40A327383C280058082F /* ViewModel */,

@@ -8,40 +8,28 @@
 import SwiftUI
 
 struct HomePage: View {
-    //    @State var tabSelected: Int = (Calendar.current.dateComponents([.weekday], from: Date()).weekday ?? 1) - 1
+
     @State var tabSelected: Int = Date.convertToMondayWeek()
     @State var goToSettings: Bool = false
     @State var showLogout: Bool = false
+    
     @EnvironmentObject var timetableViewModel: TimetableViewModel
     @EnvironmentObject var authVM: AuthService
     @EnvironmentObject var notifVM: NotificationsViewModel
+    
     @StateObject var RemoteConf = RemoteConfigManager.sharedInstance
     @AppStorage("examMode") var examModeOn: Bool = false
     @AppStorage(AuthService.notifsSetupKey) var notifsSetup = false
+    
     var body: some View {
         ZStack {
             VStack {
-                // MARK: force crash button
-                //                Button {
-                //                    assert(1 == 2, "Maths failure!")
-                //                } label: {
-                //                    Text("forcing a crash")
-                //                }
+                navBarItems()
                 
-                VStack(alignment:.leading) {
-                    HomePageHeader(goToSettings: $goToSettings, showLogout: $showLogout)
-                        .padding()
-                    HomeTabBarView(tabSelected: $tabSelected)
-                }
-                // TODO: change timetable scroll view to implement all of this
-                TabView(selection: $tabSelected) {
-                    ForEach(0..<7) { tabSel in
-                        if let selectedTT = timetableViewModel.timetable[TimetableViewModel.daysOfTheWeek[tabSel]] {
-                            TimeTableScrollView(selectedTT: selectedTT, tabSelected: $tabSelected).environmentObject(timetableViewModel)
-                        }
-                    }
-                }
+                daysRow()
                 .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+                
+                
                 NavigationLink(destination: SettingsView().environmentObject(timetableViewModel).environmentObject(authVM).environmentObject(notifVM), isActive: $goToSettings) {
                     EmptyView()
                 }
@@ -87,5 +75,26 @@ struct HomePage_Previews: PreviewProvider {
             .environmentObject(AuthService())
             .environmentObject(TimetableViewModel())
             .environmentObject(NotificationsViewModel())
+    }
+}
+
+//MARK: Extension
+extension HomePage{
+    private func navBarItems() -> some View{
+        VStack(alignment:.leading) {
+            HomePageHeader(goToSettings: $goToSettings, showLogout: $showLogout)
+                .padding()
+            HomeTabBarView(tabSelected: $tabSelected)
+        }
+    }
+    
+    private func daysRow() -> some View{
+        TabView(selection: $tabSelected) {
+            ForEach(0..<7) { tabSel in
+                if let selectedTT = timetableViewModel.timetable[TimetableViewModel.daysOfTheWeek[tabSel]] {
+                    TimeTableScrollView(selectedTT: selectedTT, tabSelected: $tabSelected).environmentObject(timetableViewModel)
+                }
+            }
+        }
     }
 }

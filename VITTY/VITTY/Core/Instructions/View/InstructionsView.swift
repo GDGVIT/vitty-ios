@@ -10,51 +10,26 @@ import SwiftUI
 struct InstructionsView: View {
     @EnvironmentObject var authState: AuthService
     @EnvironmentObject var ttVM: TimetableViewModel
+    @EnvironmentObject var notifVM: NotificationsViewModel
+
     @State var goToHomeScreen = UserDefaults.standard.bool(forKey: "instructionsComplete")
     @State var displayLogout: Bool = false
     @State var displayFollowInstructions = false
-    @EnvironmentObject var notifVM: NotificationsViewModel
+
     // notifsSetup is true when notifications don't need to be setup and false when they do
     @AppStorage(AuthService.notifsSetupKey) var notifsSetup = false
+
     var body: some View {
         ZStack {
             VStack {
-                HStack {
-                    Text("Sync Timetable")
-                    Spacer()
-                    Image(systemName: "arrow.right.square")
-                        .onTapGesture {
-                            displayLogout = true
-                        }
-                }
-                .font(Font.custom("Poppins-Bold", size: 24))
-                .foregroundColor(Color.white)
-                ScrollView {
-                    if displayFollowInstructions {
-                        Text(StringConstants.followInstructionsText.uppercased())
-                            .foregroundColor(Color.white)
-                            .padding(.vertical)
-                            .font(.custom("Poppins-Regular", size: 16))
-                        
-                    }
-                    InstructionsCards()
-                        .padding(.vertical)
-                }
+                header()
+                    .font(Font.custom("Poppins-Bold", size: 24))
+                    .foregroundColor(Color.white)
+                instructions()
                 Spacer()
-                CustomButton(buttonText: "Done") {
-                    self.displayFollowInstructions = true
-                    if ttVM.timetable.isEmpty {
-                        ttVM.getData {
-                            if !notifsSetup {
-                                notifVM.setupNotificationPreferences(timetable: ttVM.timetable)
-                            }
-                        }
-                    } else {
-                        print("time table is populated")
-                        UserDefaults.standard.set(true, forKey:"instructionsComplete")
-                        goToHomeScreen = true
-                    }
-                }
+
+                doneButton()
+
                 NavigationLink(destination: HomePage().navigationTitle("").navigationBarHidden(true).environmentObject(ttVM).environmentObject(authState).environmentObject(notifVM), isActive: $goToHomeScreen) {
                     EmptyView()
                 }
@@ -62,7 +37,7 @@ struct InstructionsView: View {
             .blur(radius: displayLogout ? 10 : 0)
             .padding()
             .background(Image("InstructionsBG").resizable().scaledToFill().edgesIgnoringSafeArea(.all))
-            
+
             if displayLogout {
                 LogoutPopup(showLogout: $displayLogout)
             }
@@ -84,5 +59,48 @@ struct InstructionsView_Previews: PreviewProvider {
             .environmentObject(AuthService())
             .environmentObject(TimetableViewModel())
             .environmentObject(NotificationsViewModel())
+    }
+}
+
+extension InstructionsView {
+    private func header() -> some View {
+        HStack {
+            Text("Sync Timetable")
+            Spacer()
+            Image(systemName: "arrow.right.square")
+                .onTapGesture {
+                    displayLogout = true
+                }
+        }
+    }
+
+    private func instructions() -> some View {
+        ScrollView {
+            if displayFollowInstructions {
+                Text(StringConstants.followInstructionsText.uppercased())
+                    .foregroundColor(Color.white)
+                    .padding(.vertical)
+                    .font(.custom("Poppins-Regular", size: 16))
+            }
+            InstructionsCards()
+                .padding(.vertical)
+        }
+    }
+
+    private func doneButton() -> some View {
+        CustomButton(buttonText: "Done") {
+            self.displayFollowInstructions = true
+            if ttVM.timetable.isEmpty {
+                ttVM.getData {
+                    if !notifsSetup {
+                        notifVM.setupNotificationPreferences(timetable: ttVM.timetable)
+                    }
+                }
+            } else {
+                print("time table is populated")
+                UserDefaults.standard.set(true, forKey: "instructionsComplete")
+                goToHomeScreen = true
+            }
+        }
     }
 }

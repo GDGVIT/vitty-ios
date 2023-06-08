@@ -22,29 +22,7 @@ struct SetStatusView: View {
 
                 selectStatus()
                 
-                VStack(alignment: .leading){
-                    Text("Automatically updates")
-                        .font(.custom("Poppins-Medium", size: 13))
-                        .fontWeight(.semibold)
-                        .foregroundColor(Color.theme.gray)
-                    HStack{
-                        Image("gcalendar")
-                        
-                        Text("In a class")
-                            .font(.custom("Poppins-Medium", size: 16))
-                            .fontWeight(.semibold)
-                            .foregroundColor(.white)
-                        Rectangle()
-                            .frame(width: 15,height: 0.5)
-                            .foregroundColor(Color.theme.gray)
-                        Text("Based on your Class ")
-                            .font(.custom("Poppins-Medium", size: 16))
-                            .foregroundColor(Color.theme.gray)
-                        
-                        Spacer()
-                    }
-                    
-                }.padding(.leading)
+                autoUpdateSection()
                 
 
                 Spacer()
@@ -114,5 +92,31 @@ extension SetStatusView {
             
             Divider().padding(.top)
         }
+    }
+    
+    private func autoUpdateSection() -> some View{
+        VStack(alignment: .leading){
+            Text("Automatically updates")
+                .font(.custom("Poppins-Medium", size: 13))
+                .fontWeight(.semibold)
+                .foregroundColor(Color.theme.gray)
+            HStack{
+                Image("gcalendar")
+                
+                Text("In a class")
+                    .font(.custom("Poppins-Medium", size: 16))
+                    .fontWeight(.semibold)
+                    .foregroundColor(.white)
+                Rectangle()
+                    .frame(width: 15,height: 0.5)
+                    .foregroundColor(Color.theme.gray)
+                Text("Based on your Class ")
+                    .font(.custom("Poppins-Medium", size: 16))
+                    .foregroundColor(Color.theme.gray)
+                
+                Spacer()
+            }
+            
+        }.padding(.leading)
     }
 }

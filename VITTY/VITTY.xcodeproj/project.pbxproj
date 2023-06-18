@@ -118,6 +118,9 @@
 		5D44FFFA2A2A69DD0005A1E4 /* SetStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D44FFF92A2A69DD0005A1E4 /* SetStatusView.swift */; };
 		5D44FFFC2A2A6ECE0005A1E4 /* StatusRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D44FFFB2A2A6ECE0005A1E4 /* StatusRowView.swift */; };
 		5D44FFFF2A2A76CE0005A1E4 /* SetStatusViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D44FFFE2A2A76CE0005A1E4 /* SetStatusViewModel.swift */; };
+		5D629B3C2A3FA612000B8E7A /* FriendActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D629B3B2A3FA612000B8E7A /* FriendActivity.swift */; };
+		5D629B402A3FA645000B8E7A /* FriendActivityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D629B3F2A3FA645000B8E7A /* FriendActivityViewModel.swift */; };
+		5D629B422A3FA6A8000B8E7A /* FriendRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D629B412A3FA6A8000B8E7A /* FriendRow.swift */; };
 		5DD41A892A0F84FA00B32C49 /* WidgetHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD41A882A0F84FA00B32C49 /* WidgetHeader.swift */; };
 		5DD41A8A2A0F84FA00B32C49 /* WidgetHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD41A882A0F84FA00B32C49 /* WidgetHeader.swift */; };
 /* End PBXBuildFile section */
@@ -224,6 +227,9 @@
 		5D44FFF92A2A69DD0005A1E4 /* SetStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetStatusView.swift; sourceTree = "<group>"; };
 		5D44FFFB2A2A6ECE0005A1E4 /* StatusRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusRowView.swift; sourceTree = "<group>"; };
 		5D44FFFE2A2A76CE0005A1E4 /* SetStatusViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetStatusViewModel.swift; sourceTree = "<group>"; };
+		5D629B3B2A3FA612000B8E7A /* FriendActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendActivity.swift; sourceTree = "<group>"; };
+		5D629B3F2A3FA645000B8E7A /* FriendActivityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendActivityViewModel.swift; sourceTree = "<group>"; };
+		5D629B412A3FA6A8000B8E7A /* FriendRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRow.swift; sourceTree = "<group>"; };
 		5DD41A882A0F84FA00B32C49 /* WidgetHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetHeader.swift; sourceTree = "<group>"; };
 		5DE173CB298D7E1300B8A2D3 /* Confidential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Confidential.swift; sourceTree = "<group>"; };
 		AFEFCB6B27C90042007B2029 /* VITTYRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = VITTYRelease.entitlements; sourceTree = "<group>"; };
@@ -645,6 +651,7 @@
 		5D3D924F2A1816980013803E /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				5D629B392A3FA5FB000B8E7A /* FriendActivity */,
 				5D1FF2662A32653400B0620A /* Instructions */,
 				5D141B032A2658BE005977F8 /* Components */,
 				5D1FF2632A32643400B0620A /* Settings */,
@@ -716,6 +723,40 @@
 			isa = PBXGroup;
 			children = (
 				5D44FFFE2A2A76CE0005A1E4 /* SetStatusViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		5D629B392A3FA5FB000B8E7A /* FriendActivity */ = {
+			isa = PBXGroup;
+			children = (
+				5D629B3E2A3FA630000B8E7A /* ViewModel */,
+				5D629B3A2A3FA605000B8E7A /* View */,
+			);
+			path = FriendActivity;
+			sourceTree = "<group>";
+		};
+		5D629B3A2A3FA605000B8E7A /* View */ = {
+			isa = PBXGroup;
+			children = (
+				5D629B3B2A3FA612000B8E7A /* FriendActivity.swift */,
+				5D629B3D2A3FA61E000B8E7A /* Components */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		5D629B3D2A3FA61E000B8E7A /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				5D629B412A3FA6A8000B8E7A /* FriendRow.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		5D629B3E2A3FA630000B8E7A /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				5D629B3F2A3FA645000B8E7A /* FriendActivityViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -952,6 +993,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5D629B422A3FA6A8000B8E7A /* FriendRow.swift in Sources */,
 				317EE1932775B819008AEB31 /* InstructionsCards.swift in Sources */,
 				31096381278227730009A29C /* AuthService.swift in Sources */,
 				5D3D92562A18170E0013803E /* UserNameViewModel.swift in Sources */,
@@ -998,6 +1040,7 @@
 				317EE1952775C555008AEB31 /* LogoutPopup.swift in Sources */,
 				5D3D92542A1817010013803E /* UserName.swift in Sources */,
 				314A408F27383BEC0058082F /* VITTYApp.swift in Sources */,
+				5D629B402A3FA645000B8E7A /* FriendActivityViewModel.swift in Sources */,
 				5D44FFFC2A2A6ECE0005A1E4 /* StatusRowView.swift in Sources */,
 				3164C45B27CB71DA00D6B53F /* LargeWidgetView.swift in Sources */,
 				5DD41A892A0F84FA00B32C49 /* WidgetHeader.swift in Sources */,
@@ -1008,6 +1051,7 @@
 				31F9B733279AA342006D1012 /* TimeTableScrollView.swift in Sources */,
 				31BAB52F279BCC7D008E20BB /* NotificationsViewModel.swift in Sources */,
 				31A2A4A427894E96005679EB /* TimeTableInformation.swift in Sources */,
+				5D629B3C2A3FA612000B8E7A /* FriendActivity.swift in Sources */,
 				3164C42727C9ED4F00D6B53F /* WidgetModel.swift in Sources */,
 				317715DC279F0426009A532E /* CustomNotificationsLabel.swift in Sources */,
 				31900F0A27759DB60014A58D /* Gradient.swift in Sources */,

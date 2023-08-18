@@ -73,6 +73,9 @@ struct HomePage: View {
         }
         .slideInView(isActive: $homePageVM.isPresented, edge: .trailing, content: {
             MenuView()
+                .environmentObject(authVM)
+                .environmentObject(timetableViewModel)
+                .environmentObject(notifVM)
         })
     }
 }

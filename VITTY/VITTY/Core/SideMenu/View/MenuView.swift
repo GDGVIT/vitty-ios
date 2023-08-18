@@ -8,38 +8,47 @@
 import SwiftUI
 
 struct MenuView: View {
+    
+    @EnvironmentObject var authVM: AuthService
+    @EnvironmentObject var ttVM: TimetableViewModel
+    @EnvironmentObject var notifVM: NotificationsViewModel
+    
+    
     var body: some View {
-        ZStack(alignment: .leading) {
-            // background
-            Color.theme.secondaryBlue
-                .ignoresSafeArea()
+        NavigationView {
+            ZStack(alignment: .leading) {
+                // background
+                Color.theme.secondaryBlue
+                    .ignoresSafeArea()
 
-            // Foreground
-            VStack(alignment: .leading) {
-                // TODO: Fix Assets
+                // Foreground
+                VStack(alignment: .leading) {
+                    // TODO: Fix Assets
 
-                userDetails()
+                    userDetails()
 
-                Divider()
-                    .padding(.top, 32)
+                    Divider()
+                        .padding(.top, 32)
 
-                updateYoutStatus()
+                    updateYoutStatus()
+                    
+                    profile()
 
-                profile()
 
-                friendCircle()
+                    friendCircle()
 
-                friendActivity()
+                    friendActivity()
 
-                Divider()
+                    Divider()
 
-                settings()
+                    settings()
 
-                Spacer()
+                    Spacer()
 
-                logout()
+                    logout()
+                }
+                .padding()
             }
-            .padding()
         }
     }
 }
@@ -47,6 +56,9 @@ struct MenuView: View {
 struct MenuView_Previews: PreviewProvider {
     static var previews: some View {
         MenuView()
+            .environmentObject(AuthService())
+            .environmentObject(TimetableViewModel())
+            .environmentObject(NotificationsViewModel())
     }
 }
 
@@ -104,15 +116,21 @@ extension MenuView {
 
     private func profile() -> some View {
         HStack {
-            Image("profile")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 25, height: 25)
-                .padding()
+            NavigationLink {
+                Profile()
+            } label: {
+                HStack {
+                    Image("profile")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 25, height: 25)
+                        .padding()
 
-            Text("Profile")
-                .font(.custom("Poppins-Medium", size: 16))
-                .foregroundColor(Color.white)
+                    Text("Profile")
+                        .font(.custom("Poppins-Medium", size: 16))
+                        .foregroundColor(Color.white)
+                }
+            }
         }
     }
 
@@ -120,15 +138,20 @@ extension MenuView {
 
     private func friendCircle() -> some View {
         HStack {
-            Image("friend-circle")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 25, height: 25)
-                .padding()
+            NavigationLink {
+                FriendCircle()
+            } label: {
+                Image("friend-circle")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 25, height: 25)
+                    .padding()
 
-            Text("Friend Circle")
-                .font(.custom("Poppins-Medium", size: 16))
-                .foregroundColor(Color.white)
+                Text("Friend Circle")
+                    .font(.custom("Poppins-Medium", size: 16))
+                    .foregroundColor(Color.white)
+            }
+
         }
     }
 
@@ -136,31 +159,46 @@ extension MenuView {
 
     private func friendActivity() -> some View {
         HStack {
-            Image("friend-activity")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 25, height: 25)
-                .padding()
+            NavigationLink {
+                FriendActivity()
+            } label: {
+                HStack {
+                    Image("friend-activity")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 25, height: 25)
+                        .padding()
 
-            Text("Friend Activity")
-                .font(.custom("Poppins-Medium", size: 16))
-                .foregroundColor(Color.white)
+                    Text("Friend Activity")
+                        .font(.custom("Poppins-Medium", size: 16))
+                        .foregroundColor(Color.white)
+                }
+            }
+
         }
     }
 
     // MARK: Settings
-
+    
     private func settings() -> some View {
         HStack {
-            Image("settings")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 25, height: 25)
-                .padding()
+            NavigationLink {
+                SettingsView()
+                    .environmentObject(authVM)
+                    .environmentObject(ttVM)
+                    .environmentObject(notifVM)
+            } label: {
+                Image("settings")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 25, height: 25)
+                    .padding()
 
-            Text("Settings")
-                .font(.custom("Poppins-Medium", size: 16))
-                .foregroundColor(Color.white)
+                Text("Settings")
+                    .font(.custom("Poppins-Medium", size: 16))
+                    .foregroundColor(Color.white)
+            }
+
         }
     }
 

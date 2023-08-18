@@ -22,4 +22,5 @@ struct ColorTheme{
     let brightBlue = Color("brightBlue")
     let gray = Color("Gray")
     let secTextColor = Color("SecondaryTextColor")
+    let secondaryBlue = Color("SecondaryBlue")
 }

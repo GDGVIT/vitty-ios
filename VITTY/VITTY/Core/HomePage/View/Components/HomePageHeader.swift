@@ -10,10 +10,21 @@ import SwiftUI
 struct HomePageHeader: View {
     @Binding var goToSettings: Bool
     @Binding var showLogout: Bool
+    
+    @EnvironmentObject var viewModel: HomePageViewModel
+    
     var body: some View {
         HStack {
             Text("Schedule")
             Spacer()
+            
+            Circle()
+                .frame(width: 30, height: 30)
+                .onTapGesture {
+                    viewModel.sideMenu()
+                }
+            
+            /*
             Menu {
                 Button(action: {
                     goToSettings = true
@@ -40,9 +51,12 @@ struct HomePageHeader: View {
             } label: {
                 Image(systemName: "ellipsis")
             }
+            
+            */
         }
         .font(Font.custom("Poppins-Bold", size: 22))
         .foregroundColor(Color.white)
+        
     }
     // share sheet
     func shareSheet() {
@@ -59,6 +73,7 @@ struct HomePageHeader: View {
 struct HomePageHeader_Previews: PreviewProvider {
     static var previews: some View {
         HomePageHeader(goToSettings: .constant(false), showLogout: .constant(false))
+            .environmentObject(HomePageViewModel())
             .previewLayout(.sizeThatFits)
     }
 }

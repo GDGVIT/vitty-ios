@@ -8,8 +8,10 @@
 import SwiftUI
 
 struct Profile: View {
+    
     @StateObject private var vm = ProfileViewModel()
-
+    @Environment(\.presentationMode) var presentationMode
+    
     var body: some View {
         ZStack {
             // background
@@ -36,8 +38,12 @@ struct Profile: View {
                 Image(systemName: "xmark")
                     .foregroundColor(.white)
                     .padding(.trailing)
+                    .onTapGesture {
+                        presentationMode.wrappedValue.dismiss()
+                    }
             }
         }
+        .navigationBarBackButtonHidden(true)
     }
 }
 

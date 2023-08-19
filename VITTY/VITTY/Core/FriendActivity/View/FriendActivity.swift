@@ -11,6 +11,7 @@ import SwiftUI
 struct FriendActivity: View {
     
     @StateObject private var vm = FriendActivityViewModel()
+    @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
         ZStack{
@@ -39,8 +40,12 @@ struct FriendActivity: View {
                 Image(systemName: "xmark")
                     .foregroundColor(.white)
                     .padding(.trailing)
+                    .onTapGesture {
+                        presentationMode.wrappedValue.dismiss()
+                    }
             }
         }
+        .navigationBarBackButtonHidden(true)
         
     }
 }

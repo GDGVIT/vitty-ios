@@ -70,7 +70,7 @@ public struct SlideInView<Content: View, Container: View>: View {
                 container()
                     .onTapGesture {
                         if options.shouldDismissUponExternalTap{
-                            isActive.toggle()
+                            isActive = false
                         }
                     }
 

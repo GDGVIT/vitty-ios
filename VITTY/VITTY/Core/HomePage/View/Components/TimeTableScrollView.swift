@@ -25,7 +25,7 @@ struct TimeTableScrollView: View {
                                 RoundedRectangle(cornerRadius: 12)
                                     .fill(LinearGradient.secGrad)
                                     .opacity((tabSelected == Date.convertToMondayWeek()) && timetableViewModel.classesCompleted == ind ? 1 : 0)
-                                ClassCards(classInfo: selectedTT[ind], onlineMode: RemoteConf.onlineMode)
+                                ClassCards(classInfo: selectedTT[ind])
                                     .id(ind)
                             }
                             .padding(.bottom,2)

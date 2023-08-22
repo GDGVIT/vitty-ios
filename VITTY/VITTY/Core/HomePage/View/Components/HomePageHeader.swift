@@ -23,36 +23,6 @@ struct HomePageHeader: View {
                 .onTapGesture {
                     viewModel.sideMenu()
                 }
-            
-            /*
-            Menu {
-                Button(action: {
-                    goToSettings = true
-                }, label: {
-                    HStack {
-                        Image(systemName: "gear")
-                        Text("Settings")
-                    }
-                })
-                Button(action: shareSheet, label: {
-                    HStack {
-                        Image(systemName: "square.and.arrow.up")
-                        Text("Share")
-                    }
-                })
-                Button(action: {
-                    showLogout = true
-                }, label: {
-                    HStack {
-                        Image(systemName: "arrow.right.square")
-                        Text("Logout")
-                    }
-                })
-            } label: {
-                Image(systemName: "ellipsis")
-            }
-            
-            */
         }
         .font(Font.custom("Poppins-Bold", size: 22))
         .foregroundColor(Color.white)

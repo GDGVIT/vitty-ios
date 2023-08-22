@@ -14,7 +14,8 @@ struct TabBarDay: View {
         ZStack {
             if tabSelected == i {
                 RoundedRectangle(cornerRadius: 12)
-                    .fill(LinearGradient.secGrad)
+                    //.fill(LinearGradient.secGrad)
+                    .fill(Color.theme.secondary)
             }
             HStack {
                 Spacer()

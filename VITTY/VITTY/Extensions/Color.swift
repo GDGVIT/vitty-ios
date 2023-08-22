@@ -23,4 +23,5 @@ struct ColorTheme{
     let gray = Color("Gray")
     let secTextColor = Color("SecondaryTextColor")
     let secondaryBlue = Color("SecondaryBlue")
+    let selectedTabColor = Color("selectedTabColor")
 }

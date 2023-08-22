@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct MenuView: View {
-    
     @EnvironmentObject var authVM: AuthService
     @EnvironmentObject var ttVM: TimetableViewModel
     @EnvironmentObject var notifVM: NotificationsViewModel
-    
-    
+
+    @StateObject private var vm = MenuViewModel()
+
     var body: some View {
         NavigationView {
             ZStack(alignment: .leading) {
@@ -31,9 +31,8 @@ struct MenuView: View {
                         .padding(.top, 32)
 
                     updateYoutStatus()
-                    
-                    profile()
 
+                    profile()
 
                     friendCircle()
 
@@ -116,21 +115,20 @@ extension MenuView {
 
     private func profile() -> some View {
         HStack {
-            NavigationLink {
-                Profile()
-            } label: {
-                HStack {
-                    Image("profile")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 25, height: 25)
-                        .padding()
+            Image("profile")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 25, height: 25)
+                .padding()
 
-                    Text("Profile")
-                        .font(.custom("Poppins-Medium", size: 16))
-                        .foregroundColor(Color.white)
-                }
-            }
+            Text("Profile")
+                .font(.custom("Poppins-Medium", size: 16))
+                .foregroundColor(Color.white)
+        }.onTapGesture {
+            vm.showProfile.toggle()
+        }
+        .fullScreenCover(isPresented: $vm.showProfile) {
+            Profile()
         }
     }
 
@@ -138,20 +136,20 @@ extension MenuView {
 
     private func friendCircle() -> some View {
         HStack {
-            NavigationLink {
-                FriendCircle()
-            } label: {
-                Image("friend-circle")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 25, height: 25)
-                    .padding()
+            Image("friend-circle")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 25, height: 25)
+                .padding()
 
-                Text("Friend Circle")
-                    .font(.custom("Poppins-Medium", size: 16))
-                    .foregroundColor(Color.white)
-            }
-
+            Text("Friend Circle")
+                .font(.custom("Poppins-Medium", size: 16))
+                .foregroundColor(Color.white)
+        }.onTapGesture {
+            vm.showFriendCircle.toggle()
+        }
+        .fullScreenCover(isPresented: $vm.showFriendCircle) {
+            FriendCircle()
         }
     }
 
@@ -159,46 +157,47 @@ extension MenuView {
 
     private func friendActivity() -> some View {
         HStack {
-            NavigationLink {
-                FriendActivity()
-            } label: {
-                HStack {
-                    Image("friend-activity")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 25, height: 25)
-                        .padding()
-
-                    Text("Friend Activity")
-                        .font(.custom("Poppins-Medium", size: 16))
-                        .foregroundColor(Color.white)
-                }
-            }
-
-        }
-    }
-
-    // MARK: Settings
-    
-    private func settings() -> some View {
-        HStack {
-            NavigationLink {
-                SettingsView()
-                    .environmentObject(authVM)
-                    .environmentObject(ttVM)
-                    .environmentObject(notifVM)
-            } label: {
-                Image("settings")
+            HStack {
+                Image("friend-activity")
                     .resizable()
                     .scaledToFit()
                     .frame(width: 25, height: 25)
                     .padding()
 
-                Text("Settings")
+                Text("Friend Activity")
                     .font(.custom("Poppins-Medium", size: 16))
                     .foregroundColor(Color.white)
             }
+        }
+        .onTapGesture {
+            vm.showFriendActivity.toggle()
+        }
+        .fullScreenCover(isPresented: $vm.showFriendActivity) {
+            FriendActivity()
+        }
+    }
 
+    // MARK: Settings
+
+    private func settings() -> some View {
+        HStack {
+            Image("settings")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 25, height: 25)
+                .padding()
+
+            Text("Settings")
+                .font(.custom("Poppins-Medium", size: 16))
+                .foregroundColor(Color.white)
+        }.onTapGesture {
+            vm.showSettings.toggle()
+        }
+        .fullScreenCover(isPresented: $vm.showSettings) {
+            SettingsView()
+                .environmentObject(authVM)
+                .environmentObject(ttVM)
+                .environmentObject(notifVM)
         }
     }
 

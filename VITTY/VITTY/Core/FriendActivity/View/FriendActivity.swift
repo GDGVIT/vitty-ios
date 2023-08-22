@@ -9,53 +9,55 @@ import SwiftUI
 
 @available(iOS 15.0, *)
 struct FriendActivity: View {
-    
     @StateObject private var vm = FriendActivityViewModel()
     @Environment(\.presentationMode) var presentationMode
-    
+
     var body: some View {
-        ZStack{
-            //bg
-            Color.theme.darkBG
+        ZStack {
+            // bg
+            Color.theme.blueBG
                 .ignoresSafeArea()
-            
-            VStack{
-                ForEach(1...5, id: \.self){_ in
+
+            VStack {
+                toolBarItems()
+                
+                ForEach(1 ... 5, id: \.self) { _ in
                     FriendRow()
                 }
-                
+
                 Spacer()
             }
             .padding(.top)
-            
-            
-        }.toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Text("Friend Activity")
-                    .font(.custom("Poppins-Medium", size: 22))
-                    .fontWeight(.semibold)
-                    .foregroundColor(.white)
-            }
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Image(systemName: "xmark")
-                    .foregroundColor(.white)
-                    .padding(.trailing)
-                    .onTapGesture {
-                        presentationMode.wrappedValue.dismiss()
-                    }
-            }
         }
-        .navigationBarBackButtonHidden(true)
-        
     }
 }
 
 struct FriendActivity_Previews: PreviewProvider {
     static var previews: some View {
         if #available(iOS 16.0, *) {
-            NavigationStack{
+            NavigationStack {
                 FriendActivity()
             }
         }
+    }
+}
+
+
+extension FriendActivity{
+    private func toolBarItems() -> some View{
+        HStack {
+            Text("Friend Activity")
+                .font(.custom("Poppins-Medium", size: 22))
+                .fontWeight(.semibold)
+                .foregroundColor(.white)
+            Spacer()
+            Image(systemName: "xmark")
+                .foregroundColor(.white)
+                .padding(.trailing)
+                .onTapGesture {
+                    presentationMode.wrappedValue.dismiss()
+                }
+        }
+        .padding(.horizontal)
     }
 }

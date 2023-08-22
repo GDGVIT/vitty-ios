@@ -68,6 +68,11 @@ public struct SlideInView<Content: View, Container: View>: View {
         GeometryReader { proxy in
             ZStack {
                 container()
+                    .onTapGesture {
+                        if options.shouldDismissUponExternalTap{
+                            isActive.toggle()
+                        }
+                    }
 
                 ZStack {
                     if isActive {

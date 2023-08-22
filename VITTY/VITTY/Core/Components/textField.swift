@@ -13,7 +13,7 @@ struct textField: View {
     var height : CGFloat
     
     var body: some View {
-        VStack {
+        /*VStack {
             if #available(iOS 15.0, *) {
                 RoundedRectangle(cornerRadius: 20)
                     .foregroundColor(Color.theme.tfBlue)
@@ -61,6 +61,30 @@ struct textField: View {
                     
                 }
             }
+        }*/
+        VStack{
+            RoundedRectangle(cornerRadius: 20)
+                .foregroundColor(Color.theme.tfBlue)
+                .frame(maxWidth: .infinity)
+                .frame(height: height)
+                .padding()
+                .overlay(
+                    RoundedRectangle(cornerRadius: 20)
+                        .stroke(Color.theme.tfBlueLight, lineWidth: 1)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: height)
+                        .padding()
+                        .overlay(alignment: .leading) {
+                            TextField(text: $text) {
+                                Text(tfString)
+                                    .foregroundColor(Color.theme.tfBlueLight)
+                            }
+                            .padding(.horizontal, 42)
+                            .foregroundColor(.white)
+                            .foregroundColor(Color.theme.tfBlue)
+                        }
+                )
+
         }
     }
 }

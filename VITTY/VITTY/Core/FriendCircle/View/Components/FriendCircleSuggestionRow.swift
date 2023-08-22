@@ -1,14 +1,14 @@
 //
-//  FriendRow.swift
+//  FriendCircleRow.swift
 //  VITTY
 //
-//  Created by Prashanna Rajbhandari on 19/06/2023.
+//  Created by Prashanna Rajbhandari on 20/08/2023.
 //
 
 import SwiftUI
 
 @available(iOS 15.0, *)
-struct FriendRow: View {
+struct FriendCircleSuggestionRow: View {
     var body: some View {
         ZStack {
             Color.theme.blueBG
@@ -31,7 +31,7 @@ struct FriendRow: View {
                     .frame(width: 78, height: 32)
                     .foregroundColor(Color.theme.tfBlue)
                     .overlay {
-                        Text("View")
+                        Text("Add")
                             .font(.custom("Poppins-Medium", size: 14))
                             .foregroundColor(.white)
                     }
@@ -45,9 +45,9 @@ struct FriendRow: View {
     }
 }
 
-@available(iOS 15.0, *)
-struct FriendRow_Previews: PreviewProvider {
+
+struct FriendCircleSuggestionRow_Previews: PreviewProvider {
     static var previews: some View {
-        FriendRow()
+        FriendCircleSuggestionRow()
     }
 }

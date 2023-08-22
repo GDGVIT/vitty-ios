@@ -8,10 +8,9 @@
 import SwiftUI
 
 struct Profile: View {
-    
     @StateObject private var vm = ProfileViewModel()
     @Environment(\.presentationMode) var presentationMode
-    
+
     var body: some View {
         ZStack {
             // background
@@ -19,6 +18,9 @@ struct Profile: View {
                 .ignoresSafeArea()
 
             VStack(alignment: .leading) {
+                
+                toolBarItems()
+                
                 userProfileImage()
 
                 nameInputs()
@@ -26,24 +28,7 @@ struct Profile: View {
                 button()
             }
             .padding()
-
-        }.toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Text("Profile")
-                    .font(.custom("Poppins-Medium", size: 22))
-                    .fontWeight(.semibold)
-                    .foregroundColor(.white)
-            }
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Image(systemName: "xmark")
-                    .foregroundColor(.white)
-                    .padding(.trailing)
-                    .onTapGesture {
-                        presentationMode.wrappedValue.dismiss()
-                    }
-            }
         }
-        .navigationBarBackButtonHidden(true)
     }
 }
 
@@ -62,6 +47,23 @@ struct Profile_Previews: PreviewProvider {
 }
 
 extension Profile {
+    private func toolBarItems() -> some View {
+        HStack {
+            Text("Profile")
+                .font(.custom("Poppins-Medium", size: 22))
+                .fontWeight(.semibold)
+                .foregroundColor(.white)
+            Spacer()
+            Image(systemName: "xmark")
+                .foregroundColor(.white)
+                .padding(.trailing)
+                .onTapGesture {
+                    presentationMode.wrappedValue.dismiss()
+                }
+        }
+        .padding(.horizontal)
+    }
+
     private func userProfileImage() -> some View {
         RoundedRectangle(cornerRadius: 10)
             .frame(height: 315)

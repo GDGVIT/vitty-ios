@@ -119,6 +119,7 @@
 		5D44FFFC2A2A6ECE0005A1E4 /* StatusRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D44FFFB2A2A6ECE0005A1E4 /* StatusRowView.swift */; };
 		5D44FFFF2A2A76CE0005A1E4 /* SetStatusViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D44FFFE2A2A76CE0005A1E4 /* SetStatusViewModel.swift */; };
 		5D5EAFD92A950C4300F6C16C /* MenuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D5EAFD82A950C4300F6C16C /* MenuViewModel.swift */; };
+		5D5EAFDC2A951DD400F6C16C /* ToggleSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D5EAFDB2A951DD400F6C16C /* ToggleSwitch.swift */; };
 		5D629B3C2A3FA612000B8E7A /* FriendActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D629B3B2A3FA612000B8E7A /* FriendActivity.swift */; };
 		5D629B402A3FA645000B8E7A /* FriendActivityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D629B3F2A3FA645000B8E7A /* FriendActivityViewModel.swift */; };
 		5D629B422A3FA6A8000B8E7A /* FriendRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D629B412A3FA6A8000B8E7A /* FriendRow.swift */; };
@@ -239,6 +240,7 @@
 		5D44FFFB2A2A6ECE0005A1E4 /* StatusRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusRowView.swift; sourceTree = "<group>"; };
 		5D44FFFE2A2A76CE0005A1E4 /* SetStatusViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetStatusViewModel.swift; sourceTree = "<group>"; };
 		5D5EAFD82A950C4300F6C16C /* MenuViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewModel.swift; sourceTree = "<group>"; };
+		5D5EAFDB2A951DD400F6C16C /* ToggleSwitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleSwitch.swift; sourceTree = "<group>"; };
 		5D629B3B2A3FA612000B8E7A /* FriendActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendActivity.swift; sourceTree = "<group>"; };
 		5D629B3F2A3FA645000B8E7A /* FriendActivityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendActivityViewModel.swift; sourceTree = "<group>"; };
 		5D629B412A3FA6A8000B8E7A /* FriendRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRow.swift; sourceTree = "<group>"; };
@@ -808,6 +810,7 @@
 			children = (
 				5DE8C00A2A8F2AF900AE3995 /* SlideInView.swift */,
 				5DB03A342A85555E00DB7E60 /* MenuView.swift */,
+				5D5EAFDB2A951DD400F6C16C /* ToggleSwitch.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1125,6 +1128,7 @@
 				31BAB531279D318F008E20BB /* NotificationsSettingsModel.swift in Sources */,
 				31128D072772FA120084C9EA /* Colors.swift in Sources */,
 				314A409127383BEC0058082F /* ContentView.swift in Sources */,
+				5D5EAFDC2A951DD400F6C16C /* ToggleSwitch.swift in Sources */,
 				31D2F80227BAD1B7000C0308 /* RemoteConfigManager.swift in Sources */,
 				31128D1627730C460084C9EA /* CustomTextField.swift in Sources */,
 				313E6AFD27BEAED9006F5944 /* ClassCardViewModel.swift in Sources */,

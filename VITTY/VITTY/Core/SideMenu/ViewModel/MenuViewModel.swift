@@ -12,10 +12,11 @@ struct showMenuItemModel: Identifiable{
     
 }
 
-
 class MenuViewModel : ObservableObject{
     @Published var showProfile : Bool = false
     @Published var showFriendCircle : Bool = false
     @Published var showFriendActivity : Bool = false
     @Published var showSettings : Bool = false
+    
+    @Published var isGhostModeOn : Bool = false
 }

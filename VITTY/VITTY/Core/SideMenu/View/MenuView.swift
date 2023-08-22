@@ -23,7 +23,6 @@ struct MenuView: View {
 
                 // Foreground
                 VStack(alignment: .leading) {
-                    // TODO: Fix Assets
 
                     userDetails()
 
@@ -32,21 +31,28 @@ struct MenuView: View {
 
                     updateYoutStatus()
 
-                    profile()
+                    Group {
+                        profile()
 
-                    friendCircle()
+                        friendCircle()
 
-                    friendActivity()
+                        friendActivity()
 
-                    Divider()
+                        Divider()
+                    }
 
                     settings()
 
+                    Group {
+                        ghostMode()
+                    }
+                    .padding(.leading)
+
                     Spacer()
 
-                    logout()
+                    logoutBtn()
                 }
-                .padding()
+                .padding(.horizontal)
             }
         }
     }
@@ -201,17 +207,35 @@ extension MenuView {
         }
     }
 
+    // MARK: Ghost Mode
+
+    private func ghostMode() -> some View {
+        VStack(alignment: .leading) {
+            Text("If you want your friends will not be \nable to view your activity. use ")
+                .font(.custom("Poppins", size: 14))
+                .foregroundColor(Color.theme.primary)
+                +
+                Text("ghost \nmode")
+                .font(.custom("Poppins-Bold", size: 14))
+                .foregroundColor(Color.theme.primary)
+
+            ToggleView(isOn: $vm.isGhostModeOn) {
+                Color.theme.secondaryBlue
+            }.frame(width: 60, height: 30)
+        }
+    }
+
     // MARK: Logout
 
-    private func logout() -> some View {
+    private func logoutBtn() -> some View {
         HStack {
             Image("logout")
                 .resizable()
                 .scaledToFit()
                 .frame(width: 25, height: 25)
-                .padding()
+                .padding(.leading)
 
-            Text("Logout")
+            Text("log out")
                 .font(.custom("Poppins-Medium", size: 16))
                 .foregroundColor(Color.white)
         }

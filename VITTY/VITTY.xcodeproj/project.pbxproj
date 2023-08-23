@@ -97,7 +97,6 @@
 		31A3BF4127D09AF300B6BB97 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A3BF3F27D09AF300B6BB97 /* Date+Extension.swift */; };
 		31A3BF4327D0BAE800B6BB97 /* WidgetMClassCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A3BF4227D0BAE800B6BB97 /* WidgetMClassCard.swift */; };
 		31A3BF4427D0BAE800B6BB97 /* WidgetMClassCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A3BF4227D0BAE800B6BB97 /* WidgetMClassCard.swift */; };
-		31A3BF4527D0ED0000B6BB97 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = AFEFCB7527C9065B007B2029 /* GoogleService-Info.plist */; };
 		31BAB528279AD8CA008E20BB /* SettingsHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31BAB527279AD8CA008E20BB /* SettingsHeader.swift */; };
 		31BAB52A279AE34B008E20BB /* NotificationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31BAB529279AE34B008E20BB /* NotificationsView.swift */; };
 		31BAB52D279AE398008E20BB /* NotificationsViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31BAB52C279AE398008E20BB /* NotificationsViewHeader.swift */; };
@@ -244,10 +243,10 @@
 		5D629B3B2A3FA612000B8E7A /* FriendActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendActivity.swift; sourceTree = "<group>"; };
 		5D629B3F2A3FA645000B8E7A /* FriendActivityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendActivityViewModel.swift; sourceTree = "<group>"; };
 		5D629B412A3FA6A8000B8E7A /* FriendRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRow.swift; sourceTree = "<group>"; };
+		5D95374A2A96821A00EA1D4D /* Confidential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Confidential.swift; sourceTree = "<group>"; };
 		5DB03A342A85555E00DB7E60 /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
 		5DB9DDF22A9251F60027C893 /* FriendCircleSuggestionRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendCircleSuggestionRow.swift; sourceTree = "<group>"; };
 		5DD41A882A0F84FA00B32C49 /* WidgetHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetHeader.swift; sourceTree = "<group>"; };
-		5DE173CB298D7E1300B8A2D3 /* Confidential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Confidential.swift; sourceTree = "<group>"; };
 		5DE8C0082A8F29C400AE3995 /* HomePageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePageViewModel.swift; sourceTree = "<group>"; };
 		5DE8C00A2A8F2AF900AE3995 /* SlideInView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlideInView.swift; sourceTree = "<group>"; };
 		5DE8C00F2A8FC7CE00AE3995 /* FriendCircle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendCircle.swift; sourceTree = "<group>"; };
@@ -258,8 +257,6 @@
 		5DF547DF2A94531900A0B09C /* FriendsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsView.swift; sourceTree = "<group>"; };
 		AFEFCB6B27C90042007B2029 /* VITTYRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = VITTYRelease.entitlements; sourceTree = "<group>"; };
 		AFEFCB6C27C90233007B2029 /* VITTY.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = VITTY.entitlements; sourceTree = "<group>"; };
-		AFEFCB7527C9065B007B2029 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		AFEFCB7727C9065B007B2029 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -392,7 +389,7 @@
 		314A408227383BEC0058082F = {
 			isa = PBXGroup;
 			children = (
-				5DE173CB298D7E1300B8A2D3 /* Confidential.swift */,
+				5D95374A2A96821A00EA1D4D /* Confidential.swift */,
 				314A408E27383BEC0058082F /* VITTYApp.swift */,
 				314A409027383BEC0058082F /* ContentView.swift */,
 				314A409227383BEE0058082F /* Assets.xcassets */,
@@ -417,7 +414,6 @@
 			isa = PBXGroup;
 			children = (
 				5D3D92572A1818080013803E /* Extensions */,
-				AFEFCB7327C9065B007B2029 /* Firebase */,
 				5D3D924F2A1816980013803E /* Core */,
 				AFEFCB6C27C90233007B2029 /* VITTY.entitlements */,
 				AFEFCB6B27C90042007B2029 /* VITTYRelease.entitlements */,
@@ -861,31 +857,6 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		AFEFCB7327C9065B007B2029 /* Firebase */ = {
-			isa = PBXGroup;
-			children = (
-				AFEFCB7427C9065B007B2029 /* Prod */,
-				AFEFCB7627C9065B007B2029 /* Dev */,
-			);
-			path = Firebase;
-			sourceTree = "<group>";
-		};
-		AFEFCB7427C9065B007B2029 /* Prod */ = {
-			isa = PBXGroup;
-			children = (
-				AFEFCB7527C9065B007B2029 /* GoogleService-Info.plist */,
-			);
-			path = Prod;
-			sourceTree = "<group>";
-		};
-		AFEFCB7627C9065B007B2029 /* Dev */ = {
-			isa = PBXGroup;
-			children = (
-				AFEFCB7727C9065B007B2029 /* GoogleService-Info.plist */,
-			);
-			path = Dev;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -996,7 +967,6 @@
 				3105872227A3ECBD00C2FC41 /* Assets.xcassets in Resources */,
 				3164C46127CBB0F800D6B53F /* Poppins-MediumItalic.ttf in Resources */,
 				3164C46527CBB0F800D6B53F /* Poppins-Medium.ttf in Resources */,
-				31A3BF4527D0ED0000B6BB97 /* GoogleService-Info.plist in Resources */,
 				3164C46227CBB0F800D6B53F /* Poppins-SemiBoldItalic.ttf in Resources */,
 				3164C46427CBB0F800D6B53F /* Poppins-Regular.ttf in Resources */,
 			);
@@ -1023,7 +993,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		310EAC3E27C62921003EBFAA /* Setup Firebase Environment GoogleService-Info.plist */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 8;
 			files = (
 			);
 			inputFileListPaths = (
@@ -1035,7 +1005,7 @@
 			);
 			outputPaths = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
+			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
 			shellScript = "# Name of the resource we're selectively copying\nGOOGLESERVICE_INFO_PLIST=GoogleService-Info.plist\n\n# Get references to dev and prod versions of the GoogleService-Info.plist\n# NOTE: These should only live on the file system and should NOT be part of the target (since we'll be adding them to the target manually)\nGOOGLESERVICE_INFO_DEV=${PROJECT_DIR}/${TARGET_NAME}/Firebase/Dev/${GOOGLESERVICE_INFO_PLIST}\nGOOGLESERVICE_INFO_PROD=${PROJECT_DIR}/${TARGET_NAME}/Firebase/Prod/${GOOGLESERVICE_INFO_PLIST}\n\n# Make sure the dev version of GoogleService-Info.plist exists\necho \"Looking for ${GOOGLESERVICE_INFO_PLIST} in ${GOOGLESERVICE_INFO_DEV}\"\nif [ ! -f $GOOGLESERVICE_INFO_DEV ]\nthen\n    echo \"No Development GoogleService-Info.plist found. Please ensure it's in the proper directory.\"\n    exit 1\nfi\n\n# Make sure the prod version of GoogleService-Info.plist exists\necho \"Looking for ${GOOGLESERVICE_INFO_PLIST} in ${GOOGLESERVICE_INFO_PROD}\"\nif [ ! -f $GOOGLESERVICE_INFO_PROD ]\nthen\n    echo \"No Production GoogleService-Info.plist found. Please ensure it's in the proper directory.\"\n    exit 1\nfi\n\n# Get a reference to the destination location for the GoogleService-Info.plist\nPLIST_DESTINATION=${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app\necho \"Will copy ${GOOGLESERVICE_INFO_PLIST} to final destination: ${PLIST_DESTINATION}\"\n\n# Copy over the prod GoogleService-Info.plist for Release builds\nif [ \"${CONFIGURATION}\" == \"Release\" ]\nthen\n    echo \"Using ${GOOGLESERVICE_INFO_PROD}\"\n    cp \"${GOOGLESERVICE_INFO_PROD}\" \"${PLIST_DESTINATION}\"\nelse\n    echo \"Using ${GOOGLESERVICE_INFO_DEV}\"\n    cp \"${GOOGLESERVICE_INFO_DEV}\" \"${PLIST_DESTINATION}\"\nfi\n";
 		};

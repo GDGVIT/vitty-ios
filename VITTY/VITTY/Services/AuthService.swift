@@ -5,13 +5,13 @@
 //  Created by Ananya George on 1/3/22.
 //
 
-import Combine
 import AuthenticationServices
+import Combine
+import CryptoKit
 import Firebase
 import FirebaseAuth
 import GoogleSignIn
 import SwiftUI
-import CryptoKit
 
 enum LoginOption {
     case googleSignin
@@ -19,86 +19,89 @@ enum LoginOption {
 }
 
 class AuthService: NSObject, ObservableObject {
-    
     @Published var loggedInUser: User?
     @Published var isAuthenticating: Bool = false
     @Published var error: NSError?
     @Published var onboardingComplete: Bool = false
-    
+
 //    static let shared = AuthService()
-    
-    private let auth = Auth.auth()
+
+    let auth = Auth.auth()
     fileprivate var currentNonce: String?
-    
+
     // MARK: UserDefault keys
+
     static let providerIdKey = "providerId"
     static let usernameKey = "userName"
     static let useremailKey = "userEmail"
     static let instructionsCompleteKey = "instructionsComplete"
     static let notifsSetupKey = "notifsSetupKey"
-    
-    override init(){
+
+    override init() {
         do {
-            try Auth.auth().useUserAccessGroup(AppConstants.VITTYappgroup)
+            //try Auth.auth().useUserAccessGroup(AppConstants.VITTYappgroup)
+            try Auth.auth().useUserAccessGroup("122580500.com.gdscvit.vittyios")
+            
         } catch let error as NSError {
-          print("Error changing user access group: %@", error)
+            print("Error changing user access group: %@", error.localizedDescription)
         }
         loggedInUser = auth.currentUser
         super.init()
-        
+
         auth.addStateDidChangeListener(authStateChanged)
     }
     
-    private func authStateChanged(with auth: Auth, user: User?) {
-        guard user != self.loggedInUser else { return }
-        self.loggedInUser = user
-    }
     
+
+    private func authStateChanged(with auth: Auth, user: User?) {
+        guard user != loggedInUser else { return }
+        loggedInUser = user
+    }
+
     func login(with loginOption: LoginOption) {
-        self.isAuthenticating = true
-        self.error = nil
-        
+        isAuthenticating = true
+        error = nil
+
         switch loginOption {
         case .googleSignin:
             signInWithGoogle()
         case .appleSignin:
-            //signInWithApple()
+            // signInWithApple()
             print("apple")
         }
     }
-    
+
     private func signInWithGoogle() {
         guard let clientID = FirebaseApp.app()?.options.clientID else { return }
-        
+
         // Create Google Sign In configuration object.
         let config = GIDConfiguration(clientID: clientID)
-        
+
         guard let screen = UIApplication.shared.connectedScenes.first as? UIWindowScene else { return }
         guard let window = screen.windows.first?.rootViewController else { return }
         // Start the sign in flow!
         GIDSignIn.sharedInstance.signIn(with: config, presenting: window) { [unowned self] user, error in
-            
+
             if let error = error {
                 print("Error: Couldn't authenticate with Google - \(error.localizedDescription)")
                 return
             }
-            
+
             guard
                 let authentication = user?.authentication,
                 let idToken = authentication.idToken
             else {
                 return
             }
-            
+
             let credential = GoogleAuthProvider.credential(withIDToken: idToken,
                                                            accessToken: authentication.accessToken)
-           print("Google credential created. Proceeding to sign in with Firebase")
+            print("Google credential created. Proceeding to sign in with Firebase")
             Auth.auth().signIn(with: credential, completion: authResultCompletionHandler)
         }
     }
-    
-    
-    private func authResultCompletionHandler(auth: AuthDataResult?, error: Error?){
+
+    private func authResultCompletionHandler(auth: AuthDataResult?, error: Error?) {
         DispatchQueue.main.async {
             self.isAuthenticating = false
             if let user = auth?.user {
@@ -106,8 +109,8 @@ class AuthService: NSObject, ObservableObject {
                 UserDefaults.standard.set(user.providerData[0].providerID, forKey: AuthService.providerIdKey)
                 UserDefaults.standard.set(user.displayName, forKey: AuthService.usernameKey)
                 UserDefaults.standard.set(user.email, forKey: AuthService.useremailKey)
-                UserDefaults.standard.set(false, forKey:AuthService.instructionsCompleteKey)
-                UserDefaults.standard.set(false, forKey:AuthService.notifsSetupKey)
+                UserDefaults.standard.set(false, forKey: AuthService.instructionsCompleteKey)
+                UserDefaults.standard.set(false, forKey: AuthService.notifsSetupKey)
                 print("signed in!")
                 print("Name: \(UserDefaults.standard.string(forKey: AuthService.usernameKey) ?? "uname")")
                 print("ProviderId: \(UserDefaults.standard.string(forKey: AuthService.providerIdKey) ?? "provider")")
@@ -115,20 +118,18 @@ class AuthService: NSObject, ObservableObject {
             } else if let error = error {
                 self.error = error as NSError
             }
-            
         }
     }
-    
+
     func signOut() {
         do {
             try auth.signOut()
-            //TODO: create method to reset all UserDefaults
+            // TODO: create method to reset all UserDefaults
             UserDefaults.resetDefaults()
         } catch let signOutError as NSError {
             print("Error signing out: \(signOutError)")
         }
     }
-    
 }
 
 extension AuthService: ASAuthorizationControllerDelegate {
@@ -139,21 +140,21 @@ extension AuthService: ASAuthorizationControllerDelegate {
         let request = provider.createRequest()
         request.requestedScopes = [.email, .fullName]
         request.nonce = sha256(nonce)
-        
+
         let authController = ASAuthorizationController(authorizationRequests: [request])
         authController.delegate = self
         authController.performRequests()
     }
-    
+
     func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
         print("Error signing in with Apple: \(error.localizedDescription)")
-        self.isAuthenticating = false
+        isAuthenticating = false
         self.error = error as NSError
     }
-    
+
     func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
         print("Apple Sign in")
-        
+
         if let appleIdCred = authorization.credential as? ASAuthorizationAppleIDCredential {
             guard let nonce = currentNonce else {
                 fatalError("Invalid state: A login callback was received but no login request was sent")
@@ -174,28 +175,26 @@ extension AuthService: ASAuthorizationControllerDelegate {
                 print("Unable to serialize Authorization Code")
                 return
             }
-            
+
             print(authCodeString)
-            
+
             // Initializing Firebase credential
             let credential = OAuthProvider.credential(withProviderID: "apple.com", idToken: idTokenString, rawNonce: nonce)
-            
+
             // Sign in with Firebase
             Auth.auth().signIn(with: credential, completion: authResultCompletionHandler)
-        }
-        else {
+        } else {
             print("Error during authorization")
         }
-        
     }
-    
+
     private func randomNonceString(length: Int = 32) -> String {
         precondition(length > 0)
         let charset: Array<Character> =
-        Array("0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._")
+            Array("0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._")
         var result = ""
         var remainingLength = length
-        
+
         while remainingLength > 0 {
             let randoms: [UInt8] = (0 ..< 16).map { _ in
                 var random: UInt8 = 0
@@ -205,33 +204,31 @@ extension AuthService: ASAuthorizationControllerDelegate {
                 }
                 return random
             }
-            
+
             randoms.forEach { random in
                 if length == 0 {
                     return
                 }
-                
+
                 if random < charset.count {
                     result.append(charset[Int(random)])
                     remainingLength -= 1
                 }
             }
         }
-        
+
         return result
     }
-    
-    private func sha256(_ input: String)-> String {
+
+    private func sha256(_ input: String) -> String {
         let inputData = Data(input.utf8)
         let hashedData = SHA256.hash(data: inputData)
-        let hashString = hashedData.compactMap{
-            return String(format: "%02x",$0)
+        let hashString = hashedData.compactMap {
+            String(format: "%02x", $0)
         }.joined()
         return hashString
     }
-    
 }
-
 
 extension UserDefaults {
     static func resetDefaults() {

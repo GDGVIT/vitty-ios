@@ -112,9 +112,12 @@ class AuthService: NSObject, ObservableObject {
                 UserDefaults.standard.set(false, forKey: AuthService.instructionsCompleteKey)
                 UserDefaults.standard.set(false, forKey: AuthService.notifsSetupKey)
                 print("signed in!")
+                print("uid: ", user.uid)
                 print("Name: \(UserDefaults.standard.string(forKey: AuthService.usernameKey) ?? "uname")")
                 print("ProviderId: \(UserDefaults.standard.string(forKey: AuthService.providerIdKey) ?? "provider")")
                 print("Email: \(UserDefaults.standard.string(forKey: AuthService.useremailKey) ?? "email")")
+                
+                
             } else if let error = error {
                 self.error = error as NSError
             }

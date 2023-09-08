@@ -20,6 +20,8 @@ struct UserName: View {
             VStack(alignment: .leading) {
                 headerText()
                 textField(text: $vm.usernameTF, tfString: "write something like \"Aryan13\"", height: 75)
+                
+                textField(text: $vm.regNoTF, tfString: "Registration Number", height: 75)
                 Spacer()
                 continueButton()
             }
@@ -57,7 +59,7 @@ extension UserName {
                 .font(.custom("Poppins-Medium", size: 32))
                 .fontWeight(.semibold)
                 .foregroundColor(.white)
-            Text("Write a  username? We'll use it to \npersonalise your experience.")
+            Text("Enter username and your registration number below. Your username will help your friends find you!")
                 .font(.custom("Poppins-Medium", size: 16))
                 .foregroundColor(Color.theme.primary)
         }.padding(.leading)

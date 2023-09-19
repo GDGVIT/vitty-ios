@@ -24,6 +24,8 @@ class AuthService: NSObject, ObservableObject {
     @Published var error: NSError?
     @Published var onboardingComplete: Bool = false
 
+    @Published var myUser: AuthResponse?
+
 //    static let shared = AuthService()
 
     let auth = Auth.auth()
@@ -97,16 +99,20 @@ class AuthService: NSObject, ObservableObject {
             let credential = GoogleAuthProvider.credential(withIDToken: idToken,
                                                            accessToken: authentication.accessToken)
 
-
-            API.shared.signInUser(with: AuthReqBody(uuid: "x1ggyeMYVQaG0oOmz8jmTRuiuhw1", reg_no: "21TES3760", username: "PrashannaTest")) { result in
+            API.shared.signInUser(with: AuthReqBody(uuid: "x1ggyeMYVQaG0oOmz8jmTRuiuhw1", reg_no: "21TES3760", username: "PrashannaTest")) { [weak self] result in
                 switch result {
-                case let .success(respose):
-                    print(respose)
+                case let .success(response):
+                    // print(respose)
+                    DispatchQueue.main.async {
+                        self?.myUser = response
+                        print("token from the server")
+                        print(self?.myUser?.token ?? "no token")
+                    }
                 case let .failure(error):
                     print(error)
                 }
             }
-            
+            API.shared.checkUsername(with: "PrashannaTest")
             print("Google credential created. Proceeding to sign in with Firebase")
             Auth.auth().signIn(with: credential, completion: authResultCompletionHandler)
         }

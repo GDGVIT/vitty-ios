@@ -4,8 +4,7 @@
 <dict>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>group.com.gdscvit.vittyios</string>
-		<string>group.com.rileytestut.AltStore.FYJ559CK7D</string>
+		<string>group.com.gdscvit.vittyios.vitty-widget</string>
 	</array>
 </dict>
 </plist>

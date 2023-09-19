@@ -11,6 +11,13 @@ import Foundation
 class API {
     static let shared = API()
 
+}
+
+//MARK: Auth
+extension API{
+    
+
+    //MARK: Sign in user
     func signInUser(with authReqBody: AuthReqBody, completion: @escaping (Result<AuthResponse, Error>) -> Void) {
         guard let url = URL(string: "\(APIConstants.base_url)/api/v2/auth/firebase/") else {
             completion(.failure(CustomError.invalidUrl))
@@ -58,5 +65,40 @@ class API {
         }
 
         task.resume()
+    }
+    
+    //MARK: Check user name
+    func checkUsername(with username: String){
+        guard let url = URL(string: "\(APIConstants.base_url)/api/v2/auth/check-username") else {
+            return
+        }
+        var request = URLRequest(url: url)
+        
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        do{
+            let encoder = JSONEncoder()
+            request.httpBody = try encoder.encode(username)
+        }catch let error{
+            print("error encoding username ", error.localizedDescription)
+            return
+        }
+        
+        let task = URLSession.shared.dataTask(with: request) { data, _, error in
+            guard let data = data, error == nil else {
+                return
+            }
+            
+            do{
+                let result = try JSONDecoder().decode(UsernameResponse.self, from: data)
+                print("POST request response from url: \(url)")
+                print(result)
+                print("END of POST request response")
+            }catch{
+                print(error.localizedDescription)
+            }
+        }
+        
     }
 }

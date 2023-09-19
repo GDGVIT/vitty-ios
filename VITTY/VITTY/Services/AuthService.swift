@@ -39,9 +39,9 @@ class AuthService: NSObject, ObservableObject {
 
     override init() {
         do {
-            //try Auth.auth().useUserAccessGroup(AppConstants.VITTYappgroup)
+            // try Auth.auth().useUserAccessGroup(AppConstants.VITTYappgroup)
             try Auth.auth().useUserAccessGroup("122580500.com.gdscvit.vittyios")
-            
+
         } catch let error as NSError {
             print("Error changing user access group: %@", error.localizedDescription)
         }
@@ -50,8 +50,6 @@ class AuthService: NSObject, ObservableObject {
 
         auth.addStateDidChangeListener(authStateChanged)
     }
-    
-    
 
     private func authStateChanged(with auth: Auth, user: User?) {
         guard user != loggedInUser else { return }
@@ -70,6 +68,8 @@ class AuthService: NSObject, ObservableObject {
             print("apple")
         }
     }
+
+    // MARK: Google Sign in
 
     private func signInWithGoogle() {
         guard let clientID = FirebaseApp.app()?.options.clientID else { return }
@@ -96,6 +96,17 @@ class AuthService: NSObject, ObservableObject {
 
             let credential = GoogleAuthProvider.credential(withIDToken: idToken,
                                                            accessToken: authentication.accessToken)
+
+
+            API.shared.signInUser(with: AuthReqBody(uuid: "x1ggyeMYVQaG0oOmz8jmTRuiuhw1", reg_no: "21TES3760", username: "PrashannaTest")) { result in
+                switch result {
+                case let .success(respose):
+                    print(respose)
+                case let .failure(error):
+                    print(error)
+                }
+            }
+            
             print("Google credential created. Proceeding to sign in with Firebase")
             Auth.auth().signIn(with: credential, completion: authResultCompletionHandler)
         }
@@ -116,8 +127,7 @@ class AuthService: NSObject, ObservableObject {
                 print("Name: \(UserDefaults.standard.string(forKey: AuthService.usernameKey) ?? "uname")")
                 print("ProviderId: \(UserDefaults.standard.string(forKey: AuthService.providerIdKey) ?? "provider")")
                 print("Email: \(UserDefaults.standard.string(forKey: AuthService.useremailKey) ?? "email")")
-                
-                
+
             } else if let error = error {
                 self.error = error as NSError
             }
@@ -134,6 +144,8 @@ class AuthService: NSObject, ObservableObject {
         }
     }
 }
+
+// MARK: Apple Sign in
 
 extension AuthService: ASAuthorizationControllerDelegate {
     private func signInWithApple() {

@@ -29,6 +29,9 @@ struct InstructionsView: View {
                 Spacer()
 
                 doneButton()
+                    .onTapGesture {
+                        //API.shared.signInUser()
+                    }
 
                 NavigationLink(destination: HomePage().navigationTitle("").navigationBarHidden(true).environmentObject(ttVM).environmentObject(authState).environmentObject(notifVM), isActive: $goToHomeScreen) {
                     EmptyView()

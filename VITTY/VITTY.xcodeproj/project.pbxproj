@@ -123,8 +123,13 @@
 		5D629B3C2A3FA612000B8E7A /* FriendActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D629B3B2A3FA612000B8E7A /* FriendActivity.swift */; };
 		5D629B402A3FA645000B8E7A /* FriendActivityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D629B3F2A3FA645000B8E7A /* FriendActivityViewModel.swift */; };
 		5D629B422A3FA6A8000B8E7A /* FriendRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D629B412A3FA6A8000B8E7A /* FriendRow.swift */; };
+		5D72EDD82AB98D6D00704BF5 /* URLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D72EDD72AB98D6D00704BF5 /* URLSession.swift */; };
+		5D72EDDB2AB9906E00704BF5 /* AuthResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D72EDDA2AB9906E00704BF5 /* AuthResponse.swift */; };
+		5D72EDDD2AB990BB00704BF5 /* AuthReqBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D72EDDC2AB990BB00704BF5 /* AuthReqBody.swift */; };
+		5D7F04F72AAB9E9900ECED15 /* APIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7F04F62AAB9E9900ECED15 /* APIConstants.swift */; };
 		5DB03A352A85555E00DB7E60 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB03A342A85555E00DB7E60 /* MenuView.swift */; };
 		5DB9DDF32A9251F60027C893 /* FriendCircleSuggestionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB9DDF22A9251F60027C893 /* FriendCircleSuggestionRow.swift */; };
+		5DC03D452AB4585E00FE1725 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC03D442AB4585E00FE1725 /* API.swift */; };
 		5DD41A892A0F84FA00B32C49 /* WidgetHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD41A882A0F84FA00B32C49 /* WidgetHeader.swift */; };
 		5DD41A8A2A0F84FA00B32C49 /* WidgetHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD41A882A0F84FA00B32C49 /* WidgetHeader.swift */; };
 		5DE8C0092A8F29C400AE3995 /* HomePageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE8C0082A8F29C400AE3995 /* HomePageViewModel.swift */; };
@@ -245,9 +250,14 @@
 		5D629B3B2A3FA612000B8E7A /* FriendActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendActivity.swift; sourceTree = "<group>"; };
 		5D629B3F2A3FA645000B8E7A /* FriendActivityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendActivityViewModel.swift; sourceTree = "<group>"; };
 		5D629B412A3FA6A8000B8E7A /* FriendRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRow.swift; sourceTree = "<group>"; };
+		5D72EDD72AB98D6D00704BF5 /* URLSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSession.swift; sourceTree = "<group>"; };
+		5D72EDDA2AB9906E00704BF5 /* AuthResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthResponse.swift; sourceTree = "<group>"; };
+		5D72EDDC2AB990BB00704BF5 /* AuthReqBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthReqBody.swift; sourceTree = "<group>"; };
+		5D7F04F62AAB9E9900ECED15 /* APIConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIConstants.swift; sourceTree = "<group>"; };
 		5D95374A2A96821A00EA1D4D /* Confidential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Confidential.swift; sourceTree = "<group>"; };
 		5DB03A342A85555E00DB7E60 /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
 		5DB9DDF22A9251F60027C893 /* FriendCircleSuggestionRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendCircleSuggestionRow.swift; sourceTree = "<group>"; };
+		5DC03D442AB4585E00FE1725 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		5DD41A882A0F84FA00B32C49 /* WidgetHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetHeader.swift; sourceTree = "<group>"; };
 		5DE8C0082A8F29C400AE3995 /* HomePageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePageViewModel.swift; sourceTree = "<group>"; };
 		5DE8C00A2A8F2AF900AE3995 /* SlideInView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlideInView.swift; sourceTree = "<group>"; };
@@ -322,6 +332,7 @@
 				31096380278227730009A29C /* AuthService.swift */,
 				31BAB532279D3F48008E20BB /* NotificationsManager.swift */,
 				31D2F80127BAD1B7000C0308 /* RemoteConfigManager.swift */,
+				5DC03D442AB4585E00FE1725 /* API.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -371,10 +382,12 @@
 		31128D052772FA030084C9EA /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				5D3D92582A1818150013803E /* Color.swift */,
 				31128D062772FA120084C9EA /* Colors.swift */,
 				31900F0927759DB60014A58D /* Gradient.swift */,
 				317715DD279F1431009A532E /* IndexedCollection.swift */,
 				31A3BF3F27D09AF300B6BB97 /* Date+Extension.swift */,
+				5D72EDD72AB98D6D00704BF5 /* URLSession.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -384,6 +397,7 @@
 			children = (
 				31128D0B277300470084C9EA /* StringConstants.swift */,
 				3109639E27824F6F0009A29C /* AppStorageConstants.swift */,
+				5D7F04F62AAB9E9900ECED15 /* APIConstants.swift */,
 			);
 			path = Constants;
 			sourceTree = "<group>";
@@ -416,7 +430,6 @@
 			isa = PBXGroup;
 			children = (
 				5D95374C2A9685C600EA1D4D /* Firebase */,
-				5D3D92572A1818080013803E /* Extensions */,
 				5D3D924F2A1816980013803E /* Core */,
 				AFEFCB6C27C90233007B2029 /* VITTY.entitlements */,
 				AFEFCB6B27C90042007B2029 /* VITTYRelease.entitlements */,
@@ -466,6 +479,7 @@
 		314A40A527383C3F0058082F /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				5D72EDD92AB9906200704BF5 /* Auth */,
 				31EC94692788BCDF00EA07BE /* Classes.swift */,
 				31A2A4A327894E96005679EB /* TimeTableInformation.swift */,
 				31BAB530279D318F008E20BB /* NotificationsSettingsModel.swift */,
@@ -719,14 +733,6 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
-		5D3D92572A1818080013803E /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				5D3D92582A1818150013803E /* Color.swift */,
-			);
-			path = Extensions;
-			sourceTree = "<group>";
-		};
 		5D44FFF72A2A69C70005A1E4 /* SetStatus */ = {
 			isa = PBXGroup;
 			children = (
@@ -793,6 +799,15 @@
 				5D629B3F2A3FA645000B8E7A /* FriendActivityViewModel.swift */,
 			);
 			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		5D72EDD92AB9906200704BF5 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				5D72EDDA2AB9906E00704BF5 /* AuthResponse.swift */,
+				5D72EDDC2AB990BB00704BF5 /* AuthReqBody.swift */,
+			);
+			path = Auth;
 			sourceTree = "<group>";
 		};
 		5D95374C2A9685C600EA1D4D /* Firebase */ = {
@@ -1092,6 +1107,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5D629B422A3FA6A8000B8E7A /* FriendRow.swift in Sources */,
+				5D72EDDD2AB990BB00704BF5 /* AuthReqBody.swift in Sources */,
 				317EE1932775B819008AEB31 /* InstructionsCards.swift in Sources */,
 				31096381278227730009A29C /* AuthService.swift in Sources */,
 				5D3D92562A18170E0013803E /* UserNameViewModel.swift in Sources */,
@@ -1099,6 +1115,7 @@
 				5D44FFFA2A2A69DD0005A1E4 /* SetStatusView.swift in Sources */,
 				31BAB52D279AE398008E20BB /* NotificationsViewHeader.swift in Sources */,
 				5D3D92592A1818150013803E /* Color.swift in Sources */,
+				5D72EDD82AB98D6D00704BF5 /* URLSession.swift in Sources */,
 				31BAB528279AD8CA008E20BB /* SettingsHeader.swift in Sources */,
 				5D141B0C2A265B32005977F8 /* ProfileViewModel.swift in Sources */,
 				317EE1992775D3C6008AEB31 /* SettingsView.swift in Sources */,
@@ -1115,6 +1132,7 @@
 				3164C45A27CB71D700D6B53F /* MediumWidgetView.swift in Sources */,
 				5D141B0A2A265B15005977F8 /* Profile.swift in Sources */,
 				31128D042772F8E90084C9EA /* CustomButton.swift in Sources */,
+				5D7F04F72AAB9E9900ECED15 /* APIConstants.swift in Sources */,
 				3109639F27824F6F0009A29C /* AppStorageConstants.swift in Sources */,
 				31BAB533279D3F49008E20BB /* NotificationsManager.swift in Sources */,
 				317715E0279FE778009A532E /* CustomNotificationButton.swift in Sources */,
@@ -1122,6 +1140,7 @@
 				31128D12277306860084C9EA /* SplashScreenTabIndicator.swift in Sources */,
 				5DF1A6952A93B361007A5731 /* CustomTabBar.swift in Sources */,
 				5D44FFFF2A2A76CE0005A1E4 /* SetStatusViewModel.swift in Sources */,
+				5D72EDDB2AB9906E00704BF5 /* AuthResponse.swift in Sources */,
 				5DF547DB2A9452DE00A0B09C /* SuggestionsView.swift in Sources */,
 				31BAB531279D318F008E20BB /* NotificationsSettingsModel.swift in Sources */,
 				31128D072772FA120084C9EA /* Colors.swift in Sources */,
@@ -1145,6 +1164,7 @@
 				317EE1952775C555008AEB31 /* LogoutPopup.swift in Sources */,
 				5D3D92542A1817010013803E /* UserName.swift in Sources */,
 				314A408F27383BEC0058082F /* VITTYApp.swift in Sources */,
+				5DC03D452AB4585E00FE1725 /* API.swift in Sources */,
 				5D629B402A3FA645000B8E7A /* FriendActivityViewModel.swift in Sources */,
 				5D44FFFC2A2A6ECE0005A1E4 /* StatusRowView.swift in Sources */,
 				5DB03A352A85555E00DB7E60 /* MenuView.swift in Sources */,

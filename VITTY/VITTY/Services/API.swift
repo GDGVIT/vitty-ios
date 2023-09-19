@@ -10,6 +10,39 @@ import Foundation
 
 class API {
     static let shared = API()
+    
+    func getUser(token: String, userName: String){
+        print("token to api ", token)
+        guard let url = URL(string: "\(APIConstants.base_url)/api/v2/users/\(userName)") else{
+            return
+        }
+        
+        var request = URLRequest(url: url, timeoutInterval: Double.infinity)
+        
+        request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.httpMethod = "GET"
+        
+        let task = URLSession.shared.dataTask(with: request) { data, _, error in
+            guard let data = data,
+                  error == nil else{
+                return
+            }
+            do{
+                let result = try JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed)
+                
+//                let result = try JSONDecoder().decode(UserResponse.self, from: data)
+                print("response from ", url)
+                print(result)
+                
+            }catch{
+                print("error from ", url)
+                print(error.localizedDescription)
+            }
+        }
+        
+        task.resume()
+    }
+    
 
 }
 
@@ -91,7 +124,8 @@ extension API{
             }
             
             do{
-                let result = try JSONDecoder().decode(UsernameResponse.self, from: data)
+                //let result = try JSONDecoder().decode(UsernameResponse.self, from: data)
+                let result = try JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed)
                 print("POST request response from url: \(url)")
                 print(result)
                 print("END of POST request response")
@@ -99,6 +133,8 @@ extension API{
                 print(error.localizedDescription)
             }
         }
+        
+        task.resume()
         
     }
 }

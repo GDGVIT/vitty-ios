@@ -99,6 +99,7 @@ class AuthService: NSObject, ObservableObject {
             let credential = GoogleAuthProvider.credential(withIDToken: idToken,
                                                            accessToken: authentication.accessToken)
 
+            //MARK: temp api impl
             API.shared.signInUser(with: AuthReqBody(uuid: "x1ggyeMYVQaG0oOmz8jmTRuiuhw1", reg_no: "21TES3760", username: "PrashannaTest")) { [weak self] result in
                 switch result {
                 case let .success(response):
@@ -107,12 +108,15 @@ class AuthService: NSObject, ObservableObject {
                         self?.myUser = response
                         print("token from the server")
                         print(self?.myUser?.token ?? "no token")
+                        let mUser = self?.myUser
+                        API.shared.getUser(token: mUser?.token ?? "", userName: mUser?.username ?? "")
                     }
                 case let .failure(error):
                     print(error)
                 }
             }
             API.shared.checkUsername(with: "PrashannaTest")
+
             print("Google credential created. Proceeding to sign in with Firebase")
             Auth.auth().signIn(with: credential, completion: authResultCompletionHandler)
         }

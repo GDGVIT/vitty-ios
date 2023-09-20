@@ -109,7 +109,9 @@ class AuthService: NSObject, ObservableObject {
                         print("token from the server")
                         print(self?.myUser?.token ?? "no token")
                         let mUser = self?.myUser
-                        API.shared.getUser(token: mUser?.token ?? "", userName: mUser?.username ?? "")
+                        API.shared.getUser(token: mUser?.token ?? "", username: mUser?.username ?? "")
+                        API.shared.getFriends(token: mUser?.token ?? "", username: mUser?.username ?? "")
+                        
                     }
                 case let .failure(error):
                     print(error)

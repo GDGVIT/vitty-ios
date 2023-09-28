@@ -110,6 +110,7 @@
 		5D141B0A2A265B15005977F8 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D141B092A265B15005977F8 /* Profile.swift */; };
 		5D141B0C2A265B32005977F8 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D141B0B2A265B32005977F8 /* ProfileViewModel.swift */; };
 		5D2253D62AA5DC960050905A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5D2253D52AA5DC960050905A /* GoogleService-Info.plist */; };
+		5D2FE3032AC546EF00970552 /* Timetable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2FE3022AC546EF00970552 /* Timetable.swift */; };
 		5D3D92542A1817010013803E /* UserName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3D92532A1817010013803E /* UserName.swift */; };
 		5D3D92562A18170E0013803E /* UserNameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3D92552A18170E0013803E /* UserNameViewModel.swift */; };
 		5D3D92592A1818150013803E /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3D92582A1818150013803E /* Color.swift */; };
@@ -242,6 +243,7 @@
 		5D141B092A265B15005977F8 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		5D141B0B2A265B32005977F8 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		5D2253D52AA5DC960050905A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		5D2FE3022AC546EF00970552 /* Timetable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timetable.swift; sourceTree = "<group>"; };
 		5D3D92532A1817010013803E /* UserName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserName.swift; sourceTree = "<group>"; };
 		5D3D92552A18170E0013803E /* UserNameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNameViewModel.swift; sourceTree = "<group>"; };
 		5D3D92582A1818150013803E /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
@@ -831,6 +833,7 @@
 		5D72EDE52AB99DCE00704BF5 /* timetable */ = {
 			isa = PBXGroup;
 			children = (
+				5D2FE3022AC546EF00970552 /* Timetable.swift */,
 			);
 			path = timetable;
 			sourceTree = "<group>";
@@ -1140,6 +1143,7 @@
 				5D44FFFA2A2A69DD0005A1E4 /* SetStatusView.swift in Sources */,
 				31BAB52D279AE398008E20BB /* NotificationsViewHeader.swift in Sources */,
 				5D3D92592A1818150013803E /* Color.swift in Sources */,
+				5D2FE3032AC546EF00970552 /* Timetable.swift in Sources */,
 				5D72EDD82AB98D6D00704BF5 /* URLSession.swift in Sources */,
 				31BAB528279AD8CA008E20BB /* SettingsHeader.swift in Sources */,
 				5D141B0C2A265B32005977F8 /* ProfileViewModel.swift in Sources */,

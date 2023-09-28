@@ -6,38 +6,39 @@
 //
 
 import Foundation
+import Combine
 
 
 class API {
+    
+    @Published var timetableData: TimetableModel?
+    
+    private var cancellables: Set<AnyCancellable> = []
+
+    
     static let shared = API()
     
     //get timetable
-    func getTimeTable(token: String, username: String){
-        guard let url = URL(string: "\(APIConstants.base_url)/api/v2/timetable/\(username)") else{
+    func getTimeTable(token: String, username: String) {
+        guard let url = URL(string: "\(APIConstants.base_url)/api/v2/timetable/\(username)") else {
             return
         }
+
         var request = URLRequest(url: url, timeoutInterval: Double.infinity)
         request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         request.httpMethod = "GET"
-        
-        let task = URLSession.shared.dataTask(with: request) { data, _, error in
-            guard let data = data,
-                  error == nil else{
-                return
-            }
-            
-            do{
-                let result = try JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed)
-                print("response from ", url)
-                print(result)
-            }catch{
-                print("error from ", url)
-                print(error)
-            }
-        }
-        
-        task.resume()
+
+        URLSession.shared.dataTaskPublisher(for: request)
+            .map(\.data)
+            .decode(type: TimetableModel.self, decoder: JSONDecoder())
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { _ in },
+                  receiveValue: { [weak self] timetable in
+                    self?.timetableData = timetable
+                  })
+            .store(in: &cancellables)
     }
+
     
     func getFriends(token: String, username: String){
         guard let url = URL(string: "\(APIConstants.base_url)/api/v2/friends/\(username)") else{

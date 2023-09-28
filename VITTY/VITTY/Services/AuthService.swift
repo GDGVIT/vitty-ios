@@ -111,8 +111,8 @@ class AuthService: NSObject, ObservableObject {
                         let mUser = self?.myUser
                         API.shared.getUser(token: mUser?.token ?? "", username: mUser?.username ?? "")
                         API.shared.getFriends(token: mUser?.token ?? "", username: mUser?.username ?? "")
-                        //API.shared.getTimeTable(token: mUser?.token ?? "", username: mUser?.username ?? "")
                         API.shared.getTimeTable(token: mUser?.token ?? "", username: mUser?.username ?? "")
+                        
                         
                     }
                 case let .failure(error):

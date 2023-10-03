@@ -28,10 +28,18 @@ struct InstructionsView: View {
                 instructions()
                 Spacer()
 
-                doneButton()
-                    .onTapGesture {
-                        //API.shared.signInUser()
-                    }
+//                doneButton()
+//                    .onTapGesture {
+//                        //API.shared.signInUser()
+//                    }
+                
+                NavigationLink {
+                    HomePage()
+                        .navigationTitle("").navigationBarHidden(true).environmentObject(ttVM).environmentObject(authState).environmentObject(notifVM)
+                } label: {
+                    doneButton()
+                }
+
 
                 NavigationLink(destination: HomePage().navigationTitle("").navigationBarHidden(true).environmentObject(ttVM).environmentObject(authState).environmentObject(notifVM), isActive: $goToHomeScreen) {
                     EmptyView()
@@ -46,12 +54,12 @@ struct InstructionsView: View {
             }
         }
         .onAppear {
-            ttVM.getData {
-                if !notifsSetup {
-                    notifVM.setupNotificationPreferences(timetable: ttVM.timetable)
-                }
-            }
-            notifVM.getNotifPrefs()
+//            ttVM.getData {
+//                if !notifsSetup {
+//                    notifVM.setupNotificationPreferences(timetable: ttVM.timetable)
+//                }
+//            }
+//            notifVM.getNotifPrefs()
         }
     }
 }
@@ -93,17 +101,20 @@ extension InstructionsView {
     private func doneButton() -> some View {
         CustomButton(buttonText: "Done") {
             self.displayFollowInstructions = true
-            if ttVM.timetable.isEmpty {
-                ttVM.getData {
-                    if !notifsSetup {
-                        notifVM.setupNotificationPreferences(timetable: ttVM.timetable)
-                    }
-                }
-            } else {
-                print("time table is populated")
-                UserDefaults.standard.set(true, forKey: "instructionsComplete")
-                goToHomeScreen = true
-            }
+            ttVM.getTimeTable(token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InByYXNoYW5uYS5yYWpiaGFuZGFyaTNAZ21haWwuY29tIiwicm9sZSI6Im5vcm1hbCIsInVzZXJuYW1lIjoicHJhc2hhbm5hdGVzdCJ9.JULv80sjDUdC2SAgpepRcBBZHTsDjisN1xtNZp7-jVs", username: "prashannatest")
+            goToHomeScreen = true
+            
+//            if ttVM.timetable.isEmpty {
+//                ttVM.getData {
+//                    if !notifsSetup {
+//                        notifVM.setupNotificationPreferences(timetable: ttVM.timetable)
+//                    }
+//                }
+//            } else {
+//                print("time table is populated")
+//                UserDefaults.standard.set(true, forKey: "instructionsComplete")
+//                goToHomeScreen = true
+//            }
         }
     }
 }

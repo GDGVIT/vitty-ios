@@ -52,13 +52,14 @@ struct HomePage: View {
             .padding(.top)
             .background(Image(timetableViewModel.timetable[TimetableViewModel.daysOfTheWeek[tabSelected]]?.isEmpty ?? false ? "HomeNoClassesBG" : "HomeBG").resizable().scaledToFill().edgesIgnoringSafeArea(.all))
             .onAppear {
-                timetableViewModel.getData {
-                    if !notifsSetup {
-                        notifVM.setupNotificationPreferences(timetable: timetableViewModel.timetable)
-                        print("Notifications set up")
-                    }
-                    
-                }
+                timetableViewModel.getTimeTable(token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InByYXNoYW5uYS5yYWpiaGFuZGFyaTNAZ21haWwuY29tIiwicm9sZSI6Im5vcm1hbCIsInVzZXJuYW1lIjoicHJhc2hhbm5hdGVzdCJ9.JULv80sjDUdC2SAgpepRcBBZHTsDjisN1xtNZp7-jVs", username: "prashannatest")
+//                timetableViewModel.getData {
+//                    if !notifsSetup {
+//                        notifVM.setupNotificationPreferences(timetable: timetableViewModel.timetable)
+//                        print("Notifications set up")
+//                    }
+//                    
+//                }
                 print("tabSelected: \(tabSelected)")
                 //            LocalNotificationsManager.shared.getAllNotificationRequests()
                 print("calling update notifs from homepage")

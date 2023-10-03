@@ -17,6 +17,6 @@ struct TimetableItem: Codable {
     let venue: String
     let slot: String
     let type: String
-    let startTime: String
-    let endTime: String
+    let start_time: String
+    let end_time: String
 }

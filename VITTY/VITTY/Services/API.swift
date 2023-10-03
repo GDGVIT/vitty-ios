@@ -5,20 +5,17 @@
 //  Created by Prashanna Rajbhandari on 15/09/2023.
 //
 
-import Foundation
 import Combine
-
+import Foundation
 
 class API {
-    
     @Published var timetableData: TimetableModel?
-    
+
     private var cancellables: Set<AnyCancellable> = []
 
-    
     static let shared = API()
-    
-    //get timetable
+
+    // get timetable
     func getTimeTable(token: String, username: String) {
         guard let url = URL(string: "\(APIConstants.base_url)/api/v2/timetable/\(username)") else {
             return
@@ -34,86 +31,81 @@ class API {
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { _ in },
                   receiveValue: { [weak self] timetable in
-                    self?.timetableData = timetable
+                      self?.timetableData = timetable
                   })
             .store(in: &cancellables)
     }
 
-    
-    func getFriends(token: String, username: String){
-        guard let url = URL(string: "\(APIConstants.base_url)/api/v2/friends/\(username)") else{
+    func getFriends(token: String, username: String) {
+        guard let url = URL(string: "\(APIConstants.base_url)/api/v2/friends/\(username)") else {
             return
         }
-        
+
         var request = URLRequest(url: url, timeoutInterval: Double.infinity)
-        
+
         request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         request.httpMethod = "GET"
-        
+
         let task = URLSession.shared.dataTask(with: request) { data, _, error in
             guard let data = data,
-                  error == nil else{
+                  error == nil else {
                 return
             }
-            
-            do{
+
+            do {
                 let result = try JSONSerialization.jsonObject(with: data, options: [.fragmentsAllowed])
                 print("response from ", url)
                 print(result)
 //                let result = try JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed)
 //                print("response from ", url)
 //                print(result)
-            }catch{
+            } catch {
                 print("error from ", url)
                 print(error)
             }
-            
         }
-        
+
         task.resume()
     }
-    
-    //MARK: get user
-    func getUser(token: String, username: String){
+
+    // MARK: get user
+
+    func getUser(token: String, username: String) {
         print("token to api ", token)
-        guard let url = URL(string: "\(APIConstants.base_url)/api/v2/users/\(username)") else{
+        guard let url = URL(string: "\(APIConstants.base_url)/api/v2/users/\(username)") else {
             return
         }
-        
+
         var request = URLRequest(url: url, timeoutInterval: Double.infinity)
-        
+
         request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         request.httpMethod = "GET"
-        
+
         let task = URLSession.shared.dataTask(with: request) { data, _, error in
             guard let data = data,
-                  error == nil else{
+                  error == nil else {
                 return
             }
-            do{
-                let result = try JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed)
-                
-                //let result = try JSONDecoder().decode(UserResponse.self, from: data)
+            do {
+                let result = try JSONDecoder().decode(UserResponse.self, from: data)
                 print("response from ", url)
                 print(result)
-                
-            }catch{
+
+            } catch {
                 print("error from ", url)
                 print(error.localizedDescription)
             }
         }
-        
+
         task.resume()
     }
-    
-
 }
 
-//MARK: Auth
-extension API{
-    
+// MARK: Auth
 
-    //MARK: Sign in user
+extension API {
+    // MARK: Sign in user
+
     func signInUser(with authReqBody: AuthReqBody, completion: @escaping (Result<AuthResponse, Error>) -> Void) {
         guard let url = URL(string: "\(APIConstants.base_url)/api/v2/auth/firebase/") else {
             completion(.failure(CustomError.invalidUrl))
@@ -162,42 +154,42 @@ extension API{
 
         task.resume()
     }
-    
-    //MARK: Check user name
-    func checkUsername(with username: String){
+
+    // MARK: Check user name
+
+    func checkUsername(with username: String) {
         guard let url = URL(string: "\(APIConstants.base_url)/api/v2/auth/check-username") else {
             return
         }
         var request = URLRequest(url: url)
-        
+
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
-        do{
+
+        do {
             let encoder = JSONEncoder()
             request.httpBody = try encoder.encode(username)
-        }catch let error{
+        } catch let error {
             print("error encoding username ", error.localizedDescription)
             return
         }
-        
+
         let task = URLSession.shared.dataTask(with: request) { data, _, error in
             guard let data = data, error == nil else {
                 return
             }
-            
-            do{
-                //let result = try JSONDecoder().decode(UsernameResponse.self, from: data)
+
+            do {
+                // let result = try JSONDecoder().decode(UsernameResponse.self, from: data)
                 let result = try JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed)
                 print("POST request response from url: \(url)")
                 print(result)
                 print("END of POST request response")
-            }catch{
+            } catch {
                 print(error.localizedDescription)
             }
         }
-        
+
         task.resume()
-        
     }
 }

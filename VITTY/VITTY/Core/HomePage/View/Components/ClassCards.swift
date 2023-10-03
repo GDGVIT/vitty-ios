@@ -14,6 +14,7 @@ struct ClassCards: View {
 
     var body: some View {
         ZStack {
+            Color.theme.blueBG
             RoundedRectangle(cornerRadius: 12)
                  .fill(Color.clear)
                 .onTapGesture {

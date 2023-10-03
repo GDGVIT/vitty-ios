@@ -29,8 +29,29 @@ struct HomePage: View {
                 VStack {
                     navBarItems()
                     
-                    daysRow()
-                    .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+                    List{
+                        ForEach(timetableViewModel.timetable.keys.sorted(), id: \.self){day in
+                            Section(header: Text(day).foregroundStyle(Color.white)) {
+                                ForEach(timetableViewModel.timetable[day] ?? [], id: \.self){classes in
+
+                                    ClassCards(classInfo: classes)
+                                        .listRowBackground(Color.clear)
+                                        .listRowSeparator(.hidden)
+                                    
+                                    
+                                }
+                            }
+                            
+                        }
+                    }
+                    .background(content: {
+                        Color.clear
+                    })
+                    
+                    .listStyle(.plain)
+                    
+//                    daysRow()
+//                    .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
                     
                     
                     NavigationLink(destination: SettingsView().environmentObject(timetableViewModel).environmentObject(authVM).environmentObject(notifVM), isActive: $goToSettings) {
@@ -53,6 +74,8 @@ struct HomePage: View {
             .background(Image(timetableViewModel.timetable[TimetableViewModel.daysOfTheWeek[tabSelected]]?.isEmpty ?? false ? "HomeNoClassesBG" : "HomeBG").resizable().scaledToFill().edgesIgnoringSafeArea(.all))
             .onAppear {
                 timetableViewModel.getTimeTable(token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InByYXNoYW5uYS5yYWpiaGFuZGFyaTNAZ21haWwuY29tIiwicm9sZSI6Im5vcm1hbCIsInVzZXJuYW1lIjoicHJhc2hhbm5hdGVzdCJ9.JULv80sjDUdC2SAgpepRcBBZHTsDjisN1xtNZp7-jVs", username: "prashannatest")
+                
+                
 //                timetableViewModel.getData {
 //                    if !notifsSetup {
 //                        notifVM.setupNotificationPreferences(timetable: timetableViewModel.timetable)
@@ -102,11 +125,13 @@ extension HomePage{
     }
     
     private func daysRow() -> some View{
-        TabView(selection: $tabSelected) {
+        return TabView(selection: $tabSelected) {
             ForEach(0..<7) { tabSel in
                 if let selectedTT = timetableViewModel.timetable[TimetableViewModel.daysOfTheWeek[tabSel]] {
                     TimeTableScrollView(selectedTT: selectedTT, tabSelected: $tabSelected).environmentObject(timetableViewModel)
+                    
                 }
+                
             }
         }
     }

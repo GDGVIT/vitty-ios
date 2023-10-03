@@ -9,10 +9,12 @@ import SwiftUI
 
 struct TimeTableScrollView: View {
     var selectedTT: [Classes]
+    
     @Binding var tabSelected: Int
     @EnvironmentObject var timetableViewModel: TimetableViewModel
     @ObservedObject var notifSingleton = NotificationsViewModel.shared
     @StateObject var RemoteConf = RemoteConfigManager.sharedInstance
+    
     var body: some View {
         VStack {
             if !selectedTT .isEmpty {

@@ -17,7 +17,9 @@ struct ClassCards: View {
             RoundedRectangle(cornerRadius: 12)
                 .fill(Color.theme.secondaryBlue)
                 .onTapGesture {
-                    hideDescription.toggle()
+                    withAnimation {
+                        hideDescription.toggle()
+                    }
                 }
             VStack {
                 subAndTime()

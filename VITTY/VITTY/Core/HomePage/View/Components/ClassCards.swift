@@ -14,9 +14,8 @@ struct ClassCards: View {
 
     var body: some View {
         ZStack {
-            Color.theme.blueBG
             RoundedRectangle(cornerRadius: 12)
-                 .fill(Color.clear)
+                .fill(Color.theme.secondaryBlue)
                 .onTapGesture {
                     hideDescription.toggle()
                 }
@@ -25,15 +24,14 @@ struct ClassCards: View {
 
                 if !hideDescription {
                     expandedView()
-                        .padding(.top, 8)
-                        .padding(.horizontal, 5)
-                        .padding(.bottom, 5)
+                        .padding(.top)
                 }
             }
+            .padding()
             .foregroundColor(Color.vprimary)
-            .padding(5)
         }
-        .padding(5)
+        .padding()
+
         .frame(height: hideDescription ? 104 : 160)
         .onTapGesture {
             hideDescription.toggle()

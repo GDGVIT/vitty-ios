@@ -50,8 +50,8 @@ class TimetableViewModel: ObservableObject {
                     courseName: timetableItem.name,
                     location: timetableItem.venue,
                     slot: timetableItem.slot,
-                    startTime: convertTimeStringToDate(timetableItem.start_time),
-                    endTime: convertTimeStringToDate(timetableItem.end_time)
+                    startTime: convertTimeStringToDate(timetableItem.start_time)?.utcToLocal(),
+                    endTime: convertTimeStringToDate(timetableItem.end_time)?.utcToLocal()
                 )
 
                 classesArray.append(classes)
@@ -63,6 +63,7 @@ class TimetableViewModel: ObservableObject {
         return oldModel
     }
 
+
     func convertTimeStringToDate(_ timeString: String) -> Date? {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "HH:mm" // Adjust the date format according to your needs
@@ -71,6 +72,8 @@ class TimetableViewModel: ObservableObject {
     }
 
     func getTimeTable(token: String, username: String) {
+
+        
         guard let url = URL(string: "\(APIConstants.base_url)/api/v2/timetable/\(username)") else {
             return
         }
@@ -90,6 +93,10 @@ class TimetableViewModel: ObservableObject {
                       if let myTimeTable = self?.myTimeTable {
                           self?.timetable = self?.mapToOldModel(newModel: myTimeTable) ?? [:]
                       }
+                
+                print("timetable model\n", self?.myTimeTable ?? "no timetable")
+                print("----------")
+                print("classes model\n", self?.timetable ?? "no classes")
 
                   })
             .store(in: &cancellables)

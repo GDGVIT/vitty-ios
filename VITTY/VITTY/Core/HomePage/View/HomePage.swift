@@ -8,52 +8,31 @@
 import SwiftUI
 
 struct HomePage: View {
-
     @State var tabSelected: Int = Date.convertToMondayWeek()
     @State var goToSettings: Bool = false
     @State var showLogout: Bool = false
-    
+
     @EnvironmentObject var timetableViewModel: TimetableViewModel
     @EnvironmentObject var authVM: AuthService
     @EnvironmentObject var notifVM: NotificationsViewModel
-    
-    @StateObject var homePageVM =  HomePageViewModel()
-    
+
+    @StateObject var homePageVM = HomePageViewModel()
+
     @StateObject var RemoteConf = RemoteConfigManager.sharedInstance
     @AppStorage("examMode") var examModeOn: Bool = false
     @AppStorage(AuthService.notifsSetupKey) var notifsSetup = false
-    
+
     var body: some View {
         Group {
             ZStack {
                 VStack {
                     navBarItems()
                     
-                    List{
-                        ForEach(timetableViewModel.timetable.keys.sorted(), id: \.self){day in
-                            Section(header: Text(day).foregroundStyle(Color.white)) {
-                                ForEach(timetableViewModel.timetable[day] ?? [], id: \.self){classes in
+                    timeTableView()
 
-                                    ClassCards(classInfo: classes)
-                                        .listRowBackground(Color.clear)
-                                        .listRowSeparator(.hidden)
-                                    
-                                    
-                                }
-                            }
-                            
-                        }
-                    }
-                    .background(content: {
-                        Color.clear
-                    })
-                    
-                    .listStyle(.plain)
-                    
-//                    daysRow()
-//                    .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
-                    
-                    
+
+                    Spacer()
+
                     NavigationLink(destination: SettingsView().environmentObject(timetableViewModel).environmentObject(authVM).environmentObject(notifVM), isActive: $goToSettings) {
                         EmptyView()
                     }
@@ -74,14 +53,13 @@ struct HomePage: View {
             .background(Image(timetableViewModel.timetable[TimetableViewModel.daysOfTheWeek[tabSelected]]?.isEmpty ?? false ? "HomeNoClassesBG" : "HomeBG").resizable().scaledToFill().edgesIgnoringSafeArea(.all))
             .onAppear {
                 timetableViewModel.getTimeTable(token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InByYXNoYW5uYS5yYWpiaGFuZGFyaTNAZ21haWwuY29tIiwicm9sZSI6Im5vcm1hbCIsInVzZXJuYW1lIjoicHJhc2hhbm5hdGVzdCJ9.JULv80sjDUdC2SAgpepRcBBZHTsDjisN1xtNZp7-jVs", username: "prashannatest")
-                
-                
+
 //                timetableViewModel.getData {
 //                    if !notifsSetup {
 //                        notifVM.setupNotificationPreferences(timetable: timetableViewModel.timetable)
 //                        print("Notifications set up")
 //                    }
-//                    
+//
 //                }
                 print("tabSelected: \(tabSelected)")
                 //            LocalNotificationsManager.shared.getAllNotificationRequests()
@@ -89,12 +67,15 @@ struct HomePage: View {
                 notifVM.updateNotifs(timetable: timetableViewModel.timetable)
                 timetableViewModel.updateClassCompleted()
                 notifVM.getNotifPrefs()
-                
+
                 print(goToSettings)
                 print("remote config settings \(RemoteConf.onlineMode)")
             }
-        .animation(.default)
         }
+        .onChange(of: tabSelected) { newValue in
+            print("Selected tab: \(newValue)")
+        }
+
         .slideInView(isActive: $homePageVM.isPresented, edge: .trailing, content: {
             MenuView()
                 .environmentObject(authVM)
@@ -113,10 +94,11 @@ struct HomePage_Previews: PreviewProvider {
     }
 }
 
-//MARK: Extension
-extension HomePage{
-    private func navBarItems() -> some View{
-        VStack(alignment:.leading) {
+// MARK: Extension
+
+extension HomePage {
+    private func navBarItems() -> some View {
+        VStack(alignment: .leading) {
             HomePageHeader(goToSettings: $goToSettings, showLogout: $showLogout)
                 .environmentObject(homePageVM)
                 .padding()
@@ -124,14 +106,27 @@ extension HomePage{
         }
     }
     
-    private func daysRow() -> some View{
+    func timeTableView() -> some View{
+        ScrollView{
+            ForEach(timetableViewModel.timetable.keys.sorted(), id: \.self) { day in
+                ForEach(timetableViewModel.timetable[day] ?? [], id: \.self) { classes in
+
+                    if day.description.lowercased() == TimetableViewModel.daysOfTheWeek[tabSelected] {
+                        ClassCards(classInfo: classes)
+                            .listRowBackground(Color.clear)
+                            .listRowSeparator(.hidden)
+                    }
+                }
+            }
+        }
+    }
+
+    private func daysRow() -> some View {
         return TabView(selection: $tabSelected) {
-            ForEach(0..<7) { tabSel in
+            ForEach(0 ..< 7) { tabSel in
                 if let selectedTT = timetableViewModel.timetable[TimetableViewModel.daysOfTheWeek[tabSel]] {
                     TimeTableScrollView(selectedTT: selectedTT, tabSelected: $tabSelected).environmentObject(timetableViewModel)
-                    
                 }
-                
             }
         }
     }

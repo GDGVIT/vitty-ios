@@ -48,6 +48,17 @@ struct ClassCards_Previews: PreviewProvider {
 }
 
 extension ClassCards {
+    
+    private func formatTime(_ date: Date?) -> String {
+        guard let date = date else { return "" }
+
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH:mm"
+        dateFormatter.timeZone = TimeZone(identifier: "UTC") // Set your desired time zone here
+
+        return dateFormatter.string(from: date)
+    }
+    
     private func subAndTime() -> some View {
         HStack {
             VStack(alignment: .leading) {
@@ -57,9 +68,16 @@ extension ClassCards {
                     .padding(.bottom, 4)
 
                 HStack(spacing: 0) {
-                    Text(classInfo.startTime ?? Date(), style: .time)
-                    Text(" - ")
-                    Text(classInfo.endTime ?? Date(), style: .time)
+                    var _: () = print("my start time: ",classInfo.startTime ?? "no start time")
+                    
+                    Text(formatTime(classInfo.startTime))
+                    Text("-")
+                    Text(formatTime(classInfo.endTime))
+                    
+                    var _: () = print("my end time: ",classInfo.endTime ?? "no start time")
+
+                    
+
                 }
                 .font(Font.custom("Poppins-Regular", size: 14))
             }

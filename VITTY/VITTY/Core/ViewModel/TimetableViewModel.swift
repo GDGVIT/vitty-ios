@@ -50,8 +50,8 @@ class TimetableViewModel: ObservableObject {
                     courseName: timetableItem.name,
                     location: timetableItem.venue,
                     slot: timetableItem.slot,
-                    startTime: convertTimeStringToDate(timetableItem.start_time)?.utcToLocal(),
-                    endTime: convertTimeStringToDate(timetableItem.end_time)?.utcToLocal()
+                    startTime: parseTimeToDate(timetableItem.start_time),
+                    endTime: parseTimeToDate(timetableItem.end_time)
                 )
 
                 classesArray.append(classes)
@@ -62,14 +62,51 @@ class TimetableViewModel: ObservableObject {
 
         return oldModel
     }
+    
+    func parseTimeToDate(_ dateString: String) -> Date{
+        var changedDate = replaceYearIfZero(dateString)
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.timeZone = TimeZone(identifier: "UTC")
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
 
-
-    func convertTimeStringToDate(_ timeString: String) -> Date? {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "HH:mm" // Adjust the date format according to your needs
-        dateFormatter.locale = Locale(identifier: "en_US_POSIX") // Adjust the locale if necessary
-        return dateFormatter.date(from: timeString)
+        if let newDate = formatter.date(from: changedDate) {
+            return newDate
+        } else {
+            print("no date was converted")
+            return Date()
+        }
     }
+
+
+    
+//    func parseTimeToDate(_ timeString: String) -> Date{
+//        var date = replaceYearIfZero(timeString)
+//        
+//        let formatter = DateFormatter()
+//        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ"
+//        
+//        if let newDate =  formatter.date(from: date){
+//            return newDate
+//        }else{
+//            print("no date was converted")
+//            return Date()
+//        }
+//    }
+
+
+
+    func replaceYearIfZero(_ dateStr: String) -> String {
+        if dateStr.hasPrefix("0") {
+            let index = dateStr.index(dateStr.startIndex, offsetBy: 4)
+            return "2023" + String(dateStr[index...])
+        } else {
+            return dateStr
+        }
+    }
+
+    
+    
 
     func getTimeTable(token: String, username: String) {
 
@@ -101,6 +138,9 @@ class TimetableViewModel: ObservableObject {
                   })
             .store(in: &cancellables)
     }
+    
+    
+    
 
     static let timetableVersionKey: String = "timetableVersionKey"
 
@@ -108,98 +148,6 @@ class TimetableViewModel: ObservableObject {
 
     private var db = Firestore.firestore()
 
-    /*
-         func fetchInfo(onCompletion: @escaping ()->Void){
-             let uid = Auth.auth().currentUser?.uid
-             let timetableVersion = UserDefaults.standard.object(forKey: TimetableViewModel.timetableVersionKey)
-             print(uid!)
-             print("fetching user-timetable information")
-             guard uid != nil else {
-                 print("error with uid")
-                 return
-             }
-             db.collection("users")
-                 .document(uid!)
-     //            .document(uid)
-                 .getDocument { (document, error) in
-                     if let error = error  {
-                         print("error fetching user information: \(error.localizedDescription)")
-                         return
-                     }
-
-                     let data = try? document?.data(as: TimeTableInformation.self)
-                     guard data != nil else {
-                         print("couldn't decode timetable information")
-                         return
-                     }
-     //                if self.timetableInfo.timetableVersion != nil {
-     //                    if data?.timetableVersion != self.timetableInfo.timetableVersion {
-     //                        self.versionChanged = true
-     //                    }
-     //                }
-                     if data?.timetableVersion != nil {
-                         if data?.timetableVersion != (timetableVersion as? Int) {
-                             self.versionChanged = true
-                             UserDefaults.standard.set(data?.timetableVersion, forKey: TimetableViewModel.timetableVersionKey)
-                             UserDefaults.standard.set(false, forKey: AuthService.notifsSetupKey)
-                         }
-                     }
-                     self.timetableInfo = data ?? TimeTableInformation(isTimetableAvailable: nil, isUpdated: nil, timetableVersion: nil)
-                     print("fetched timetable info into self.timetableInfo as: \(self.timetableInfo)")
-                     onCompletion()
-                 }
-         }
-
-         func fetchTimetable(onCompletion: @escaping ()->Void){
-             let uid = Auth.auth().currentUser?.uid
-             print("fetching timetable")
-             var countt = 0
-             guard uid != nil else {
-                 print("error with uid")
-                 return
-             }
-             for i in (0..<7) {
-                 db.collection("users")
-                     .document(uid!)
-     //                .document(uid)
-                     .collection("timetable")
-                     .document(TimetableViewModel.daysOfTheWeek[i])
-                     .collection("periods")
-                     .getDocuments { (documents, error) in
-
-                         countt += 1
-                         if let error = error {
-                             print("error fetching timetable: \(error.localizedDescription)")
-                             return
-                         }
-                         print("day: \(TimetableViewModel.daysOfTheWeek[i])")
-                         self.timetable[TimetableViewModel.daysOfTheWeek[i]] = documents?.documents.compactMap { document in
-                             try? document.data(as: Classes.self)
-                         } ?? []
-
-                         print("timetable now: \(self.timetable)")
-                         if countt == 7 {
-                             print("Notif completion handler")
-                             onCompletion()
-                         }
-                     }
-             }
-
-         }
-
-         func getData(onCompletion: @escaping ()->Void){
-             self.fetchInfo {
-                 if self.timetable.isEmpty || self.versionChanged {
-                     self.timetable = [:]
-                     self.fetchTimetable {
-                         onCompletion()
-                     }
-                     self.versionChanged = false
-                     print("version changed?: \(self.versionChanged)")
-                 }
-             }
-         }
-          */
 }
 
 extension TimetableViewModel {
@@ -218,3 +166,98 @@ extension TimetableViewModel {
         }
     }
 }
+
+
+
+/*
+     func fetchInfo(onCompletion: @escaping ()->Void){
+         let uid = Auth.auth().currentUser?.uid
+         let timetableVersion = UserDefaults.standard.object(forKey: TimetableViewModel.timetableVersionKey)
+         print(uid!)
+         print("fetching user-timetable information")
+         guard uid != nil else {
+             print("error with uid")
+             return
+         }
+         db.collection("users")
+             .document(uid!)
+ //            .document(uid)
+             .getDocument { (document, error) in
+                 if let error = error  {
+                     print("error fetching user information: \(error.localizedDescription)")
+                     return
+                 }
+
+                 let data = try? document?.data(as: TimeTableInformation.self)
+                 guard data != nil else {
+                     print("couldn't decode timetable information")
+                     return
+                 }
+ //                if self.timetableInfo.timetableVersion != nil {
+ //                    if data?.timetableVersion != self.timetableInfo.timetableVersion {
+ //                        self.versionChanged = true
+ //                    }
+ //                }
+                 if data?.timetableVersion != nil {
+                     if data?.timetableVersion != (timetableVersion as? Int) {
+                         self.versionChanged = true
+                         UserDefaults.standard.set(data?.timetableVersion, forKey: TimetableViewModel.timetableVersionKey)
+                         UserDefaults.standard.set(false, forKey: AuthService.notifsSetupKey)
+                     }
+                 }
+                 self.timetableInfo = data ?? TimeTableInformation(isTimetableAvailable: nil, isUpdated: nil, timetableVersion: nil)
+                 print("fetched timetable info into self.timetableInfo as: \(self.timetableInfo)")
+                 onCompletion()
+             }
+     }
+
+     func fetchTimetable(onCompletion: @escaping ()->Void){
+         let uid = Auth.auth().currentUser?.uid
+         print("fetching timetable")
+         var countt = 0
+         guard uid != nil else {
+             print("error with uid")
+             return
+         }
+         for i in (0..<7) {
+             db.collection("users")
+                 .document(uid!)
+ //                .document(uid)
+                 .collection("timetable")
+                 .document(TimetableViewModel.daysOfTheWeek[i])
+                 .collection("periods")
+                 .getDocuments { (documents, error) in
+
+                     countt += 1
+                     if let error = error {
+                         print("error fetching timetable: \(error.localizedDescription)")
+                         return
+                     }
+                     print("day: \(TimetableViewModel.daysOfTheWeek[i])")
+                     self.timetable[TimetableViewModel.daysOfTheWeek[i]] = documents?.documents.compactMap { document in
+                         try? document.data(as: Classes.self)
+                     } ?? []
+
+                     print("timetable now: \(self.timetable)")
+                     if countt == 7 {
+                         print("Notif completion handler")
+                         onCompletion()
+                     }
+                 }
+         }
+
+     }
+
+     func getData(onCompletion: @escaping ()->Void){
+         self.fetchInfo {
+             if self.timetable.isEmpty || self.versionChanged {
+                 self.timetable = [:]
+                 self.fetchTimetable {
+                     onCompletion()
+                 }
+                 self.versionChanged = false
+                 print("version changed?: \(self.versionChanged)")
+             }
+         }
+     }
+      */

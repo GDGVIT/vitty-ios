@@ -9,32 +9,10 @@ import Combine
 import Foundation
 
 class API {
-    @Published var timetableData: TimetableModel?
 
-    private var cancellables: Set<AnyCancellable> = []
 
     static let shared = API()
 
-    // get timetable
-    func getTimeTable(token: String, username: String) {
-        guard let url = URL(string: "\(APIConstants.base_url)/api/v2/timetable/\(username)") else {
-            return
-        }
-
-        var request = URLRequest(url: url, timeoutInterval: Double.infinity)
-        request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        request.httpMethod = "GET"
-
-        URLSession.shared.dataTaskPublisher(for: request)
-            .map(\.data)
-            .decode(type: TimetableModel.self, decoder: JSONDecoder())
-            .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { _ in },
-                  receiveValue: { [weak self] timetable in
-                      self?.timetableData = timetable
-                  })
-            .store(in: &cancellables)
-    }
 
     func getFriends(token: String, username: String) {
         guard let url = URL(string: "\(APIConstants.base_url)/api/v2/friends/\(username)") else {

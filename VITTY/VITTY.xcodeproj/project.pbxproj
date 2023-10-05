@@ -417,6 +417,8 @@
 				314A408E27383BEC0058082F /* VITTYApp.swift */,
 				314A409027383BEC0058082F /* ContentView.swift */,
 				314A409227383BEE0058082F /* Assets.xcassets */,
+				AFEFCB6C27C90233007B2029 /* VITTY.entitlements */,
+				AFEFCB6B27C90042007B2029 /* VITTYRelease.entitlements */,
 				3164C46927CBCFBE00D6B53F /* vitty-widgetExtension.entitlements */,
 				314A408D27383BEC0058082F /* VITTY */,
 				3105871E27A3ECBB00C2FC41 /* vitty-widget */,
@@ -439,8 +441,6 @@
 			children = (
 				5D95374C2A9685C600EA1D4D /* Firebase */,
 				5D3D924F2A1816980013803E /* Core */,
-				AFEFCB6C27C90233007B2029 /* VITTY.entitlements */,
-				AFEFCB6B27C90042007B2029 /* VITTYRelease.entitlements */,
 				3109637F278227580009A29C /* Services */,
 				31128CF02772F0210084C9EA /* Info.plist */,
 				314A40A127383C0A0058082F /* Utilities */,
@@ -1432,8 +1432,8 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1470,8 +1470,8 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

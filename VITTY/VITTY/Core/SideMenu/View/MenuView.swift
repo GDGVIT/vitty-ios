@@ -49,8 +49,14 @@ struct MenuView: View {
                     .padding(.leading)
 
                     Spacer()
+                    
+                    Button {
+                        authVM.signOut()
+                    } label: {
+                        logoutBtn()
+                    }
 
-                    logoutBtn()
+                    
                 }
                 .padding(.horizontal)
             }

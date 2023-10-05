@@ -76,7 +76,8 @@ struct VITTYWidget: Widget {
     init() {
         FirebaseApp.configure()
         do {
-            try Auth.auth().useUserAccessGroup(AppConstants.VITTYappgroup)
+            try Auth.auth().useUserAccessGroup(nil)
+            //try Auth.auth().useUserAccessGroup(AppConstants.VITTYappgroup)
         } catch let error as NSError {
             print("Error changing user access group: %@", error)
         }

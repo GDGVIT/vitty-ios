@@ -40,13 +40,25 @@ class AuthService: NSObject, ObservableObject {
     static let notifsSetupKey = "notifsSetupKey"
 
     override init() {
-        do {
-            // try Auth.auth().useUserAccessGroup(AppConstants.VITTYappgroup)
-            try Auth.auth().useUserAccessGroup("122580500.com.gdscvit.vittyios")
-
-        } catch let error as NSError {
-            print("Error changing user access group: %@", error.localizedDescription)
+//        do {
+//            // try Auth.auth().useUserAccessGroup(AppConstants.VITTYappgroup)
+//            //try Auth.auth().useUserAccessGroup("122580500.com.gdscvit.vittyios")
+//            
+//            try Auth.auth().useUserAccessGroup("122580500.com.gdscvit.vittyios")
+//
+//        } catch let error as NSError {
+//            print("Error changing user access group: %@", error.localizedDescription)
+//  
+//        }
+//        
+        do{
+            //try Auth.auth().useUserAccessGroup("122580500.com.gdscvit.vittyios")
+            try Auth.auth().useUserAccessGroup(nil)
+        }catch{
+            print("Second time")
+            print(error)
         }
+        
         loggedInUser = auth.currentUser
         super.init()
 
@@ -111,9 +123,7 @@ class AuthService: NSObject, ObservableObject {
                         let mUser = self?.myUser
                         API.shared.getUser(token: mUser?.token ?? "", username: mUser?.username ?? "")
                         API.shared.getFriends(token: mUser?.token ?? "", username: mUser?.username ?? "")
-                        API.shared.getTimeTable(token: mUser?.token ?? "", username: mUser?.username ?? "")
-                        
-                        
+   
                     }
                 case let .failure(error):
                     print(error)

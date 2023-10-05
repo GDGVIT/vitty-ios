@@ -28,10 +28,6 @@ struct InstructionsView: View {
                 instructions()
                 Spacer()
 
-//                doneButton()
-//                    .onTapGesture {
-//                        //API.shared.signInUser()
-//                    }
                 
                 NavigationLink {
                     HomePage()
@@ -53,14 +49,17 @@ struct InstructionsView: View {
                 LogoutPopup(showLogout: $displayLogout)
             }
         }
-        .onAppear {
+        .fullScreenCover(isPresented: $authState.isNewUser, content: {
+            UserName()
+        })
+//        .onAppear {
 //            ttVM.getData {
 //                if !notifsSetup {
 //                    notifVM.setupNotificationPreferences(timetable: ttVM.timetable)
 //                }
 //            }
 //            notifVM.getNotifPrefs()
-        }
+//         }
     }
 }
 

@@ -9,7 +9,9 @@ import SwiftUI
 
 struct UserName: View {
     @StateObject private var vm = UserNameViewModel()
-
+    @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject var authVM: AuthService
+    
     var body: some View {
         ZStack {
             // background
@@ -19,17 +21,21 @@ struct UserName: View {
             //foreground
             VStack(alignment: .leading) {
                 headerText()
-                textField(text: $vm.usernameTF, tfString: "write something like \"Aryan13\"", height: 75)
+                textField(text: $vm.usernameTF, tfString: "Username", height: 75)
                 
                 textField(text: $vm.regNoTF, tfString: "Registration Number", height: 75)
                 Spacer()
                 continueButton()
             }
 
-        }.toolbar {
+        }
+        .toolbar {
             ToolbarItem(placement: vm.isFirstLogin ? .navigationBarLeading : .navigationBarTrailing) {
                 Image(systemName: vm.isFirstLogin ? "chevron.left" : "xmark")
                     .foregroundColor(.white)
+                    .onTapGesture {
+                        presentationMode.wrappedValue.dismiss()
+                    }
             }
         }
     }
@@ -55,7 +61,7 @@ struct UserName_Previews: PreviewProvider {
 extension UserName {
     private func headerText() -> some View {
         VStack(alignment: .leading) {
-            Text(vm.isFirstLogin ? "Let's Sign you in." : "Let’s add your user name")
+            Text(vm.isFirstLogin ? "Let's Sign you in." : "Let’s add your \ndetails")
                 .font(.custom("Poppins-Medium", size: 32))
                 .fontWeight(.semibold)
                 .foregroundColor(.white)
@@ -67,7 +73,17 @@ extension UserName {
 
     private func continueButton() -> some View {
         Button {
-            // action
+            if vm.isRegistrationNumberValid(){
+                if !vm.usernameTF.isEmpty && !vm.regNoTF.isEmpty{
+                    
+                    var _ = print(authVM.loggedInUser?.uid ?? "no uid from username")
+                    authVM.isNewUser = false
+                    
+                }
+            }else{
+
+                vm.regNoTF = ""
+            }
         } label: {
             Text("Continue")
                 .font(.custom("Poppins-Bold", size: 18))

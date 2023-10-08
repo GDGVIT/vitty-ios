@@ -84,6 +84,10 @@ extension UserName {
 
                             DispatchQueue.main.async {
                                 authVM.myUser = response
+                                
+                                UserDefaults.standard.set(authVM.myUser.token, forKey: AuthService.tokenKey)
+                                UserDefaults.standard.set(authVM.myUser.username, forKey: AuthService.userKey)
+                                
                                 print("created new user")
                             }
                         case let .failure(error):

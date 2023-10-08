@@ -28,11 +28,11 @@ class AuthService: NSObject, ObservableObject {
 
     @Published var myUser: AuthResponse = AuthResponse(name: "", picture: "", role: "", token: "", username: "")
 
-    @Published var username: String = ""
-    @Published var regNo: String = ""
-
     let auth = Auth.auth()
     fileprivate var currentNonce: String?
+    
+    @Published var token: String = ""
+    @Published var username: String = ""
 
     // MARK: UserDefault keys
 
@@ -41,6 +41,9 @@ class AuthService: NSObject, ObservableObject {
     static let useremailKey = "userEmail"
     static let instructionsCompleteKey = "instructionsComplete"
     static let notifsSetupKey = "notifsSetupKey"
+    
+    static let tokenKey = "token"
+    static let userKey = "username"
 
     override init() {
         do {
@@ -171,6 +174,10 @@ class AuthService: NSObject, ObservableObject {
 
                             print("token from the server")
                             print(self?.myUser.token ?? "no token")
+                            
+                            UserDefaults.standard.set(self?.myUser.token, forKey: AuthService.tokenKey)
+                            UserDefaults.standard.set(self?.myUser.username, forKey: AuthService.userKey)
+                            
                             let mUser = self?.myUser
 
                             API.shared.getUser(token: mUser?.token ?? "", username: mUser?.username ?? "")

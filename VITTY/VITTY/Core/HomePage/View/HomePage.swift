@@ -52,7 +52,14 @@ struct HomePage: View {
             .padding(.top)
             .background(Image(timetableViewModel.timetable[TimetableViewModel.daysOfTheWeek[tabSelected]]?.isEmpty ?? false ? "HomeNoClassesBG" : "HomeBG").resizable().scaledToFill().edgesIgnoringSafeArea(.all))
             .onAppear {
-                timetableViewModel.getTimeTable(token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InByYXNoYW5uYS5yYWpiaGFuZGFyaTNAZ21haWwuY29tIiwicm9sZSI6Im5vcm1hbCIsInVzZXJuYW1lIjoicHJhc2hhbm5hdGVzdCJ9.JULv80sjDUdC2SAgpepRcBBZHTsDjisN1xtNZp7-jVs", username: "prashannatest")
+                
+                authVM.token = UserDefaults.standard.string(forKey: AuthService.tokenKey) ?? "no token"
+                authVM.username = UserDefaults.standard.string(forKey: AuthService.userKey) ?? "no username"
+                
+                var _ = print("token: ", authVM.token)
+                var _ = print("username: ", authVM.username)
+                
+                timetableViewModel.getTimeTable(token: authVM.token, username: authVM.username)
 
 //                timetableViewModel.getData {
 //                    if !notifsSetup {

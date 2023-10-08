@@ -16,40 +16,25 @@ struct InstructionsView: View {
     @State var displayLogout: Bool = false
     @State var displayFollowInstructions = false
 
+    @State var hideInstructionsView: Bool = false
+    
     // notifsSetup is true when notifications don't need to be setup and false when they do
     @AppStorage(AuthService.notifsSetupKey) var notifsSetup = false
 
     var body: some View {
         ZStack {
-            VStack {
-                header()
-                    .font(Font.custom("Poppins-Bold", size: 24))
-                    .foregroundColor(Color.white)
-                instructions()
-                Spacer()
-
-                NavigationLink {
-                    HomePage()
-                        .navigationTitle("").navigationBarHidden(true).environmentObject(ttVM).environmentObject(authState).environmentObject(notifVM)
-                } label: {
-                    doneButton()
-                }
-
-
-                NavigationLink(destination: HomePage().navigationTitle("").navigationBarHidden(true).environmentObject(ttVM).environmentObject(authState).environmentObject(notifVM), isActive: $goToHomeScreen) {
-                    EmptyView()
-                }
+            if !hideInstructionsView {
+                instructionsView()
+                    .fullScreenCover(isPresented: $authState.isNewUser, content: {
+                        UserName()
+                    })
+            } else {
+                HomePage()
+                    .navigationTitle("").navigationBarHidden(true).environmentObject(ttVM).environmentObject(authState).environmentObject(notifVM)
             }
-            .blur(radius: displayLogout ? 10 : 0)
-            .padding()
-            .background(Image("InstructionsBG").resizable().scaledToFill().edgesIgnoringSafeArea(.all))
 
-            if displayLogout {
-                LogoutPopup(showLogout: $displayLogout)
-            }
-        }
-        .fullScreenCover(isPresented: $authState.isNewUser, content: {
-            UserName()
+        }.onAppear(perform: {
+            hideInstructionsView = UserDefaults.standard.bool(forKey: "hideInstructionsView")
         })
 
 //        .onAppear {
@@ -73,6 +58,36 @@ struct InstructionsView_Previews: PreviewProvider {
 }
 
 extension InstructionsView {
+    private func instructionsView() -> some View {
+        ZStack {
+            VStack {
+                header()
+                    .font(Font.custom("Poppins-Bold", size: 24))
+                    .foregroundColor(Color.white)
+                instructions()
+                Spacer()
+
+                NavigationLink {
+                    HomePage()
+                        .navigationTitle("").navigationBarHidden(true).environmentObject(ttVM).environmentObject(authState).environmentObject(notifVM)
+                } label: {
+                    doneButton()
+                }
+
+                NavigationLink(destination: HomePage().navigationTitle("").navigationBarHidden(true).environmentObject(ttVM).environmentObject(authState).environmentObject(notifVM), isActive: $goToHomeScreen) {
+                    EmptyView()
+                }
+            }
+            .blur(radius: displayLogout ? 10 : 0)
+            .padding()
+            .background(Image("InstructionsBG").resizable().scaledToFill().edgesIgnoringSafeArea(.all))
+
+            if displayLogout {
+                LogoutPopup(showLogout: $displayLogout)
+            }
+        }
+    }
+
     private func header() -> some View {
         HStack {
             Text("Sync Timetable")
@@ -99,11 +114,12 @@ extension InstructionsView {
 
     private func doneButton() -> some View {
         CustomButton(buttonText: "Done") {
-            if authState.myUser.username == ""{
+            if authState.myUser.username == "" {
                 authState.isNewUser = true
-            }else{
+            } else {
                 self.displayFollowInstructions = true
-                ttVM.getTimeTable(token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InByYXNoYW5uYS5yYWpiaGFuZGFyaTNAZ21haWwuY29tIiwicm9sZSI6Im5vcm1hbCIsInVzZXJuYW1lIjoicHJhc2hhbm5hdGVzdCJ9.JULv80sjDUdC2SAgpepRcBBZHTsDjisN1xtNZp7-jVs", username: "prashannatest")
+                UserDefaults.standard.setValue(true, forKey: "hideInstructionsView")
+
                 goToHomeScreen = true
             }
         }

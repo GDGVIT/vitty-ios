@@ -11,11 +11,11 @@ struct SplashScreen: View {
     @State var selectedTab: Int = 0
     @State var onboardingComplete: Bool = false
     @EnvironmentObject var authState: AuthService
-    
+
     var body: some View {
         VStack {
-            TabView(selection: $selectedTab){
-                ForEach(0..<3) { _ in
+            TabView(selection: $selectedTab) {
+                ForEach(0 ..< 3) { _ in
                     SplashScreenIllustration(selectedTab: $selectedTab)
                 }
             }
@@ -23,31 +23,29 @@ struct SplashScreen: View {
             SplashScreenTabIndicator(selectedTab: $selectedTab)
             Spacer(minLength: 50)
             if selectedTab < 2 {
-                CustomButton(buttonText:"Next") {
+                CustomButton(buttonText: "Next") {
                     selectedTab += 1
                 }
                 .padding(.vertical)
-                
+
             } else {
-                CustomButton(buttonText:"Sign in with Apple",imageString: "logo_apple"){
+                CustomButton(buttonText: "Sign in with Apple", imageString: "logo_apple") {
                     authState.login(with: .appleSignin)
                 }
                 SignupOR()
-                
-                CustomButton(buttonText: "Sign in with Google", imageString: "logo_google"){
+
+                CustomButton(buttonText: "Sign in with Google", imageString: "logo_google") {
                     authState.login(with: .googleSignin)
                 }
             }
             Spacer(minLength: 50)
-            
+
             if authState.loggedInUser != nil {
                 NavigationLink(destination: InstructionsView()) {
                     EmptyView()
                 }
             }
-            
         }
-        //        .transition(.customTransition)
         .padding()
         .background(Image((selectedTab % 2 == 0) ? "SplashScreen13BG" : "SplashScreen2BG").resizable().scaledToFill().edgesIgnoringSafeArea(.all))
     }

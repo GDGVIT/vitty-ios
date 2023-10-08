@@ -103,6 +103,12 @@ extension InstructionsView {
             ttVM.getTimeTable(token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InByYXNoYW5uYS5yYWpiaGFuZGFyaTNAZ21haWwuY29tIiwicm9sZSI6Im5vcm1hbCIsInVzZXJuYW1lIjoicHJhc2hhbm5hdGVzdCJ9.JULv80sjDUdC2SAgpepRcBBZHTsDjisN1xtNZp7-jVs", username: "prashannatest")
             goToHomeScreen = true
             
+
+        }
+    }
+}
+
+
 //            if ttVM.timetable.isEmpty {
 //                ttVM.getData {
 //                    if !notifsSetup {
@@ -114,6 +120,3 @@ extension InstructionsView {
 //                UserDefaults.standard.set(true, forKey: "instructionsComplete")
 //                goToHomeScreen = true
 //            }
-        }
-    }
-}

@@ -20,7 +20,8 @@ struct ContentView: View {
                 InstructionsView()
                     .navigationTitle("")
                     .navigationBarHidden(true)
-                    .animation(.default)
+                    .animation(.default, value: UUID())
+//                    .animation(.default)
             } else {
                 SplashScreen()
                     .navigationTitle("")

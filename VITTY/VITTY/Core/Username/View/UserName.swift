@@ -11,23 +11,22 @@ struct UserName: View {
     @StateObject private var vm = UserNameViewModel()
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var authVM: AuthService
-    
+
     var body: some View {
         ZStack {
             // background
             Color.theme.blueBG
                 .ignoresSafeArea()
-            
-            //foreground
+
+            // foreground
             VStack(alignment: .leading) {
                 headerText()
                 textField(text: $vm.usernameTF, tfString: "Username", height: 75)
-                
+
                 textField(text: $vm.regNoTF, tfString: "Registration Number", height: 75)
                 Spacer()
                 continueButton()
             }
-
         }
         .toolbar {
             ToolbarItem(placement: vm.isFirstLogin ? .navigationBarLeading : .navigationBarTrailing) {
@@ -73,15 +72,26 @@ extension UserName {
 
     private func continueButton() -> some View {
         Button {
-            if vm.isRegistrationNumberValid(){
-                if !vm.usernameTF.isEmpty && !vm.regNoTF.isEmpty{
-                    
-                    var _ = print(authVM.loggedInUser?.uid ?? "no uid from username")
-                    authVM.isNewUser = false
-                    
-                }
-            }else{
+            if vm.isRegistrationNumberValid() {
+                if !vm.usernameTF.isEmpty && !vm.regNoTF.isEmpty {
+                    print(authVM.loggedInUser?.uid ?? "no uid from username")
 
+                    API.shared.signInUser(with: AuthReqBody(uuid: authVM.loggedInUser?.uid ?? "", reg_no: vm.regNoTF, username: vm.usernameTF)) { result in
+                        switch result {
+                        case let .success(response):
+
+                            DispatchQueue.main.async {
+                                authVM.myUser = response
+                                print("created new user")
+                            }
+                        case let .failure(error):
+                            print("error while creating the user ", error.localizedDescription)
+                        }
+                    }
+
+                    authVM.isNewUser = false
+                }
+            } else {
                 vm.regNoTF = ""
             }
         } label: {

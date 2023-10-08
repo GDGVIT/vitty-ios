@@ -27,7 +27,7 @@ class AuthService: NSObject, ObservableObject {
     @Published var isNewUser: Bool = false
 
     @Published var myUser: AuthResponse?
-    
+
     @Published var username: String = ""
     @Published var regNo: String = ""
 
@@ -60,9 +60,7 @@ class AuthService: NSObject, ObservableObject {
         DispatchQueue.main.async {
             guard user != self.loggedInUser else { return }
             self.loggedInUser = user
-
         }
-        
     }
 
     func login(with loginOption: LoginOption) {
@@ -105,45 +103,46 @@ class AuthService: NSObject, ObservableObject {
 
             let credential = GoogleAuthProvider.credential(withIDToken: idToken,
                                                            accessToken: authentication.accessToken)
-            
-  /*
-            
-//
-//            // MARK: temp api impl
-//
-//            API.shared.signInUser(
-//                with: AuthReqBody(uuid: "x1ggyeMYVQaG0oOmz8jmTRuiuhw1",
-//                                  reg_no: "21TES3760",
-//                                  username: "PrashannaTest")
-//            ) { [weak self] result in
-//                switch result {
-//                case let .success(response):
-//                    // print(respose)
-//                    
-//                    self?.isNewUser = false
-//                    DispatchQueue.main.async {
-//                        self?.myUser = response
-//                        print("token from the server")
-//                        print(self?.myUser?.token ?? "no token")
-//                        let mUser = self?.myUser
-//                        API.shared.getUser(token: mUser?.token ?? "", username: mUser?.username ?? "")
-//                        API.shared.getFriends(token: mUser?.token ?? "", username: mUser?.username ?? "")
-//                        
-//                    }
-//                case let .failure(error):
-//                    self?.isNewUser = true
-//                    print(error)
-//                }
-//            }
-//            API.shared.checkUsername(with: "PrashannaTest")
-            
-            */
+
+            /*
+
+             //
+             //            // MARK: temp api impl
+             //
+             //            API.shared.signInUser(
+             //                with: AuthReqBody(uuid: "x1ggyeMYVQaG0oOmz8jmTRuiuhw1",
+             //                                  reg_no: "21TES3760",
+             //                                  username: "PrashannaTest")
+             //            ) { [weak self] result in
+             //                switch result {
+             //                case let .success(response):
+             //                    // print(respose)
+             //
+             //                    self?.isNewUser = false
+             //                    DispatchQueue.main.async {
+             //                        self?.myUser = response
+             //                        print("token from the server")
+             //                        print(self?.myUser?.token ?? "no token")
+             //                        let mUser = self?.myUser
+             //                        API.shared.getUser(token: mUser?.token ?? "", username: mUser?.username ?? "")
+             //                        API.shared.getFriends(token: mUser?.token ?? "", username: mUser?.username ?? "")
+             //
+             //                    }
+             //                case let .failure(error):
+             //                    self?.isNewUser = true
+             //                    print(error)
+             //                }
+             //            }
+             //            API.shared.checkUsername(with: "PrashannaTest")
+
+                         */
 
             print("Google credential created. Proceeding to sign in with Firebase")
             Auth.auth().signIn(with: credential, completion: authResultCompletionHandler)
         }
     }
 
+    //MARK: Completion Handler
     private func authResultCompletionHandler(auth: AuthDataResult?, error: Error?) {
         DispatchQueue.main.async {
             self.isAuthenticating = false
@@ -154,30 +153,29 @@ class AuthService: NSObject, ObservableObject {
                 UserDefaults.standard.set(user.email, forKey: AuthService.useremailKey)
                 UserDefaults.standard.set(false, forKey: AuthService.instructionsCompleteKey)
                 UserDefaults.standard.set(false, forKey: AuthService.notifsSetupKey)
-                
+
                 print("signed in!")
                 print("uid: ", user.uid)
                 print("Name: \(UserDefaults.standard.string(forKey: AuthService.usernameKey) ?? "uname")")
                 print("ProviderId: \(UserDefaults.standard.string(forKey: AuthService.providerIdKey) ?? "provider")")
                 print("Email: \(UserDefaults.standard.string(forKey: AuthService.useremailKey) ?? "email")")
-                
-                //MARK: calling the api after auth is completed
-                
+
+                // MARK: calling the api after auth is completed
+
                 API.shared.signInUser(with: AuthReqBody(uuid: user.uid, reg_no: "", username: "")) { [weak self] result in
-                    switch result{
+                    switch result {
                     case let .success(response):
                         self?.isNewUser = false
                         DispatchQueue.main.async {
                             self?.myUser = response
-                            
+
                             print("token from the server")
                             print(self?.myUser?.token ?? "no token")
                             let mUser = self?.myUser
-                            
+
                             API.shared.getUser(token: mUser?.token ?? "", username: mUser?.username ?? "")
                             print("\n")
                             API.shared.getFriends(token: mUser?.token ?? "", username: mUser?.username ?? "")
-                            
                         }
                     case let .failure(error):
                         self?.isNewUser = true

@@ -58,13 +58,20 @@ struct UserDetailsRow: View {
                         CustomPill(title: wasReqSent ? "Sent" : "Add")
                     })
                 }else if isRequestView{
-                    Button(action: {
+                    HStack{
+                        Button(action: {
+                            
+                        }, label: {
+                            
+                                CustomPill(title: "Accept")
+                            
+                        })
                         
-                    }, label: {
-                        HStack{
-                            CustomPill(title: "Accept")
-                        }
-                    })
+                        Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
+                            Image(systemName: "xmark")
+                                .foregroundColor(Color.white)
+                        })
+                    }
                 }
 
 

@@ -60,6 +60,11 @@ struct MenuView: View {
                 }
                 .padding(.horizontal)
             }
+            .onAppear{
+                authVM.username = UserDefaults.standard.string(forKey: AuthService.userKey) ?? "username"
+                authVM.name = UserDefaults.standard.string(forKey: AuthService.nameKey) ?? "Full Name"
+                authVM.image = UserDefaults.standard.string(forKey: AuthService.imageKey) ?? "Image"
+            }
         }
     }
 }
@@ -78,16 +83,18 @@ extension MenuView {
 
     private func userDetails() -> some View {
         VStack(alignment: .leading) {
-            Circle()
-                .frame(width: 50, height: 40)
+            AsyncImage(url: URL(string: authVM.image))
+                .frame(width: 50, height: 50)
+                .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
+                
 
-            Text("Swayam Sharma")
+            Text(authVM.name)
                 .font(.custom("Poppins", size: 16))
                 .fontWeight(.semibold)
                 .foregroundColor(.white)
                 .padding(.top)
 
-            Text("@swayam.s")
+            Text("@\(authVM.username)")
                 .font(.custom("Poppins-Light", size: 14))
                 .foregroundColor(Color.theme.primary)
         }
@@ -141,6 +148,7 @@ extension MenuView {
         }
         .fullScreenCover(isPresented: $vm.showProfile) {
             Profile()
+                .environmentObject(authVM)
         }
     }
 

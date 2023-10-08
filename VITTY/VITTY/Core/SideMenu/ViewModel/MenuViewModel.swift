@@ -19,4 +19,7 @@ class MenuViewModel : ObservableObject{
     @Published var showSettings : Bool = false
     
     @Published var isGhostModeOn : Bool = false
+    
+    @Published var username: String = ""
+    @Published var name: String = ""
 }

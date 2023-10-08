@@ -33,6 +33,8 @@ class AuthService: NSObject, ObservableObject {
     
     @Published var token: String = ""
     @Published var username: String = ""
+    @Published var name: String = ""
+    @Published var image: String = ""
 
     // MARK: UserDefault keys
 
@@ -44,6 +46,8 @@ class AuthService: NSObject, ObservableObject {
     
     static let tokenKey = "token"
     static let userKey = "username"
+    static let nameKey = "name"
+    static let imageKey = "image"
 
     override init() {
         do {
@@ -177,6 +181,8 @@ class AuthService: NSObject, ObservableObject {
                             
                             UserDefaults.standard.set(self?.myUser.token, forKey: AuthService.tokenKey)
                             UserDefaults.standard.set(self?.myUser.username, forKey: AuthService.userKey)
+                            UserDefaults.standard.set(self?.myUser.name, forKey: AuthService.nameKey)
+                            UserDefaults.standard.set(self?.myUser.picture, forKey: AuthService.imageKey)
                             
                             let mUser = self?.myUser
 

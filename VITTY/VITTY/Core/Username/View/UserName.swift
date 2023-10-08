@@ -87,6 +87,8 @@ extension UserName {
                                 
                                 UserDefaults.standard.set(authVM.myUser.token, forKey: AuthService.tokenKey)
                                 UserDefaults.standard.set(authVM.myUser.username, forKey: AuthService.userKey)
+                                UserDefaults.standard.set(authVM.myUser.name, forKey: AuthService.nameKey)
+                                UserDefaults.standard.set(authVM.myUser.picture, forKey: AuthService.imageKey)
                                 
                                 print("created new user")
                             }

@@ -8,9 +8,13 @@
 import SwiftUI
 
 struct FriendCircle: View {
+    @EnvironmentObject var authState: AuthService
+    
     @Environment(\.presentationMode) var presentationMode
     @State var text: String = ""
     @State var selectedTab: Tabs = .suggestions
+    
+    @StateObject var vm = FriendCircleViewModel()
 
     init() {
         UITabBar.appearance().isHidden = true
@@ -26,6 +30,9 @@ struct FriendCircle: View {
                 toolBarItems()
 
                 textField(text: $text, tfString: "search for friends", height: 70)
+                    .onSubmit {
+                        vm.searchUsers(token: authState.token, query: text)
+                    }
 
                 RoundedRectangle(cornerRadius: 10)
                     .foregroundColor(Color.theme.tfBlue)

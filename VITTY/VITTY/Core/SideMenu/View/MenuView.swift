@@ -170,6 +170,7 @@ extension MenuView {
         }
         .fullScreenCover(isPresented: $vm.showFriendCircle) {
             FriendCircle()
+                .environmentObject(authVM)
         }
     }
 

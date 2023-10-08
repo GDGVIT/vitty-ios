@@ -26,7 +26,7 @@ class AuthService: NSObject, ObservableObject {
 
     @Published var isNewUser: Bool = false
 
-    @Published var myUser: AuthResponse?
+    @Published var myUser: AuthResponse = AuthResponse(name: "", picture: "", role: "", token: "", username: "")
 
     @Published var username: String = ""
     @Published var regNo: String = ""
@@ -170,7 +170,7 @@ class AuthService: NSObject, ObservableObject {
                             self?.myUser = response
 
                             print("token from the server")
-                            print(self?.myUser?.token ?? "no token")
+                            print(self?.myUser.token ?? "no token")
                             let mUser = self?.myUser
 
                             API.shared.getUser(token: mUser?.token ?? "", username: mUser?.username ?? "")

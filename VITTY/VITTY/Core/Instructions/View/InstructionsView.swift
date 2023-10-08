@@ -28,7 +28,6 @@ struct InstructionsView: View {
                 instructions()
                 Spacer()
 
-                
                 NavigationLink {
                     HomePage()
                         .navigationTitle("").navigationBarHidden(true).environmentObject(ttVM).environmentObject(authState).environmentObject(notifVM)
@@ -52,6 +51,7 @@ struct InstructionsView: View {
         .fullScreenCover(isPresented: $authState.isNewUser, content: {
             UserName()
         })
+
 //        .onAppear {
 //            ttVM.getData {
 //                if !notifsSetup {
@@ -99,15 +99,16 @@ extension InstructionsView {
 
     private func doneButton() -> some View {
         CustomButton(buttonText: "Done") {
-            self.displayFollowInstructions = true
-            ttVM.getTimeTable(token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InByYXNoYW5uYS5yYWpiaGFuZGFyaTNAZ21haWwuY29tIiwicm9sZSI6Im5vcm1hbCIsInVzZXJuYW1lIjoicHJhc2hhbm5hdGVzdCJ9.JULv80sjDUdC2SAgpepRcBBZHTsDjisN1xtNZp7-jVs", username: "prashannatest")
-            goToHomeScreen = true
-            
-
+            if authState.myUser.username == ""{
+                authState.isNewUser = true
+            }else{
+                self.displayFollowInstructions = true
+                ttVM.getTimeTable(token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InByYXNoYW5uYS5yYWpiaGFuZGFyaTNAZ21haWwuY29tIiwicm9sZSI6Im5vcm1hbCIsInVzZXJuYW1lIjoicHJhc2hhbm5hdGVzdCJ9.JULv80sjDUdC2SAgpepRcBBZHTsDjisN1xtNZp7-jVs", username: "prashannatest")
+                goToHomeScreen = true
+            }
         }
     }
 }
-
 
 //            if ttVM.timetable.isEmpty {
 //                ttVM.getData {

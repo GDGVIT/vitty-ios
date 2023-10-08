@@ -20,21 +20,23 @@ struct UserName: View {
 
             // foreground
             VStack(alignment: .leading) {
+                HStack {
+                    Spacer()
+                    Image(systemName: vm.isFirstLogin ? "chevron.left" : "xmark")
+                        .font(.title2)
+                        .foregroundColor(.white)
+                        .onTapGesture {
+                            presentationMode.wrappedValue.dismiss()
+                        }
+                }
+                .padding(.horizontal)
+                
                 headerText()
                 textField(text: $vm.usernameTF, tfString: "Username", height: 75)
 
                 textField(text: $vm.regNoTF, tfString: "Registration Number", height: 75)
                 Spacer()
                 continueButton()
-            }
-        }
-        .toolbar {
-            ToolbarItem(placement: vm.isFirstLogin ? .navigationBarLeading : .navigationBarTrailing) {
-                Image(systemName: vm.isFirstLogin ? "chevron.left" : "xmark")
-                    .foregroundColor(.white)
-                    .onTapGesture {
-                        presentationMode.wrappedValue.dismiss()
-                    }
             }
         }
     }

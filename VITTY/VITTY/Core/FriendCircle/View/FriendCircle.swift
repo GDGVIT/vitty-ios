@@ -9,7 +9,7 @@ import SwiftUI
 
 struct FriendCircle: View {
     @Environment(\.presentationMode) var presentationMode
-    @State var text: String = " "
+    @State var text: String = ""
     @State var selectedTab: Tabs = .suggestions
 
     init() {
@@ -25,7 +25,7 @@ struct FriendCircle: View {
             VStack {
                 toolBarItems()
 
-                textField(text: $text, tfString: "search for friends", height: 75)
+                textField(text: $text, tfString: "search for friends", height: 70)
 
                 RoundedRectangle(cornerRadius: 10)
                     .foregroundColor(Color.theme.tfBlue)

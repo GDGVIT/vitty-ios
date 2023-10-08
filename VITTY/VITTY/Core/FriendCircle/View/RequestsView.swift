@@ -8,25 +8,32 @@
 import SwiftUI
 
 struct RequestsView: View {
+    @EnvironmentObject private var authState: AuthService
+    @EnvironmentObject private var vm: FriendCircleViewModel
+
     var body: some View {
         ZStack {
             Color.theme.blueBG
                 .ignoresSafeArea()
-            VStack(alignment: .leading){
+            VStack(alignment: .leading) {
                 Text("Requests")
                     .font(.custom("Poppins", size: 16))
                     .foregroundColor(Color.theme.tfBlueLight)
                     .padding(.leading)
-                
-                ForEach(1 ... 3, id: \.self) { _ in
-                    FriendCircleSuggestionRow(name: "name", username: "username", url: "")
+
+                ForEach(vm.getFriendRequests, id: \.self) { requests in
+                    FriendCircleSuggestionRow(name: requests.from.name, username: requests.from.username, url: requests.from.picture, token: authState.token, wasReqSent: true)
                 }
+
                 Spacer()
             }
             .padding(.top)
             .background(Color.theme.blueBG)
-        .ignoresSafeArea()
+            .ignoresSafeArea()
         }
+        .onAppear(perform: {
+            vm.getFriendRequest(token: authState.token)
+        })
     }
 }
 

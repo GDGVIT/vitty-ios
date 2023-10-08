@@ -36,7 +36,8 @@ struct FriendCircle: View {
                     }
                 
                 ForEach(vm.searchedUsers, id:\.self){user in
-                    FriendCircleSuggestionRow(name: user.name, username: user.username, url: user.picture)
+                    FriendCircleSuggestionRow(name: user.name, username: user.username, url: user.picture, token: authState.token)
+                        .environmentObject(vm)
                     
                 }
 
@@ -46,6 +47,8 @@ struct FriendCircle: View {
                     SuggestionsView()
                         .tag(Tabs.suggestions)
                     RequestsView()
+                        .environmentObject(authState)
+                        .environmentObject(vm)
                         .tag(Tabs.requests)
                     FriendsView()
                         .tag(Tabs.friends)
@@ -58,6 +61,9 @@ struct FriendCircle: View {
             .padding(.top)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+//        .onAppear(perform: {
+//            vm.getFriendRequest(token: authState.token)
+//        })
     }
 }
 

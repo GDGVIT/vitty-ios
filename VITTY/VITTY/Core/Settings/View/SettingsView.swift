@@ -16,9 +16,22 @@ struct SettingsView: View {
     @EnvironmentObject var authVM: AuthService
     @EnvironmentObject var ttVM: TimetableViewModel
     @EnvironmentObject var notifVM: NotificationsViewModel
+    
+    @Environment(\.presentationMode) var presentationMode
 
     var body: some View {
         VStack(alignment: .leading) {
+            
+            HStack{
+                Spacer()
+                Image(systemName: "xmark")
+                    .foregroundColor(.white)
+                    .padding(.trailing)
+                    .onTapGesture {
+                        presentationMode.wrappedValue.dismiss()
+                    }
+            }
+            
             turnOffNotificationsToggle()
                 .padding(.vertical)
             

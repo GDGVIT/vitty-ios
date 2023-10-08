@@ -36,9 +36,8 @@ struct FriendCircle: View {
                     }
                 
                 ForEach(vm.searchedUsers, id:\.self){user in
-                    FriendCircleSuggestionRow(name: user.name, username: user.username, url: user.picture, token: authState.token)
+                    UserDetailsRow(name: user.name, username: user.username, url: user.picture, token: authState.token, isSuggestionOrSendReq: true, isRequestView: false, isFriendsView: false)
                         .environmentObject(vm)
-                    
                 }
 
                 //inviteFriendsCard()

@@ -19,7 +19,7 @@ struct FriendsView: View {
                     .padding(.leading)
                 
                 ForEach(1 ... 3, id: \.self) { _ in
-                    FriendCircleSuggestionRow(name: "name", username: "username", url: "", token: "")
+                    UserDetailsRow(name: "requests.from.name", username: "requests.from.username", url: "requests.from.picture", token: "authState.token", isSuggestionOrSendReq: false, wasReqSent: false, isRequestView: false, isFriendsView: true)
                 }
                 Spacer()
             }

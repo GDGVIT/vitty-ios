@@ -22,7 +22,7 @@ struct RequestsView: View {
                     .padding(.leading)
 
                 ForEach(vm.getFriendRequests, id: \.self) { requests in
-                    FriendCircleSuggestionRow(name: requests.from.name, username: requests.from.username, url: requests.from.picture, token: authState.token, wasReqSent: true)
+                    UserDetailsRow(name: requests.from.name, username: requests.from.username, url: requests.from.picture, token: authState.token, isSuggestionOrSendReq: false, wasReqSent: false, isRequestView: true, isFriendsView: false)
                 }
 
                 Spacer()

@@ -19,7 +19,7 @@ struct SuggestionsView: View {
                     .padding(.leading)
                 
                 ForEach(1 ... 3, id: \.self) { _ in
-                    FriendCircleSuggestionRow(name: "name", username: "username", url: "", token: "")
+                    UserDetailsRow(name: "name", username: "username", url: "", token: "")
                 }
                 Spacer()
             }

@@ -32,36 +32,15 @@ struct FriendCircle: View {
                 textField(text: $text, tfString: "search for friends", height: 70)
                     .onSubmit {
                         vm.searchUsers(token: authState.token, query: text)
+                        
                     }
+                
+                ForEach(vm.searchedUsers, id:\.self){user in
+                    FriendCircleSuggestionRow(name: user.name, username: user.username, url: user.picture)
+                    
+                }
 
-                RoundedRectangle(cornerRadius: 10)
-                    .foregroundColor(Color.theme.tfBlue)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 75)
-
-                    .overlay(alignment: .leading) {
-                        HStack {
-                            Circle()
-                                .frame(width: 40, height: 40)
-
-                            VStack(alignment: .leading) {
-                                Text("Invite friends on VITTY")
-                                    .font(.custom("Poppins-Medium", size: 16))
-                                    .fontWeight(.semibold)
-                                    .foregroundColor(.white)
-                                Text("Kraryan")
-                                    .font(.custom("Poppins", size: 14))
-                                    .foregroundColor(Color.theme.tfBlueLight)
-                            }
-                            Spacer()
-                            Image("link")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 20, height: 20)
-                        }
-                        .padding()
-                    }
-                    .padding(.horizontal)
+                //inviteFriendsCard()
 
                 TabView(selection: $selectedTab) {
                     SuggestionsView()
@@ -119,5 +98,37 @@ extension FriendCircle {
                 .font(.custom("Poppins-Medium", size: 16))
                 .foregroundColor(Color.theme.primary)
         }.padding(.leading)
+    }
+    
+    
+    private func inviteFriendsCard() -> some View{
+        RoundedRectangle(cornerRadius: 10)
+            .foregroundColor(Color.theme.tfBlue)
+            .frame(maxWidth: .infinity)
+            .frame(height: 75)
+
+            .overlay(alignment: .leading) {
+                HStack {
+                    Circle()
+                        .frame(width: 40, height: 40)
+
+                    VStack(alignment: .leading) {
+                        Text("Invite friends on VITTY")
+                            .font(.custom("Poppins-Medium", size: 16))
+                            .fontWeight(.semibold)
+                            .foregroundColor(.white)
+                        Text("Kraryan")
+                            .font(.custom("Poppins", size: 14))
+                            .foregroundColor(Color.theme.tfBlueLight)
+                    }
+                    Spacer()
+                    Image("link")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 20, height: 20)
+                }
+                .padding()
+            }
+            .padding(.horizontal)
     }
 }

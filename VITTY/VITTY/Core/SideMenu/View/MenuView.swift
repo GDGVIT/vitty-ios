@@ -83,9 +83,8 @@ extension MenuView {
 
     private func userDetails() -> some View {
         VStack(alignment: .leading) {
-            AsyncImage(url: URL(string: authVM.image))
-                .frame(width: 50, height: 50)
-                .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
+            
+            UserImage(url: authVM.image, height: 40, width: 40)
                 
 
             Text(authVM.name)

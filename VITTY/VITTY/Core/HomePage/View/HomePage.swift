@@ -106,7 +106,7 @@ struct HomePage_Previews: PreviewProvider {
 extension HomePage {
     private func navBarItems() -> some View {
         VStack(alignment: .leading) {
-            HomePageHeader(goToSettings: $goToSettings, showLogout: $showLogout)
+            HomePageHeader(goToSettings: $goToSettings, showLogout: $showLogout, url: authVM.image)
                 .environmentObject(homePageVM)
                 .padding()
             HomeTabBarView(tabSelected: $tabSelected)

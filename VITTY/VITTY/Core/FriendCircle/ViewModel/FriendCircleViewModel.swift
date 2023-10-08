@@ -8,11 +8,24 @@
 import Foundation
 
 class FriendCircleViewModel: ObservableObject {
-    
     @Published var searchedUsers: [FriendResponse] = []
-    
+
+    func downloadData(fromURLRequest urlReq: URLRequest, completionHandler: @escaping (_ data: Data?) -> Void) {
+        URLSession.shared.dataTask(with: urlReq) { data, response, error in
+            guard let data = data,
+                  error == nil,
+                  let response = response as? HTTPURLResponse,
+                  response.statusCode >= 200 && response.statusCode < 300 else {
+                print("error downloading data")
+                completionHandler(nil)
+                return
+            }
+            completionHandler(data)
+
+        }.resume()
+    }
+
     func searchUsers(token: String, query: String) {
-        
         guard let url = URL(string: "\(APIConstants.base_url)/api/v2/users/search?query=\(query)") else {
             return
         }
@@ -21,32 +34,20 @@ class FriendCircleViewModel: ObservableObject {
 
         request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         request.httpMethod = "GET"
-        
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data, error == nil else {
-                print("Error: \(error?.localizedDescription ?? "Unknown error")")
-                return
-            }
-            
-            guard let response = response as? HTTPURLResponse else {
-                print("Invalid response")
-                return
-            }
-            
-            print("data from", url)
-            print(data)
-            
-            do {
-                let users = try JSONDecoder().decode([FriendResponse].self, from: data)
-                
-                DispatchQueue.main.async { [weak self] in
-                    self?.searchedUsers = users
-                    print("searched users", self?.searchedUsers ?? [])
+
+        downloadData(fromURLRequest: request) { returnedData in
+            if let data = returnedData {
+                do {
+                    let users = try JSONDecoder().decode([FriendResponse].self, from: data)
+
+                    DispatchQueue.main.async { [weak self] in
+                        self?.searchedUsers = users
+                        print("searched users", self?.searchedUsers ?? [])
+                    }
+                } catch {
+                    print("Error decoding JSON: \(error.localizedDescription)")
                 }
-            } catch {
-                print("Error decoding JSON: \(error.localizedDescription)")
             }
-            
-        }.resume()
+        }
     }
 }

@@ -11,6 +11,8 @@ struct HomePageHeader: View {
     @Binding var goToSettings: Bool
     @Binding var showLogout: Bool
     
+    let url: String
+    
     @EnvironmentObject var viewModel: HomePageViewModel
     
     var body: some View {
@@ -18,11 +20,16 @@ struct HomePageHeader: View {
             Text("Schedule")
             Spacer()
             
-            Circle()
-                .frame(width: 30, height: 30)
+            UserImage(url: url, height: 30, width: 40)
                 .onTapGesture {
                     viewModel.sideMenu()
                 }
+            
+//            Circle()
+//                .frame(width: 30, height: 30)
+//                .onTapGesture {
+//                    viewModel.sideMenu()
+//                }
         }
         .font(Font.custom("Poppins-Bold", size: 22))
         .foregroundColor(Color.white)
@@ -42,7 +49,7 @@ struct HomePageHeader: View {
 
 struct HomePageHeader_Previews: PreviewProvider {
     static var previews: some View {
-        HomePageHeader(goToSettings: .constant(false), showLogout: .constant(false))
+        HomePageHeader(goToSettings: .constant(false), showLogout: .constant(false), url: "")
             .environmentObject(HomePageViewModel())
             .previewLayout(.sizeThatFits)
     }

@@ -8,7 +8,7 @@
 import Foundation
 
 struct TimeTableInformation: Codable {
-    var isTimetableAvailable: Bool?
-    var isUpdated: Bool?
-    var timetableVersion: Int?
+	var isTimetableAvailable: Bool?
+	var isUpdated: Bool?
+	var timetableVersion: Int?
 }

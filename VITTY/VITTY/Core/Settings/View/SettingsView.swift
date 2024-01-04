@@ -8,139 +8,142 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @AppStorage("examMode") var examModeOn: Bool = false
+	@AppStorage("examMode") var examModeOn: Bool = false
 
-    var githubURL = URL(string: "https://github.com/GDGVIT/vitty-ios")
-    var gdscURL = URL(string: "https://dscvit.com/")
+	var githubURL = URL(string: "https://github.com/GDGVIT/vitty-ios")
+	var gdscURL = URL(string: "https://dscvit.com/")
 
-    @EnvironmentObject var authVM: AuthService
-    @EnvironmentObject var ttVM: TimetableViewModel
-    @EnvironmentObject var notifVM: NotificationsViewModel
-    
-    @Environment(\.presentationMode) var presentationMode
+	@EnvironmentObject var authVM: AuthService
+	@EnvironmentObject var ttVM: TimetableViewModel
+	@EnvironmentObject var notifVM: NotificationsViewModel
 
-    var body: some View {
-        VStack(alignment: .leading) {
-            
-            HStack{
-                Spacer()
-                Image(systemName: "xmark")
-                    .foregroundColor(.white)
-                    .padding(.trailing)
-                    .onTapGesture {
-                        presentationMode.wrappedValue.dismiss()
-                    }
-            }
-            
-            turnOffNotificationsToggle()
-                .padding(.vertical)
-            
-            aboutSection()
+	@Environment(\.presentationMode) var presentationMode
 
-            Spacer()
-        }
-        .padding()
-        .font(.custom("Poppins-Regular", size: 16))
-        .foregroundColor(.white)
-        .background(Image("HomeBG").resizable().scaledToFill().edgesIgnoringSafeArea(.all))
-        .navigationTitle("Settings")
-        .navigationBarTitleDisplayMode(.inline)
-        .onChange(of: examModeOn) { examMode in
-            if examMode {
-                print("exam mode is on")
-                NotificationsManager.shared.removeAllNotificationRequests()
-            } else {
-                notifVM.updateNotifs(timetable: ttVM.timetable)
-            }
-        }
-        .onAppear {
-            notifVM.updateNotifs(timetable: ttVM.timetable)
-        }
-    }
+	var body: some View {
+		VStack(alignment: .leading) {
+
+			HStack {
+				Spacer()
+				Image(systemName: "xmark")
+					.foregroundColor(.white)
+					.padding(.trailing)
+					.onTapGesture {
+						presentationMode.wrappedValue.dismiss()
+					}
+			}
+
+			turnOffNotificationsToggle()
+				.padding(.vertical)
+
+			aboutSection()
+
+			Spacer()
+		}
+		.padding()
+		.font(.custom("Poppins-Regular", size: 16))
+		.foregroundColor(.white)
+		.background(Image("HomeBG").resizable().scaledToFill().edgesIgnoringSafeArea(.all))
+		.navigationTitle("Settings")
+		.navigationBarTitleDisplayMode(.inline)
+		.onChange(of: examModeOn) { examMode in
+			if examMode {
+				print("exam mode is on")
+				NotificationsManager.shared.removeAllNotificationRequests()
+			}
+			else {
+				notifVM.updateNotifs(timetable: ttVM.timetable)
+			}
+		}
+		.onAppear {
+			notifVM.updateNotifs(timetable: ttVM.timetable)
+		}
+	}
 }
 
 struct SettingsView_Previews: PreviewProvider {
-    static var previews: some View {
-        SettingsView()
-            .environmentObject(AuthService())
-            .environmentObject(TimetableViewModel())
-            .environmentObject(NotificationsViewModel())
-    }
+	static var previews: some View {
+		SettingsView()
+			.environmentObject(AuthService())
+			.environmentObject(TimetableViewModel())
+			.environmentObject(NotificationsViewModel())
+	}
 }
 
 extension SettingsView {
-    // MARK: Notification Toggle
+	// MARK: Notification Toggle
 
-    private func turnOffNotificationsToggle() -> some View {
-        VStack(alignment: .leading) {
-            Text("Notifications")
-                .font(.custom("Poppins-SemiBold", size: 18))
+	private func turnOffNotificationsToggle() -> some View {
+		VStack(alignment: .leading) {
+			Text("Notifications")
+				.font(.custom("Poppins-SemiBold", size: 18))
 
-            if NotificationsManager.shared.authStatus == .denied {
-                HStack {
-                    VStack(alignment: .leading) {
-                        Text("Notifications turned off")
-                            .font(.custom("Poppins-Medium", size: 16))
-                        Text("Go to Settings to enable notifications!")
-                            .font(.custom("Poppins-Regular", size: 14))
-                            .foregroundColor(Color.vprimary)
-                    }
-                    Spacer()
-                    Image(systemName: "chevron.right")
-                }
-                .onTapGesture {
-                    if let url = URL(string: UIApplication.openSettingsURLString), UIApplication.shared.canOpenURL(url) {
-                        UIApplication.shared.open(url, options: [:], completionHandler: nil)
-                    }
-                }
-            }
-            Toggle(isOn: $examModeOn) {
-                VStack(alignment: .leading) {
-                    Text("Exam/Holiday Mode")
-                        .font(.custom("Poppins-Medium", size: 16))
-                    Text("Turns off class notifications")
-                        .font(.custom("Poppins-Regular", size: 14))
-                        .foregroundColor(Color.vprimary)
-                }
-            }
-        }
-    }
+			if NotificationsManager.shared.authStatus == .denied {
+				HStack {
+					VStack(alignment: .leading) {
+						Text("Notifications turned off")
+							.font(.custom("Poppins-Medium", size: 16))
+						Text("Go to Settings to enable notifications!")
+							.font(.custom("Poppins-Regular", size: 14))
+							.foregroundColor(Color.vprimary)
+					}
+					Spacer()
+					Image(systemName: "chevron.right")
+				}
+				.onTapGesture {
+					if let url = URL(string: UIApplication.openSettingsURLString),
+						UIApplication.shared.canOpenURL(url)
+					{
+						UIApplication.shared.open(url, options: [:], completionHandler: nil)
+					}
+				}
+			}
+			Toggle(isOn: $examModeOn) {
+				VStack(alignment: .leading) {
+					Text("Exam/Holiday Mode")
+						.font(.custom("Poppins-Medium", size: 16))
+					Text("Turns off class notifications")
+						.font(.custom("Poppins-Regular", size: 14))
+						.foregroundColor(Color.vprimary)
+				}
+			}
+		}
+	}
 
-    // MARK: About
+	// MARK: About
 
-    private func aboutSection() -> some View {
-        VStack(alignment: .leading) {
-            Text("About")
-                .font(.custom("Poppins-SemiBold", size: 18))
+	private func aboutSection() -> some View {
+		VStack(alignment: .leading) {
+			Text("About")
+				.font(.custom("Poppins-SemiBold", size: 18))
 
-            HStack(spacing: 5) {
-                Image("github-icon")
-                    .resizable()
-                    .scaledToFit()
-                Text("GitHub Repository")
-            }
-            .frame(height: 35)
-            .onTapGesture {
-                if let url = githubURL {
-                    UIApplication.shared.open(url)
-                }
-            }
-            HStack(spacing: 5) {
-                Image("gdsc-logo")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 35)
+			HStack(spacing: 5) {
+				Image("github-icon")
+					.resizable()
+					.scaledToFit()
+				Text("GitHub Repository")
+			}
+			.frame(height: 35)
+			.onTapGesture {
+				if let url = githubURL {
+					UIApplication.shared.open(url)
+				}
+			}
+			HStack(spacing: 5) {
+				Image("gdsc-logo")
+					.resizable()
+					.scaledToFit()
+					.frame(width: 35)
 
-                Text("GDSC VIT")
-                    .padding(.leading, 10)
-            }
-            .padding(.leading, 10)
-            .frame(height: 35)
-            .onTapGesture {
-                if let url = gdscURL {
-                    UIApplication.shared.open(url)
-                }
-            }
-        }
-    }
+				Text("GDSC VIT")
+					.padding(.leading, 10)
+			}
+			.padding(.leading, 10)
+			.frame(height: 35)
+			.onTapGesture {
+				if let url = gdscURL {
+					UIApplication.shared.open(url)
+				}
+			}
+		}
+	}
 }

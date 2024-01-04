@@ -7,6 +7,6 @@
 
 import Foundation
 
-struct APIConstants{
-    static let base_url = "https://vitty-api.dhruvshah.live"
+struct APIConstants {
+	static let base_url = "https://vitty-api.dhruvshah.live"
 }

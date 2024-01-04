@@ -7,7 +7,7 @@
 
 import Foundation
 
-class ProfileViewModel : ObservableObject{
-    @Published var fullName : String = ""
-    @Published var userName : String = ""
+class ProfileViewModel: ObservableObject {
+	@Published var fullName: String = ""
+	@Published var userName: String = ""
 }

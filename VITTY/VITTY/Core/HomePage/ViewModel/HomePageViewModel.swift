@@ -8,13 +8,13 @@
 import Foundation
 import SwiftUI
 
-class HomePageViewModel: ObservableObject{
-    
-    @Published var isPresented: Bool = false
-    
-    func sideMenu(){
-        print("side menu bar pressed")
-        isPresented.toggle()
-    }
-    
+class HomePageViewModel: ObservableObject {
+
+	@Published var isPresented: Bool = false
+
+	func sideMenu() {
+		print("side menu bar pressed")
+		isPresented.toggle()
+	}
+
 }

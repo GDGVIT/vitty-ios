@@ -106,6 +106,9 @@
 		31EC946A2788BCDF00EA07BE /* Classes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EC94692788BCDF00EA07BE /* Classes.swift */; };
 		31EC946E2789409D00EA07BE /* TimetableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EC946D2789409D00EA07BE /* TimetableViewModel.swift */; };
 		31F9B733279AA342006D1012 /* TimeTableScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F9B732279AA342006D1012 /* TimeTableScrollView.swift */; };
+		5251A7FA2B46E3A800D44CFE /* SwiftFormat in Frameworks */ = {isa = PBXBuildFile; productRef = 5251A7F92B46E3A800D44CFE /* SwiftFormat */; };
+		5251A7FC2B46E3A800D44CFE /* SwiftFormatConfiguration in Frameworks */ = {isa = PBXBuildFile; productRef = 5251A7FB2B46E3A800D44CFE /* SwiftFormatConfiguration */; };
+		5251A7FE2B46E3A800D44CFE /* swift-format in Frameworks */ = {isa = PBXBuildFile; productRef = 5251A7FD2B46E3A800D44CFE /* swift-format */; };
 		5D141B052A2658CD005977F8 /* textField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D141B042A2658CD005977F8 /* textField.swift */; };
 		5D141B0A2A265B15005977F8 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D141B092A265B15005977F8 /* Profile.swift */; };
 		5D141B0C2A265B32005977F8 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D141B0B2A265B32005977F8 /* ProfileViewModel.swift */; };
@@ -243,6 +246,7 @@
 		31EC94692788BCDF00EA07BE /* Classes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Classes.swift; sourceTree = "<group>"; };
 		31EC946D2789409D00EA07BE /* TimetableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimetableViewModel.swift; sourceTree = "<group>"; };
 		31F9B732279AA342006D1012 /* TimeTableScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTableScrollView.swift; sourceTree = "<group>"; };
+		5251A7FF2B46E3C000D44CFE /* .swift-format */ = {isa = PBXFileReference; lastKnownFileType = text; path = ".swift-format"; sourceTree = "<group>"; };
 		5D141B042A2658CD005977F8 /* textField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = textField.swift; sourceTree = "<group>"; };
 		5D141B092A265B15005977F8 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		5D141B0B2A265B32005977F8 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
@@ -305,13 +309,16 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5251A7FE2B46E3A800D44CFE /* swift-format in Frameworks */,
 				31A2A49827894C16005679EB /* FirebaseAnalytics in Frameworks */,
 				31A2A49C27894C16005679EB /* FirebaseCrashlytics in Frameworks */,
 				31A2A4A227894C16005679EB /* FirebaseMessaging in Frameworks */,
 				31A2A49A27894C16005679EB /* FirebaseAuth in Frameworks */,
+				5251A7FA2B46E3A800D44CFE /* SwiftFormat in Frameworks */,
 				31A2A49E27894C16005679EB /* FirebaseFirestore in Frameworks */,
 				316A1EF12776238500CC1DE8 /* GoogleSignIn in Frameworks */,
 				31D2F80027BA6592000C0308 /* FirebaseRemoteConfig in Frameworks */,
+				5251A7FC2B46E3A800D44CFE /* SwiftFormatConfiguration in Frameworks */,
 				5D45CE362ABB133E005F14F8 /* FirebaseFirestoreSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -421,6 +428,7 @@
 		314A408227383BEC0058082F = {
 			isa = PBXGroup;
 			children = (
+				5251A7FF2B46E3C000D44CFE /* .swift-format */,
 				5D95374A2A96821A00EA1D4D /* Confidential.swift */,
 				314A408E27383BEC0058082F /* VITTYApp.swift */,
 				314A409027383BEC0058082F /* ContentView.swift */,
@@ -1007,6 +1015,9 @@
 				31A2A4A127894C16005679EB /* FirebaseMessaging */,
 				31D2F7FF27BA6592000C0308 /* FirebaseRemoteConfig */,
 				5D45CE352ABB133E005F14F8 /* FirebaseFirestoreSwift */,
+				5251A7F92B46E3A800D44CFE /* SwiftFormat */,
+				5251A7FB2B46E3A800D44CFE /* SwiftFormatConfiguration */,
+				5251A7FD2B46E3A800D44CFE /* swift-format */,
 			);
 			productName = VITTY;
 			productReference = 314A408B27383BEC0058082F /* VITTY.app */;
@@ -1042,6 +1053,7 @@
 			packageReferences = (
 				316A1EEF2776238500CC1DE8 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 				31A2A49627894C16005679EB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				5251A7F82B46E3A800D44CFE /* XCRemoteSwiftPackageReference "swift-format" */,
 			);
 			productRefGroup = 314A408C27383BEC0058082F /* Products */;
 			projectDirPath = "";
@@ -1569,6 +1581,14 @@
 				kind = branch;
 			};
 		};
+		5251A7F82B46E3A800D44CFE /* XCRemoteSwiftPackageReference "swift-format" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-format";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 509.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1621,6 +1641,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 31A2A49627894C16005679EB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseRemoteConfig;
+		};
+		5251A7F92B46E3A800D44CFE /* SwiftFormat */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5251A7F82B46E3A800D44CFE /* XCRemoteSwiftPackageReference "swift-format" */;
+			productName = SwiftFormat;
+		};
+		5251A7FB2B46E3A800D44CFE /* SwiftFormatConfiguration */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5251A7F82B46E3A800D44CFE /* XCRemoteSwiftPackageReference "swift-format" */;
+			productName = SwiftFormatConfiguration;
+		};
+		5251A7FD2B46E3A800D44CFE /* swift-format */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5251A7F82B46E3A800D44CFE /* XCRemoteSwiftPackageReference "swift-format" */;
+			productName = "swift-format";
 		};
 		5D45CE332ABB132D005F14F8 /* FirebaseFirestoreSwift */ = {
 			isa = XCSwiftPackageProductDependency;

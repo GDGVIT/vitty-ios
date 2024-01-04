@@ -12,162 +12,162 @@ import FirebaseFirestoreSwift
 import Foundation
 
 class TimetableViewModel: ObservableObject {
-    @Published var timetable: [String: [Classes]] = [:]
-    @Published var goToHomeScreen: Bool = false
+	@Published var timetable: [String: [Classes]] = [:]
+	@Published var goToHomeScreen: Bool = false
 
-    @Published var myTimeTable: TimetableModel?
+	@Published var myTimeTable: TimetableModel?
 
-    @Published var classesCompleted: Int = 0
+	@Published var classesCompleted: Int = 0
 
-    var components = Calendar.current.dateComponents([.weekday], from: Date())
+	var components = Calendar.current.dateComponents([.weekday], from: Date())
 
-    private let authenticationServices = AuthService()
+	private let authenticationServices = AuthService()
 
-    var versionChanged: Bool = false
+	var versionChanged: Bool = false
 
-    static let daysOfTheWeek = [
-        "monday",
-        "tuesday",
-        "wednesday",
-        "thursday",
-        "friday",
-        "saturday",
-        "sunday",
-    ]
+	static let daysOfTheWeek = [
+		"monday",
+		"tuesday",
+		"wednesday",
+		"thursday",
+		"friday",
+		"saturday",
+		"sunday",
+	]
 
-    private var cancellables: Set<AnyCancellable> = []
+	private var cancellables: Set<AnyCancellable> = []
 
-    func mapToOldModel(newModel: TimetableModel) -> [String: [Classes]] {
-        var oldModel: [String: [Classes]] = [:]
+	func mapToOldModel(newModel: TimetableModel) -> [String: [Classes]] {
+		var oldModel: [String: [Classes]] = [:]
 
-        for (key, timetableItems) in newModel.data {
-            var classesArray: [Classes] = []
+		for (key, timetableItems) in newModel.data {
+			var classesArray: [Classes] = []
 
-            for timetableItem in timetableItems {
-                let classes = Classes(
-                    courseType: timetableItem.type,
-                    courseCode: timetableItem.code,
-                    courseName: timetableItem.name,
-                    location: timetableItem.venue,
-                    slot: timetableItem.slot,
-                    startTime: parseTimeToDate(timetableItem.start_time),
-                    endTime: parseTimeToDate(timetableItem.end_time)
-                )
+			for timetableItem in timetableItems {
+				let classes = Classes(
+					courseType: timetableItem.type,
+					courseCode: timetableItem.code,
+					courseName: timetableItem.name,
+					location: timetableItem.venue,
+					slot: timetableItem.slot,
+					startTime: parseTimeToDate(timetableItem.start_time),
+					endTime: parseTimeToDate(timetableItem.end_time)
+				)
 
-                classesArray.append(classes)
-            }
+				classesArray.append(classes)
+			}
 
-            oldModel[key] = classesArray
-        }
+			oldModel[key] = classesArray
+		}
 
-        return oldModel
-    }
-    
-    func parseTimeToDate(_ dateString: String) -> Date{
-        var changedDate = replaceYearIfZero(dateString)
-        let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "en_US_POSIX")
-        formatter.timeZone = TimeZone(identifier: "UTC")
-        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
+		return oldModel
+	}
 
-        if let newDate = formatter.date(from: changedDate) {
-            return newDate
-        } else {
-            print("no date was converted")
-            return Date()
-        }
-    }
+	func parseTimeToDate(_ dateString: String) -> Date {
+		var changedDate = replaceYearIfZero(dateString)
+		let formatter = DateFormatter()
+		formatter.locale = Locale(identifier: "en_US_POSIX")
+		formatter.timeZone = TimeZone(identifier: "UTC")
+		formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
 
+		if let newDate = formatter.date(from: changedDate) {
+			return newDate
+		}
+		else {
+			print("no date was converted")
+			return Date()
+		}
+	}
 
-    
-//    func parseTimeToDate(_ timeString: String) -> Date{
-//        var date = replaceYearIfZero(timeString)
-//        
-//        let formatter = DateFormatter()
-//        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ"
-//        
-//        if let newDate =  formatter.date(from: date){
-//            return newDate
-//        }else{
-//            print("no date was converted")
-//            return Date()
-//        }
-//    }
+	//    func parseTimeToDate(_ timeString: String) -> Date{
+	//        var date = replaceYearIfZero(timeString)
+	//
+	//        let formatter = DateFormatter()
+	//        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ"
+	//
+	//        if let newDate =  formatter.date(from: date){
+	//            return newDate
+	//        }else{
+	//            print("no date was converted")
+	//            return Date()
+	//        }
+	//    }
 
+	func replaceYearIfZero(_ dateStr: String) -> String {
+		if dateStr.hasPrefix("0") {
+			let index = dateStr.index(dateStr.startIndex, offsetBy: 4)
+			return "2023" + String(dateStr[index...])
+		}
+		else {
+			return dateStr
+		}
+	}
 
+	func getTimeTable(token: String, username: String) {
 
-    func replaceYearIfZero(_ dateStr: String) -> String {
-        if dateStr.hasPrefix("0") {
-            let index = dateStr.index(dateStr.startIndex, offsetBy: 4)
-            return "2023" + String(dateStr[index...])
-        } else {
-            return dateStr
-        }
-    }
+		guard let url = URL(string: "\(APIConstants.base_url)/api/v2/timetable/\(username)") else {
+			return
+		}
 
-    
-    
+		var request = URLRequest(url: url, timeoutInterval: Double.infinity)
+		request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+		request.httpMethod = "GET"
 
-    func getTimeTable(token: String, username: String) {
+		URLSession.shared.dataTaskPublisher(for: request)
+			.map(\.data)
+			.decode(type: TimetableModel.self, decoder: JSONDecoder())
+			.receive(on: DispatchQueue.main)
+			.sink(
+				receiveCompletion: { _ in },
+				receiveValue: { [weak self] timetable in
+					self?.myTimeTable = timetable
 
-        
-        guard let url = URL(string: "\(APIConstants.base_url)/api/v2/timetable/\(username)") else {
-            return
-        }
+					if let myTimeTable = self?.myTimeTable {
+						self?.timetable = self?.mapToOldModel(newModel: myTimeTable) ?? [:]
+					}
 
-        var request = URLRequest(url: url, timeoutInterval: Double.infinity)
-        request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        request.httpMethod = "GET"
+					print("timetable model\n", self?.myTimeTable ?? "no timetable")
+					print("----------")
+					print("classes model\n", self?.timetable ?? "no classes")
 
-        URLSession.shared.dataTaskPublisher(for: request)
-            .map(\.data)
-            .decode(type: TimetableModel.self, decoder: JSONDecoder())
-            .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { _ in },
-                  receiveValue: { [weak self] timetable in
-                      self?.myTimeTable = timetable
+				}
+			)
+			.store(in: &cancellables)
+	}
 
-                      if let myTimeTable = self?.myTimeTable {
-                          self?.timetable = self?.mapToOldModel(newModel: myTimeTable) ?? [:]
-                      }
-                
-                print("timetable model\n", self?.myTimeTable ?? "no timetable")
-                print("----------")
-                print("classes model\n", self?.timetable ?? "no classes")
+	static let timetableVersionKey: String = "timetableVersionKey"
 
-                  })
-            .store(in: &cancellables)
-    }
-    
-    
-    
+	var timetableInfo = TimeTableInformation()
 
-    static let timetableVersionKey: String = "timetableVersionKey"
-
-    var timetableInfo = TimeTableInformation()
-
-    private var db = Firestore.firestore()
+	private var db = Firestore.firestore()
 
 }
 
 extension TimetableViewModel {
-    func updateClassCompleted() {
-        let today_i = Date.convertToMondayWeek()
-        let todayDay = TimetableViewModel.daysOfTheWeek[today_i]
-        let todaysTT = timetable[todayDay]
-        let todayClassCount = todaysTT?.count ?? 0
-        classesCompleted = 0
-        let currentPoint = Calendar.current.date(from: Calendar.current.dateComponents([.hour, .minute], from: Date())) ?? Date()
-        for i in 0 ..< todayClassCount {
-            let endPoint = Calendar.current.date(from: Calendar.current.dateComponents([.hour, .minute], from: todaysTT?[i].endTime ?? Date())) ?? Date()
-            if currentPoint > endPoint {
-                classesCompleted += 1
-            }
-        }
-    }
+	func updateClassCompleted() {
+		let today_i = Date.convertToMondayWeek()
+		let todayDay = TimetableViewModel.daysOfTheWeek[today_i]
+		let todaysTT = timetable[todayDay]
+		let todayClassCount = todaysTT?.count ?? 0
+		classesCompleted = 0
+		let currentPoint =
+			Calendar.current.date(
+				from: Calendar.current.dateComponents([.hour, .minute], from: Date())
+			) ?? Date()
+		for i in 0..<todayClassCount {
+			let endPoint =
+				Calendar.current.date(
+					from: Calendar.current.dateComponents(
+						[.hour, .minute],
+						from: todaysTT?[i].endTime ?? Date()
+					)
+				) ?? Date()
+			if currentPoint > endPoint {
+				classesCompleted += 1
+			}
+		}
+	}
 }
-
-
 
 /*
      func fetchInfo(onCompletion: @escaping ()->Void){

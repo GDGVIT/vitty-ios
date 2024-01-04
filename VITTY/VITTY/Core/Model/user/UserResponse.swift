@@ -7,13 +7,12 @@
 
 import Foundation
 
-struct UserResponse: Codable{
-    let email: String
-    let friend_status: String
-    let friends_count: Int
-    let mutual_friends_count: Int
-    let name: String
-    let picture: String
-    let timetable: TimetableModel
+struct UserResponse: Codable {
+	let email: String
+	let friend_status: String
+	let friends_count: Int
+	let mutual_friends_count: Int
+	let name: String
+	let picture: String
+	let timetable: TimetableModel
 }
-

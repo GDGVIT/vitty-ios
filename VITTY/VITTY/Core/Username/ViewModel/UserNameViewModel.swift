@@ -8,15 +8,15 @@
 import Foundation
 
 class UserNameViewModel: ObservableObject {
-    @Published var isFirstLogin: Bool = false
-    @Published var usernameTF: String = ""
-    @Published var regNoTF: String = ""
-    
-    @Published var isRegNoInvalid: Bool = false
+	@Published var isFirstLogin: Bool = false
+	@Published var usernameTF: String = ""
+	@Published var regNoTF: String = ""
 
-    func isRegistrationNumberValid() -> Bool {
-        let regex = try! NSRegularExpression(pattern: #"^\d{2}[A-Za-z]{3}\d{4}$"#)
-        let range = NSRange(location: 0, length: regNoTF.utf16.count)
-        return regex.firstMatch(in: regNoTF, options: [], range: range) != nil
-    }
+	@Published var isRegNoInvalid: Bool = false
+
+	func isRegistrationNumberValid() -> Bool {
+		let regex = try! NSRegularExpression(pattern: #"^\d{2}[A-Za-z]{3}\d{4}$"#)
+		let range = NSRange(location: 0, length: regNoTF.utf16.count)
+		return regex.firstMatch(in: regNoTF, options: [], range: range) != nil
+	}
 }

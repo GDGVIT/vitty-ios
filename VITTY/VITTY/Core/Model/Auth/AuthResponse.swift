@@ -7,10 +7,10 @@
 
 import Foundation
 
-struct AuthResponse: Codable{
-    let name: String
-    let picture: String
-    let role: String
-    let token: String
-    let username: String
+struct AuthResponse: Codable {
+	let name: String
+	let picture: String
+	let role: String
+	let token: String
+	let username: String
 }

@@ -7,7 +7,6 @@
 
 import Foundation
 
+class FriendActivityViewModel: ObservableObject {
 
-class FriendActivityViewModel : ObservableObject{
-    
 }

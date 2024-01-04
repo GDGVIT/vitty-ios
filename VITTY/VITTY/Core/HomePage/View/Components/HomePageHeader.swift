@@ -8,50 +8,49 @@
 import SwiftUI
 
 struct HomePageHeader: View {
-    @Binding var goToSettings: Bool
-    @Binding var showLogout: Bool
-    
-    let url: String
-    
-    @EnvironmentObject var viewModel: HomePageViewModel
-    
-    var body: some View {
-        HStack {
-            Text("Schedule")
-            Spacer()
-            
-            UserImage(url: url, height: 30, width: 40)
-                .onTapGesture {
-                    viewModel.sideMenu()
-                }
-            
-//            Circle()
-//                .frame(width: 30, height: 30)
-//                .onTapGesture {
-//                    viewModel.sideMenu()
-//                }
-        }
-        .font(Font.custom("Poppins-Bold", size: 22))
-        .foregroundColor(Color.white)
-        
-    }
-    // share sheet
-    func shareSheet() {
-//    guard let data = URL(string: "https://vitty.dscvit.com/") else {return} // add appstore link
-        let data = StringConstants.shareSheetContent
-        let av = UIActivityViewController(activityItems: [data], applicationActivities: nil)
-        let scenes = UIApplication.shared.connectedScenes
-        let windowScene = scenes.first as? UIWindowScene
-        let window = windowScene?.windows.first
-        window?.rootViewController?.present(av, animated: true, completion: nil)
-    }
+	@Binding var goToSettings: Bool
+	@Binding var showLogout: Bool
+
+	let url: String
+
+	@EnvironmentObject var viewModel: HomePageViewModel
+
+	var body: some View {
+		HStack {
+			Text("Schedule")
+			Spacer()
+
+			UserImage(url: url, height: 30, width: 40)
+				.onTapGesture {
+					viewModel.sideMenu()
+				}
+
+			//            Circle()
+			//                .frame(width: 30, height: 30)
+			//                .onTapGesture {
+			//                    viewModel.sideMenu()
+			//                }
+		}
+		.font(Font.custom("Poppins-Bold", size: 22))
+		.foregroundColor(Color.white)
+
+	}
+	// share sheet
+	func shareSheet() {
+		//    guard let data = URL(string: "https://vitty.dscvit.com/") else {return} // add appstore link
+		let data = StringConstants.shareSheetContent
+		let av = UIActivityViewController(activityItems: [data], applicationActivities: nil)
+		let scenes = UIApplication.shared.connectedScenes
+		let windowScene = scenes.first as? UIWindowScene
+		let window = windowScene?.windows.first
+		window?.rootViewController?.present(av, animated: true, completion: nil)
+	}
 }
 
 struct HomePageHeader_Previews: PreviewProvider {
-    static var previews: some View {
-        HomePageHeader(goToSettings: .constant(false), showLogout: .constant(false), url: "")
-            .environmentObject(HomePageViewModel())
-            .previewLayout(.sizeThatFits)
-    }
+	static var previews: some View {
+		HomePageHeader(goToSettings: .constant(false), showLogout: .constant(false), url: "")
+			.environmentObject(HomePageViewModel())
+			.previewLayout(.sizeThatFits)
+	}
 }
-

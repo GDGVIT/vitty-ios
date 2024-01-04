@@ -8,6 +8,9 @@
 import SwiftUI
 
 extension LinearGradient {
-    static let secGrad = LinearGradient(colors: [Color.secondaryGradStart,Color.secondaryGradEnd], startPoint: .bottomLeading, endPoint: .topTrailing)
+	static let secGrad = LinearGradient(
+		colors: [Color.secondaryGradStart, Color.secondaryGradEnd],
+		startPoint: .bottomLeading,
+		endPoint: .topTrailing
+	)
 }
-

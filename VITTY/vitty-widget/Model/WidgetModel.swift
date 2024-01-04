@@ -9,16 +9,16 @@ import Foundation
 import WidgetKit
 
 struct VITTYEntry: TimelineEntry {
-    var date = Date()
-    var dataModel: VITTYWidgetDataModel
-    
-    var relevance: TimelineEntryRelevance? {
-        TimelineEntryRelevance(score: 50)
-    }
+	var date = Date()
+	var dataModel: VITTYWidgetDataModel
+
+	var relevance: TimelineEntryRelevance? {
+		TimelineEntryRelevance(score: 50)
+	}
 }
 
 struct VITTYWidgetDataModel {
-    var classInfo: [Classes]
-    var classesCompleted: Int
-    var error: String?
+	var classInfo: [Classes]
+	var classesCompleted: Int
+	var error: String?
 }

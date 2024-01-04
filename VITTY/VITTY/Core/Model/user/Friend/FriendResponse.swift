@@ -7,13 +7,13 @@
 
 import Foundation
 
-struct FriendResponse: Codable, Hashable{
-    
-    let friend_status: String
-    let friends_count: Int
-    let mutual_friends_count: Int
-    let name: String
-    let picture: String
-    let username: String
-    
+struct FriendResponse: Codable, Hashable {
+
+	let friend_status: String
+	let friends_count: Int
+	let mutual_friends_count: Int
+	let name: String
+	let picture: String
+	let username: String
+
 }

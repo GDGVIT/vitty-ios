@@ -7,6 +7,6 @@
 
 import Foundation
 
-struct GetFriendReqResponse: Codable, Hashable{
-    let from: FriendResponse
+struct GetFriendReqResponse: Codable, Hashable {
+	let from: FriendResponse
 }

@@ -8,14 +8,14 @@
 import Foundation
 
 struct NotificationsSettingsModel: Identifiable, Equatable, Hashable, Codable {
-    var id: String?
-    var enabled: Bool
-    var day: Int
-    // day: 1 - sunday
-    var period: Int
-    var location: String
+	var id: String?
+	var enabled: Bool
+	var day: Int
+	// day: 1 - sunday
+	var period: Int
+	var location: String
 }
 
 struct NotificationsSettingsHashModel: Codable {
-    var daysNotifications: [String:[NotificationsSettingsModel]] = [:]
+	var daysNotifications: [String: [NotificationsSettingsModel]] = [:]
 }

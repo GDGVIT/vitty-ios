@@ -10,164 +10,179 @@ import Foundation
 
 class API {
 
+	static let shared = API()
 
-    static let shared = API()
+	func getFriends(token: String, username: String) {
+		guard let url = URL(string: "\(APIConstants.base_url)/api/v2/friends/\(username)") else {
+			return
+		}
 
+		var request = URLRequest(url: url, timeoutInterval: Double.infinity)
 
-    func getFriends(token: String, username: String) {
-        guard let url = URL(string: "\(APIConstants.base_url)/api/v2/friends/\(username)") else {
-            return
-        }
+		request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+		request.httpMethod = "GET"
 
-        var request = URLRequest(url: url, timeoutInterval: Double.infinity)
+		let task = URLSession.shared.dataTask(with: request) { data, _, error in
+			guard let data = data,
+				error == nil
+			else {
+				return
+			}
 
-        request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        request.httpMethod = "GET"
+			do {
+				let result = try JSONSerialization.jsonObject(
+					with: data,
+					options: [.fragmentsAllowed]
+				)
+				print("response from ", url)
+				print(result)
+				//                let result = try JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed)
+				//                print("response from ", url)
+				//                print(result)
+			}
+			catch {
+				print("error from ", url)
+				print(error)
+			}
+		}
 
-        let task = URLSession.shared.dataTask(with: request) { data, _, error in
-            guard let data = data,
-                  error == nil else {
-                return
-            }
+		task.resume()
+	}
 
-            do {
-                let result = try JSONSerialization.jsonObject(with: data, options: [.fragmentsAllowed])
-                print("response from ", url)
-                print(result)
-//                let result = try JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed)
-//                print("response from ", url)
-//                print(result)
-            } catch {
-                print("error from ", url)
-                print(error)
-            }
-        }
+	// MARK: get user
 
-        task.resume()
-    }
+	func getUser(token: String, username: String) {
+		print("token to api ", token)
+		guard let url = URL(string: "\(APIConstants.base_url)/api/v2/users/\(username)") else {
+			return
+		}
 
-    // MARK: get user
+		var request = URLRequest(url: url, timeoutInterval: Double.infinity)
 
-    func getUser(token: String, username: String) {
-        print("token to api ", token)
-        guard let url = URL(string: "\(APIConstants.base_url)/api/v2/users/\(username)") else {
-            return
-        }
+		request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+		request.httpMethod = "GET"
 
-        var request = URLRequest(url: url, timeoutInterval: Double.infinity)
+		let task = URLSession.shared.dataTask(with: request) { data, _, error in
+			guard let data = data,
+				error == nil
+			else {
+				return
+			}
+			do {
+				let result = try JSONDecoder().decode(UserResponse.self, from: data)
+				print("response from ", url)
+				print(result)
 
-        request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        request.httpMethod = "GET"
+			}
+			catch {
+				print("error from ", url)
+				print(error.localizedDescription)
+			}
+		}
 
-        let task = URLSession.shared.dataTask(with: request) { data, _, error in
-            guard let data = data,
-                  error == nil else {
-                return
-            }
-            do {
-                let result = try JSONDecoder().decode(UserResponse.self, from: data)
-                print("response from ", url)
-                print(result)
-
-            } catch {
-                print("error from ", url)
-                print(error.localizedDescription)
-            }
-        }
-
-        task.resume()
-    }
+		task.resume()
+	}
 }
 
 // MARK: Auth
 
 extension API {
-    // MARK: Sign in user
+	// MARK: Sign in user
 
-    func signInUser(with authReqBody: AuthReqBody, completion: @escaping (Result<AuthResponse, Error>) -> Void) {
-        guard let url = URL(string: "\(APIConstants.base_url)/api/v2/auth/firebase/") else {
-            completion(.failure(CustomError.invalidUrl))
-            return
-        }
+	func signInUser(
+		with authReqBody: AuthReqBody,
+		completion: @escaping (Result<AuthResponse, Error>) -> Void
+	) {
+		guard let url = URL(string: "\(APIConstants.base_url)/api/v2/auth/firebase/") else {
+			completion(.failure(CustomError.invalidUrl))
+			return
+		}
 
-        var request = URLRequest(url: url)
+		var request = URLRequest(url: url)
 
-        request.httpMethod = "POST"
+		request.httpMethod = "POST"
 
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+		request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
-        do {
-            let encoder = JSONEncoder()
-            request.httpBody = try encoder.encode(authReqBody)
-        } catch {
-            completion(.failure(error))
-            return
-        }
+		do {
+			let encoder = JSONEncoder()
+			request.httpBody = try encoder.encode(authReqBody)
+		}
+		catch {
+			completion(.failure(error))
+			return
+		}
 
-        // Send the request
-        print("calling the API")
-        let task = URLSession.shared.dataTask(with: request) { data, _, error in
-            if let error = error {
-                completion(.failure(error))
-                return
-            }
+		// Send the request
+		print("calling the API")
+		let task = URLSession.shared.dataTask(with: request) { data, _, error in
+			if let error = error {
+				completion(.failure(error))
+				return
+			}
 
-            guard let data = data else {
-                completion(.failure(CustomError.invalidData))
-                return
-            }
+			guard let data = data else {
+				completion(.failure(CustomError.invalidData))
+				return
+			}
 
-            do {
-                let decoder = JSONDecoder()
-                let authResponse = try decoder.decode(AuthResponse.self, from: data)
-                print("POST request response from url: \(url)")
-                print(authResponse)
-                print("END of POST request response")
-                completion(.success(authResponse))
-            } catch {
-                completion(.failure(error))
-                return
-            }
-        }
+			do {
+				let decoder = JSONDecoder()
+				let authResponse = try decoder.decode(AuthResponse.self, from: data)
+				print("POST request response from url: \(url)")
+				print(authResponse)
+				print("END of POST request response")
+				completion(.success(authResponse))
+			}
+			catch {
+				completion(.failure(error))
+				return
+			}
+		}
 
-        task.resume()
-    }
+		task.resume()
+	}
 
-    // MARK: Check user name
+	// MARK: Check user name
 
-    func checkUsername(with username: String) {
-        guard let url = URL(string: "\(APIConstants.base_url)/api/v2/auth/check-username") else {
-            return
-        }
-        var request = URLRequest(url: url)
+	func checkUsername(with username: String) {
+		guard let url = URL(string: "\(APIConstants.base_url)/api/v2/auth/check-username") else {
+			return
+		}
+		var request = URLRequest(url: url)
 
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+		request.httpMethod = "POST"
+		request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
-        do {
-            let encoder = JSONEncoder()
-            request.httpBody = try encoder.encode(username)
-        } catch let error {
-            print("error encoding username ", error.localizedDescription)
-            return
-        }
+		do {
+			let encoder = JSONEncoder()
+			request.httpBody = try encoder.encode(username)
+		}
+		catch let error {
+			print("error encoding username ", error.localizedDescription)
+			return
+		}
 
-        let task = URLSession.shared.dataTask(with: request) { data, _, error in
-            guard let data = data, error == nil else {
-                return
-            }
+		let task = URLSession.shared.dataTask(with: request) { data, _, error in
+			guard let data = data, error == nil else {
+				return
+			}
 
-            do {
-                // let result = try JSONDecoder().decode(UsernameResponse.self, from: data)
-                let result = try JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed)
-                print("POST request response from url: \(url)")
-                print(result)
-                print("END of POST request response")
-            } catch {
-                print(error.localizedDescription)
-            }
-        }
+			do {
+				// let result = try JSONDecoder().decode(UsernameResponse.self, from: data)
+				let result = try JSONSerialization.jsonObject(
+					with: data,
+					options: .fragmentsAllowed
+				)
+				print("POST request response from url: \(url)")
+				print(result)
+				print("END of POST request response")
+			}
+			catch {
+				print(error.localizedDescription)
+			}
+		}
 
-        task.resume()
-    }
+		task.resume()
+	}
 }

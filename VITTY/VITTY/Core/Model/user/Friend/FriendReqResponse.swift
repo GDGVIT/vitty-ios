@@ -7,6 +7,6 @@
 
 import Foundation
 
-struct FriendReqResponse: Codable{
-    let detail: String
+struct FriendReqResponse: Codable {
+	let detail: String
 }

@@ -8,15 +8,15 @@
 import Foundation
 
 struct TimetableModel: Codable {
-    let data: [String: [TimetableItem]]
+	let data: [String: [TimetableItem]]
 }
 
 struct TimetableItem: Codable {
-    let name: String
-    let code: String
-    let venue: String
-    let slot: String
-    let type: String
-    let start_time: String
-    let end_time: String
+	let name: String
+	let code: String
+	let venue: String
+	let slot: String
+	let type: String
+	let start_time: String
+	let end_time: String
 }

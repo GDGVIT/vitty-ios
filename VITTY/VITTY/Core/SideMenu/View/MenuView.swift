@@ -8,250 +8,256 @@
 import SwiftUI
 
 struct MenuView: View {
-    @EnvironmentObject var authVM: AuthService
-    @EnvironmentObject var ttVM: TimetableViewModel
-    @EnvironmentObject var notifVM: NotificationsViewModel
+	@EnvironmentObject var authVM: AuthService
+	@EnvironmentObject var ttVM: TimetableViewModel
+	@EnvironmentObject var notifVM: NotificationsViewModel
 
-    @StateObject private var vm = MenuViewModel()
+	@StateObject private var vm = MenuViewModel()
 
-    var body: some View {
-        NavigationView {
-            ZStack(alignment: .leading) {
-                // background
-                Color.theme.secondaryBlue
-                    .ignoresSafeArea()
+	var body: some View {
+		NavigationView {
+			ZStack(alignment: .leading) {
+				// background
+				Color.theme.secondaryBlue
+					.ignoresSafeArea()
 
-                // Foreground
-                VStack(alignment: .leading) {
+				// Foreground
+				VStack(alignment: .leading) {
 
-                    userDetails()
+					userDetails()
 
-                    Divider()
-                        .padding(.top, 32)
+					Divider()
+						.padding(.top, 32)
 
-                    updateYoutStatus()
+					updateYoutStatus()
 
-                    Group {
-                        profile()
+					Group {
+						profile()
 
-                        friendCircle()
+						friendCircle()
 
-                        friendActivity()
+						friendActivity()
 
-                        Divider()
-                    }
+						Divider()
+					}
 
-                    settings()
+					settings()
 
-                    Group {
-                        ghostMode()
-                    }
-                    .padding(.leading)
+					Group {
+						ghostMode()
+					}
+					.padding(.leading)
 
-                    Spacer()
-                    
-                    Button {
-                        authVM.signOut()
-                    } label: {
-                        logoutBtn()
-                    }
+					Spacer()
 
-                    
-                }
-                .padding(.horizontal)
-            }
-            .onAppear{
-                authVM.username = UserDefaults.standard.string(forKey: AuthService.userKey) ?? "username"
-                authVM.name = UserDefaults.standard.string(forKey: AuthService.nameKey) ?? "Full Name"
-                authVM.image = UserDefaults.standard.string(forKey: AuthService.imageKey) ?? "Image"
-            }
-        }
-    }
+					Button {
+						authVM.signOut()
+					} label: {
+						logoutBtn()
+					}
+
+				}
+				.padding(.horizontal)
+			}
+			.onAppear {
+				authVM.username =
+					UserDefaults.standard.string(forKey: AuthService.userKey) ?? "username"
+				authVM.name =
+					UserDefaults.standard.string(forKey: AuthService.nameKey) ?? "Full Name"
+				authVM.image = UserDefaults.standard.string(forKey: AuthService.imageKey) ?? "Image"
+			}
+		}
+	}
 }
 
 struct MenuView_Previews: PreviewProvider {
-    static var previews: some View {
-        MenuView()
-            .environmentObject(AuthService())
-            .environmentObject(TimetableViewModel())
-            .environmentObject(NotificationsViewModel())
-    }
+	static var previews: some View {
+		MenuView()
+			.environmentObject(AuthService())
+			.environmentObject(TimetableViewModel())
+			.environmentObject(NotificationsViewModel())
+	}
 }
 
 extension MenuView {
-    // MARK: User
+	// MARK: User
 
-    private func userDetails() -> some View {
-        VStack(alignment: .leading) {
-            
-            UserImage(url: authVM.image, height: 40, width: 40)
-                
+	private func userDetails() -> some View {
+		VStack(alignment: .leading) {
 
-            Text(authVM.name)
-                .font(.custom("Poppins", size: 16))
-                .fontWeight(.semibold)
-                .foregroundColor(.white)
-                .padding(.top)
+			UserImage(url: authVM.image, height: 40, width: 40)
 
-            Text("@\(authVM.username)")
-                .font(.custom("Poppins-Light", size: 14))
-                .foregroundColor(Color.theme.primary)
-        }
-    }
+			Text(authVM.name)
+				.font(.custom("Poppins", size: 16))
+				.fontWeight(.semibold)
+				.foregroundColor(.white)
+				.padding(.top)
 
-    private func Divider() -> some View {
-        VStack {
-            Rectangle()
-                .frame(height: 0.5)
-                .foregroundColor(Color.theme.primary)
-        }
-    }
+			Text("@\(authVM.username)")
+				.font(.custom("Poppins-Light", size: 14))
+				.foregroundColor(Color.theme.primary)
+		}
+	}
 
-    private func updateYoutStatus() -> some View {
-        VStack {
-            RoundedRectangle(cornerRadius: 10)
-                .stroke(Color.theme.primary, lineWidth: 0.3)
-                .frame(height: 44)
-                .overlay(alignment: .leading, content: {
-                    HStack {
-                        Image("smile")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 25, height: 25)
-                            .padding()
+	private func Divider() -> some View {
+		VStack {
+			Rectangle()
+				.frame(height: 0.5)
+				.foregroundColor(Color.theme.primary)
+		}
+	}
 
-                        Text("Update Your Status")
-                            .font(.custom("Poppins-Regular", size: 14))
-                            .foregroundColor(Color.theme.tfBlueLight)
-                    }
-                })
-                .padding(.top)
-        }
-    }
+	private func updateYoutStatus() -> some View {
+		VStack {
+			RoundedRectangle(cornerRadius: 10)
+				.stroke(Color.theme.primary, lineWidth: 0.3)
+				.frame(height: 44)
+				.overlay(
+					alignment: .leading,
+					content: {
+						HStack {
+							Image("smile")
+								.resizable()
+								.scaledToFit()
+								.frame(width: 25, height: 25)
+								.padding()
 
-    // MARK: Profile
+							Text("Update Your Status")
+								.font(.custom("Poppins-Regular", size: 14))
+								.foregroundColor(Color.theme.tfBlueLight)
+						}
+					}
+				)
+				.padding(.top)
+		}
+	}
 
-    private func profile() -> some View {
-        HStack {
-            Image("profile")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 25, height: 25)
-                .padding()
+	// MARK: Profile
 
-            Text("Profile")
-                .font(.custom("Poppins-Medium", size: 16))
-                .foregroundColor(Color.white)
-        }.onTapGesture {
-            vm.showProfile.toggle()
-        }
-        .fullScreenCover(isPresented: $vm.showProfile) {
-            Profile()
-                .environmentObject(authVM)
-        }
-    }
+	private func profile() -> some View {
+		HStack {
+			Image("profile")
+				.resizable()
+				.scaledToFit()
+				.frame(width: 25, height: 25)
+				.padding()
 
-    // MARK: FriendCircle
+			Text("Profile")
+				.font(.custom("Poppins-Medium", size: 16))
+				.foregroundColor(Color.white)
+		}
+		.onTapGesture {
+			vm.showProfile.toggle()
+		}
+		.fullScreenCover(isPresented: $vm.showProfile) {
+			Profile()
+				.environmentObject(authVM)
+		}
+	}
 
-    private func friendCircle() -> some View {
-        HStack {
-            Image("friend-circle")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 25, height: 25)
-                .padding()
+	// MARK: FriendCircle
 
-            Text("Friend Circle")
-                .font(.custom("Poppins-Medium", size: 16))
-                .foregroundColor(Color.white)
-        }.onTapGesture {
-            vm.showFriendCircle.toggle()
-        }
-        .fullScreenCover(isPresented: $vm.showFriendCircle) {
-            FriendCircle()
-                .environmentObject(authVM)
-        }
-    }
+	private func friendCircle() -> some View {
+		HStack {
+			Image("friend-circle")
+				.resizable()
+				.scaledToFit()
+				.frame(width: 25, height: 25)
+				.padding()
 
-    // MARK: FriendActivity
+			Text("Friend Circle")
+				.font(.custom("Poppins-Medium", size: 16))
+				.foregroundColor(Color.white)
+		}
+		.onTapGesture {
+			vm.showFriendCircle.toggle()
+		}
+		.fullScreenCover(isPresented: $vm.showFriendCircle) {
+			FriendCircle()
+				.environmentObject(authVM)
+		}
+	}
 
-    private func friendActivity() -> some View {
-        HStack {
-            HStack {
-                Image("friend-activity")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 25, height: 25)
-                    .padding()
+	// MARK: FriendActivity
 
-                Text("Friend Activity")
-                    .font(.custom("Poppins-Medium", size: 16))
-                    .foregroundColor(Color.white)
-            }
-        }
-        .onTapGesture {
-            vm.showFriendActivity.toggle()
-        }
-        .fullScreenCover(isPresented: $vm.showFriendActivity) {
-            FriendActivity()
-        }
-    }
+	private func friendActivity() -> some View {
+		HStack {
+			HStack {
+				Image("friend-activity")
+					.resizable()
+					.scaledToFit()
+					.frame(width: 25, height: 25)
+					.padding()
 
-    // MARK: Settings
+				Text("Friend Activity")
+					.font(.custom("Poppins-Medium", size: 16))
+					.foregroundColor(Color.white)
+			}
+		}
+		.onTapGesture {
+			vm.showFriendActivity.toggle()
+		}
+		.fullScreenCover(isPresented: $vm.showFriendActivity) {
+			FriendActivity()
+		}
+	}
 
-    private func settings() -> some View {
-        HStack {
-            Image("settings")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 25, height: 25)
-                .padding()
+	// MARK: Settings
 
-            Text("Settings")
-                .font(.custom("Poppins-Medium", size: 16))
-                .foregroundColor(Color.white)
-        }.onTapGesture {
-            vm.showSettings.toggle()
-        }
-        .fullScreenCover(isPresented: $vm.showSettings) {
-            SettingsView()
-                .environmentObject(authVM)
-                .environmentObject(ttVM)
-                .environmentObject(notifVM)
-        }
-    }
+	private func settings() -> some View {
+		HStack {
+			Image("settings")
+				.resizable()
+				.scaledToFit()
+				.frame(width: 25, height: 25)
+				.padding()
 
-    // MARK: Ghost Mode
+			Text("Settings")
+				.font(.custom("Poppins-Medium", size: 16))
+				.foregroundColor(Color.white)
+		}
+		.onTapGesture {
+			vm.showSettings.toggle()
+		}
+		.fullScreenCover(isPresented: $vm.showSettings) {
+			SettingsView()
+				.environmentObject(authVM)
+				.environmentObject(ttVM)
+				.environmentObject(notifVM)
+		}
+	}
 
-    private func ghostMode() -> some View {
-        VStack(alignment: .leading) {
-            Text("If you want your friends will not be \nable to view your activity. use ")
-                .font(.custom("Poppins", size: 14))
-                .foregroundColor(Color.theme.primary)
-                +
-                Text("ghost \nmode")
-                .font(.custom("Poppins-Bold", size: 14))
-                .foregroundColor(Color.theme.primary)
+	// MARK: Ghost Mode
 
-            ToggleView(isOn: $vm.isGhostModeOn) {
-                Color.theme.secondaryBlue
-            }.frame(width: 60, height: 30)
-        }
-    }
+	private func ghostMode() -> some View {
+		VStack(alignment: .leading) {
+			Text("If you want your friends will not be \nable to view your activity. use ")
+				.font(.custom("Poppins", size: 14))
+				.foregroundColor(Color.theme.primary)
+				+ Text("ghost \nmode")
+				.font(.custom("Poppins-Bold", size: 14))
+				.foregroundColor(Color.theme.primary)
 
-    // MARK: Logout
+			ToggleView(isOn: $vm.isGhostModeOn) {
+				Color.theme.secondaryBlue
+			}
+			.frame(width: 60, height: 30)
+		}
+	}
 
-    private func logoutBtn() -> some View {
-        HStack {
-            Image("logout")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 25, height: 25)
-                .padding(.leading)
+	// MARK: Logout
 
-            Text("log out")
-                .font(.custom("Poppins-Medium", size: 16))
-                .foregroundColor(Color.white)
-        }
-    }
+	private func logoutBtn() -> some View {
+		HStack {
+			Image("logout")
+				.resizable()
+				.scaledToFit()
+				.frame(width: 25, height: 25)
+				.padding(.leading)
+
+			Text("log out")
+				.font(.custom("Poppins-Medium", size: 16))
+				.foregroundColor(Color.white)
+		}
+	}
 }

@@ -7,6 +7,6 @@
 
 import Foundation
 
-struct UsernameResponse: Codable{
-    let detail: String
+struct UsernameResponse: Codable {
+	let detail: String
 }

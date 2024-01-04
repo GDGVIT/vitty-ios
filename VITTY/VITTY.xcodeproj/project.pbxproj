@@ -79,9 +79,9 @@
 		317EE1992775D3C6008AEB31 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317EE1982775D3C6008AEB31 /* SettingsView.swift */; };
 		318B66EF27CE9A2C00C53BC3 /* VITTYWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3164C43327C9FEC700D6B53F /* VITTYWidgetView.swift */; };
 		31900F01277467460014A58D /* InstructionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31900F00277467460014A58D /* InstructionsView.swift */; };
-		31900F03277468790014A58D /* HomePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31900F02277468790014A58D /* HomePage.swift */; };
-		31900F0527746A400014A58D /* HomePageHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31900F0427746A400014A58D /* HomePageHeader.swift */; };
-		31900F0827746B3A0014A58D /* HomeTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31900F0727746B3A0014A58D /* HomeTabBarView.swift */; };
+		31900F03277468790014A58D /* SchedulePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31900F02277468790014A58D /* SchedulePage.swift */; };
+		31900F0527746A400014A58D /* SchedulePageHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31900F0427746A400014A58D /* SchedulePageHeader.swift */; };
+		31900F0827746B3A0014A58D /* ScheduleTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31900F0727746B3A0014A58D /* ScheduleTabBarView.swift */; };
 		31900F0A27759DB60014A58D /* Gradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31900F0927759DB60014A58D /* Gradient.swift */; };
 		31900F0C2775A6080014A58D /* ClassCards.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31900F0B2775A6080014A58D /* ClassCards.swift */; };
 		31A2A49827894C16005679EB /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 31A2A49727894C16005679EB /* FirebaseAnalytics */; };
@@ -106,6 +106,8 @@
 		31EC946A2788BCDF00EA07BE /* Classes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EC94692788BCDF00EA07BE /* Classes.swift */; };
 		31EC946E2789409D00EA07BE /* TimetableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EC946D2789409D00EA07BE /* TimetableViewModel.swift */; };
 		31F9B733279AA342006D1012 /* TimeTableScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F9B732279AA342006D1012 /* TimeTableScrollView.swift */; };
+		524B842F2B46EBBD006D18BD /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 524B842E2B46EBBD006D18BD /* HomeView.swift */; };
+		524B84332B46EF3A006D18BD /* CommunityPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 524B84322B46EF3A006D18BD /* CommunityPage.swift */; };
 		5251A7FA2B46E3A800D44CFE /* SwiftFormat in Frameworks */ = {isa = PBXBuildFile; productRef = 5251A7F92B46E3A800D44CFE /* SwiftFormat */; };
 		5251A7FC2B46E3A800D44CFE /* SwiftFormatConfiguration in Frameworks */ = {isa = PBXBuildFile; productRef = 5251A7FB2B46E3A800D44CFE /* SwiftFormatConfiguration */; };
 		5251A7FE2B46E3A800D44CFE /* swift-format in Frameworks */ = {isa = PBXBuildFile; productRef = 5251A7FD2B46E3A800D44CFE /* swift-format */; };
@@ -143,7 +145,7 @@
 		5DC0AF5A2AD2C7C9006B081D /* GetFriendReqResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC0AF592AD2C7C9006B081D /* GetFriendReqResponse.swift */; };
 		5DD41A892A0F84FA00B32C49 /* WidgetHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD41A882A0F84FA00B32C49 /* WidgetHeader.swift */; };
 		5DD41A8A2A0F84FA00B32C49 /* WidgetHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD41A882A0F84FA00B32C49 /* WidgetHeader.swift */; };
-		5DE8C0092A8F29C400AE3995 /* HomePageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE8C0082A8F29C400AE3995 /* HomePageViewModel.swift */; };
+		5DE8C0092A8F29C400AE3995 /* SchedulePageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE8C0082A8F29C400AE3995 /* SchedulePageViewModel.swift */; };
 		5DE8C00B2A8F2AF900AE3995 /* SlideInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE8C00A2A8F2AF900AE3995 /* SlideInView.swift */; };
 		5DE8C0102A8FC7CE00AE3995 /* FriendCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE8C00F2A8FC7CE00AE3995 /* FriendCircle.swift */; };
 		5DF1A6932A93B23A007A5731 /* FriendCircleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF1A6922A93B23A007A5731 /* FriendCircleViewModel.swift */; };
@@ -227,9 +229,9 @@
 		317EE1962775C8BE008AEB31 /* ExamHolidayMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExamHolidayMode.swift; sourceTree = "<group>"; };
 		317EE1982775D3C6008AEB31 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		31900F00277467460014A58D /* InstructionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionsView.swift; sourceTree = "<group>"; };
-		31900F02277468790014A58D /* HomePage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePage.swift; sourceTree = "<group>"; };
-		31900F0427746A400014A58D /* HomePageHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePageHeader.swift; sourceTree = "<group>"; };
-		31900F0727746B3A0014A58D /* HomeTabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabBarView.swift; sourceTree = "<group>"; };
+		31900F02277468790014A58D /* SchedulePage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchedulePage.swift; sourceTree = "<group>"; };
+		31900F0427746A400014A58D /* SchedulePageHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchedulePageHeader.swift; sourceTree = "<group>"; };
+		31900F0727746B3A0014A58D /* ScheduleTabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleTabBarView.swift; sourceTree = "<group>"; };
 		31900F0927759DB60014A58D /* Gradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gradient.swift; sourceTree = "<group>"; };
 		31900F0B2775A6080014A58D /* ClassCards.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassCards.swift; sourceTree = "<group>"; };
 		31A2A4A327894E96005679EB /* TimeTableInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTableInformation.swift; sourceTree = "<group>"; };
@@ -246,6 +248,8 @@
 		31EC94692788BCDF00EA07BE /* Classes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Classes.swift; sourceTree = "<group>"; };
 		31EC946D2789409D00EA07BE /* TimetableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimetableViewModel.swift; sourceTree = "<group>"; };
 		31F9B732279AA342006D1012 /* TimeTableScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTableScrollView.swift; sourceTree = "<group>"; };
+		524B842E2B46EBBD006D18BD /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		524B84322B46EF3A006D18BD /* CommunityPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityPage.swift; sourceTree = "<group>"; };
 		5251A7FF2B46E3C000D44CFE /* .swift-format */ = {isa = PBXFileReference; lastKnownFileType = text; path = ".swift-format"; sourceTree = "<group>"; };
 		5D141B042A2658CD005977F8 /* textField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = textField.swift; sourceTree = "<group>"; };
 		5D141B092A265B15005977F8 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
@@ -279,7 +283,7 @@
 		5DC0AF562AD2B93D006B081D /* FriendReqResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendReqResponse.swift; sourceTree = "<group>"; };
 		5DC0AF592AD2C7C9006B081D /* GetFriendReqResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetFriendReqResponse.swift; sourceTree = "<group>"; };
 		5DD41A882A0F84FA00B32C49 /* WidgetHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetHeader.swift; sourceTree = "<group>"; };
-		5DE8C0082A8F29C400AE3995 /* HomePageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePageViewModel.swift; sourceTree = "<group>"; };
+		5DE8C0082A8F29C400AE3995 /* SchedulePageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchedulePageViewModel.swift; sourceTree = "<group>"; };
 		5DE8C00A2A8F2AF900AE3995 /* SlideInView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlideInView.swift; sourceTree = "<group>"; };
 		5DE8C00F2A8FC7CE00AE3995 /* FriendCircle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendCircle.swift; sourceTree = "<group>"; };
 		5DF1A6922A93B23A007A5731 /* FriendCircleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendCircleViewModel.swift; sourceTree = "<group>"; };
@@ -555,8 +559,8 @@
 		31900F0627746B130014A58D /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				31900F0427746A400014A58D /* HomePageHeader.swift */,
-				31900F0727746B3A0014A58D /* HomeTabBarView.swift */,
+				31900F0427746A400014A58D /* SchedulePageHeader.swift */,
+				31900F0727746B3A0014A58D /* ScheduleTabBarView.swift */,
 				31900F0B2775A6080014A58D /* ClassCards.swift */,
 				31A2A4A727899EE3005679EB /* TabBarDay.swift */,
 				31F9B732279AA342006D1012 /* TimeTableScrollView.swift */,
@@ -581,6 +585,38 @@
 				317715E127A0427B009A532E /* CustomNotifsListView.swift */,
 			);
 			path = Components;
+			sourceTree = "<group>";
+		};
+		524B842C2B46EBA6006D18BD /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				524B842D2B46EBAE006D18BD /* View */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		524B842D2B46EBAE006D18BD /* View */ = {
+			isa = PBXGroup;
+			children = (
+				524B842E2B46EBBD006D18BD /* HomeView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		524B84302B46EF07006D18BD /* Community */ = {
+			isa = PBXGroup;
+			children = (
+				524B84312B46EF28006D18BD /* View */,
+			);
+			path = Community;
+			sourceTree = "<group>";
+		};
+		524B84312B46EF28006D18BD /* View */ = {
+			isa = PBXGroup;
+			children = (
+				524B84322B46EF3A006D18BD /* CommunityPage.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		5D141B032A2658BE005977F8 /* Components */ = {
@@ -618,19 +654,19 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		5D1FF25D2A32637D00B0620A /* HomePage */ = {
+		5D1FF25D2A32637D00B0620A /* Schedule */ = {
 			isa = PBXGroup;
 			children = (
 				5DE8C0072A8F29B400AE3995 /* ViewModel */,
 				5D1FF25E2A32638800B0620A /* View */,
 			);
-			path = HomePage;
+			path = Schedule;
 			sourceTree = "<group>";
 		};
 		5D1FF25E2A32638800B0620A /* View */ = {
 			isa = PBXGroup;
 			children = (
-				31900F02277468790014A58D /* HomePage.swift */,
+				31900F02277468790014A58D /* SchedulePage.swift */,
 				31900F0627746B130014A58D /* Components */,
 			);
 			path = View;
@@ -716,6 +752,8 @@
 		5D3D924F2A1816980013803E /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				524B84302B46EF07006D18BD /* Community */,
+				524B842C2B46EBA6006D18BD /* Home */,
 				5DB03A312A85553800DB7E60 /* SideMenu */,
 				5DE8C00C2A8FC7B100AE3995 /* FriendCircle */,
 				5D629B392A3FA5FB000B8E7A /* FriendActivity */,
@@ -724,7 +762,7 @@
 				5D1FF2632A32643400B0620A /* Settings */,
 				5D1FF2612A3263FE00B0620A /* NotificationView */,
 				5D1FF25F2A3263CA00B0620A /* SplashScreen */,
-				5D1FF25D2A32637D00B0620A /* HomePage */,
+				5D1FF25D2A32637D00B0620A /* Schedule */,
 				5D44FFF72A2A69C70005A1E4 /* SetStatus */,
 				5D141B062A265AF0005977F8 /* Profile */,
 				5D3D92502A1816CC0013803E /* Username */,
@@ -929,7 +967,7 @@
 		5DE8C0072A8F29B400AE3995 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				5DE8C0082A8F29C400AE3995 /* HomePageViewModel.swift */,
+				5DE8C0082A8F29C400AE3995 /* SchedulePageViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -1179,7 +1217,8 @@
 				317EE1932775B819008AEB31 /* InstructionsCards.swift in Sources */,
 				31096381278227730009A29C /* AuthService.swift in Sources */,
 				5D3D92562A18170E0013803E /* UserNameViewModel.swift in Sources */,
-				5DE8C0092A8F29C400AE3995 /* HomePageViewModel.swift in Sources */,
+				524B842F2B46EBBD006D18BD /* HomeView.swift in Sources */,
+				5DE8C0092A8F29C400AE3995 /* SchedulePageViewModel.swift in Sources */,
 				5D44FFFA2A2A69DD0005A1E4 /* SetStatusView.swift in Sources */,
 				31BAB52D279AE398008E20BB /* NotificationsViewHeader.swift in Sources */,
 				5D3D92592A1818150013803E /* Color.swift in Sources */,
@@ -1194,7 +1233,7 @@
 				31128D012772F8370084C9EA /* SplashScreen.swift in Sources */,
 				31A3BF4327D0BAE800B6BB97 /* WidgetMClassCard.swift in Sources */,
 				31EC946E2789409D00EA07BE /* TimetableViewModel.swift in Sources */,
-				31900F0827746B3A0014A58D /* HomeTabBarView.swift in Sources */,
+				31900F0827746B3A0014A58D /* ScheduleTabBarView.swift in Sources */,
 				31BAB52A279AE34B008E20BB /* NotificationsView.swift in Sources */,
 				317EE1972775C8BE008AEB31 /* ExamHolidayMode.swift in Sources */,
 				31128D0C277300470084C9EA /* StringConstants.swift in Sources */,
@@ -1207,6 +1246,7 @@
 				3109639F27824F6F0009A29C /* AppStorageConstants.swift in Sources */,
 				31BAB533279D3F49008E20BB /* NotificationsManager.swift in Sources */,
 				317715E0279FE778009A532E /* CustomNotificationButton.swift in Sources */,
+				524B84332B46EF3A006D18BD /* CommunityPage.swift in Sources */,
 				3168511F277319480046A9AC /* SignupOR.swift in Sources */,
 				31128D12277306860084C9EA /* SplashScreenTabIndicator.swift in Sources */,
 				5DF1A6952A93B361007A5731 /* CustomTabBar.swift in Sources */,
@@ -1223,7 +1263,7 @@
 				5D72EDDF2AB996C400704BF5 /* UsernameBody.swift in Sources */,
 				318B66EF27CE9A2C00C53BC3 /* VITTYWidgetView.swift in Sources */,
 				5DF1A6932A93B23A007A5731 /* FriendCircleViewModel.swift in Sources */,
-				31900F03277468790014A58D /* HomePage.swift in Sources */,
+				31900F03277468790014A58D /* SchedulePage.swift in Sources */,
 				5DE8C0102A8FC7CE00AE3995 /* FriendCircle.swift in Sources */,
 				317715DE279F1431009A532E /* IndexedCollection.swift in Sources */,
 				3164C46827CBCD1400D6B53F /* WidgetLClassCard.swift in Sources */,
@@ -1233,7 +1273,7 @@
 				5DC0AF572AD2B93D006B081D /* FriendReqResponse.swift in Sources */,
 				31EC946A2788BCDF00EA07BE /* Classes.swift in Sources */,
 				31128D09277300130084C9EA /* SplashScreenIllustration.swift in Sources */,
-				31900F0527746A400014A58D /* HomePageHeader.swift in Sources */,
+				31900F0527746A400014A58D /* SchedulePageHeader.swift in Sources */,
 				317EE1952775C555008AEB31 /* LogoutPopup.swift in Sources */,
 				5D3D92542A1817010013803E /* UserName.swift in Sources */,
 				314A408F27383BEC0058082F /* VITTYApp.swift in Sources */,

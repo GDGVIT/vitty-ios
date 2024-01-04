@@ -33,7 +33,7 @@ struct InstructionsView: View {
 					)
 			}
 			else {
-				SchedulePage()
+				HomeView()
 					.navigationTitle("").navigationBarHidden(true).environmentObject(ttVM)
 					.environmentObject(authState).environmentObject(notifVM)
 			}
@@ -74,7 +74,7 @@ extension InstructionsView {
 				Spacer()
 
 				NavigationLink {
-					SchedulePage()
+					HomeView()
 						.navigationTitle("").navigationBarHidden(true).environmentObject(ttVM)
 						.environmentObject(authState).environmentObject(notifVM)
 				} label: {
@@ -82,7 +82,7 @@ extension InstructionsView {
 				}
 
 				NavigationLink(
-					destination: SchedulePage().navigationTitle("").navigationBarHidden(true)
+					destination: HomeView().navigationTitle("").navigationBarHidden(true)
 						.environmentObject(ttVM).environmentObject(authState)
 						.environmentObject(notifVM),
 					isActive: $goToHomeScreen

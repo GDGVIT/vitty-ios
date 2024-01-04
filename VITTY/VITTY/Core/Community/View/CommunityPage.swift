@@ -9,7 +9,23 @@ import SwiftUI
 
 struct CommunityPage: View {
     var body: some View {
-        Text("Hello Vitty Community")
+		Group {
+			ZStack {
+				VStack (alignment: .leading){
+					CommunityPageHeader()
+						.padding()
+					Spacer()
+					EmptyView()
+				}
+			}
+			.padding(.top)
+			.background(
+				Image(
+					"HomeBG"
+				)
+				.resizable().scaledToFill().edgesIgnoringSafeArea(.all)
+			)
+		}
     }
 }
 

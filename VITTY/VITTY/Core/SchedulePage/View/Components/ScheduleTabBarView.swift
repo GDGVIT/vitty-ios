@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct HomeTabBarView: View {
+struct ScheduleTabBarView: View {
 	@Binding var tabSelected: Int
 	var body: some View {
 		VStack {
@@ -34,8 +34,8 @@ struct HomeTabBarView: View {
 	}
 }
 
-struct HomeTabBarView_Previews: PreviewProvider {
+struct ScheduleTabBarView_Previews: PreviewProvider {
 	static var previews: some View {
-		HomeTabBarView(tabSelected: .constant(1))
+		ScheduleTabBarView(tabSelected: .constant(1))
 	}
 }

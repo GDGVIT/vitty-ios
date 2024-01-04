@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct HomePage: View {
+struct SchedulePage: View {
 	@State var tabSelected: Int = Date.convertToMondayWeek()
 	@State var goToSettings: Bool = false
 	@State var showLogout: Bool = false
@@ -16,7 +16,7 @@ struct HomePage: View {
 	@EnvironmentObject var authVM: AuthService
 	@EnvironmentObject var notifVM: NotificationsViewModel
 
-	@StateObject var homePageVM = HomePageViewModel()
+	@StateObject var schedulePageVM = SchedulePageViewModel()
 
 	@StateObject var RemoteConf = RemoteConfigManager.sharedInstance
 	@AppStorage("examMode") var examModeOn: Bool = false
@@ -95,7 +95,7 @@ struct HomePage: View {
 		}
 
 		.slideInView(
-			isActive: $homePageVM.isPresented,
+			isActive: $schedulePageVM.isPresented,
 			edge: .trailing,
 			content: {
 				MenuView()
@@ -109,7 +109,7 @@ struct HomePage: View {
 
 struct HomePage_Previews: PreviewProvider {
 	static var previews: some View {
-		HomePage()
+		SchedulePage()
 			.environmentObject(AuthService())
 			.environmentObject(TimetableViewModel())
 			.environmentObject(NotificationsViewModel())
@@ -118,11 +118,11 @@ struct HomePage_Previews: PreviewProvider {
 
 // MARK: Extension
 
-extension HomePage {
+extension SchedulePage {
 	private func navBarItems() -> some View {
 		VStack(alignment: .leading) {
 			HomePageHeader(goToSettings: $goToSettings, showLogout: $showLogout, url: authVM.image)
-				.environmentObject(homePageVM)
+				.environmentObject(schedulePageVM)
 				.padding()
 			HomeTabBarView(tabSelected: $tabSelected)
 		}

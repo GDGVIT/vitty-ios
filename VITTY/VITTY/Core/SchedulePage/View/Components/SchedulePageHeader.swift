@@ -7,13 +7,13 @@
 
 import SwiftUI
 
-struct HomePageHeader: View {
+struct SchedulePageHeader: View {
 	@Binding var goToSettings: Bool
 	@Binding var showLogout: Bool
 
 	let url: String
 
-	@EnvironmentObject var viewModel: HomePageViewModel
+	@EnvironmentObject var viewModel: SchedulePageViewModel
 
 	var body: some View {
 		HStack {
@@ -47,10 +47,10 @@ struct HomePageHeader: View {
 	}
 }
 
-struct HomePageHeader_Previews: PreviewProvider {
+struct SchedulePageHeader_Previews: PreviewProvider {
 	static var previews: some View {
-		HomePageHeader(goToSettings: .constant(false), showLogout: .constant(false), url: "")
-			.environmentObject(HomePageViewModel())
+		SchedulePageHeader(goToSettings: .constant(false), showLogout: .constant(false), url: "")
+			.environmentObject(SchedulePageViewModel())
 			.previewLayout(.sizeThatFits)
 	}
 }

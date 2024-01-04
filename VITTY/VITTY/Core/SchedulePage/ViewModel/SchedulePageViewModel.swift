@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-class HomePageViewModel: ObservableObject {
+class SchedulePageViewModel: ObservableObject {
 
 	@Published var isPresented: Bool = false
 

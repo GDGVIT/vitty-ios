@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct HomeView: View {
-    var body: some View {
-		TabView{
+	var body: some View {
+		TabView {
 			SchedulePage()
 				.tabItem {
 					Label("Time Table", systemImage: "calendar.day.timeline.left")
@@ -19,9 +19,9 @@ struct HomeView: View {
 					Label("Friends", systemImage: "person.2")
 				}
 		}
-    }
+	}
 }
 
 #Preview {
-    HomeView()
+	HomeView()
 }

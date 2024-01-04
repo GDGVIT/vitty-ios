@@ -109,6 +109,8 @@
 		524B842F2B46EBBD006D18BD /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 524B842E2B46EBBD006D18BD /* HomeView.swift */; };
 		524B84332B46EF3A006D18BD /* CommunityPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 524B84322B46EF3A006D18BD /* CommunityPage.swift */; };
 		524B84362B46F10F006D18BD /* CommunityPageHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 524B84352B46F10F006D18BD /* CommunityPageHeader.swift */; };
+		524B843A2B46F5C6006D18BD /* AddFriendsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 524B84392B46F5C6006D18BD /* AddFriendsView.swift */; };
+		524B843C2B46F6FD006D18BD /* AddFriendsHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 524B843B2B46F6FD006D18BD /* AddFriendsHeader.swift */; };
 		5251A7FA2B46E3A800D44CFE /* SwiftFormat in Frameworks */ = {isa = PBXBuildFile; productRef = 5251A7F92B46E3A800D44CFE /* SwiftFormat */; };
 		5251A7FC2B46E3A800D44CFE /* SwiftFormatConfiguration in Frameworks */ = {isa = PBXBuildFile; productRef = 5251A7FB2B46E3A800D44CFE /* SwiftFormatConfiguration */; };
 		5251A7FE2B46E3A800D44CFE /* swift-format in Frameworks */ = {isa = PBXBuildFile; productRef = 5251A7FD2B46E3A800D44CFE /* swift-format */; };
@@ -252,6 +254,8 @@
 		524B842E2B46EBBD006D18BD /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		524B84322B46EF3A006D18BD /* CommunityPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityPage.swift; sourceTree = "<group>"; };
 		524B84352B46F10F006D18BD /* CommunityPageHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityPageHeader.swift; sourceTree = "<group>"; };
+		524B84392B46F5C6006D18BD /* AddFriendsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFriendsView.swift; sourceTree = "<group>"; };
+		524B843B2B46F6FD006D18BD /* AddFriendsHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFriendsHeader.swift; sourceTree = "<group>"; };
 		5251A7FF2B46E3C000D44CFE /* .swift-format */ = {isa = PBXFileReference; lastKnownFileType = text; path = ".swift-format"; sourceTree = "<group>"; };
 		5D141B042A2658CD005977F8 /* textField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = textField.swift; sourceTree = "<group>"; };
 		5D141B092A265B15005977F8 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
@@ -608,6 +612,7 @@
 		524B84302B46EF07006D18BD /* Community */ = {
 			isa = PBXGroup;
 			children = (
+				524B84372B46F550006D18BD /* AddFriends */,
 				524B84312B46EF28006D18BD /* View */,
 			);
 			path = Community;
@@ -626,6 +631,31 @@
 			isa = PBXGroup;
 			children = (
 				524B84352B46F10F006D18BD /* CommunityPageHeader.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		524B84372B46F550006D18BD /* AddFriends */ = {
+			isa = PBXGroup;
+			children = (
+				524B84382B46F560006D18BD /* View */,
+			);
+			path = AddFriends;
+			sourceTree = "<group>";
+		};
+		524B84382B46F560006D18BD /* View */ = {
+			isa = PBXGroup;
+			children = (
+				524B843D2B46F705006D18BD /* Components */,
+				524B84392B46F5C6006D18BD /* AddFriendsView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		524B843D2B46F705006D18BD /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				524B843B2B46F6FD006D18BD /* AddFriendsHeader.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1232,6 +1262,7 @@
 				5DE8C0092A8F29C400AE3995 /* SchedulePageViewModel.swift in Sources */,
 				5D44FFFA2A2A69DD0005A1E4 /* SetStatusView.swift in Sources */,
 				31BAB52D279AE398008E20BB /* NotificationsViewHeader.swift in Sources */,
+				524B843A2B46F5C6006D18BD /* AddFriendsView.swift in Sources */,
 				5D3D92592A1818150013803E /* Color.swift in Sources */,
 				5D2FE3032AC546EF00970552 /* Timetable.swift in Sources */,
 				5D72EDD82AB98D6D00704BF5 /* URLSession.swift in Sources */,
@@ -1292,6 +1323,7 @@
 				5D629B402A3FA645000B8E7A /* FriendActivityViewModel.swift in Sources */,
 				5D44FFFC2A2A6ECE0005A1E4 /* StatusRowView.swift in Sources */,
 				5DB03A352A85555E00DB7E60 /* MenuView.swift in Sources */,
+				524B843C2B46F6FD006D18BD /* AddFriendsHeader.swift in Sources */,
 				5D72EDE42AB99D9A00704BF5 /* UserResponse.swift in Sources */,
 				3164C45B27CB71DA00D6B53F /* LargeWidgetView.swift in Sources */,
 				5DD41A892A0F84FA00B32C49 /* WidgetHeader.swift in Sources */,

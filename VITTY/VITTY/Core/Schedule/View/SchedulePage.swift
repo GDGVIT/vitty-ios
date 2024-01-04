@@ -121,9 +121,13 @@ struct HomePage_Previews: PreviewProvider {
 extension SchedulePage {
 	private func navBarItems() -> some View {
 		VStack(alignment: .leading) {
-			SchedulePageHeader(goToSettings: $goToSettings, showLogout: $showLogout, url: authVM.image)
-				.environmentObject(schedulePageVM)
-				.padding()
+			SchedulePageHeader(
+				goToSettings: $goToSettings,
+				showLogout: $showLogout,
+				url: authVM.image
+			)
+			.environmentObject(schedulePageVM)
+			.padding()
 			ScheduleTabBarView(tabSelected: $tabSelected)
 		}
 	}

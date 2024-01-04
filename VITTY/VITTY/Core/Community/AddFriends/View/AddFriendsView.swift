@@ -1,5 +1,5 @@
 //
-//  CommunityView.swift
+//  AddFriendsView.swift
 //  VITTY
 //
 //  Created by Chandram Dutta on 04/01/24.
@@ -7,13 +7,12 @@
 
 import SwiftUI
 
-struct CommunityPage: View {
+struct AddFriendsView: View {
 	var body: some View {
 		Group {
 			ZStack {
 				VStack(alignment: .leading) {
-					CommunityPageHeader()
-						.padding()
+					AddFriendsHeader()
 					Spacer()
 					EmptyView()
 				}
@@ -21,14 +20,16 @@ struct CommunityPage: View {
 			.padding(.top)
 			.background(
 				Image(
-					"HomeBG"
+					"HomeNoClassesBG"
 				)
-				.resizable().scaledToFill().edgesIgnoringSafeArea(.all)
+				.resizable()
+				.scaledToFill()
+				.edgesIgnoringSafeArea(.all)
 			)
 		}
 	}
 }
 
 #Preview {
-	CommunityPage()
+	AddFriendsView()
 }

@@ -24,8 +24,13 @@ struct AddFriendsHeader: View {
 				.foregroundColor(.white)
 
 			Spacer()
+			Button(action: {
+			}) {
+				Image(systemName: "magnifyingglass")
+					.foregroundColor(.white)
+					.padding(.horizontal)
+			}
 		}
-		.padding(.horizontal)
 	}
 }
 

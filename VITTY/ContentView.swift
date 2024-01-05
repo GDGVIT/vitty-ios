@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
 
 	@State private var communityPageViewModel = CommunityPageViewModel()
+	@State private var suggestedFriendsViewModel = SuggestedFriendsViewModel()
 	@StateObject var authState: AuthService = AuthService()
 	@StateObject var timeTableVM: TimetableViewModel = TimetableViewModel()
 	// may not need this at all
@@ -52,6 +53,7 @@ struct ContentView: View {
 		.environmentObject(timeTableVM)
 		.environmentObject(notifVM)
 		.environment(communityPageViewModel)
+		.environment(suggestedFriendsViewModel)
 	}
 }
 

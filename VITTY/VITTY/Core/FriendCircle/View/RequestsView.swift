@@ -45,9 +45,3 @@ struct RequestsView: View {
 		})
 	}
 }
-
-struct RequestsView_Previews: PreviewProvider {
-	static var previews: some View {
-		RequestsView()
-	}
-}

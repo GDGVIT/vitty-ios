@@ -31,9 +31,9 @@ struct CommunityPage: View {
 						else {
 							List(communityPageViewModel.friends, id: \.username) { friend in
 								FriendCard(friend: friend)
-									.listRowBackground(RoundedRectangle(cornerRadius: 15).fill(Color.theme.secondaryBlue))
+									.padding(.bottom)
+									.listRowBackground(RoundedRectangle(cornerRadius: 15).fill(Color.theme.secondaryBlue).padding(.bottom))
 									.listRowSeparator(.hidden)
-									.listRowSpacing(8)
 							}
 							.listStyle(.plain)
 							.scrollContentBackground(.hidden)

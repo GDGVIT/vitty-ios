@@ -106,6 +106,9 @@
 		31EC946A2788BCDF00EA07BE /* Classes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EC94692788BCDF00EA07BE /* Classes.swift */; };
 		31EC946E2789409D00EA07BE /* TimetableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EC946D2789409D00EA07BE /* TimetableViewModel.swift */; };
 		31F9B733279AA342006D1012 /* TimeTableScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F9B732279AA342006D1012 /* TimeTableScrollView.swift */; };
+		520BA6432B47FFF900124850 /* SuggestedFriendsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520BA6422B47FFF900124850 /* SuggestedFriendsViewModel.swift */; };
+		520BA6452B48013200124850 /* SuggestedFriendsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520BA6442B48013200124850 /* SuggestedFriendsView.swift */; };
+		520BA6482B4802EE00124850 /* AddFriendCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520BA6472B4802EE00124850 /* AddFriendCard.swift */; };
 		522B8BAD2B47297A00EE686E /* CommunityPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 522B8BAC2B47297A00EE686E /* CommunityPageViewModel.swift */; };
 		522B8BB02B4732CC00EE686E /* Friend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 522B8BAF2B4732CC00EE686E /* Friend.swift */; };
 		522B8BB32B473FEA00EE686E /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 522B8BB22B473FEA00EE686E /* Alamofire */; };
@@ -255,6 +258,9 @@
 		31EC94692788BCDF00EA07BE /* Classes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Classes.swift; sourceTree = "<group>"; };
 		31EC946D2789409D00EA07BE /* TimetableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimetableViewModel.swift; sourceTree = "<group>"; };
 		31F9B732279AA342006D1012 /* TimeTableScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTableScrollView.swift; sourceTree = "<group>"; };
+		520BA6422B47FFF900124850 /* SuggestedFriendsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestedFriendsViewModel.swift; sourceTree = "<group>"; };
+		520BA6442B48013200124850 /* SuggestedFriendsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestedFriendsView.swift; sourceTree = "<group>"; };
+		520BA6472B4802EE00124850 /* AddFriendCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFriendCard.swift; sourceTree = "<group>"; };
 		522B8BAC2B47297A00EE686E /* CommunityPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityPageViewModel.swift; sourceTree = "<group>"; };
 		522B8BAF2B4732CC00EE686E /* Friend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Friend.swift; sourceTree = "<group>"; };
 		524B842E2B46EBBD006D18BD /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -601,6 +607,40 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
+		520BA63B2B47FF5700124850 /* SuggestedFriends */ = {
+			isa = PBXGroup;
+			children = (
+				520BA63D2B47FF6B00124850 /* ViewModel */,
+				520BA63C2B47FF6300124850 /* Views */,
+			);
+			path = SuggestedFriends;
+			sourceTree = "<group>";
+		};
+		520BA63C2B47FF6300124850 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				520BA6462B4802DD00124850 /* Components */,
+				520BA6442B48013200124850 /* SuggestedFriendsView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		520BA63D2B47FF6B00124850 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				520BA6422B47FFF900124850 /* SuggestedFriendsViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		520BA6462B4802DD00124850 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				520BA6472B4802EE00124850 /* AddFriendCard.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
 		522B8BAB2B47296900EE686E /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -636,6 +676,7 @@
 		524B84302B46EF07006D18BD /* Community */ = {
 			isa = PBXGroup;
 			children = (
+				520BA63B2B47FF5700124850 /* SuggestedFriends */,
 				522B8BAE2B4732C200EE686E /* Models */,
 				522B8BAB2B47296900EE686E /* ViewModel */,
 				524B84372B46F550006D18BD /* AddFriends */,
@@ -1285,6 +1326,7 @@
 				5D629B422A3FA6A8000B8E7A /* FriendRow.swift in Sources */,
 				5D72EDDD2AB990BB00704BF5 /* AuthReqBody.swift in Sources */,
 				317EE1932775B819008AEB31 /* InstructionsCards.swift in Sources */,
+				520BA6452B48013200124850 /* SuggestedFriendsView.swift in Sources */,
 				31096381278227730009A29C /* AuthService.swift in Sources */,
 				5D3D92562A18170E0013803E /* UserNameViewModel.swift in Sources */,
 				524B842F2B46EBBD006D18BD /* HomeView.swift in Sources */,
@@ -1330,6 +1372,7 @@
 				314A409127383BEC0058082F /* ContentView.swift in Sources */,
 				5D5EAFDC2A951DD400F6C16C /* ToggleSwitch.swift in Sources */,
 				31D2F80227BAD1B7000C0308 /* RemoteConfigManager.swift in Sources */,
+				520BA6482B4802EE00124850 /* AddFriendCard.swift in Sources */,
 				31128D1627730C460084C9EA /* CustomTextField.swift in Sources */,
 				313E6AFD27BEAED9006F5944 /* ClassCardViewModel.swift in Sources */,
 				5D72EDDF2AB996C400704BF5 /* UsernameBody.swift in Sources */,
@@ -1342,6 +1385,7 @@
 				3164C46827CBCD1400D6B53F /* WidgetLClassCard.swift in Sources */,
 				31900F01277467460014A58D /* InstructionsView.swift in Sources */,
 				3164C45D27CB71DF00D6B53F /* WidgetSmallClassCard.swift in Sources */,
+				520BA6432B47FFF900124850 /* SuggestedFriendsViewModel.swift in Sources */,
 				31A2A4A827899EE3005679EB /* TabBarDay.swift in Sources */,
 				5DC0AF572AD2B93D006B081D /* FriendReqResponse.swift in Sources */,
 				31EC946A2788BCDF00EA07BE /* Classes.swift in Sources */,

@@ -8,27 +8,63 @@
 import SwiftUI
 
 struct CommunityPage: View {
+
+	@EnvironmentObject private var authState: AuthService
+	@Environment(CommunityPageViewModel.self) private var communityPageViewModel
+
 	var body: some View {
 		Group {
 			ZStack {
-				VStack(alignment: .leading) {
+				VStack(alignment: .center) {
 					CommunityPageHeader()
-						.padding()
-					Spacer()
-					EmptyView()
+					if communityPageViewModel.error {
+						Spacer()
+						Text("Error")
+						Spacer()
+					}
+					else {
+						if communityPageViewModel.loading {
+							Spacer()
+							ProgressView()
+							Spacer()
+						}
+						else {
+							List(communityPageViewModel.friends, id: \.username) { friend in
+								FriendCard(friend: friend)
+									.listRowBackground(RoundedRectangle(cornerRadius: 15).fill(Color.theme.secondaryBlue))
+									.listRowSeparator(.hidden)
+									.listRowSpacing(8)
+							}
+							.listStyle(.plain)
+							.scrollContentBackground(.hidden)
+							.refreshable {
+								communityPageViewModel.fetchData(
+									from:
+										"\(APIConstants.base_url)/api/v2/friends/\(authState.username)/",
+									token: authState.token,
+									loading: false
+								)
+							}
+							Spacer()
+						}
+					}
 				}
+				.padding()
 			}
 			.padding(.top)
 			.background(
-				Image(
-					"HomeBG"
-				)
-				.resizable().scaledToFill().edgesIgnoringSafeArea(.all)
+				Image("HomeBG")
+					.resizable()
+					.scaledToFill()
+					.edgesIgnoringSafeArea(.all)
+			)
+		}
+		.onAppear {
+			communityPageViewModel.fetchData(
+				from: "\(APIConstants.base_url)/api/v2/friends/\(authState.username)/",
+				token: authState.token,
+				loading: true
 			)
 		}
 	}
-}
-
-#Preview {
-	CommunityPage()
 }

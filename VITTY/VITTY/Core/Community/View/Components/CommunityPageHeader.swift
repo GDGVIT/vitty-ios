@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CommunityPageHeader: View {
 	@State private var isAddFriendsViewPresented = false
-	
+
 	var body: some View {
 		HStack {
 			Text("Community")

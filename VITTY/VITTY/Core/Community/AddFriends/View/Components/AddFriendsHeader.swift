@@ -13,7 +13,7 @@ struct AddFriendsHeader: View {
 		HStack {
 			Button(action: {
 				dismiss()
-			}){
+			}) {
 				Image(systemName: "xmark")
 					.foregroundColor(.white)
 					.padding(.horizontal)
@@ -22,7 +22,7 @@ struct AddFriendsHeader: View {
 				.font(.custom("Poppins-Medium", size: 22))
 				.fontWeight(.semibold)
 				.foregroundColor(.white)
-			
+
 			Spacer()
 		}
 		.padding(.horizontal)

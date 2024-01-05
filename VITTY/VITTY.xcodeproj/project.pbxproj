@@ -106,6 +106,9 @@
 		31EC946A2788BCDF00EA07BE /* Classes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EC94692788BCDF00EA07BE /* Classes.swift */; };
 		31EC946E2789409D00EA07BE /* TimetableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EC946D2789409D00EA07BE /* TimetableViewModel.swift */; };
 		31F9B733279AA342006D1012 /* TimeTableScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F9B732279AA342006D1012 /* TimeTableScrollView.swift */; };
+		522B8BAD2B47297A00EE686E /* CommunityPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 522B8BAC2B47297A00EE686E /* CommunityPageViewModel.swift */; };
+		522B8BB02B4732CC00EE686E /* Friend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 522B8BAF2B4732CC00EE686E /* Friend.swift */; };
+		522B8BB32B473FEA00EE686E /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 522B8BB22B473FEA00EE686E /* Alamofire */; };
 		524B842F2B46EBBD006D18BD /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 524B842E2B46EBBD006D18BD /* HomeView.swift */; };
 		524B84332B46EF3A006D18BD /* CommunityPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 524B84322B46EF3A006D18BD /* CommunityPage.swift */; };
 		524B84362B46F10F006D18BD /* CommunityPageHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 524B84352B46F10F006D18BD /* CommunityPageHeader.swift */; };
@@ -114,6 +117,7 @@
 		5251A7FA2B46E3A800D44CFE /* SwiftFormat in Frameworks */ = {isa = PBXBuildFile; productRef = 5251A7F92B46E3A800D44CFE /* SwiftFormat */; };
 		5251A7FC2B46E3A800D44CFE /* SwiftFormatConfiguration in Frameworks */ = {isa = PBXBuildFile; productRef = 5251A7FB2B46E3A800D44CFE /* SwiftFormatConfiguration */; };
 		5251A7FE2B46E3A800D44CFE /* swift-format in Frameworks */ = {isa = PBXBuildFile; productRef = 5251A7FD2B46E3A800D44CFE /* swift-format */; };
+		52DBBE882B47B6B30014C57A /* FriendCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52DBBE872B47B6B30014C57A /* FriendCard.swift */; };
 		5D141B052A2658CD005977F8 /* textField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D141B042A2658CD005977F8 /* textField.swift */; };
 		5D141B0A2A265B15005977F8 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D141B092A265B15005977F8 /* Profile.swift */; };
 		5D141B0C2A265B32005977F8 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D141B0B2A265B32005977F8 /* ProfileViewModel.swift */; };
@@ -251,12 +255,15 @@
 		31EC94692788BCDF00EA07BE /* Classes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Classes.swift; sourceTree = "<group>"; };
 		31EC946D2789409D00EA07BE /* TimetableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimetableViewModel.swift; sourceTree = "<group>"; };
 		31F9B732279AA342006D1012 /* TimeTableScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTableScrollView.swift; sourceTree = "<group>"; };
+		522B8BAC2B47297A00EE686E /* CommunityPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityPageViewModel.swift; sourceTree = "<group>"; };
+		522B8BAF2B4732CC00EE686E /* Friend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Friend.swift; sourceTree = "<group>"; };
 		524B842E2B46EBBD006D18BD /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		524B84322B46EF3A006D18BD /* CommunityPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityPage.swift; sourceTree = "<group>"; };
 		524B84352B46F10F006D18BD /* CommunityPageHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityPageHeader.swift; sourceTree = "<group>"; };
 		524B84392B46F5C6006D18BD /* AddFriendsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFriendsView.swift; sourceTree = "<group>"; };
 		524B843B2B46F6FD006D18BD /* AddFriendsHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFriendsHeader.swift; sourceTree = "<group>"; };
 		5251A7FF2B46E3C000D44CFE /* .swift-format */ = {isa = PBXFileReference; lastKnownFileType = text; path = ".swift-format"; sourceTree = "<group>"; };
+		52DBBE872B47B6B30014C57A /* FriendCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendCard.swift; sourceTree = "<group>"; };
 		5D141B042A2658CD005977F8 /* textField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = textField.swift; sourceTree = "<group>"; };
 		5D141B092A265B15005977F8 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		5D141B0B2A265B32005977F8 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
@@ -328,6 +335,7 @@
 				31A2A49E27894C16005679EB /* FirebaseFirestore in Frameworks */,
 				316A1EF12776238500CC1DE8 /* GoogleSignIn in Frameworks */,
 				31D2F80027BA6592000C0308 /* FirebaseRemoteConfig in Frameworks */,
+				522B8BB32B473FEA00EE686E /* Alamofire in Frameworks */,
 				5251A7FC2B46E3A800D44CFE /* SwiftFormatConfiguration in Frameworks */,
 				5D45CE362ABB133E005F14F8 /* FirebaseFirestoreSwift in Frameworks */,
 			);
@@ -593,6 +601,22 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
+		522B8BAB2B47296900EE686E /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				522B8BAC2B47297A00EE686E /* CommunityPageViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		522B8BAE2B4732C200EE686E /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				522B8BAF2B4732CC00EE686E /* Friend.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		524B842C2B46EBA6006D18BD /* Home */ = {
 			isa = PBXGroup;
 			children = (
@@ -612,6 +636,8 @@
 		524B84302B46EF07006D18BD /* Community */ = {
 			isa = PBXGroup;
 			children = (
+				522B8BAE2B4732C200EE686E /* Models */,
+				522B8BAB2B47296900EE686E /* ViewModel */,
 				524B84372B46F550006D18BD /* AddFriends */,
 				524B84312B46EF28006D18BD /* View */,
 			);
@@ -631,6 +657,7 @@
 			isa = PBXGroup;
 			children = (
 				524B84352B46F10F006D18BD /* CommunityPageHeader.swift */,
+				52DBBE872B47B6B30014C57A /* FriendCard.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1097,6 +1124,7 @@
 				5251A7F92B46E3A800D44CFE /* SwiftFormat */,
 				5251A7FB2B46E3A800D44CFE /* SwiftFormatConfiguration */,
 				5251A7FD2B46E3A800D44CFE /* swift-format */,
+				522B8BB22B473FEA00EE686E /* Alamofire */,
 			);
 			productName = VITTY;
 			productReference = 314A408B27383BEC0058082F /* VITTY.app */;
@@ -1133,6 +1161,7 @@
 				316A1EEF2776238500CC1DE8 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 				31A2A49627894C16005679EB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				5251A7F82B46E3A800D44CFE /* XCRemoteSwiftPackageReference "swift-format" */,
+				522B8BB12B473FEA00EE686E /* XCRemoteSwiftPackageReference "Alamofire" */,
 			);
 			productRefGroup = 314A408C27383BEC0058082F /* Products */;
 			projectDirPath = "";
@@ -1282,6 +1311,7 @@
 				5DF547DE2A94530900A0B09C /* RequestsView.swift in Sources */,
 				3164C45A27CB71D700D6B53F /* MediumWidgetView.swift in Sources */,
 				5DC0AF5A2AD2C7C9006B081D /* GetFriendReqResponse.swift in Sources */,
+				522B8BB02B4732CC00EE686E /* Friend.swift in Sources */,
 				5D141B0A2A265B15005977F8 /* Profile.swift in Sources */,
 				31128D042772F8E90084C9EA /* CustomButton.swift in Sources */,
 				5D7F04F72AAB9E9900ECED15 /* APIConstants.swift in Sources */,
@@ -1306,6 +1336,7 @@
 				318B66EF27CE9A2C00C53BC3 /* VITTYWidgetView.swift in Sources */,
 				5DF1A6932A93B23A007A5731 /* FriendCircleViewModel.swift in Sources */,
 				31900F03277468790014A58D /* SchedulePage.swift in Sources */,
+				52DBBE882B47B6B30014C57A /* FriendCard.swift in Sources */,
 				5DE8C0102A8FC7CE00AE3995 /* FriendCircle.swift in Sources */,
 				317715DE279F1431009A532E /* IndexedCollection.swift in Sources */,
 				3164C46827CBCD1400D6B53F /* WidgetLClassCard.swift in Sources */,
@@ -1338,6 +1369,7 @@
 				5D629B3C2A3FA612000B8E7A /* FriendActivity.swift in Sources */,
 				5DF547E02A94531900A0B09C /* FriendsView.swift in Sources */,
 				3164C42727C9ED4F00D6B53F /* WidgetModel.swift in Sources */,
+				522B8BAD2B47297A00EE686E /* CommunityPageViewModel.swift in Sources */,
 				317715DC279F0426009A532E /* CustomNotificationsLabel.swift in Sources */,
 				5DB9DDF32A9251F60027C893 /* UserDetailsRow.swift in Sources */,
 				31900F0A27759DB60014A58D /* Gradient.swift in Sources */,
@@ -1374,7 +1406,7 @@
 				INFOPLIST_FILE = "vitty-widget/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "vitty-widget";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1404,7 +1436,7 @@
 				INFOPLIST_FILE = "vitty-widget/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "vitty-widget";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1472,7 +1504,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1528,7 +1560,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = NO;
@@ -1562,7 +1594,7 @@
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1600,7 +1632,7 @@
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1665,6 +1697,14 @@
 				kind = branch;
 			};
 		};
+		522B8BB12B473FEA00EE686E /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.8.1;
+			};
+		};
 		5251A7F82B46E3A800D44CFE /* XCRemoteSwiftPackageReference "swift-format" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/apple/swift-format";
@@ -1725,6 +1765,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 31A2A49627894C16005679EB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseRemoteConfig;
+		};
+		522B8BB22B473FEA00EE686E /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 522B8BB12B473FEA00EE686E /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
 		};
 		5251A7F92B46E3A800D44CFE /* SwiftFormat */ = {
 			isa = XCSwiftPackageProductDependency;

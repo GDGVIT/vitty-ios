@@ -10,7 +10,11 @@ import SwiftUI
 struct CommunityPage: View {
 
 	@EnvironmentObject private var authState: AuthService
+	@EnvironmentObject private var timeTableViewModel: TimetableViewModel
 	@Environment(CommunityPageViewModel.self) private var communityPageViewModel
+	@State private var friend: Friend? = nil
+	
+	@State private var isFriendViewPresented = false
 
 	var body: some View {
 		Group {
@@ -34,6 +38,11 @@ struct CommunityPage: View {
 									.padding(.bottom)
 									.listRowBackground(RoundedRectangle(cornerRadius: 15).fill(Color.theme.secondaryBlue).padding(.bottom))
 									.listRowSeparator(.hidden)
+									.onTapGesture {
+										self.friend = friend
+										timeTableViewModel.getTimeTable(token: authState.token, username: friend.username)
+										isFriendViewPresented.toggle()
+									}
 							}
 							.listStyle(.plain)
 							.scrollContentBackground(.hidden)
@@ -58,6 +67,9 @@ struct CommunityPage: View {
 					.scaledToFill()
 					.edgesIgnoringSafeArea(.all)
 			)
+		}
+		.fullScreenCover(isPresented: $isFriendViewPresented){
+			FriendTimeTableView(friend: friend ?? Friend.sampleFriend)
 		}
 		.onAppear {
 			communityPageViewModel.fetchData(

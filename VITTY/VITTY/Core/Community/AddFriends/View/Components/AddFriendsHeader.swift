@@ -9,6 +9,7 @@ import SwiftUI
 
 struct AddFriendsHeader: View {
 	@Environment(\.dismiss) var dismiss
+	@State private var isSearchViewPresented = false
 	var body: some View {
 		HStack {
 			Button(action: {
@@ -25,11 +26,17 @@ struct AddFriendsHeader: View {
 
 			Spacer()
 			Button(action: {
+				isSearchViewPresented = true
 			}) {
 				Image(systemName: "magnifyingglass")
 					.foregroundColor(.white)
 					.padding(.horizontal)
 			}
+		}
+		.fullScreenCover(
+			isPresented: $isSearchViewPresented
+		) {
+			SearchView()
 		}
 	}
 }

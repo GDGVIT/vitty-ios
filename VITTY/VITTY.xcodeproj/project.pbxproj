@@ -124,6 +124,7 @@
 		5251A7FA2B46E3A800D44CFE /* SwiftFormat in Frameworks */ = {isa = PBXBuildFile; productRef = 5251A7F92B46E3A800D44CFE /* SwiftFormat */; };
 		5251A7FC2B46E3A800D44CFE /* SwiftFormatConfiguration in Frameworks */ = {isa = PBXBuildFile; productRef = 5251A7FB2B46E3A800D44CFE /* SwiftFormatConfiguration */; };
 		5251A7FE2B46E3A800D44CFE /* swift-format in Frameworks */ = {isa = PBXBuildFile; productRef = 5251A7FD2B46E3A800D44CFE /* swift-format */; };
+		525AA7A92B4B0164003C6A12 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525AA7A82B4B0164003C6A12 /* SearchView.swift */; };
 		52A955832B497C7A00CA6EC5 /* FriendTimeTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52A955822B497C7A00CA6EC5 /* FriendTimeTableView.swift */; };
 		52DBBE882B47B6B30014C57A /* FriendCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52DBBE872B47B6B30014C57A /* FriendCard.swift */; };
 		5D141B052A2658CD005977F8 /* textField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D141B042A2658CD005977F8 /* textField.swift */; };
@@ -278,6 +279,7 @@
 		524B84392B46F5C6006D18BD /* AddFriendsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFriendsView.swift; sourceTree = "<group>"; };
 		524B843B2B46F6FD006D18BD /* AddFriendsHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFriendsHeader.swift; sourceTree = "<group>"; };
 		5251A7FF2B46E3C000D44CFE /* .swift-format */ = {isa = PBXFileReference; lastKnownFileType = text; path = ".swift-format"; sourceTree = "<group>"; };
+		525AA7A82B4B0164003C6A12 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		52A955822B497C7A00CA6EC5 /* FriendTimeTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendTimeTableView.swift; sourceTree = "<group>"; };
 		52DBBE872B47B6B30014C57A /* FriendCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendCard.swift; sourceTree = "<group>"; };
 		5D141B042A2658CD005977F8 /* textField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = textField.swift; sourceTree = "<group>"; };
@@ -729,6 +731,7 @@
 		524B84302B46EF07006D18BD /* Community */ = {
 			isa = PBXGroup;
 			children = (
+				525AA7A62B4B014C003C6A12 /* Search */,
 				5238C7E82B4A9D2300413946 /* FriendRequest */,
 				520BA63B2B47FF5700124850 /* SuggestedFriends */,
 				522B8BAE2B4732C200EE686E /* Models */,
@@ -781,6 +784,22 @@
 				524B843B2B46F6FD006D18BD /* AddFriendsHeader.swift */,
 			);
 			path = Components;
+			sourceTree = "<group>";
+		};
+		525AA7A62B4B014C003C6A12 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				525AA7A72B4B0158003C6A12 /* Views */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
+		525AA7A72B4B0158003C6A12 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				525AA7A82B4B0164003C6A12 /* SearchView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		5D141B032A2658BE005977F8 /* Components */ = {
@@ -1438,6 +1457,7 @@
 				318B66EF27CE9A2C00C53BC3 /* VITTYWidgetView.swift in Sources */,
 				5DF1A6932A93B23A007A5731 /* FriendCircleViewModel.swift in Sources */,
 				31900F03277468790014A58D /* SchedulePage.swift in Sources */,
+				525AA7A92B4B0164003C6A12 /* SearchView.swift in Sources */,
 				52DBBE882B47B6B30014C57A /* FriendCard.swift in Sources */,
 				5DE8C0102A8FC7CE00AE3995 /* FriendCircle.swift in Sources */,
 				317715DE279F1431009A532E /* IndexedCollection.swift in Sources */,

@@ -25,7 +25,7 @@ struct AddFriendCard: View {
 					.foregroundColor(Color.vprimary)
 			}
 			Spacer()
-			if friend.friendStatus != "sent" {
+			if friend.friendStatus != "sent" && friend.friendStatus != "friends" {
 				Button("Send Request") {
 					let url = URL(
 						string: "\(APIConstants.base_url)/api/v2/requests/\(friend.username)/send"

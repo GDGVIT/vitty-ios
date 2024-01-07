@@ -112,6 +112,10 @@
 		522B8BAD2B47297A00EE686E /* CommunityPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 522B8BAC2B47297A00EE686E /* CommunityPageViewModel.swift */; };
 		522B8BB02B4732CC00EE686E /* Friend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 522B8BAF2B4732CC00EE686E /* Friend.swift */; };
 		522B8BB32B473FEA00EE686E /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 522B8BB22B473FEA00EE686E /* Alamofire */; };
+		5238C7EB2B4A9D8C00413946 /* FriendRequestViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5238C7EA2B4A9D8B00413946 /* FriendRequestViewModel.swift */; };
+		5238C7EE2B4A9E2C00413946 /* FriendRequestRaw.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5238C7ED2B4A9E2C00413946 /* FriendRequestRaw.swift */; };
+		5238C7F12B4AAE8700413946 /* FriendRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5238C7F02B4AAE8700413946 /* FriendRequestView.swift */; };
+		5238C7F42B4AB07400413946 /* FriendReqCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5238C7F32B4AB07400413946 /* FriendReqCard.swift */; };
 		524B842F2B46EBBD006D18BD /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 524B842E2B46EBBD006D18BD /* HomeView.swift */; };
 		524B84332B46EF3A006D18BD /* CommunityPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 524B84322B46EF3A006D18BD /* CommunityPage.swift */; };
 		524B84362B46F10F006D18BD /* CommunityPageHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 524B84352B46F10F006D18BD /* CommunityPageHeader.swift */; };
@@ -264,6 +268,10 @@
 		520BA6472B4802EE00124850 /* AddFriendCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFriendCard.swift; sourceTree = "<group>"; };
 		522B8BAC2B47297A00EE686E /* CommunityPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityPageViewModel.swift; sourceTree = "<group>"; };
 		522B8BAF2B4732CC00EE686E /* Friend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Friend.swift; sourceTree = "<group>"; };
+		5238C7EA2B4A9D8B00413946 /* FriendRequestViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequestViewModel.swift; sourceTree = "<group>"; };
+		5238C7ED2B4A9E2C00413946 /* FriendRequestRaw.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequestRaw.swift; sourceTree = "<group>"; };
+		5238C7F02B4AAE8700413946 /* FriendRequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequestView.swift; sourceTree = "<group>"; };
+		5238C7F32B4AB07400413946 /* FriendReqCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendReqCard.swift; sourceTree = "<group>"; };
 		524B842E2B46EBBD006D18BD /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		524B84322B46EF3A006D18BD /* CommunityPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityPage.swift; sourceTree = "<group>"; };
 		524B84352B46F10F006D18BD /* CommunityPageHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityPageHeader.swift; sourceTree = "<group>"; };
@@ -659,6 +667,49 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		5238C7E82B4A9D2300413946 /* FriendRequest */ = {
+			isa = PBXGroup;
+			children = (
+				5238C7EF2B4A9E9800413946 /* Views */,
+				5238C7EC2B4A9E1B00413946 /* Model */,
+				5238C7E92B4A9D7600413946 /* ViewModel */,
+			);
+			path = FriendRequest;
+			sourceTree = "<group>";
+		};
+		5238C7E92B4A9D7600413946 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				5238C7EA2B4A9D8B00413946 /* FriendRequestViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		5238C7EC2B4A9E1B00413946 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				5238C7ED2B4A9E2C00413946 /* FriendRequestRaw.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		5238C7EF2B4A9E9800413946 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				5238C7F22B4AB06600413946 /* Components */,
+				5238C7F02B4AAE8700413946 /* FriendRequestView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		5238C7F22B4AB06600413946 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				5238C7F32B4AB07400413946 /* FriendReqCard.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
 		524B842C2B46EBA6006D18BD /* Home */ = {
 			isa = PBXGroup;
 			children = (
@@ -678,6 +729,7 @@
 		524B84302B46EF07006D18BD /* Community */ = {
 			isa = PBXGroup;
 			children = (
+				5238C7E82B4A9D2300413946 /* FriendRequest */,
 				520BA63B2B47FF5700124850 /* SuggestedFriends */,
 				522B8BAE2B4732C200EE686E /* Models */,
 				522B8BAB2B47296900EE686E /* ViewModel */,
@@ -1326,6 +1378,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5238C7EB2B4A9D8C00413946 /* FriendRequestViewModel.swift in Sources */,
 				5D629B422A3FA6A8000B8E7A /* FriendRow.swift in Sources */,
 				5D72EDDD2AB990BB00704BF5 /* AuthReqBody.swift in Sources */,
 				317EE1932775B819008AEB31 /* InstructionsCards.swift in Sources */,
@@ -1348,6 +1401,7 @@
 				3164C45C27CB71DD00D6B53F /* NoDetailsAvailableView.swift in Sources */,
 				31128D012772F8370084C9EA /* SplashScreen.swift in Sources */,
 				31A3BF4327D0BAE800B6BB97 /* WidgetMClassCard.swift in Sources */,
+				5238C7F42B4AB07400413946 /* FriendReqCard.swift in Sources */,
 				31EC946E2789409D00EA07BE /* TimetableViewModel.swift in Sources */,
 				31900F0827746B3A0014A58D /* ScheduleTabBarView.swift in Sources */,
 				31BAB52A279AE34B008E20BB /* NotificationsView.swift in Sources */,
@@ -1369,6 +1423,7 @@
 				5DF1A6952A93B361007A5731 /* CustomTabBar.swift in Sources */,
 				5D44FFFF2A2A76CE0005A1E4 /* SetStatusViewModel.swift in Sources */,
 				5D72EDDB2AB9906E00704BF5 /* AuthResponse.swift in Sources */,
+				5238C7F12B4AAE8700413946 /* FriendRequestView.swift in Sources */,
 				5DF547DB2A9452DE00A0B09C /* SuggestionsView.swift in Sources */,
 				31BAB531279D318F008E20BB /* NotificationsSettingsModel.swift in Sources */,
 				31128D072772FA120084C9EA /* Colors.swift in Sources */,
@@ -1376,6 +1431,7 @@
 				5D5EAFDC2A951DD400F6C16C /* ToggleSwitch.swift in Sources */,
 				31D2F80227BAD1B7000C0308 /* RemoteConfigManager.swift in Sources */,
 				520BA6482B4802EE00124850 /* AddFriendCard.swift in Sources */,
+				5238C7EE2B4A9E2C00413946 /* FriendRequestRaw.swift in Sources */,
 				31128D1627730C460084C9EA /* CustomTextField.swift in Sources */,
 				313E6AFD27BEAED9006F5944 /* ClassCardViewModel.swift in Sources */,
 				5D72EDDF2AB996C400704BF5 /* UsernameBody.swift in Sources */,

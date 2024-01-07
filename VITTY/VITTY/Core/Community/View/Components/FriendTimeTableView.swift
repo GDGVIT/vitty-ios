@@ -8,16 +8,18 @@
 import SwiftUI
 
 struct FriendTimeTableView: View {
-	
+
 	let friend: Friend
-	
+
 	@Environment(\.dismiss) var dismiss
 	@EnvironmentObject var timetableViewModel: TimetableViewModel
+	@EnvironmentObject private var authState: AuthService
+	@Environment(CommunityPageViewModel.self) private var communityPageViewModel
 	@State var tabSelected: Int = Date.convertToMondayWeek()
-	
+
 	var body: some View {
-		VStack{
-			HStack{
+		VStack {
+			HStack {
 				Button(action: {
 					dismiss()
 				}) {
@@ -29,24 +31,55 @@ struct FriendTimeTableView: View {
 				Text(friend.name)
 					.font(.custom("Poppins-SemiBold", size: 16))
 				Spacer()
-				Button(action: {}) {
+				Button(action: {
+					let url = URL(
+						string: "\(APIConstants.base_url)/api/v2/friends/\(friend.username)"
+					)!
+					var request = URLRequest(url: url)
+
+					request.httpMethod = "DELETE"
+					request.addValue(
+						"Token \(authState.token)",
+						forHTTPHeaderField: "Authorization"
+					)
+
+					let task = URLSession.shared.dataTask(with: request) {
+						(data, response, error) in
+						// Handle the response here
+						if let error = error {
+							print("Error: \(error.localizedDescription)")
+							return
+						}
+					}
+
+					// Start the URLSession task
+					task.resume()
+					communityPageViewModel.fetchData(
+						from: "\(APIConstants.base_url)/api/v2/friends/\(authState.username)/",
+						token: authState.token,
+						loading: false
+					)
+					dismiss()
+				}) {
 					Image(systemName: "person.fill.badge.minus")
 						.foregroundColor(.white)
 				}
-			}.padding(.horizontal)
+			}
+			.padding(.horizontal)
 			ScheduleTabBarView(tabSelected: $tabSelected)
 			timeTableView()
-		}.padding(.top)
-			.background(
-				Image(
-					timetableViewModel.timetable[TimetableViewModel.daysOfTheWeek[tabSelected]]?
-						.isEmpty ?? false ? "HomeNoClassesBG" : "HomeBG"
-				)
-				.resizable().scaledToFill().edgesIgnoringSafeArea(.all)
+		}
+		.padding(.top)
+		.background(
+			Image(
+				timetableViewModel.timetable[TimetableViewModel.daysOfTheWeek[tabSelected]]?
+					.isEmpty ?? false ? "HomeNoClassesBG" : "HomeBG"
 			)
-			.onAppear {
-				timetableViewModel.updateClassCompleted()
-			}
+			.resizable().scaledToFill().edgesIgnoringSafeArea(.all)
+		)
+		.onAppear {
+			timetableViewModel.updateClassCompleted()
+		}
 	}
 }
 
@@ -55,12 +88,12 @@ extension FriendTimeTableView {
 		ScrollView {
 			ForEach(timetableViewModel.timetable.keys.sorted(), id: \.self) { day in
 				ForEach(timetableViewModel.timetable[day] ?? [], id: \.self) { classes in
-					
+
 					if day.description.lowercased() == TimetableViewModel.daysOfTheWeek[tabSelected]
 					{
-					ClassCards(classInfo: classes)
-						.listRowBackground(Color.clear)
-						.listRowSeparator(.hidden)
+						ClassCards(classInfo: classes)
+							.listRowBackground(Color.clear)
+							.listRowSeparator(.hidden)
 					}
 				}
 			}

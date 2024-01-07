@@ -31,7 +31,7 @@ struct Friend: Decodable {
 		let `class`: String?
 		let slot: String?
 		let venue: String?
-		
+
 		init(status: String, slot: String? = nil, venue: String? = nil, `class`: String? = nil) {
 			self.status = status
 			self.slot = slot

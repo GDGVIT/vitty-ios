@@ -10,11 +10,11 @@ import Foundation
 
 @Observable
 class SuggestedFriendsViewModel {
-	
+
 	var suggestedFriends = [Friend]()
 	var loading = false
 	var error = false
-	
+
 	func fetchData(from url: String, token: String, loading: Bool) {
 		self.loading = loading
 		AF.request(url, method: .get, headers: ["Authorization": "Bearer \(token)"])

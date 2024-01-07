@@ -8,26 +8,43 @@
 import SwiftUI
 
 struct AddFriendsView: View {
-	
+
 	@EnvironmentObject private var authState: AuthService
 	@Environment(SuggestedFriendsViewModel.self) private var suggestedFriendsViewModel
+	@Environment(FriendRequestViewModel.self) private var friendRequestViewModel
 
 	var body: some View {
 		Group {
 			ZStack {
 				VStack(alignment: .center) {
 					AddFriendsHeader()
-					if !suggestedFriendsViewModel.suggestedFriends.isEmpty {
-						Text("Suggested Friends")
-							.font(Font.custom("Poppins-Regular", size: 14))
-							.foregroundColor(Color.vprimary)
-							.padding(.top)
-							.padding(.horizontal)
-						SuggestedFriendsView()
-							.padding(.horizontal)
-						
-						Spacer()
-					} else {
+					if !suggestedFriendsViewModel.suggestedFriends.isEmpty
+						|| !friendRequestViewModel.requests.isEmpty
+					{
+						VStack(alignment: .leading) {
+							if !friendRequestViewModel.requests.isEmpty {
+								Text("Friend Requests")
+									.font(Font.custom("Poppins-Regular", size: 14))
+									.foregroundColor(Color.vprimary)
+									.padding(.top)
+									.padding(.horizontal)
+								FriendRequestView()
+									.padding(.horizontal)
+							}
+							if !suggestedFriendsViewModel.suggestedFriends.isEmpty {
+								Text("Suggested Friends")
+									.font(Font.custom("Poppins-Regular", size: 14))
+									.foregroundColor(Color.vprimary)
+									.padding(.top)
+									.padding(.horizontal)
+								SuggestedFriendsView()
+									.padding(.horizontal)
+
+							}
+							Spacer()
+						}
+					}
+					else {
 						Spacer()
 						Text("Request and Suggestions")
 							.multilineTextAlignment(.center)
@@ -45,7 +62,8 @@ struct AddFriendsView: View {
 			.padding(.top)
 			.background(
 				Image(
-					suggestedFriendsViewModel.suggestedFriends.isEmpty ?"HomeNoClassesBG" : "HomeBG"
+					suggestedFriendsViewModel.suggestedFriends.isEmpty
+						&& friendRequestViewModel.requests.isEmpty ? "HomeNoClassesBG" : "HomeBG"
 				)
 				.resizable()
 				.scaledToFill()

@@ -11,6 +11,7 @@ struct ContentView: View {
 
 	@State private var communityPageViewModel = CommunityPageViewModel()
 	@State private var suggestedFriendsViewModel = SuggestedFriendsViewModel()
+	@State private var friendRequestViewModel = FriendRequestViewModel()
 	@StateObject var authState: AuthService = AuthService()
 	@StateObject var timeTableVM: TimetableViewModel = TimetableViewModel()
 	// may not need this at all
@@ -54,6 +55,7 @@ struct ContentView: View {
 		.environmentObject(notifVM)
 		.environment(communityPageViewModel)
 		.environment(suggestedFriendsViewModel)
+		.environment(friendRequestViewModel)
 	}
 }
 

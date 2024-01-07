@@ -15,7 +15,7 @@ struct SearchView: View {
 	@Environment(\.dismiss) var dismiss
 	var body: some View {
 		Group {
-			VStack(alignment: .center){
+			VStack(alignment: .center) {
 				HStack {
 					Button(action: {
 						dismiss()
@@ -48,16 +48,17 @@ struct SearchView: View {
 										.foregroundColor(Color.theme.tfBlue)
 									}
 							)
-						
+
 					}
 
-					
-				}.padding(.vertical)
+				}
+				.padding(.vertical)
 				if loading {
 					Spacer()
 					ProgressView()
-				} else {
-					
+				}
+				else {
+
 					ForEach(searchedFriends, id: \.username) { friend in
 						AddFriendCard(friend: friend)
 					}
@@ -66,25 +67,27 @@ struct SearchView: View {
 			}
 			.padding()
 			.background(
-				Image(  "HomeBG"
-					 )
+				Image(
+					"HomeBG"
+				)
 				.resizable()
 				.scaledToFill()
 				.edgesIgnoringSafeArea(.all)
 			)
 		}
 	}
-	
-	func search () {
+
+	func search() {
 		loading = true
-		let url  = URL(string: "\(APIConstants.base_url)/api/v2/users/search?query=\(searchText)")!
+		let url = URL(string: "\(APIConstants.base_url)/api/v2/users/search?query=\(searchText)")!
 		var request = URLRequest(url: url)
 		let session = URLSession.shared
 		request.httpMethod = "GET"
 		request.addValue("Bearer \(authState.token)", forHTTPHeaderField: "Authorization")
 		if searchText.isEmpty {
 			searchedFriends = []
-		} else {
+		}
+		else {
 			let task = session.dataTask(with: request) { (data, response, error) in
 				guard let data = data else {
 					print("No data received")
@@ -92,9 +95,11 @@ struct SearchView: View {
 				}
 				do {
 					// Decode the JSON data into an array of UserInfo structs
-					let users = try JSONDecoder().decode([Friend].self, from: data).filter {$0.username != authState.username}
+					let users = try JSONDecoder().decode([Friend].self, from: data)
+						.filter { $0.username != authState.username }
 					searchedFriends = users
-				} catch {
+				}
+				catch {
 					print("Error decoding JSON: \(error)")
 				}
 			}

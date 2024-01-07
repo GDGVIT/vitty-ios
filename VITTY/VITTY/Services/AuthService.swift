@@ -85,8 +85,8 @@ class AuthService: NSObject, ObservableObject {
 			case .googleSignin:
 				signInWithGoogle()
 			case .appleSignin:
-				// signInWithApple()
-				print("apple")
+				 signInWithApple()
+//				print("apple")
 		}
 	}
 

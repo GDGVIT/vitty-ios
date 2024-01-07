@@ -29,24 +29,24 @@ struct MenuView: View {
 					Divider()
 						.padding(.top, 32)
 
-					updateYoutStatus()
+//					updateYoutStatus()
 
-					Group {
-						profile()
-
-						friendCircle()
-
-						friendActivity()
-
-						Divider()
-					}
+//					Group {
+//						profile()
+//
+//						friendCircle()
+//
+//						friendActivity()
+//
+//						Divider()
+//					}
 
 					settings()
-
-					Group {
-						ghostMode()
-					}
-					.padding(.leading)
+//
+//					Group {
+//						ghostMode()
+//					}
+//					.padding(.leading)
 
 					Spacer()
 

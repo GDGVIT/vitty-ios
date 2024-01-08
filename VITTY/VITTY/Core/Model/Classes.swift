@@ -7,7 +7,12 @@
 
 import Foundation
 
-struct Classes: Hashable, Codable {
+struct Classes: Hashable, Codable, Comparable {
+	
+	static func < (lhs: Classes, rhs: Classes) -> Bool {
+		return lhs.startTime! < rhs.startTime!
+	}
+	
 	var courseType: String?
 	var courseCode: String?
 	var courseName: String?
@@ -26,6 +31,7 @@ struct Classes: Hashable, Codable {
 		case location = "location"
 		case slot = "slot"
 	}
+	
 
 }
 

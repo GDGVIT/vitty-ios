@@ -135,8 +135,7 @@ extension SchedulePage {
 	func timeTableView() -> some View {
 		ScrollView {
 			ForEach(timetableViewModel.timetable.keys.sorted(), id: \.self) { day in
-				ForEach(timetableViewModel.timetable[day] ?? [], id: \.self) { classes in
-
+				ForEach(timetableViewModel.timetable[day]?.sorted() ?? [], id: \.self) { classes in
 					if day.description.lowercased() == TimetableViewModel.daysOfTheWeek[tabSelected]
 					{
 						ClassCards(classInfo: classes)

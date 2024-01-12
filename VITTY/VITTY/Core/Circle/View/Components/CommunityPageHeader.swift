@@ -15,7 +15,7 @@ struct CommunityPageHeader: View {
 
 	var body: some View {
 		HStack {
-			Text("Community")
+			Text("Circle")
 			Spacer()
 			if !(friendRequestViewModel.error) && !(friendRequestViewModel.loading) {
 

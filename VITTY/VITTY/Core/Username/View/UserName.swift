@@ -78,52 +78,55 @@ extension UserName {
 
 	private func continueButton() -> some View {
 		Button {
-			if vm.isRegistrationNumberValid() {
-				if !vm.usernameTF.isEmpty && !vm.regNoTF.isEmpty {
-					print(authVM.loggedInUser?.uid ?? "no uid from username")
+			vm.isUsernameValid { isValidUsername in
+				if vm.isRegistrationNumberValid() && isValidUsername {
+					if !vm.usernameTF.isEmpty && !vm.regNoTF.isEmpty {
+						print(authVM.loggedInUser?.uid ?? "no uid from username")
 
-					API.shared.signInUser(
-						with: AuthReqBody(
-							uuid: authVM.loggedInUser?.uid ?? "",
-							reg_no: vm.regNoTF,
-							username: vm.usernameTF
-						)
-					) { result in
-						switch result {
-							case let .success(response):
+						API.shared.signInUser(
+							with: AuthReqBody(
+								uuid: authVM.loggedInUser?.uid ?? "",
+								reg_no: vm.regNoTF,
+								username: vm.usernameTF
+							)
+						) { result in
+							switch result {
+								case let .success(response):
 
-								DispatchQueue.main.async {
-									authVM.myUser = response
+									DispatchQueue.main.async {
+										authVM.myUser = response
 
-									UserDefaults.standard.set(
-										authVM.myUser.token,
-										forKey: AuthService.tokenKey
-									)
-									UserDefaults.standard.set(
-										authVM.myUser.username,
-										forKey: AuthService.userKey
-									)
-									UserDefaults.standard.set(
-										authVM.myUser.name,
-										forKey: AuthService.nameKey
-									)
-									UserDefaults.standard.set(
-										authVM.myUser.picture,
-										forKey: AuthService.imageKey
-									)
+										UserDefaults.standard.set(
+											authVM.myUser.token,
+											forKey: AuthService.tokenKey
+										)
+										UserDefaults.standard.set(
+											authVM.myUser.username,
+											forKey: AuthService.userKey
+										)
+										UserDefaults.standard.set(
+											authVM.myUser.name,
+											forKey: AuthService.nameKey
+										)
+										UserDefaults.standard.set(
+											authVM.myUser.picture,
+											forKey: AuthService.imageKey
+										)
 
-									print("created new user")
-								}
-							case let .failure(error):
-								print("error while creating the user ", error.localizedDescription)
+										print("created new user")
+									}
+								case let .failure(error):
+									print("error while creating the user ", error.localizedDescription)
+							}
 						}
-					}
 
-					authVM.isNewUser = false
+						authVM.isNewUser = false
+					}
 				}
-			}
-			else {
-				vm.regNoTF = ""
+				else {
+					vm.regNoTF = ""
+					vm.usernameTF = ""
+				}
 			}
 		} label: {
 			Text("Continue")

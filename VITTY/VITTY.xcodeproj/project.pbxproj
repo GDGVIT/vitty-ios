@@ -728,7 +728,7 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		524B84302B46EF07006D18BD /* Community */ = {
+		524B84302B46EF07006D18BD /* Circle */ = {
 			isa = PBXGroup;
 			children = (
 				525AA7A62B4B014C003C6A12 /* Search */,
@@ -739,7 +739,7 @@
 				524B84372B46F550006D18BD /* AddFriends */,
 				524B84312B46EF28006D18BD /* View */,
 			);
-			path = Community;
+			path = Circle;
 			sourceTree = "<group>";
 		};
 		524B84312B46EF28006D18BD /* View */ = {
@@ -935,7 +935,7 @@
 		5D3D924F2A1816980013803E /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				524B84302B46EF07006D18BD /* Community */,
+				524B84302B46EF07006D18BD /* Circle */,
 				524B842C2B46EBA6006D18BD /* Home */,
 				5DB03A312A85553800DB7E60 /* SideMenu */,
 				5DE8C00C2A8FC7B100AE3995 /* FriendCircle */,

@@ -9,14 +9,14 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.266303676876-77duk9tr18717lspccrvjuqcnuv0dp2s</string>
+				<string>com.googleusercontent.apps.272763363329-i8n51oo9m30h9it7qq9ufmd0lahnmm63</string>
 			</array>
 		</dict>
 	</array>
 	<key>FirebaseAppDelegateProxyEnabled</key>
 	<false/>
 	<key>GIDClientID</key>
-	<string>266303676876-77duk9tr18717lspccrvjuqcnuv0dp2s.apps.googleusercontent.com</string>
+	<string>272763363329-i8n51oo9m30h9it7qq9ufmd0lahnmm63.apps.googleusercontent.com</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>comgooglemaps</string>

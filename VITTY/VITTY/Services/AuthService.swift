@@ -51,7 +51,7 @@ class AuthService: NSObject, ObservableObject {
 	static let notifsSetupKey = "notifsSetupKey"
 
 	static let tokenKey = "token"
-	static let userKey = "username"
+	static let userKey = "userName"
 	static let nameKey = "name"
 	static let imageKey = "image"
 

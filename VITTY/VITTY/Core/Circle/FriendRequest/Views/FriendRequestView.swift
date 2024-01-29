@@ -9,7 +9,7 @@ import SwiftUI
 
 struct FriendRequestView: View {
 
-	@EnvironmentObject private var authState: AuthService
+	@EnvironmentObject private var authState: AuthViewModel
 	@Environment(FriendRequestViewModel.self) private var friendRequestViewModel
 
 	var body: some View {

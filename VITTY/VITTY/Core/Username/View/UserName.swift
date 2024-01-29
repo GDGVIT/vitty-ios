@@ -10,7 +10,7 @@ import SwiftUI
 struct UserName: View {
 	@StateObject private var vm = UserNameViewModel()
 	@Environment(\.presentationMode) var presentationMode
-	@EnvironmentObject var authVM: AuthService
+	@EnvironmentObject var authVM: AuthViewModel
 
 	var body: some View {
 		ZStack {
@@ -98,19 +98,19 @@ extension UserName {
 
 										UserDefaults.standard.set(
 											authVM.myUser.token,
-											forKey: AuthService.tokenKey
+											forKey: AuthViewModel.tokenKey
 										)
 										UserDefaults.standard.set(
 											authVM.myUser.username,
-											forKey: AuthService.userKey
+											forKey: AuthViewModel.userKey
 										)
 										UserDefaults.standard.set(
 											authVM.myUser.name,
-											forKey: AuthService.nameKey
+											forKey: AuthViewModel.nameKey
 										)
 										UserDefaults.standard.set(
 											authVM.myUser.picture,
-											forKey: AuthService.imageKey
+											forKey: AuthViewModel.imageKey
 										)
 
 										print("created new user")

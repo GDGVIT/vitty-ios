@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct RequestsView: View {
-	@EnvironmentObject private var authState: AuthService
+	@EnvironmentObject private var authState: AuthViewModel
 	@EnvironmentObject private var vm: FriendCircleViewModel
 
 	var body: some View {

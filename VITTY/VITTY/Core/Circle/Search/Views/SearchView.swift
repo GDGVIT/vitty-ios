@@ -11,7 +11,7 @@ struct SearchView: View {
 	@State private var searchText = ""
 	@State private var searchedFriends = [Friend]()
 	@State private var loading = false
-	@EnvironmentObject private var authState: AuthService
+	@EnvironmentObject private var authState: AuthViewModel
 	@Environment(\.dismiss) var dismiss
 	var body: some View {
 		Group {

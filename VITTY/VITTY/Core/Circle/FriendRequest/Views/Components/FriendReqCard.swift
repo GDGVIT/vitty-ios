@@ -8,7 +8,7 @@ import SwiftUI
 
 struct FriendReqCard: View {
 
-	@EnvironmentObject private var authState: AuthService
+	@EnvironmentObject private var authState: AuthViewModel
 	@Environment(FriendRequestViewModel.self) private var friendRequestViewModel
 
 	let friend: Friend

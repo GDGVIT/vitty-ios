@@ -126,7 +126,7 @@ class NotificationsViewModel: NSObject, ObservableObject, UNUserNotificationCent
 
 		}
 		NotificationsManager.shared.getAllNotificationRequests()
-		UserDefaults.standard.set(true, forKey: AuthService.notifsSetupKey)
+		UserDefaults.standard.set(true, forKey: AuthViewModel.notifsSetupKey)
 
 	}
 

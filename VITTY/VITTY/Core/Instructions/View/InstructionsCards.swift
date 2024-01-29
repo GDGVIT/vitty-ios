@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct InstructionsCards: View {
-	@EnvironmentObject var authState: AuthService
+	@EnvironmentObject var authState: AuthViewModel
 	var body: some View {
 		VStack {
 			ZStack(alignment: .leading) {

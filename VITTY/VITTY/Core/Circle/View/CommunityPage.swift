@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CommunityPage: View {
 
-	@EnvironmentObject private var authState: AuthService
+	@EnvironmentObject private var authState: AuthViewModel
 	@EnvironmentObject private var timeTableViewModel: TimetableViewModel
 	@Environment(CommunityPageViewModel.self) private var communityPageViewModel
 	@State private var friend: Friend? = nil

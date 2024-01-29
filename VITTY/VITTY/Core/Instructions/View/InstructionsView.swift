@@ -8,9 +8,8 @@
 import SwiftUI
 
 struct InstructionsView: View {
-	@EnvironmentObject var authState: AuthService
+	@EnvironmentObject var authState: AuthViewModel
 	@EnvironmentObject var ttVM: TimetableViewModel
-	@EnvironmentObject var notifVM: NotificationsViewModel
 
 	@State var goToHomeScreen = UserDefaults.standard.bool(forKey: "instructionsComplete")
 	@State var displayLogout: Bool = false
@@ -19,7 +18,7 @@ struct InstructionsView: View {
 	@State var hideInstructionsView: Bool = false
 
 	// notifsSetup is true when notifications don't need to be setup and false when they do
-	@AppStorage(AuthService.notifsSetupKey) var notifsSetup = false
+	@AppStorage(AuthViewModel.notifsSetupKey) var notifsSetup = false
 
 	var body: some View {
 		ZStack {
@@ -35,7 +34,8 @@ struct InstructionsView: View {
 			else {
 				HomeView()
 					.navigationTitle("").navigationBarHidden(true).environmentObject(ttVM)
-					.environmentObject(authState).environmentObject(notifVM)
+					.environmentObject(authState)
+//					.environmentObject(notifVM)
 			}
 
 		}
@@ -57,9 +57,9 @@ struct InstructionsView: View {
 struct InstructionsView_Previews: PreviewProvider {
 	static var previews: some View {
 		InstructionsView()
-			.environmentObject(AuthService())
+			.environmentObject(AuthViewModel())
 			.environmentObject(TimetableViewModel())
-			.environmentObject(NotificationsViewModel())
+//			.environmentObject(NotificationsViewModel())
 	}
 }
 
@@ -76,15 +76,15 @@ extension InstructionsView {
 				NavigationLink {
 					HomeView()
 						.navigationTitle("").navigationBarHidden(true).environmentObject(ttVM)
-						.environmentObject(authState).environmentObject(notifVM)
+						.environmentObject(authState)
 				} label: {
 					doneButton()
 				}
 
 				NavigationLink(
 					destination: HomeView().navigationTitle("").navigationBarHidden(true)
-						.environmentObject(ttVM).environmentObject(authState)
-						.environmentObject(notifVM),
+						.environmentObject(ttVM).environmentObject(authState),
+//						.environmentObject(notifVM),
 					isActive: $goToHomeScreen
 				) {
 					EmptyView()

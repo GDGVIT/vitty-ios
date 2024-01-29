@@ -21,7 +21,7 @@ class TimetableViewModel: ObservableObject {
 
 	var components = Calendar.current.dateComponents([.weekday], from: Date())
 
-	private let authenticationServices = AuthService()
+	private let authenticationServices = AuthViewModel()
 
 	var versionChanged: Bool = false
 

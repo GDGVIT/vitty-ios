@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct MenuView: View {
-	@EnvironmentObject var authVM: AuthService
+	@EnvironmentObject var authVM: AuthViewModel
 	@EnvironmentObject var ttVM: TimetableViewModel
-	@EnvironmentObject var notifVM: NotificationsViewModel
+//	@EnvironmentObject var notifVM: NotificationsViewModel
 
 	@StateObject private var vm = MenuViewModel()
 
@@ -61,10 +61,10 @@ struct MenuView: View {
 			}
 			.onAppear {
 				authVM.username =
-					UserDefaults.standard.string(forKey: AuthService.userKey) ?? "username"
+					UserDefaults.standard.string(forKey: AuthViewModel.userKey) ?? "username"
 				authVM.name =
-					UserDefaults.standard.string(forKey: AuthService.nameKey) ?? "Full Name"
-				authVM.image = UserDefaults.standard.string(forKey: AuthService.imageKey) ?? "Image"
+					UserDefaults.standard.string(forKey: AuthViewModel.nameKey) ?? "Full Name"
+				authVM.image = UserDefaults.standard.string(forKey: AuthViewModel.imageKey) ?? "Image"
 			}
 		}
 	}
@@ -73,9 +73,9 @@ struct MenuView: View {
 struct MenuView_Previews: PreviewProvider {
 	static var previews: some View {
 		MenuView()
-			.environmentObject(AuthService())
+			.environmentObject(AuthViewModel())
 			.environmentObject(TimetableViewModel())
-			.environmentObject(NotificationsViewModel())
+//			.environmentObject(NotificationsViewModel())
 	}
 }
 
@@ -223,7 +223,7 @@ extension MenuView {
 			SettingsView()
 				.environmentObject(authVM)
 				.environmentObject(ttVM)
-				.environmentObject(notifVM)
+//				.environmentObject(notifVM)
 		}
 	}
 

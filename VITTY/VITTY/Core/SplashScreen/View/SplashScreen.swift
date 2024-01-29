@@ -10,7 +10,7 @@ import SwiftUI
 struct SplashScreen: View {
 	@State var selectedTab: Int = 0
 	@State var onboardingComplete: Bool = false
-	@EnvironmentObject var authState: AuthService
+	@EnvironmentObject var authState: AuthViewModel
 
 	var body: some View {
 		VStack {
@@ -58,7 +58,7 @@ struct SplashScreen: View {
 struct SplashScreen_Previews: PreviewProvider {
 	static var previews: some View {
 		SplashScreen()
-			.environmentObject(AuthService())
+			.environmentObject(AuthViewModel())
 	}
 }
 

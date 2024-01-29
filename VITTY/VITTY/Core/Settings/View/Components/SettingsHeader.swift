@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SettingsHeader: View {
 	@EnvironmentObject var ttVM: TimetableViewModel
-	@EnvironmentObject var authVM: AuthService
+	@EnvironmentObject var authVM: AuthViewModel
 	var buttonAction: () -> Void
 	var body: some View {
 		HStack {

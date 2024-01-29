@@ -390,7 +390,6 @@
 		3109637F278227580009A29C /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				31096380278227730009A29C /* AuthService.swift */,
 				31BAB532279D3F48008E20BB /* NotificationsManager.swift */,
 				31D2F80127BAD1B7000C0308 /* RemoteConfigManager.swift */,
 				5DC03D442AB4585E00FE1725 /* API.swift */,
@@ -493,6 +492,7 @@
 		314A408D27383BEC0058082F /* VITTY */ = {
 			isa = PBXGroup;
 			children = (
+				52CC87082B677FCC0030B7E9 /* Auth */,
 				52CC87012B677AFA0030B7E9 /* Firebase */,
 				5D3D924F2A1816980013803E /* Core */,
 				3109637F278227580009A29C /* Services */,
@@ -533,7 +533,6 @@
 		314A40A427383C370058082F /* View */ = {
 			isa = PBXGroup;
 			children = (
-				3168511E277319480046A9AC /* SignupOR.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -543,7 +542,6 @@
 			children = (
 				5D72EDE52AB99DCE00704BF5 /* timetable */,
 				5D72EDE22AB99D8100704BF5 /* user */,
-				5D72EDD92AB9906200704BF5 /* Auth */,
 				31EC94692788BCDF00EA07BE /* Classes.swift */,
 				31A2A4A327894E96005679EB /* TimeTableInformation.swift */,
 				31BAB530279D318F008E20BB /* NotificationsSettingsModel.swift */,
@@ -827,6 +825,16 @@
 				52CC87042B677B110030B7E9 /* GoogleService-Info.plist */,
 			);
 			path = Prod;
+			sourceTree = "<group>";
+		};
+		52CC87082B677FCC0030B7E9 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				3168511E277319480046A9AC /* SignupOR.swift */,
+				5D72EDD92AB9906200704BF5 /* Auth */,
+				31096380278227730009A29C /* AuthService.swift */,
+			);
+			path = Auth;
 			sourceTree = "<group>";
 		};
 		5D141B032A2658BE005977F8 /* Components */ = {

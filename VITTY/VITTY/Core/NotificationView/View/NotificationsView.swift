@@ -10,7 +10,7 @@
 import SwiftUI
 
 struct NotificationsView: View {
-	@EnvironmentObject var authVM: AuthService
+	@EnvironmentObject var authVM: AuthViewModel
 	@EnvironmentObject var ttVM: TimetableViewModel
 
 	@Binding var notifPrefs: [NotificationsSettingsModel]

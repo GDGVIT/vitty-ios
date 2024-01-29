@@ -13,7 +13,7 @@ struct FriendTimeTableView: View {
 
 	@Environment(\.dismiss) var dismiss
 	@EnvironmentObject var timetableViewModel: TimetableViewModel
-	@EnvironmentObject private var authState: AuthService
+	@EnvironmentObject private var authState: AuthViewModel
 	@Environment(CommunityPageViewModel.self) private var communityPageViewModel
 	@State var tabSelected: Int = Date.convertToMondayWeek()
 

@@ -18,7 +18,7 @@ enum LoginOption {
 	case appleSignin
 }
 
-class AuthService: NSObject, ObservableObject {
+class AuthViewModel: NSObject, ObservableObject {
 	@Published var loggedInUser: User?
 	@Published var isAuthenticating: Bool = false
 	@Published var error: NSError?
@@ -169,23 +169,23 @@ class AuthService: NSObject, ObservableObject {
 				self.loggedInUser = user
 				UserDefaults.standard.set(
 					user.providerData[0].providerID,
-					forKey: AuthService.providerIdKey
+					forKey: AuthViewModel.providerIdKey
 				)
-				UserDefaults.standard.set(user.displayName, forKey: AuthService.usernameKey)
-				UserDefaults.standard.set(user.email, forKey: AuthService.useremailKey)
-				UserDefaults.standard.set(false, forKey: AuthService.instructionsCompleteKey)
-				UserDefaults.standard.set(false, forKey: AuthService.notifsSetupKey)
+				UserDefaults.standard.set(user.displayName, forKey: AuthViewModel.usernameKey)
+				UserDefaults.standard.set(user.email, forKey: AuthViewModel.useremailKey)
+				UserDefaults.standard.set(false, forKey: AuthViewModel.instructionsCompleteKey)
+				UserDefaults.standard.set(false, forKey: AuthViewModel.notifsSetupKey)
 
 				print("signed in!")
 				print("uid: ", user.uid)
 				print(
-					"Name: \(UserDefaults.standard.string(forKey: AuthService.usernameKey) ?? "uname")"
+					"Name: \(UserDefaults.standard.string(forKey: AuthViewModel.usernameKey) ?? "uname")"
 				)
 				print(
-					"ProviderId: \(UserDefaults.standard.string(forKey: AuthService.providerIdKey) ?? "provider")"
+					"ProviderId: \(UserDefaults.standard.string(forKey: AuthViewModel.providerIdKey) ?? "provider")"
 				)
 				print(
-					"Email: \(UserDefaults.standard.string(forKey: AuthService.useremailKey) ?? "email")"
+					"Email: \(UserDefaults.standard.string(forKey: AuthViewModel.useremailKey) ?? "email")"
 				)
 
 				// MARK: calling the api after auth is completed
@@ -203,19 +203,19 @@ class AuthService: NSObject, ObservableObject {
 
 								UserDefaults.standard.set(
 									self?.myUser.token,
-									forKey: AuthService.tokenKey
+									forKey: AuthViewModel.tokenKey
 								)
 								UserDefaults.standard.set(
 									self?.myUser.username,
-									forKey: AuthService.userKey
+									forKey: AuthViewModel.userKey
 								)
 								UserDefaults.standard.set(
 									self?.myUser.name,
-									forKey: AuthService.nameKey
+									forKey: AuthViewModel.nameKey
 								)
 								UserDefaults.standard.set(
 									self?.myUser.picture,
-									forKey: AuthService.imageKey
+									forKey: AuthViewModel.imageKey
 								)
 
 								let mUser = self?.myUser
@@ -258,7 +258,7 @@ class AuthService: NSObject, ObservableObject {
 
 // MARK: Apple Sign in
 
-extension AuthService: ASAuthorizationControllerDelegate {
+extension AuthViewModel: ASAuthorizationControllerDelegate {
 	private func signInWithApple() {
 		let nonce = randomNonceString()
 		currentNonce = nonce

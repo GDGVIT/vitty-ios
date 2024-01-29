@@ -12,7 +12,7 @@ struct ContentView: View {
 	@State private var communityPageViewModel = CommunityPageViewModel()
 	@State private var suggestedFriendsViewModel = SuggestedFriendsViewModel()
 	@State private var friendRequestViewModel = FriendRequestViewModel()
-	@StateObject var authState: AuthService = AuthService()
+	@StateObject var authState: AuthViewModel = AuthViewModel()
 	@StateObject var timeTableVM: TimetableViewModel = TimetableViewModel()
 //	@StateObject var localNotificationsManager = NotificationsManager()
 //	@StateObject var notifVM = NotificationsViewModel()
@@ -57,7 +57,7 @@ struct ContentView: View {
 }
 
 #Preview {
-	ContentView(authState: AuthService())
+	ContentView()
 }
 
 //

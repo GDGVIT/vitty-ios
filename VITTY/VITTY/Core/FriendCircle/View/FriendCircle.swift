@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct FriendCircle: View {
-	@EnvironmentObject var authState: AuthService
+	@EnvironmentObject var authState: AuthViewModel
 
 	@Environment(\.presentationMode) var presentationMode
 	@State var text: String = ""

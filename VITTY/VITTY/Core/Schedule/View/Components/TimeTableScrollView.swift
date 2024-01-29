@@ -12,7 +12,7 @@ struct TimeTableScrollView: View {
 
 	@Binding var tabSelected: Int
 	@EnvironmentObject var timetableViewModel: TimetableViewModel
-	@ObservedObject var notifSingleton = NotificationsViewModel.shared
+//	@ObservedObject var notifSingleton = NotificationsViewModel.shared
 	@StateObject var RemoteConf = RemoteConfigManager.sharedInstance
 
 	var body: some View {
@@ -43,12 +43,12 @@ struct TimeTableScrollView: View {
 							print(tabSelected)
 							scrollView.scrollTo(timetableViewModel.classesCompleted)
 						}
-						.onChange(of: notifSingleton.notificationTapped) { _ in
-							tabSelected =
-								(Calendar.current.dateComponents([.weekday], from: Date()).weekday
-									?? 1) - 1
-							scrollView.scrollTo(timetableViewModel.classesCompleted)
-						}
+//						.onChange(of: notifSingleton.notificationTapped) { _ in
+//							tabSelected =
+//								(Calendar.current.dateComponents([.weekday], from: Date()).weekday
+//									?? 1) - 1
+//							scrollView.scrollTo(timetableViewModel.classesCompleted)
+//						}
 					}
 					.padding(.top, 5)
 					.padding(.horizontal, 10)

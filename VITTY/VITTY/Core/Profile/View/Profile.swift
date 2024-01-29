@@ -9,7 +9,7 @@ import SwiftUI
 
 struct Profile: View {
 	@StateObject private var vm = ProfileViewModel()
-	@EnvironmentObject private var authState: AuthService
+	@EnvironmentObject private var authState: AuthViewModel
 	@Environment(\.presentationMode) var presentationMode
 
 	var body: some View {

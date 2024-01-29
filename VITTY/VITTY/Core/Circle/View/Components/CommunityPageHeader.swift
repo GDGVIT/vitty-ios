@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CommunityPageHeader: View {
 	@State private var isAddFriendsViewPresented = false
-	@EnvironmentObject private var authState: AuthService
+	@EnvironmentObject private var authState: AuthViewModel
 	@Environment(FriendRequestViewModel.self) private var friendRequestViewModel
 	@Environment(CommunityPageViewModel.self) private var communityPageViewModel
 

@@ -13,14 +13,14 @@ struct SchedulePage: View {
 	@State var showLogout: Bool = false
 
 	@EnvironmentObject var timetableViewModel: TimetableViewModel
-	@EnvironmentObject var authVM: AuthService
-	@EnvironmentObject var notifVM: NotificationsViewModel
+	@EnvironmentObject var authVM: AuthViewModel
+//	@EnvironmentObject var notifVM: NotificationsViewModel
 
 	@StateObject var schedulePageVM = SchedulePageViewModel()
 
 	@StateObject var RemoteConf = RemoteConfigManager.sharedInstance
 	@AppStorage("examMode") var examModeOn: Bool = false
-	@AppStorage(AuthService.notifsSetupKey) var notifsSetup = false
+	@AppStorage(AuthViewModel.notifsSetupKey) var notifsSetup = false
 
 	var body: some View {
 		Group {
@@ -34,7 +34,8 @@ struct SchedulePage: View {
 
 					NavigationLink(
 						destination: SettingsView().environmentObject(timetableViewModel)
-							.environmentObject(authVM).environmentObject(notifVM),
+							.environmentObject(authVM),
+//							.environmentObject(notifVM),
 						isActive: $goToSettings
 					) {
 						EmptyView()
@@ -63,9 +64,9 @@ struct SchedulePage: View {
 			.onAppear {
 
 				authVM.token =
-					UserDefaults.standard.string(forKey: AuthService.tokenKey) ?? "no token"
+					UserDefaults.standard.string(forKey: AuthViewModel.tokenKey) ?? "no token"
 				authVM.username =
-					UserDefaults.standard.string(forKey: AuthService.userKey) ?? "no username"
+					UserDefaults.standard.string(forKey: AuthViewModel.userKey) ?? "no username"
 
 				var _ = print("token: ", authVM.token)
 				var _ = print("username: ", authVM.username)
@@ -82,9 +83,9 @@ struct SchedulePage: View {
 				print("tabSelected: \(tabSelected)")
 				//            LocalNotificationsManager.shared.getAllNotificationRequests()
 				print("calling update notifs from homepage")
-				notifVM.updateNotifs(timetable: timetableViewModel.timetable)
+//				/*notifVM*/.updateNotifs(timetable: timetableViewModel.timetable)
 				timetableViewModel.updateClassCompleted()
-				notifVM.getNotifPrefs()
+//				notifVM.getNotifPrefs()
 
 				print(goToSettings)
 				print("remote config settings \(RemoteConf.onlineMode)")
@@ -101,7 +102,7 @@ struct SchedulePage: View {
 				MenuView()
 					.environmentObject(authVM)
 					.environmentObject(timetableViewModel)
-					.environmentObject(notifVM)
+//					.environmentObject(notifVM)
 			}
 		)
 	}
@@ -110,9 +111,9 @@ struct SchedulePage: View {
 struct HomePage_Previews: PreviewProvider {
 	static var previews: some View {
 		SchedulePage()
-			.environmentObject(AuthService())
+			.environmentObject(AuthViewModel())
 			.environmentObject(TimetableViewModel())
-			.environmentObject(NotificationsViewModel())
+//			.environmentObject(NotificationsViewModel())
 	}
 }
 

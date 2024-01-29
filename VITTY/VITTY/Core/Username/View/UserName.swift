@@ -116,7 +116,10 @@ extension UserName {
 										print("created new user")
 									}
 								case let .failure(error):
-									print("error while creating the user ", error.localizedDescription)
+									print(
+										"error while creating the user ",
+										error.localizedDescription
+									)
 							}
 						}
 

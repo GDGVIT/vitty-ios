@@ -12,7 +12,7 @@ struct ContentView: View {
 	@State private var communityPageViewModel = CommunityPageViewModel()
 	@State private var suggestedFriendsViewModel = SuggestedFriendsViewModel()
 	@State private var friendRequestViewModel = FriendRequestViewModel()
-	@StateObject var authState: AuthViewModel = AuthViewModel()
+	@State var authState: AuthViewModel = AuthViewModel()
 	@StateObject var timeTableVM: TimetableViewModel = TimetableViewModel()
 //	@StateObject var localNotificationsManager = NotificationsManager()
 //	@StateObject var notifVM = NotificationsViewModel()
@@ -47,7 +47,7 @@ struct ContentView: View {
 //		) { _ in
 //			NotificationsManager.shared.getNotificationSettings()
 //		}
-		.environmentObject(authState)
+		.environment(authState)
 		.environmentObject(timeTableVM)
 //		.environmentObject(notifVM)
 		.environment(communityPageViewModel)

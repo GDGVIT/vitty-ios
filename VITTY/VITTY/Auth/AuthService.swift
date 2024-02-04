@@ -18,15 +18,16 @@ enum LoginOption {
 	case appleSignin
 }
 
-class AuthViewModel: NSObject, ObservableObject {
-	@Published var loggedInUser: User?
-	@Published var isAuthenticating: Bool = false
-	@Published var error: NSError?
-	@Published var onboardingComplete: Bool = false
+@Observable
+class AuthViewModel: NSObject {
+	var loggedInUser: User?
+	var isAuthenticating: Bool = false
+	var error: NSError?
+	var onboardingComplete: Bool = false
 
-	@Published var isNewUser: Bool = false
+	var isNewUser: Bool = false
 
-	@Published var myUser: AuthResponse = AuthResponse(
+	var myUser: AuthResponse = AuthResponse(
 		name: "",
 		picture: "",
 		role: "",
@@ -37,10 +38,10 @@ class AuthViewModel: NSObject, ObservableObject {
 	let auth = Auth.auth()
 	fileprivate var currentNonce: String?
 
-	@Published var token: String = ""
-	@Published var username: String = ""
-	@Published var name: String = ""
-	@Published var image: String = ""
+	var token: String = ""
+	var username: String = ""
+	var name: String = ""
+	var image: String = ""
 
 	// MARK: UserDefault keys
 

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct RequestsView: View {
-	@Environment(AuthViewModel.self) private var authState
+	@Environment(AuthViewModel.self) private var authViewModel
 	@EnvironmentObject private var vm: FriendCircleViewModel
 
 	var body: some View {
@@ -26,7 +26,7 @@ struct RequestsView: View {
 						name: requests.from.name,
 						username: requests.from.username,
 						url: requests.from.picture,
-						token: authState.token,
+						token: authViewModel.appUser?.token ?? "",
 						isSuggestionOrSendReq: false,
 						wasReqSent: false,
 						isRequestView: true,
@@ -41,7 +41,7 @@ struct RequestsView: View {
 			.ignoresSafeArea()
 		}
 		.onAppear(perform: {
-			vm.getFriendRequest(token: authState.token)
+			vm.getFriendRequest(token: authViewModel.appUser?.token ?? "")
 		})
 	}
 }

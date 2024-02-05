@@ -10,7 +10,7 @@ import SwiftUI
 struct UserName: View {
 	@StateObject private var vm = UserNameViewModel()
 	@Environment(\.presentationMode) var presentationMode
-	@Environment(AuthViewModel.self) private var authVM
+	@Environment(AuthViewModel.self) private var authViewModel
 
 	var body: some View {
 		ZStack {
@@ -36,7 +36,7 @@ struct UserName: View {
 
 				textField(text: $vm.regNoTF, tfString: "Registration Number", height: 75)
 				Spacer()
-				continueButton()
+//				continueButton()
 			}
 		}
 	}
@@ -76,70 +76,70 @@ extension UserName {
 		.padding(.leading)
 	}
 
-	private func continueButton() -> some View {
-		Button {
-			vm.isUsernameValid { isValidUsername in
-				if vm.isRegistrationNumberValid() && isValidUsername {
-					if !vm.usernameTF.isEmpty && !vm.regNoTF.isEmpty {
-						print(authVM.loggedInUser?.uid ?? "no uid from username")
-
-						API.shared.signInUser(
-							with: AuthReqBody(
-								uuid: authVM.loggedInUser?.uid ?? "",
-								reg_no: vm.regNoTF,
-								username: vm.usernameTF
-							)
-						) { result in
-							switch result {
-								case let .success(response):
-
-									DispatchQueue.main.async {
-										authVM.myUser = response
-
-										UserDefaults.standard.set(
-											authVM.myUser.token,
-											forKey: AuthViewModel.tokenKey
-										)
-										UserDefaults.standard.set(
-											authVM.myUser.username,
-											forKey: AuthViewModel.userKey
-										)
-										UserDefaults.standard.set(
-											authVM.myUser.name,
-											forKey: AuthViewModel.nameKey
-										)
-										UserDefaults.standard.set(
-											authVM.myUser.picture,
-											forKey: AuthViewModel.imageKey
-										)
-
-										print("created new user")
-									}
-								case let .failure(error):
-									print(
-										"error while creating the user ",
-										error.localizedDescription
-									)
-							}
-						}
-
-						authVM.isNewUser = false
-					}
-				}
-				else {
-					vm.regNoTF = ""
-					vm.usernameTF = ""
-				}
-			}
-		} label: {
-			Text("Continue")
-				.font(.custom("Poppins-Bold", size: 18))
-				.foregroundColor(.white)
-				.frame(maxWidth: .infinity)
-				.frame(height: 65)
-				.background(Color.theme.brightBlue)
-				.cornerRadius(10)
-				.padding()
-		}
-	}
+//	private func continueButton() -> some View {
+//		Button {
+//			vm.isUsernameValid { isValidUsername in
+//				if vm.isRegistrationNumberValid() && isValidUsername {
+//					if !vm.usernameTF.isEmpty && !vm.regNoTF.isEmpty {
+//						print(authViewModel.loggedInFirebaseUser?.uid ?? "no uid from username")
+//
+//						API.shared.signInUser(
+//							with: AuthReqBody(
+//								uuid: authViewModel.loggedInUser?.uid ?? "",
+//								reg_no: vm.regNoTF,
+//								username: vm.usernameTF
+//							)
+//						) { result in
+//							switch result {
+//								case let .success(response):
+//
+//									DispatchQueue.main.async {
+//										authViewModel.myUser = response
+//
+//										UserDefaults.standard.set(
+//											authViewModel.myUser.token,
+//											forKey: authViewModel.appUser?.token ?? ""Key
+//										)
+//										UserDefaults.standard.set(
+//											authViewModel.myUser.username,
+//											forKey: AuthViewModel.userKey
+//										)
+//										UserDefaults.standard.set(
+//											authViewModel.myUser.name,
+//											forKey: AuthViewModel.nameKey
+//										)
+//										UserDefaults.standard.set(
+//											authViewModel.myUser.picture,
+//											forKey: AuthViewModel.imageKey
+//										)
+//
+//										print("created new user")
+//									}
+//								case let .failure(error):
+//									print(
+//										"error while creating the user ",
+//										error.localizedDescription
+//									)
+//							}
+//						}
+//
+//						authViewModel.isNewUser = false
+//					}
+//				}
+//				else {
+//					vm.regNoTF = ""
+//					vm.usernameTF = ""
+//				}
+//			}
+//		} label: {
+//			Text("Continue")
+//				.font(.custom("Poppins-Bold", size: 18))
+//				.foregroundColor(.white)
+//				.frame(maxWidth: .infinity)
+//				.frame(height: 65)
+//				.background(Color.theme.brightBlue)
+//				.cornerRadius(10)
+//				.padding()
+//		}
+//	}
 }

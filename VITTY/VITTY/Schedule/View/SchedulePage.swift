@@ -13,14 +13,14 @@ struct SchedulePage: View {
 	@State var showLogout: Bool = false
 
 	@EnvironmentObject var timetableViewModel: TimetableViewModel
-	@Environment(AuthViewModel.self) private var authVM
+	@Environment(AuthViewModel.self) private var authViewModel
 //	@EnvironmentObject var notifVM: NotificationsViewModel
 
 	@StateObject var schedulePageVM = SchedulePageViewModel()
 
 	@StateObject var RemoteConf = RemoteConfigManager.sharedInstance
 	@AppStorage("examMode") var examModeOn: Bool = false
-	@AppStorage(AuthViewModel.notifsSetupKey) var notifsSetup = false
+//	@AppStorage(AuthViewModel.notifsSetupKey) var notifsSetup = false
 
 	var body: some View {
 		Group {
@@ -34,7 +34,7 @@ struct SchedulePage: View {
 
 					NavigationLink(
 						destination: SettingsView().environmentObject(timetableViewModel)
-							.environment(authVM),
+							.environment(authViewModel),
 //							.environmentObject(notifVM),
 						isActive: $goToSettings
 					) {
@@ -49,7 +49,7 @@ struct SchedulePage: View {
 					tabSelected = Date.convertToMondayWeek()
 				}
 				if showLogout {
-					LogoutPopup(showLogout: $showLogout).environment(authVM)
+					LogoutPopup(showLogout: $showLogout).environment(authViewModel)
 				}
 			}
 
@@ -63,15 +63,15 @@ struct SchedulePage: View {
 			)
 			.onAppear {
 
-				authVM.token =
-					UserDefaults.standard.string(forKey: AuthViewModel.tokenKey) ?? "no token"
-				authVM.username =
-					UserDefaults.standard.string(forKey: AuthViewModel.userKey) ?? "no username"
-
-				var _ = print("token: ", authVM.token)
-				var _ = print("username: ", authVM.username)
-
-				timetableViewModel.getTimeTable(token: authVM.token, username: authVM.username)
+//				authViewModel.token =
+//					UserDefaults.standard.string(forKey: authViewModel.appUser?.token ?? ""Key) ?? "no token"
+//				authViewModel.username =
+//					UserDefaults.standard.string(forKey: AuthViewModel.userKey) ?? "no username"
+//
+//				var _ = print("token: ", authViewModel.token)
+//				var _ = print("username: ", authViewModel.username)
+//
+//				timetableViewModel.getTimeTable(token: authViewModel.token, username: authViewModel.username)
 
 				//                timetableViewModel.getData {
 				//                    if !notifsSetup {
@@ -100,7 +100,7 @@ struct SchedulePage: View {
 			edge: .trailing,
 			content: {
 				MenuView()
-					.environment(authVM)
+					.environment(authViewModel)
 					.environmentObject(timetableViewModel)
 //					.environmentObject(notifVM)
 			}
@@ -125,7 +125,7 @@ extension SchedulePage {
 			SchedulePageHeader(
 				goToSettings: $goToSettings,
 				showLogout: $showLogout,
-				url: authVM.image
+				url: authViewModel.appUser?.picture ?? ""
 			)
 			.environmentObject(schedulePageVM)
 			.padding()

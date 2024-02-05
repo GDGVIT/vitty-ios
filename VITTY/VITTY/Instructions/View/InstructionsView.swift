@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct InstructionsView: View {
-	@Environment(AuthViewModel.self) private var authState
+	@Environment(AuthViewModel.self) private var authViewModel
 	@EnvironmentObject var ttVM: TimetableViewModel
 
 	@State var goToHomeScreen = UserDefaults.standard.bool(forKey: "instructionsComplete")
@@ -18,12 +18,12 @@ struct InstructionsView: View {
 	@State var hideInstructionsView: Bool = false
 
 	// notifsSetup is true when notifications don't need to be setup and false when they do
-	@AppStorage(AuthViewModel.notifsSetupKey) var notifsSetup = false
+//	@AppStorage(AuthViewModel.notifsSetupKey) var notifsSetup = false
 	
 	var isNewUser: Binding<Bool> {
 		return Binding (
-			get: {authState.isNewUser},
-			set: {authState.isNewUser = $0}
+			get: {authViewModel.isNewUser},
+			set: {authViewModel.isNewUser = $0}
 		)
 	}
 
@@ -41,7 +41,7 @@ struct InstructionsView: View {
 			else {
 				HomeView()
 					.navigationTitle("").navigationBarHidden(true).environmentObject(ttVM)
-					.environment(authState)
+					.environment(authViewModel)
 //					.environmentObject(notifVM)
 			}
 
@@ -83,14 +83,14 @@ extension InstructionsView {
 				NavigationLink {
 					HomeView()
 						.navigationTitle("").navigationBarHidden(true).environmentObject(ttVM)
-						.environment(authState)
+						.environment(authViewModel)
 				} label: {
 					doneButton()
 				}
 
 				NavigationLink(
 					destination: HomeView().navigationTitle("").navigationBarHidden(true)
-						.environmentObject(ttVM).environment(authState),
+						.environmentObject(ttVM).environment(authViewModel),
 //						.environmentObject(notifVM),
 					isActive: $goToHomeScreen
 				) {
@@ -135,8 +135,8 @@ extension InstructionsView {
 
 	private func doneButton() -> some View {
 		CustomButton(buttonText: "Done") {
-			if authState.myUser.username == "" {
-				authState.isNewUser = true
+			if ((authViewModel.appUser?.username.isEmpty) != nil) {
+				authViewModel.isNewUser = true
 			}
 			else {
 				self.displayFollowInstructions = true

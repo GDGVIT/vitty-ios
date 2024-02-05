@@ -10,7 +10,7 @@ import SwiftUI
 struct SplashScreen: View {
 	@State var selectedTab: Int = 0
 	@State var onboardingComplete: Bool = false
-	@Environment(AuthViewModel.self) private var authState
+	@Environment(AuthViewModel.self) private var authViewModel
 
 	var body: some View {
 		VStack {
@@ -31,17 +31,17 @@ struct SplashScreen: View {
 			}
 			else {
 				CustomButton(buttonText: "Sign in with Apple", imageString: "logo_apple") {
-					authState.login(with: .appleSignin)
+					authViewModel.login(with: .appleSignIn)
 				}
 				SignupOR()
 
 				CustomButton(buttonText: "Sign in with Google", imageString: "logo_google") {
-					authState.login(with: .googleSignin)
+					authViewModel.login(with: .googleSignIn)
 				}
 			}
 			Spacer(minLength: 50)
 
-			if authState.loggedInUser != nil {
+			if authViewModel.loggedInFirebaseUser != nil {
 				NavigationLink(destination: InstructionsView()) {
 					EmptyView()
 				}

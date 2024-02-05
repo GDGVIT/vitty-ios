@@ -13,7 +13,7 @@ struct SettingsView: View {
 	var githubURL = URL(string: "https://github.com/GDGVIT/vitty-ios")
 	var gdscURL = URL(string: "https://dscvit.com/")
 
-	@Environment(AuthViewModel.self) private var authState
+	@Environment(AuthViewModel.self) private var authViewModel
 	@EnvironmentObject var ttVM: TimetableViewModel
 //	@EnvironmentObject var notifVM: NotificationsViewModel
 

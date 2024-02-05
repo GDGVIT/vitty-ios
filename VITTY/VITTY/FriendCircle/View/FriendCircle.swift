@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct FriendCircle: View {
-	@Environment(AuthViewModel.self) private var authState
+	@Environment(AuthViewModel.self) private var authViewModel
 
 	@Environment(\.presentationMode) var presentationMode
 	@State var text: String = ""
@@ -31,7 +31,7 @@ struct FriendCircle: View {
 
 				textField(text: $text, tfString: "search for friends", height: 70)
 					.onSubmit {
-						vm.searchUsers(token: authState.token, query: text)
+						vm.searchUsers(token: authViewModel.appUser?.token ?? "", query: text)
 
 					}
 
@@ -40,7 +40,7 @@ struct FriendCircle: View {
 						name: user.name,
 						username: user.username,
 						url: user.picture,
-						token: authState.token,
+						token: authViewModel.appUser?.token ?? "",
 						isSuggestionOrSendReq: true,
 						isRequestView: false,
 						isFriendsView: false
@@ -54,7 +54,7 @@ struct FriendCircle: View {
 					SuggestionsView()
 						.tag(Tabs.suggestions)
 					RequestsView()
-						.environment(authState)
+						.environment(authViewModel)
 						.environmentObject(vm)
 						.tag(Tabs.requests)
 					FriendsView()
@@ -69,7 +69,7 @@ struct FriendCircle: View {
 		}
 		.frame(maxWidth: .infinity, maxHeight: .infinity)
 		//        .onAppear(perform: {
-		//            vm.getFriendRequest(token: authState.token)
+		//            vm.getFriendRequest(token: authViewModel.appUser?.token ?? "")
 		//        })
 	}
 }

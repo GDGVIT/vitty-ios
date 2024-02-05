@@ -1,13 +1,13 @@
 //
-//  AuthResponse.swift
+//  AppUser.swift
 //  VITTY
 //
-//  Created by Prashanna Rajbhandari on 19/09/2023.
+//  Created by Chandram Dutta on 04/02/24.
 //
 
 import Foundation
 
-struct AuthResponse: Codable {
+class AppUser: Codable {	
 	let name: String
 	let picture: String
 	let role: String

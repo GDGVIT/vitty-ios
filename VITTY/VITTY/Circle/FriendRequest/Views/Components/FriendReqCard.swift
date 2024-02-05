@@ -8,7 +8,7 @@ import SwiftUI
 
 struct FriendReqCard: View {
 
-	@Environment(AuthViewModel.self) private var authState
+	@Environment(AuthViewModel.self) private var authViewModel
 	@Environment(FriendRequestViewModel.self) private var friendRequestViewModel
 
 	let friend: Friend
@@ -34,7 +34,7 @@ struct FriendReqCard: View {
 
 					request.httpMethod = "POST"
 					request.addValue(
-						"Bearer \(authState.token)",
+						"Bearer \(authViewModel.appUser?.token ?? "")",
 						forHTTPHeaderField: "Authorization"
 					)
 
@@ -63,7 +63,7 @@ struct FriendReqCard: View {
 
 					friendRequestViewModel.fetchFriendRequests(
 						from: URL(string: "\(APIConstants.base_url)/api/v2/requests/")!,
-						authToken: authState.token,
+						authToken: authViewModel.appUser?.token ?? "",
 						loading: false
 					)
 
@@ -80,7 +80,7 @@ struct FriendReqCard: View {
 
 					request.httpMethod = "POST"
 					request.addValue(
-						"Token \(authState.token)",
+						"Token \(authViewModel.appUser?.token ?? "")",
 						forHTTPHeaderField: "Authorization"
 					)
 
@@ -109,7 +109,7 @@ struct FriendReqCard: View {
 
 					friendRequestViewModel.fetchFriendRequests(
 						from: URL(string: "\(APIConstants.base_url)/api/v2/requests/")!,
-						authToken: authState.token,
+						authToken: authViewModel.appUser?.token ?? "",
 						loading: false
 					)
 				}) {
@@ -122,7 +122,7 @@ struct FriendReqCard: View {
 			//					var request = URLRequest(url: url)
 			//
 			//					request.httpMethod = "POST"
-			//					request.addValue("Bearer \(authState.token)", forHTTPHeaderField: "Authorization")
+			//					request.addValue("Bearer \(authViewModel.appUser?.token ?? "")", forHTTPHeaderField: "Authorization")
 			//
 			//					let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
 			//						// Handle the response here
@@ -147,7 +147,7 @@ struct FriendReqCard: View {
 			//
 			//					suggestedFriendsViewModel.fetchData(
 			//						from: "\(APIConstants.base_url)/api/v2/users/suggested/",
-			//						token: authState.token,
+			//						token: authViewModel.appUser?.token ?? "",
 			//						loading: false
 			//					)
 			//				}.buttonStyle(.bordered)

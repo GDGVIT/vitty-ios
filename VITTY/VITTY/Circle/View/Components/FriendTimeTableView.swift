@@ -13,7 +13,7 @@ struct FriendTimeTableView: View {
 
 	@Environment(\.dismiss) var dismiss
 	@EnvironmentObject var timetableViewModel: TimetableViewModel
-	@Environment(AuthViewModel.self) private var authState
+	@Environment(AuthViewModel.self) private var authViewModel
 	@Environment(CommunityPageViewModel.self) private var communityPageViewModel
 	@State var tabSelected: Int = Date.convertToMondayWeek()
 
@@ -39,7 +39,7 @@ struct FriendTimeTableView: View {
 
 					request.httpMethod = "DELETE"
 					request.addValue(
-						"Token \(authState.token)",
+						"Token \(authViewModel.appUser?.token ?? "")",
 						forHTTPHeaderField: "Authorization"
 					)
 
@@ -55,8 +55,8 @@ struct FriendTimeTableView: View {
 					// Start the URLSession task
 					task.resume()
 					communityPageViewModel.fetchData(
-						from: "\(APIConstants.base_url)/api/v2/friends/\(authState.username)/",
-						token: authState.token,
+						from: "\(APIConstants.base_url)/api/v2/friends/\(authViewModel.appUser?.username ?? "")/",
+						token: authViewModel.appUser?.token ?? "",
 						loading: false
 					)
 					dismiss()

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MenuView: View {
-	@Environment(AuthViewModel.self) private var authVM
+	@Environment(AuthViewModel.self) private var authViewModel
 	@EnvironmentObject var ttVM: TimetableViewModel
 //	@EnvironmentObject var notifVM: NotificationsViewModel
 
@@ -51,7 +51,7 @@ struct MenuView: View {
 					Spacer()
 
 					Button {
-						authVM.signOut()
+						authViewModel.signOut()
 					} label: {
 						logoutBtn()
 					}
@@ -60,11 +60,11 @@ struct MenuView: View {
 				.padding(.horizontal)
 			}
 			.onAppear {
-				authVM.username =
-					UserDefaults.standard.string(forKey: AuthViewModel.userKey) ?? "username"
-				authVM.name =
-					UserDefaults.standard.string(forKey: AuthViewModel.nameKey) ?? "Full Name"
-				authVM.image = UserDefaults.standard.string(forKey: AuthViewModel.imageKey) ?? "Image"
+//				authViewModel.appUser?.username =
+//					UserDefaults.standard.string(forKey: AuthViewModel.userKey) ?? "username"
+//				authViewModel.name =
+//					UserDefaults.standard.string(forKey: AuthViewModel.nameKey) ?? "Full Name"
+//				authViewModel.image = UserDefaults.standard.string(forKey: AuthViewModel.imageKey) ?? "Image"
 			}
 		}
 	}
@@ -85,15 +85,15 @@ extension MenuView {
 	private func userDetails() -> some View {
 		VStack(alignment: .leading) {
 
-			UserImage(url: authVM.image, height: 40, width: 40)
+			UserImage(url: authViewModel.appUser?.picture ?? "", height: 40, width: 40)
 
-			Text(authVM.name)
+			Text(authViewModel.appUser?.name ?? "")
 				.font(.custom("Poppins", size: 16))
 				.fontWeight(.semibold)
 				.foregroundColor(.white)
 				.padding(.top)
 
-			Text("@\(authVM.username)")
+			Text("@\(authViewModel.appUser?.username ?? "")")
 				.font(.custom("Poppins-Light", size: 14))
 				.foregroundColor(Color.theme.primary)
 		}
@@ -151,7 +151,7 @@ extension MenuView {
 		}
 		.fullScreenCover(isPresented: $vm.showProfile) {
 			Profile()
-				.environment(authVM)
+				.environment(authViewModel)
 		}
 	}
 
@@ -174,7 +174,7 @@ extension MenuView {
 		}
 		.fullScreenCover(isPresented: $vm.showFriendCircle) {
 			FriendCircle()
-				.environment(authVM)
+				.environment(authViewModel)
 		}
 	}
 
@@ -221,7 +221,7 @@ extension MenuView {
 		}
 		.fullScreenCover(isPresented: $vm.showSettings) {
 			SettingsView()
-				.environment(authVM)
+				.environment(authViewModel)
 				.environmentObject(ttVM)
 //				.environmentObject(notifVM)
 		}

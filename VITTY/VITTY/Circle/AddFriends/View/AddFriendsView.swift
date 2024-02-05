@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AddFriendsView: View {
 
-	@Environment(AuthViewModel.self) private var authState
+	@Environment(AuthViewModel.self) private var authViewModel
 	@Environment(SuggestedFriendsViewModel.self) private var suggestedFriendsViewModel
 	@Environment(FriendRequestViewModel.self) private var friendRequestViewModel
 
@@ -73,7 +73,7 @@ struct AddFriendsView: View {
 		.onAppear {
 			suggestedFriendsViewModel.fetchData(
 				from: "\(APIConstants.base_url)/api/v2/users/suggested/",
-				token: authState.token,
+				token: authViewModel.appUser?.token ?? "",
 				loading: true
 			)
 		}

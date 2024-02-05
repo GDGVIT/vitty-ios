@@ -12,23 +12,20 @@ struct ContentView: View {
 	@State private var communityPageViewModel = CommunityPageViewModel()
 	@State private var suggestedFriendsViewModel = SuggestedFriendsViewModel()
 	@State private var friendRequestViewModel = FriendRequestViewModel()
-	@State var authState: AuthViewModel = AuthViewModel()
+	@State var authViewModel: AuthViewModel = AuthViewModel()
 	@StateObject var timeTableVM: TimetableViewModel = TimetableViewModel()
 //	@StateObject var localNotificationsManager = NotificationsManager()
 //	@StateObject var notifVM = NotificationsViewModel()
 	var body: some View {
 		NavigationView {
-			if authState.loggedInUser != nil {
+			if authViewModel.loggedInFirebaseUser != nil {
 				InstructionsView()
 					.navigationTitle("")
 					.navigationBarHidden(true)
 					.animation(.default, value: UUID())
-				//                    .animation(.default)
 			}
 			else {
-				SplashScreen()
-					.navigationTitle("")
-					.navigationBarHidden(true)
+				LoginView()
 			}
 		}
 		//        .animation(.default)
@@ -47,7 +44,7 @@ struct ContentView: View {
 //		) { _ in
 //			NotificationsManager.shared.getNotificationSettings()
 //		}
-		.environment(authState)
+		.environment(authViewModel)
 		.environmentObject(timeTableVM)
 //		.environmentObject(notifVM)
 		.environment(communityPageViewModel)
@@ -59,10 +56,3 @@ struct ContentView: View {
 #Preview {
 	ContentView()
 }
-
-//
-//struct ContentView_Previews: PreviewProvider {
-//	static var previews: some View {
-//		ContentView(authState: AuthService())
-//	}
-//}

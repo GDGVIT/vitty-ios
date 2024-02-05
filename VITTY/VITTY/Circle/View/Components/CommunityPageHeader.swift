@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CommunityPageHeader: View {
 	@State private var isAddFriendsViewPresented = false
-	@Environment(AuthViewModel.self) private var authState
+	@Environment(AuthViewModel.self) private var authViewModel
 	@Environment(FriendRequestViewModel.self) private var friendRequestViewModel
 	@Environment(CommunityPageViewModel.self) private var communityPageViewModel
 
@@ -39,7 +39,7 @@ struct CommunityPageHeader: View {
 		.onAppear {
 			friendRequestViewModel.fetchFriendRequests(
 				from: URL(string: "\(APIConstants.base_url)/api/v2/requests/")!,
-				authToken: authState.token,
+				authToken: authViewModel.appUser?.token ?? "",
 				loading: true
 			)
 		}
@@ -49,8 +49,8 @@ struct CommunityPageHeader: View {
 			isPresented: $isAddFriendsViewPresented,
 			onDismiss: {
 				communityPageViewModel.fetchData(
-					from: "\(APIConstants.base_url)/api/v2/friends/\(authState.username)/",
-					token: authState.token,
+					from: "\(APIConstants.base_url)/api/v2/friends/\(authViewModel.appUser?.username ?? "")/",
+					token: authViewModel.appUser?.token ?? "",
 					loading: true
 				)
 			},

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CommunityPage: View {
 
-	@Environment(AuthViewModel.self) private var authState
+	@Environment(AuthViewModel.self) private var authViewModel
 	@EnvironmentObject private var timeTableViewModel: TimetableViewModel
 	@Environment(CommunityPageViewModel.self) private var communityPageViewModel
 	@State private var friend: Friend? = nil
@@ -51,7 +51,7 @@ struct CommunityPage: View {
 									.onTapGesture {
 										self.friend = friend
 										timeTableViewModel.getTimeTable(
-											token: authState.token,
+											token: authViewModel.appUser?.token ?? "",
 											username: friend.username
 										)
 										isFriendViewPresented.toggle()
@@ -62,8 +62,8 @@ struct CommunityPage: View {
 							.refreshable {
 								communityPageViewModel.fetchData(
 									from:
-										"\(APIConstants.base_url)/api/v2/friends/\(authState.username)/",
-									token: authState.token,
+										"\(APIConstants.base_url)/api/v2/friends/\(authViewModel.appUser?.username ?? "")/",
+									token: authViewModel.appUser?.token ?? "",
 									loading: false
 								)
 							}
@@ -85,8 +85,8 @@ struct CommunityPage: View {
 			isPresented: $isFriendViewPresented,
 			onDismiss: {
 				communityPageViewModel.fetchData(
-					from: "\(APIConstants.base_url)/api/v2/friends/\(authState.username)/",
-					token: authState.token,
+					from: "\(APIConstants.base_url)/api/v2/friends/\(authViewModel.appUser?.username ?? "")/",
+					token: authViewModel.appUser?.token ?? "",
 					loading: true
 				)
 			}
@@ -95,8 +95,8 @@ struct CommunityPage: View {
 		}
 		.onAppear {
 			communityPageViewModel.fetchData(
-				from: "\(APIConstants.base_url)/api/v2/friends/\(authState.username)/",
-				token: authState.token,
+				from: "\(APIConstants.base_url)/api/v2/friends/\(authViewModel.appUser?.username ?? "")/",
+				token: authViewModel.appUser?.token ?? "",
 				loading: true
 			)
 		}

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct Profile: View {
 	@StateObject private var vm = ProfileViewModel()
-	@Environment(AuthViewModel.self) private var authState
+	@Environment(AuthViewModel.self) private var authViewModel
 	@Environment(\.presentationMode) var presentationMode
 
 	var body: some View {
@@ -78,13 +78,13 @@ extension Profile {
 				.font(.custom("Poppins-Medium", size: 16))
 				.foregroundColor(Color.theme.primary)
 				.padding(.leading)
-			textField(text: $vm.fullName, tfString: authState.myUser.name, height: 55)
+			textField(text: $vm.fullName, tfString: authViewModel.appUser?.name ?? "", height: 55)
 
 			Text("User Name")
 				.font(.custom("Poppins-Medium", size: 16))
 				.foregroundColor(Color.theme.primary)
 				.padding(.leading)
-			textField(text: $vm.userName, tfString: authState.myUser.username, height: 55)
+			textField(text: $vm.userName, tfString:  authViewModel.appUser?.username ?? "", height: 55)
 		}
 		.padding(.bottom, 55)
 	}

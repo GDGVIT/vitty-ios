@@ -87,62 +87,6 @@ class API {
 // MARK: Auth
 
 extension API {
-	// MARK: Sign in user
-
-	func signInUser(
-		with authReqBody: AuthReqBody,
-		completion: @escaping (Result<AuthResponse, Error>) -> Void
-	) {
-		guard let url = URL(string: "\(APIConstants.base_url)/api/v2/auth/firebase/") else {
-			completion(.failure(CustomError.invalidUrl))
-			return
-		}
-
-		var request = URLRequest(url: url)
-
-		request.httpMethod = "POST"
-
-		request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-
-		do {
-			let encoder = JSONEncoder()
-			request.httpBody = try encoder.encode(authReqBody)
-		}
-		catch {
-			completion(.failure(error))
-			return
-		}
-
-		// Send the request
-		print("calling the API")
-		let task = URLSession.shared.dataTask(with: request) { data, _, error in
-			if let error = error {
-				completion(.failure(error))
-				return
-			}
-
-			guard let data = data else {
-				completion(.failure(CustomError.invalidData))
-				return
-			}
-
-			do {
-				let decoder = JSONDecoder()
-				let authResponse = try decoder.decode(AuthResponse.self, from: data)
-				print("POST request response from url: \(url)")
-				print(authResponse)
-				print("END of POST request response")
-				completion(.success(authResponse))
-			}
-			catch {
-				completion(.failure(error))
-				return
-			}
-		}
-
-		task.resume()
-	}
-
 	// MARK: Check user name
 
 	func checkUsername(with username: String) {

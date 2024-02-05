@@ -11,7 +11,7 @@ struct SearchView: View {
 	@State private var searchText = ""
 	@State private var searchedFriends = [Friend]()
 	@State private var loading = false
-	@Environment(AuthViewModel.self) private var authState
+	@Environment(AuthViewModel.self) private var authViewModel
 	@Environment(\.dismiss) var dismiss
 	var body: some View {
 		Group {
@@ -83,7 +83,7 @@ struct SearchView: View {
 		var request = URLRequest(url: url)
 		let session = URLSession.shared
 		request.httpMethod = "GET"
-		request.addValue("Bearer \(authState.token)", forHTTPHeaderField: "Authorization")
+		request.addValue("Bearer \(authViewModel.appUser?.token ?? "")", forHTTPHeaderField: "Authorization")
 		if searchText.isEmpty {
 			searchedFriends = []
 		}
@@ -96,7 +96,7 @@ struct SearchView: View {
 				do {
 					// Decode the JSON data into an array of UserInfo structs
 					let users = try JSONDecoder().decode([Friend].self, from: data)
-						.filter { $0.username != authState.username }
+						.filter { $0.username != authViewModel.appUser?.username ?? "" }
 					searchedFriends = users
 				}
 				catch {

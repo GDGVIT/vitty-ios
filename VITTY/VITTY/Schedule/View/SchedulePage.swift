@@ -14,13 +14,13 @@ struct SchedulePage: View {
 
 	@EnvironmentObject var timetableViewModel: TimetableViewModel
 	@Environment(AuthViewModel.self) private var authViewModel
-//	@EnvironmentObject var notifVM: NotificationsViewModel
+	//	@EnvironmentObject var notifVM: NotificationsViewModel
 
 	@StateObject var schedulePageVM = SchedulePageViewModel()
 
 	@StateObject var RemoteConf = RemoteConfigManager.sharedInstance
 	@AppStorage("examMode") var examModeOn: Bool = false
-//	@AppStorage(AuthViewModel.notifsSetupKey) var notifsSetup = false
+	//	@AppStorage(AuthViewModel.notifsSetupKey) var notifsSetup = false
 
 	var body: some View {
 		Group {
@@ -35,7 +35,7 @@ struct SchedulePage: View {
 					NavigationLink(
 						destination: SettingsView().environmentObject(timetableViewModel)
 							.environment(authViewModel),
-//							.environmentObject(notifVM),
+						//							.environmentObject(notifVM),
 						isActive: $goToSettings
 					) {
 						EmptyView()
@@ -63,15 +63,15 @@ struct SchedulePage: View {
 			)
 			.onAppear {
 
-//				authViewModel.token =
-//					UserDefaults.standard.string(forKey: authViewModel.appUser?.token ?? ""Key) ?? "no token"
-//				authViewModel.username =
-//					UserDefaults.standard.string(forKey: AuthViewModel.userKey) ?? "no username"
-//
-//				var _ = print("token: ", authViewModel.token)
-//				var _ = print("username: ", authViewModel.username)
-//
-//				timetableViewModel.getTimeTable(token: authViewModel.token, username: authViewModel.username)
+				//				authViewModel.token =
+				//					UserDefaults.standard.string(forKey: authViewModel.appUser?.token ?? ""Key) ?? "no token"
+				//				authViewModel.username =
+				//					UserDefaults.standard.string(forKey: AuthViewModel.userKey) ?? "no username"
+				//
+				//				var _ = print("token: ", authViewModel.token)
+				//				var _ = print("username: ", authViewModel.username)
+				//
+				//				timetableViewModel.getTimeTable(token: authViewModel.token, username: authViewModel.username)
 
 				//                timetableViewModel.getData {
 				//                    if !notifsSetup {
@@ -83,9 +83,9 @@ struct SchedulePage: View {
 				print("tabSelected: \(tabSelected)")
 				//            LocalNotificationsManager.shared.getAllNotificationRequests()
 				print("calling update notifs from homepage")
-//				/*notifVM*/.updateNotifs(timetable: timetableViewModel.timetable)
+				//				/*notifVM*/.updateNotifs(timetable: timetableViewModel.timetable)
 				timetableViewModel.updateClassCompleted()
-//				notifVM.getNotifPrefs()
+				//				notifVM.getNotifPrefs()
 
 				print(goToSettings)
 				print("remote config settings \(RemoteConf.onlineMode)")
@@ -102,7 +102,7 @@ struct SchedulePage: View {
 				MenuView()
 					.environment(authViewModel)
 					.environmentObject(timetableViewModel)
-//					.environmentObject(notifVM)
+				//					.environmentObject(notifVM)
 			}
 		)
 	}
@@ -113,7 +113,7 @@ struct HomePage_Previews: PreviewProvider {
 		SchedulePage()
 			.environment(AuthViewModel())
 			.environmentObject(TimetableViewModel())
-//			.environmentObject(NotificationsViewModel())
+		//			.environmentObject(NotificationsViewModel())
 	}
 }
 

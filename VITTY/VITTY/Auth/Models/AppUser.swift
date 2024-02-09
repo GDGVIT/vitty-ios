@@ -7,7 +7,7 @@
 
 import Foundation
 
-class AppUser: Codable {	
+class AppUser: Codable {
 	let name: String
 	let picture: String
 	let role: String

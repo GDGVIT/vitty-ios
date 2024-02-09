@@ -85,7 +85,8 @@ struct CommunityPage: View {
 			isPresented: $isFriendViewPresented,
 			onDismiss: {
 				communityPageViewModel.fetchData(
-					from: "\(APIConstants.base_url)/api/v2/friends/\(authViewModel.appUser?.username ?? "")/",
+					from:
+						"\(APIConstants.base_url)/api/v2/friends/\(authViewModel.appUser?.username ?? "")/",
 					token: authViewModel.appUser?.token ?? "",
 					loading: true
 				)
@@ -95,7 +96,8 @@ struct CommunityPage: View {
 		}
 		.onAppear {
 			communityPageViewModel.fetchData(
-				from: "\(APIConstants.base_url)/api/v2/friends/\(authViewModel.appUser?.username ?? "")/",
+				from:
+					"\(APIConstants.base_url)/api/v2/friends/\(authViewModel.appUser?.username ?? "")/",
 				token: authViewModel.appUser?.token ?? "",
 				loading: true
 			)

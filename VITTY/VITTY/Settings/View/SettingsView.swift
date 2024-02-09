@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct SettingsView: View {
-//	@AppStorage("examMode") var examModeOn: Bool = false
+	//	@AppStorage("examMode") var examModeOn: Bool = false
 
 	var githubURL = URL(string: "https://github.com/GDGVIT/vitty-ios")
 	var gdscURL = URL(string: "https://dscvit.com/")
 
 	@Environment(AuthViewModel.self) private var authViewModel
 	@EnvironmentObject var ttVM: TimetableViewModel
-//	@EnvironmentObject var notifVM: NotificationsViewModel
+	//	@EnvironmentObject var notifVM: NotificationsViewModel
 
 	@Environment(\.presentationMode) var presentationMode
 
@@ -32,8 +32,8 @@ struct SettingsView: View {
 					}
 			}
 
-//			turnOffNotificationsToggle()
-//				.padding(.vertical)
+			//			turnOffNotificationsToggle()
+			//				.padding(.vertical)
 
 			aboutSection()
 
@@ -45,18 +45,18 @@ struct SettingsView: View {
 		.background(Image("HomeBG").resizable().scaledToFill().edgesIgnoringSafeArea(.all))
 		.navigationTitle("Settings")
 		.navigationBarTitleDisplayMode(.inline)
-//		.onChange(of: examModeOn) { examMode in
-//			if examMode {
-//				print("exam mode is on")
-//				NotificationsManager.shared.removeAllNotificationRequests()
-//			}
-//			else {
-//				notifVM.updateNotifs(timetable: ttVM.timetable)
-//			}
-//		}
-//		.onAppear {
-//			notifVM.updateNotifs(timetable: ttVM.timetable)
-//		}
+		//		.onChange(of: examModeOn) { examMode in
+		//			if examMode {
+		//				print("exam mode is on")
+		//				NotificationsManager.shared.removeAllNotificationRequests()
+		//			}
+		//			else {
+		//				notifVM.updateNotifs(timetable: ttVM.timetable)
+		//			}
+		//		}
+		//		.onAppear {
+		//			notifVM.updateNotifs(timetable: ttVM.timetable)
+		//		}
 	}
 }
 
@@ -65,7 +65,7 @@ struct SettingsView_Previews: PreviewProvider {
 		SettingsView()
 			.environment(AuthViewModel())
 			.environmentObject(TimetableViewModel())
-//			.environmentObject(NotificationsViewModel())
+		//			.environmentObject(NotificationsViewModel())
 	}
 }
 
@@ -97,15 +97,15 @@ extension SettingsView {
 					}
 				}
 			}
-//			Toggle(isOn: $examModeOn) {
-//				VStack(alignment: .leading) {
-//					Text("Exam/Holiday Mode")
-//						.font(.custom("Poppins-Medium", size: 16))
-//					Text("Turns off class notifications")
-//						.font(.custom("Poppins-Regular", size: 14))
-//						.foregroundColor(Color.vprimary)
-//				}
-//			}
+			//			Toggle(isOn: $examModeOn) {
+			//				VStack(alignment: .leading) {
+			//					Text("Exam/Holiday Mode")
+			//						.font(.custom("Poppins-Medium", size: 16))
+			//					Text("Turns off class notifications")
+			//						.font(.custom("Poppins-Regular", size: 14))
+			//						.foregroundColor(Color.vprimary)
+			//				}
+			//			}
 		}
 	}
 

@@ -83,7 +83,10 @@ struct SearchView: View {
 		var request = URLRequest(url: url)
 		let session = URLSession.shared
 		request.httpMethod = "GET"
-		request.addValue("Bearer \(authViewModel.appUser?.token ?? "")", forHTTPHeaderField: "Authorization")
+		request.addValue(
+			"Bearer \(authViewModel.appUser?.token ?? "")",
+			forHTTPHeaderField: "Authorization"
+		)
 		if searchText.isEmpty {
 			searchedFriends = []
 		}

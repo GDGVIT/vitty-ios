@@ -8,29 +8,40 @@
 import SwiftUI
 
 struct LoginView: View {
-	
+
 	@Environment(AuthViewModel.self) private var authViewModel
-	
+
 	private let carouselItems = [
-		LoginViewCarouselItem(image: "LoginViewIllustration 2", heading: "Never miss a class", subtitle: "Notifications to remind you about your upcoming classes"),
-		LoginViewCarouselItem(image: "LoginViewIllustration 1", heading: "Get a sneak peek", subtitle: "View your upcoming classes and timetable via the widget"),
-		LoginViewCarouselItem(image: "LoginViewIllustration 3", heading: "Upload Once, view everywhere", subtitle: "Instant Sync across all of your devices via the app"),
+		LoginViewCarouselItem(
+			image: "LoginViewIllustration 2",
+			heading: "Never miss a class",
+			subtitle: "Notifications to remind you about your upcoming classes"
+		),
+		LoginViewCarouselItem(
+			image: "LoginViewIllustration 1",
+			heading: "Get a sneak peek",
+			subtitle: "View your upcoming classes and timetable via the widget"
+		),
+		LoginViewCarouselItem(
+			image: "LoginViewIllustration 3",
+			heading: "Upload Once, view everywhere",
+			subtitle: "Instant Sync across all of your devices via the app"
+		),
 	]
-	
+
 	@State private var animationProgress = 0.0
 
-	
-    var body: some View {
+	var body: some View {
 		ZStack {
 			Image("SplashScreen13BG")
 				.resizable()
 				.ignoresSafeArea()
-			ScrollViewReader{ value in
-				VStack(alignment: .center){
+			ScrollViewReader { value in
+				VStack(alignment: .center) {
 					ScrollView(.horizontal) {
-						LazyHStack() {
+						LazyHStack {
 							ForEach(0..<3, id: \.self) { index in
-								VStack{
+								VStack {
 									if index == 2 {
 										Spacer()
 									}
@@ -51,7 +62,7 @@ struct LoginView: View {
 										.padding(.top, 1)
 									if index == 2 {
 										Spacer()
-										
+
 										Button(action: {
 											authViewModel.login(with: .appleSignIn)
 										}) {
@@ -60,8 +71,9 @@ struct LoginView: View {
 												ProgressView()
 													.tint(.white)
 													.padding(.vertical, 16)
-											}else {
-												
+											}
+											else {
+
 												Image("logo_apple")
 													.resizable()
 													.scaledToFit()
@@ -84,7 +96,8 @@ struct LoginView: View {
 												ProgressView()
 													.tint(.white)
 													.padding(.vertical, 16)
-											} else {
+											}
+											else {
 												Image("logo_google")
 													.resizable()
 													.scaledToFit()
@@ -108,7 +121,7 @@ struct LoginView: View {
 										.scaleEffect(phase.isIdentity ? 1.0 : 0.8)
 								}
 							}
-							
+
 						}
 						.scrollTargetLayout()
 					}
@@ -116,8 +129,8 @@ struct LoginView: View {
 					.scrollTargetBehavior(.viewAligned)
 					.offset(x: -animationProgress * 75)
 					.animation(.spring(), value: animationProgress)
-					.onAppear { // Start animation on appear
-						DispatchQueue.main.asyncAfter(deadline: .now() + 1) { // Delay animation start
+					.onAppear {  // Start animation on appear
+						DispatchQueue.main.asyncAfter(deadline: .now() + 1) {  // Delay animation start
 							withAnimation(.linear(duration: 1.0)) {
 								animationProgress = 1.0
 							}
@@ -128,40 +141,17 @@ struct LoginView: View {
 							}
 						}
 					}
-//					HStack(spacing: 0) {
-//						Button(action: {
-//							withAnimation{
-//								
-//							}
-//							
-//						}) {
-//							HStack {
-//								Spacer()
-//								Text("Next")
-//									.font(.headline)
-//									.fontWeight(.bold)
-//									.foregroundColor(Color.white)
-//									.lineLimit(1)
-//									.padding(.vertical, 16)
-//								Spacer()
-//							}
-//							.background(Color("brightBlue"))
-//							.cornerRadius(20)
-//						}
-//					}
-//					.padding()
 				}
 			}
 		}
-    }
-	
+	}
+
 }
 
 #Preview {
-    LoginView()
+	LoginView()
 		.environment(AuthViewModel())
 }
-
 
 struct LoginViewCarouselItem {
 	let image: String

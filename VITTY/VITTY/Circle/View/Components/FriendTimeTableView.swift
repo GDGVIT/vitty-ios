@@ -55,7 +55,8 @@ struct FriendTimeTableView: View {
 					// Start the URLSession task
 					task.resume()
 					communityPageViewModel.fetchData(
-						from: "\(APIConstants.base_url)/api/v2/friends/\(authViewModel.appUser?.username ?? "")/",
+						from:
+							"\(APIConstants.base_url)/api/v2/friends/\(authViewModel.appUser?.username ?? "")/",
 						token: authViewModel.appUser?.token ?? "",
 						loading: false
 					)

@@ -13,7 +13,7 @@ class UserDefaultKeys {
 	static let useremailKey = "userEmail"
 	static let instructionsCompleteKey = "instructionsComplete"
 	static let notifsSetupKey = "notifsSetupKey"
-	
+
 	static let tokenKey = "token"
 	static let userKey = "userName"
 	static let nameKey = "name"

@@ -84,7 +84,11 @@ extension Profile {
 				.font(.custom("Poppins-Medium", size: 16))
 				.foregroundColor(Color.theme.primary)
 				.padding(.leading)
-			textField(text: $vm.userName, tfString:  authViewModel.appUser?.username ?? "", height: 55)
+			textField(
+				text: $vm.userName,
+				tfString: authViewModel.appUser?.username ?? "",
+				height: 55
+			)
 		}
 		.padding(.bottom, 55)
 	}

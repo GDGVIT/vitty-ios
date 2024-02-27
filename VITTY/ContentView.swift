@@ -12,8 +12,7 @@ struct ContentView: View {
 	@State private var communityPageViewModel = CommunityPageViewModel()
 	@State private var suggestedFriendsViewModel = SuggestedFriendsViewModel()
 	@State private var friendRequestViewModel = FriendRequestViewModel()
-	@State var authViewModel: AuthViewModel = AuthViewModel()
-	@StateObject var timeTableVM: TimetableViewModel = TimetableViewModel()
+	@State private var authViewModel = AuthViewModel()
 	//	@StateObject var localNotificationsManager = NotificationsManager()
 	//	@StateObject var notifVM = NotificationsViewModel()
 	var body: some View {
@@ -21,7 +20,8 @@ struct ContentView: View {
 			if authViewModel.loggedInFirebaseUser != nil {
 				if authViewModel.appUser == nil {
 					InstructionView()
-				} else {
+				}
+				else {
 					HomeView()
 				}
 			}
@@ -46,7 +46,6 @@ struct ContentView: View {
 		//			NotificationsManager.shared.getNotificationSettings()
 		//		}
 		.environment(authViewModel)
-		.environmentObject(timeTableVM)
 		//		.environmentObject(notifVM)
 		.environment(communityPageViewModel)
 		.environment(suggestedFriendsViewModel)

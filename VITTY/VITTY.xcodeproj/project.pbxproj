@@ -120,8 +120,13 @@
 		5251A7FC2B46E3A800D44CFE /* SwiftFormatConfiguration in Frameworks */ = {isa = PBXBuildFile; productRef = 5251A7FB2B46E3A800D44CFE /* SwiftFormatConfiguration */; };
 		5251A7FE2B46E3A800D44CFE /* swift-format in Frameworks */ = {isa = PBXBuildFile; productRef = 5251A7FD2B46E3A800D44CFE /* swift-format */; };
 		525AA7A92B4B0164003C6A12 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525AA7A82B4B0164003C6A12 /* SearchView.swift */; };
-		525FFEF62B6F906C001CAAD3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 525FFEF52B6F906C001CAAD3 /* GoogleService-Info.plist */; };
-		525FFEF82B6F9072001CAAD3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 525FFEF72B6F9072001CAAD3 /* GoogleService-Info.plist */; };
+		525F759D2B809F8400E3B418 /* LectureDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525F759C2B809F8400E3B418 /* LectureDetailView.swift */; };
+		527E3E082B7662920086F23D /* TimeTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527E3E072B7662920086F23D /* TimeTableView.swift */; };
+		528CF16E2B769A84007298A0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 528CF16D2B769A84007298A0 /* GoogleService-Info.plist */; };
+		528CF1702B769A89007298A0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 528CF16F2B769A89007298A0 /* GoogleService-Info.plist */; };
+		528CF1732B769B18007298A0 /* TimeTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 528CF1722B769B18007298A0 /* TimeTable.swift */; };
+		528CF1762B769E22007298A0 /* TimeTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 528CF1752B769E22007298A0 /* TimeTableViewModel.swift */; };
+		528CF1782B769E64007298A0 /* TimeTableAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 528CF1772B769E64007298A0 /* TimeTableAPIService.swift */; };
 		52A955832B497C7A00CA6EC5 /* FriendTimeTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52A955822B497C7A00CA6EC5 /* FriendTimeTableView.swift */; };
 		52D5AB862B6FE2ED00B2E66D /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D5AB852B6FE2ED00B2E66D /* AuthViewModel.swift */; };
 		52D5AB892B6FE3B200B2E66D /* AppUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D5AB882B6FE3B200B2E66D /* AppUser.swift */; };
@@ -273,8 +278,13 @@
 		524B843B2B46F6FD006D18BD /* AddFriendsHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFriendsHeader.swift; sourceTree = "<group>"; };
 		5251A7FF2B46E3C000D44CFE /* .swift-format */ = {isa = PBXFileReference; lastKnownFileType = text; path = ".swift-format"; sourceTree = "<group>"; };
 		525AA7A82B4B0164003C6A12 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
-		525FFEF52B6F906C001CAAD3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
-		525FFEF72B6F9072001CAAD3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		525F759C2B809F8400E3B418 /* LectureDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureDetailView.swift; sourceTree = "<group>"; };
+		527E3E072B7662920086F23D /* TimeTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTableView.swift; sourceTree = "<group>"; };
+		528CF16D2B769A84007298A0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		528CF16F2B769A89007298A0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		528CF1722B769B18007298A0 /* TimeTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTable.swift; sourceTree = "<group>"; };
+		528CF1752B769E22007298A0 /* TimeTableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTableViewModel.swift; sourceTree = "<group>"; };
+		528CF1772B769E64007298A0 /* TimeTableAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTableAPIService.swift; sourceTree = "<group>"; };
 		52A955822B497C7A00CA6EC5 /* FriendTimeTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendTimeTableView.swift; sourceTree = "<group>"; };
 		52D5AB852B6FE2ED00B2E66D /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 		52D5AB882B6FE3B200B2E66D /* AppUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUser.swift; sourceTree = "<group>"; };
@@ -475,6 +485,7 @@
 		314A408D27383BEC0058082F /* VITTY */ = {
 			isa = PBXGroup;
 			children = (
+				527E3E022B76626A0086F23D /* TimeTable */,
 				521562A92B70B0E50054F051 /* Instruction */,
 				52D5AB8A2B6FE4C600B2E66D /* Shared */,
 				314A40A527383C3F0058082F /* Model */,
@@ -809,6 +820,57 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		527E3E012B76625C0086F23D /* Service */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		527E3E022B76626A0086F23D /* TimeTable */ = {
+			isa = PBXGroup;
+			children = (
+				528CF1712B769AF2007298A0 /* Models */,
+				527E3E052B76627C0086F23D /* ViewModel */,
+				527E3E042B7662760086F23D /* Views */,
+				527E3E032B7662710086F23D /* Service */,
+			);
+			path = TimeTable;
+			sourceTree = "<group>";
+		};
+		527E3E032B7662710086F23D /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				528CF1772B769E64007298A0 /* TimeTableAPIService.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		527E3E042B7662760086F23D /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				527E3E072B7662920086F23D /* TimeTableView.swift */,
+				525F759C2B809F8400E3B418 /* LectureDetailView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		527E3E052B76627C0086F23D /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				528CF1752B769E22007298A0 /* TimeTableViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		528CF1712B769AF2007298A0 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				528CF1722B769B18007298A0 /* TimeTable.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		52CC87082B677FCC0030B7E9 /* Auth */ = {
 			isa = PBXGroup;
 			children = (
@@ -883,7 +945,7 @@
 		52DC41E02B6F8B1E00CCF8DB /* Dev */ = {
 			isa = PBXGroup;
 			children = (
-				525FFEF72B6F9072001CAAD3 /* GoogleService-Info.plist */,
+				528CF16F2B769A89007298A0 /* GoogleService-Info.plist */,
 			);
 			path = Dev;
 			sourceTree = "<group>";
@@ -891,7 +953,7 @@
 		52DC41E12B6F8B2100CCF8DB /* Prod */ = {
 			isa = PBXGroup;
 			children = (
-				525FFEF52B6F906C001CAAD3 /* GoogleService-Info.plist */,
+				528CF16D2B769A84007298A0 /* GoogleService-Info.plist */,
 			);
 			path = Prod;
 			sourceTree = "<group>";
@@ -934,6 +996,7 @@
 		5D1FF25D2A32637D00B0620A /* Schedule */ = {
 			isa = PBXGroup;
 			children = (
+				527E3E012B76625C0086F23D /* Service */,
 				5DE8C0072A8F29B400AE3995 /* ViewModel */,
 				5D1FF25E2A32638800B0620A /* View */,
 			);
@@ -1308,8 +1371,8 @@
 				31128CF92772F57E0084C9EA /* Poppins-Medium.ttf in Resources */,
 				31128CFA2772F57E0084C9EA /* Poppins-SemiBoldItalic.ttf in Resources */,
 				31128CFC2772F57E0084C9EA /* Poppins-Regular.ttf in Resources */,
-				525FFEF62B6F906C001CAAD3 /* GoogleService-Info.plist in Resources */,
-				525FFEF82B6F9072001CAAD3 /* GoogleService-Info.plist in Resources */,
+				528CF16E2B769A84007298A0 /* GoogleService-Info.plist in Resources */,
+				528CF1702B769A89007298A0 /* GoogleService-Info.plist in Resources */,
 				314A409627383BEE0058082F /* Preview Assets.xcassets in Resources */,
 				314A409327383BEE0058082F /* Assets.xcassets in Resources */,
 			);
@@ -1398,6 +1461,7 @@
 				524B842F2B46EBBD006D18BD /* HomeView.swift in Sources */,
 				5DE8C0092A8F29C400AE3995 /* SchedulePageViewModel.swift in Sources */,
 				5D44FFFA2A2A69DD0005A1E4 /* SetStatusView.swift in Sources */,
+				527E3E082B7662920086F23D /* TimeTableView.swift in Sources */,
 				31BAB52D279AE398008E20BB /* NotificationsViewHeader.swift in Sources */,
 				524B843A2B46F5C6006D18BD /* AddFriendsView.swift in Sources */,
 				5D3D92592A1818150013803E /* Color.swift in Sources */,
@@ -1434,6 +1498,7 @@
 				5D44FFFF2A2A76CE0005A1E4 /* SetStatusViewModel.swift in Sources */,
 				5238C7F12B4AAE8700413946 /* FriendRequestView.swift in Sources */,
 				5DF547DB2A9452DE00A0B09C /* SuggestionsView.swift in Sources */,
+				528CF1782B769E64007298A0 /* TimeTableAPIService.swift in Sources */,
 				31BAB531279D318F008E20BB /* NotificationsSettingsModel.swift in Sources */,
 				31128D072772FA120084C9EA /* Colors.swift in Sources */,
 				52D5AB972B6FFC8F00B2E66D /* LoginView.swift in Sources */,
@@ -1452,6 +1517,7 @@
 				5DE8C0102A8FC7CE00AE3995 /* FriendCircle.swift in Sources */,
 				317715DE279F1431009A532E /* IndexedCollection.swift in Sources */,
 				3164C46827CBCD1400D6B53F /* WidgetLClassCard.swift in Sources */,
+				525F759D2B809F8400E3B418 /* LectureDetailView.swift in Sources */,
 				3164C45D27CB71DF00D6B53F /* WidgetSmallClassCard.swift in Sources */,
 				520BA6432B47FFF900124850 /* SuggestedFriendsViewModel.swift in Sources */,
 				31A2A4A827899EE3005679EB /* TabBarDay.swift in Sources */,
@@ -1483,11 +1549,13 @@
 				3164C42727C9ED4F00D6B53F /* WidgetModel.swift in Sources */,
 				522B8BAD2B47297A00EE686E /* CommunityPageViewModel.swift in Sources */,
 				317715DC279F0426009A532E /* CustomNotificationsLabel.swift in Sources */,
+				528CF1762B769E22007298A0 /* TimeTableViewModel.swift in Sources */,
 				5DB9DDF32A9251F60027C893 /* UserDetailsRow.swift in Sources */,
 				31900F0A27759DB60014A58D /* Gradient.swift in Sources */,
 				52A955832B497C7A00CA6EC5 /* FriendTimeTableView.swift in Sources */,
 				5DE8C00B2A8F2AF900AE3995 /* SlideInView.swift in Sources */,
 				52D5AB8F2B6FE82E00B2E66D /* AuthAPIService.swift in Sources */,
+				528CF1732B769B18007298A0 /* TimeTable.swift in Sources */,
 				524B84362B46F10F006D18BD /* CommunityPageHeader.swift in Sources */,
 				521562AE2B710E730054F051 /* UsernameView.swift in Sources */,
 				5DC0AF512AD2A8FE006B081D /* FriendResponse.swift in Sources */,

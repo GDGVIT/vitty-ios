@@ -14,6 +14,7 @@ enum AuthAPIServiceError: Error {
 
 class AuthAPIService {
 	static let shared = AuthAPIService()
+	
 	func signInUser(
 		with authRequestBody: AuthRequestBody,
 		completion: @escaping (Result<AppUser, Error>) -> Void
@@ -55,8 +56,8 @@ class AuthAPIService {
 		}
 		task.resume()
 	}
-	
-	func checkUserExists (with authID: String, completion: @escaping (Result<Bool, Error>) -> Void) {
+
+	func checkUserExists(with authID: String, completion: @escaping (Result<Bool, Error>) -> Void) {
 		guard let url = URL(string: "\(Constants.url)auth/check-user-exists") else {
 			completion(.failure(AuthAPIServiceError.invalidUrl))
 			return
@@ -67,7 +68,8 @@ class AuthAPIService {
 		do {
 			let encoder = JSONEncoder()
 			request.httpBody = try encoder.encode(["uuid": authID])
-		} catch {
+		}
+		catch {
 			completion(.failure(error))
 			return
 		}
@@ -81,12 +83,12 @@ class AuthAPIService {
 				return
 			}
 			guard let response = response as? HTTPURLResponse else { return }
-			
+
 			if response.statusCode == 200 {
 				completion(.success(true))
 			}
 			completion(.success(false))
-			
+
 		}
 		task.resume()
 	}

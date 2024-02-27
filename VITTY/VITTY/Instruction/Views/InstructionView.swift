@@ -87,7 +87,8 @@ struct InstructionView: View {
 					NavigationLink(destination: {
 						if authViewModel.appUser == nil {
 							UsernameView()
-						} else {
+						}
+						else {
 							HomeView()
 						}
 					}) {

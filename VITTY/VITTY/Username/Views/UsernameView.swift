@@ -14,30 +14,31 @@ struct UsernameView: View {
 	@State private var regNoErrorString = ""
 	@State private var usernameError = true
 	@State private var regNoError = true
-	
+
 	@State private var isLoading = false
-	
+
 	@Environment(AuthViewModel.self) private var authViewModel
-	
+
 	var body: some View {
 		NavigationStack {
-			ZStack{
+			ZStack {
 				Image("HomeBG")
 					.resizable()
 					.ignoresSafeArea()
-				VStack(alignment: .leading){
+				VStack(alignment: .leading) {
 					Text("Enter username and your registration number below.")
 						.foregroundColor(Color.vprimary)
 						.font(.footnote)
 						.frame(maxWidth: .infinity, alignment: .leading)
-						.onChange(of: username) { _,_ in
+						.onChange(of: username) { _, _ in
 							checkUserExists { result in
 								switch result {
 									case .success(let exists):
-										
+
 										if exists {
 											usernameError = true
-										} else {
+										}
+										else {
 											usernameError = false
 										}
 									case .failure(_):
@@ -50,18 +51,19 @@ struct UsernameView: View {
 						.foregroundColor(Color.vprimary)
 						.font(.footnote)
 						.frame(maxWidth: .infinity, alignment: .leading)
-						.onChange(of: regNo) {_,_ in
-							let regex =  #"^\d{2}[A-Za-z]{3}\d{4}$"#
+						.onChange(of: regNo) { _, _ in
+							let regex = #"^\d{2}[A-Za-z]{3}\d{4}$"#
 							let regNoTest = NSPredicate(format: "SELF MATCHES %@", regex)
 							if regNoTest.evaluate(with: regNo) {
 								regNoErrorString = ""
 								regNoError = false
-							} else {
+							}
+							else {
 								regNoErrorString = "Please enter a valid registration number."
 								regNoError = true
 							}
 						}
-					ZStack{
+					ZStack {
 						TextField("Username", text: $username)
 							.padding()
 					}
@@ -71,7 +73,7 @@ struct UsernameView: View {
 					Text(userNameErrorString)
 						.font(.footnote)
 						.foregroundStyle(.red)
-					ZStack{
+					ZStack {
 						TextField("Registration No.", text: $regNo)
 							.padding()
 					}
@@ -90,7 +92,8 @@ struct UsernameView: View {
 						if isLoading {
 							ProgressView()
 								.padding(.vertical, 16)
-						} else {
+						}
+						else {
 							Spacer()
 							Text("Done")
 								.fontWeight(.bold)
@@ -104,14 +107,14 @@ struct UsernameView: View {
 					.cornerRadius(18)
 				}
 				.padding(.horizontal)
-				
+
 			}
 			.navigationTitle("Let's Sign You In")
 		}
 		.accentColor(.white)
 	}
-	
-	func checkUserExists (completion: @escaping (Result<Bool, Error>) -> Void) {
+
+	func checkUserExists(completion: @escaping (Result<Bool, Error>) -> Void) {
 		guard let url = URL(string: "\(Constants.url)auth/check-username") else {
 			completion(.failure(AuthAPIServiceError.invalidUrl))
 			return
@@ -122,7 +125,8 @@ struct UsernameView: View {
 		do {
 			let encoder = JSONEncoder()
 			request.httpBody = try encoder.encode(["username": username])
-		} catch {
+		}
+		catch {
 			completion(.failure(error))
 			return
 		}
@@ -135,11 +139,13 @@ struct UsernameView: View {
 			if response.statusCode == 200 {
 				userNameErrorString = ""
 				completion(.success(false))
-			} else {
+			}
+			else {
 				do {
 					let res = try JSONDecoder().decode([String: String].self, from: data)
 					userNameErrorString = res["detail"]!
-				} catch {
+				}
+				catch {
 					completion(.success(true))
 				}
 				completion(.success(true))

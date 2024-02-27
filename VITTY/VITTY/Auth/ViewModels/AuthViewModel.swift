@@ -33,9 +33,15 @@ class AuthViewModel: NSObject, ASAuthorizationControllerDelegate {
 		catch {
 			print("Error: AuthViewModel(useUserAccessGroup)")
 		}
+		
 		loggedInFirebaseUser = firebaseAuth.currentUser
 		super.init()
 		firebaseAuth.addStateDidChangeListener(authViewModelChanged)
+		do {
+			if UserDefaults.standard.string(forKey: UserDefaultKeys.userKey) != nil {
+				signInServer(username: UserDefaults.standard.string(forKey: UserDefaultKeys.userKey) ?? "", regNo: "")
+			}
+		}
 	}
 
 	private func authViewModelChanged(with auth: Auth, user: User?) {
@@ -162,10 +168,14 @@ class AuthViewModel: NSObject, ASAuthorizationControllerDelegate {
 			print("Error Signing Out: \(signOutError)")
 		}
 	}
-	
+
 	func signInServer(username: String, regNo: String) {
 		AuthAPIService.shared.signInUser(
-			with: AuthRequestBody(uuid: loggedInFirebaseUser?.uid ?? "",reg_no: regNo, username: username)
+			with: AuthRequestBody(
+				uuid: loggedInFirebaseUser?.uid ?? "",
+				reg_no: regNo,
+				username: username
+			)
 		) {
 			[weak self] result in
 			switch result {
@@ -189,7 +199,7 @@ class AuthViewModel: NSObject, ASAuthorizationControllerDelegate {
 				)
 				userDefaultsStandard.set(user.displayName, forKey: UserDefaultKeys.usernameKey)
 				userDefaultsStandard.set(false, forKey: UserDefaultKeys.instructionsCompleteKey)
-				AuthAPIService.shared.checkUserExists(with: user.uid){
+				AuthAPIService.shared.checkUserExists(with: user.uid) {
 					[weak self] result in
 					switch result {
 						case let .success(response):
@@ -228,7 +238,7 @@ class AuthViewModel: NSObject, ASAuthorizationControllerDelegate {
 							print(error)
 					}
 				}
-				
+
 			}
 			else if let error = error {
 				self.error = error as NSError

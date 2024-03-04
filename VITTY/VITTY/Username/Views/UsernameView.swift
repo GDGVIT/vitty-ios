@@ -85,9 +85,12 @@ struct UsernameView: View {
 						.foregroundStyle(.red)
 					Spacer()
 					Button(action: {
-						isLoading = true
-						authViewModel.signInServer(username: username, regNo: regNo)
-						isLoading = false
+						Task {
+							
+							isLoading = true
+							await authViewModel.signInServer(username: username, regNo: regNo)
+							isLoading = false
+						}
 					}) {
 						if isLoading {
 							ProgressView()

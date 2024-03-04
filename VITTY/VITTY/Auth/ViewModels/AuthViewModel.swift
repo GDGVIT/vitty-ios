@@ -25,79 +25,79 @@ class AuthViewModel: NSObject, ASAuthorizationControllerDelegate {
 	var error: NSError?
 	let firebaseAuth = Auth.auth()
 	fileprivate var currentNonce: String?
-
-	override init() {
+	
+	override init()  {
 		do {
 			try firebaseAuth.useUserAccessGroup(nil)
 		}
 		catch {
 			print("Error: AuthViewModel(useUserAccessGroup)")
 		}
-
+		
 		loggedInFirebaseUser = firebaseAuth.currentUser
 		super.init()
 		firebaseAuth.addStateDidChangeListener(authViewModelChanged)
 		do {
-			if UserDefaults.standard.string(forKey: UserDefaultKeys.userKey) != nil {
-				signInServer(
-					username: UserDefaults.standard.string(forKey: UserDefaultKeys.userKey) ?? "",
-					regNo: ""
-				)
+			Task {
+				if UserDefaults.standard.string(forKey: UserDefaultKeys.userKey) != nil {
+					await signInServer(
+						username: UserDefaults.standard.string(forKey: UserDefaultKeys.userKey) ?? "",
+						regNo: ""
+					)
+				}
 			}
 		}
 	}
-
+	
 	private func authViewModelChanged(with auth: Auth, user: User?) {
 		DispatchQueue.main.async {
 			guard user != self.loggedInFirebaseUser else { return }
 			self.loggedInFirebaseUser = user
 		}
 	}
-
-	func login(with loginOption: LoginOption) {
+	
+	func login(with loginOption: LoginOption) async throws{
 		isLoading = true
 		error = nil
-
+		
 		switch loginOption {
-			case .googleSignIn:
-				signInWithGoogle()
-			case .appleSignIn:
-				signInWithApple()
+		case .googleSignIn:
+			try await signInWithGoogle()
+		case .appleSignIn:
+			signInWithApple()
 		}
 	}
-
-	private func signInWithGoogle() {
-		guard let clientID = FirebaseApp.app()?.options.clientID else { return }
-		let config = GIDConfiguration(clientID: clientID)
-
-		guard let screen = UIApplication.shared.connectedScenes.first as? UIWindowScene else {
+	
+	private func signInWithGoogle() async throws {
+		guard let screen = await  UIApplication.shared.connectedScenes.first as? UIWindowScene else {
 			return
 		}
-		guard let window = screen.windows.first?.rootViewController else { return }
-		GIDSignIn.sharedInstance.signIn(with: config, presenting: window) {
-			[unowned self] user, error in
-
-			if let error = error {
-				print("Error: Couldn't authenticate with Google - \(error.localizedDescription)")
-				return
+		guard let window = await screen.windows.first?.rootViewController else { return }
+		let signInResult = try await GIDSignIn.sharedInstance.signIn(withPresenting: window)
+		let credential = GoogleAuthProvider.credential(
+			withIDToken: signInResult.user.idToken?.tokenString ?? "",
+			accessToken: signInResult.user.accessToken.tokenString
+		)
+		let authUser = try await firebaseAuth.signIn(with: credential)
+		self.loggedInFirebaseUser = authUser.user
+		let userDefaultsStandard = UserDefaults.standard
+		userDefaultsStandard.set(authUser.user.providerID, forKey: UserDefaultKeys.providerIdKey)
+		userDefaultsStandard.set(authUser.user.displayName, forKey: UserDefaultKeys.usernameKey)
+		do {
+			let doesUserExist = try await AuthAPIService.shared.checkUserExists(with: authUser.user.uid)
+			if doesUserExist {
+				appUser =  try await AuthAPIService.shared.signInUser(with: AuthRequestBody(uuid: authUser.user.uid, reg_no: "", username: ""))
+				UserDefaults.standard.set(appUser?.token, forKey: UserDefaultKeys.tokenKey)
+				UserDefaults.standard.set(appUser?.username, forKey: UserDefaultKeys.userKey)
+				UserDefaults.standard.set(appUser?.name, forKey: UserDefaultKeys.nameKey)
+				UserDefaults.standard.set(appUser?.picture, forKey: UserDefaultKeys.imageKey)
 			}
-
-			guard
-				let authentication = user?.authentication,
-				let idToken = authentication.idToken
-			else {
-				return
-			}
-
-			let credential = GoogleAuthProvider.credential(
-				withIDToken: idToken,
-				accessToken: authentication.accessToken
-			)
-
-			firebaseAuth.signIn(with: credential, completion: authResultCompletionHandler)
+		} catch {
+			print(error)
 		}
+		self.isLoading = false
 	}
-
+	
 	private func signInWithApple() {
 		let nonce = AppleSignInUtilties.randomNonceString()
 		currentNonce = nonce
@@ -109,7 +109,7 @@ class AuthViewModel: NSObject, ASAuthorizationControllerDelegate {
 		authController.delegate = self
 		authController.performRequests()
 	}
-
+	
 	internal func authorizationController(
 		controller: ASAuthorizationController,
 		didCompleteWithError error: Error
@@ -118,11 +118,11 @@ class AuthViewModel: NSObject, ASAuthorizationControllerDelegate {
 		isLoading = false
 		self.error = error as NSError
 	}
-
+	
 	internal func authorizationController(
 		controller: ASAuthorizationController,
 		didCompleteWithAuthorization authorization: ASAuthorization
-	) {
+	) async throws {
 		if let appleIdCred = authorization.credential as? ASAuthorizationAppleIDCredential {
 			guard let nonce = currentNonce else {
 				fatalError(
@@ -147,20 +147,36 @@ class AuthViewModel: NSObject, ASAuthorizationControllerDelegate {
 				print("Unable to serialize Authorization Code")
 				return
 			}
-
+			
 			let credential = OAuthProvider.credential(
 				withProviderID: "apple.com",
 				idToken: idTokenString,
 				rawNonce: nonce
 			)
-
-			firebaseAuth.signIn(with: credential, completion: authResultCompletionHandler)
+			let authUser = try await firebaseAuth.signIn(with: credential)
+			self.loggedInFirebaseUser = authUser.user
+			let userDefaultsStandard = UserDefaults.standard
+			userDefaultsStandard.set(authUser.user.providerID, forKey: UserDefaultKeys.providerIdKey)
+			userDefaultsStandard.set(authUser.user.displayName, forKey: UserDefaultKeys.usernameKey)
+			do {
+				let doesUserExist = try await AuthAPIService.shared.checkUserExists(with: authUser.user.uid)
+				if doesUserExist {
+					appUser =  try await AuthAPIService.shared.signInUser(with: AuthRequestBody(uuid: authUser.user.uid, reg_no: "", username: ""))
+					UserDefaults.standard.set(appUser?.token, forKey: UserDefaultKeys.tokenKey)
+					UserDefaults.standard.set(appUser?.username, forKey: UserDefaultKeys.userKey)
+					UserDefaults.standard.set(appUser?.name, forKey: UserDefaultKeys.nameKey)
+					UserDefaults.standard.set(appUser?.picture, forKey: UserDefaultKeys.imageKey)
+				}
+			} catch {
+				print(error)
+			}
+			self.isLoading = false
 		}
 		else {
 			print("Error during authorization")
 		}
 	}
-
+	
 	func signOut() {
 		do {
 			try firebaseAuth.signOut()
@@ -171,81 +187,17 @@ class AuthViewModel: NSObject, ASAuthorizationControllerDelegate {
 			print("Error Signing Out: \(signOutError)")
 		}
 	}
-
-	func signInServer(username: String, regNo: String) {
-		AuthAPIService.shared.signInUser(
-			with: AuthRequestBody(
-				uuid: loggedInFirebaseUser?.uid ?? "",
-				reg_no: regNo,
-				username: username
-			)
-		) {
-			[weak self] result in
-			switch result {
-				case let .success(response):
-					self?.appUser = response
-				case let .failure(error):
-					print(error)
-			}
-		}
-	}
-
-	private func authResultCompletionHandler(auth: AuthDataResult?, error: Error?) {
-		DispatchQueue.main.async {
-			self.isLoading = false
-			if let user = auth?.user {
-				self.loggedInFirebaseUser = user
-				let userDefaultsStandard = UserDefaults.standard
-				userDefaultsStandard.set(
-					user.providerID,
-					forKey: UserDefaultKeys.providerIdKey
+	
+	func signInServer(username: String, regNo: String) async {
+		do {
+			self.appUser = try await AuthAPIService.shared
+				.signInUser(with: AuthRequestBody(
+					uuid: loggedInFirebaseUser?.uid ?? "",
+					reg_no: regNo,
+					username: username)
 				)
-				userDefaultsStandard.set(user.displayName, forKey: UserDefaultKeys.usernameKey)
-				userDefaultsStandard.set(false, forKey: UserDefaultKeys.instructionsCompleteKey)
-				AuthAPIService.shared.checkUserExists(with: user.uid) {
-					[weak self] result in
-					switch result {
-						case let .success(response):
-							if response {
-								AuthAPIService.shared.signInUser(
-									with: AuthRequestBody(uuid: user.uid, reg_no: "", username: "")
-								) {
-									[weak self] result in
-									switch result {
-										case let .success(response):
-											DispatchQueue.main.async {
-												self?.appUser = response
-												UserDefaults.standard.set(
-													self?.appUser?.token,
-													forKey: UserDefaultKeys.tokenKey
-												)
-												UserDefaults.standard.set(
-													self?.appUser?.username,
-													forKey: UserDefaultKeys.userKey
-												)
-												UserDefaults.standard.set(
-													self?.appUser?.name,
-													forKey: UserDefaultKeys.nameKey
-												)
-												UserDefaults.standard.set(
-													self?.appUser?.picture,
-													forKey: UserDefaultKeys.imageKey
-												)
-											}
-										case let .failure(error):
-											print(error)
-									}
-								}
-							}
-						case let .failure(error):
-							print(error)
-					}
-				}
-
-			}
-			else if let error = error {
-				self.error = error as NSError
-			}
+		} catch {
+			print(error)
 		}
 	}
 }
@@ -254,10 +206,10 @@ private class AppleSignInUtilties {
 	static func randomNonceString(length: Int = 32) -> String {
 		precondition(length > 0)
 		let charset: [Character] =
-			Array("0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._")
+		Array("0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._")
 		var result = ""
 		var remainingLength = length
-
+		
 		while remainingLength > 0 {
 			let randoms: [UInt8] = (0..<16)
 				.map { _ in
@@ -270,29 +222,29 @@ private class AppleSignInUtilties {
 					}
 					return random
 				}
-
+			
 			randoms.forEach { random in
 				if length == 0 {
 					return
 				}
-
+				
 				if random < charset.count {
 					result.append(charset[Int(random)])
 					remainingLength -= 1
 				}
 			}
 		}
-
+		
 		return result
 	}
 	static func sha256(_ input: String) -> String {
 		let inputData = Data(input.utf8)
 		let hashedData = SHA256.hash(data: inputData)
 		let hashString =
-			hashedData.compactMap {
-				String(format: "%02x", $0)
-			}
-			.joined()
+		hashedData.compactMap {
+			String(format: "%02x", $0)
+		}
+		.joined()
 		return hashString
 	}
 }

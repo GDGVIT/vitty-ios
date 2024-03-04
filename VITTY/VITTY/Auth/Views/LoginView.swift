@@ -64,7 +64,9 @@ struct LoginView: View {
 										Spacer()
 
 										Button(action: {
-											authViewModel.login(with: .appleSignIn)
+											Task {
+												try await authViewModel.login(with: .appleSignIn)
+											}
 										}) {
 											Spacer()
 											if authViewModel.isLoading {
@@ -89,7 +91,9 @@ struct LoginView: View {
 										.cornerRadius(18)
 										.padding([.top, .leading, .trailing])
 										Button(action: {
-											authViewModel.login(with: .googleSignIn)
+											Task {
+												try await authViewModel.login(with: .googleSignIn)
+											}
 										}) {
 											Spacer()
 											if authViewModel.isLoading {

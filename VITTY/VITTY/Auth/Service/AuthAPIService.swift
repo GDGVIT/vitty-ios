@@ -14,82 +14,31 @@ enum AuthAPIServiceError: Error {
 
 class AuthAPIService {
 	static let shared = AuthAPIService()
-
+	
 	func signInUser(
-		with authRequestBody: AuthRequestBody,
-		completion: @escaping (Result<AppUser, Error>) -> Void
-	) {
-		guard let url = URL(string: "\(Constants.url)auth/firebase/") else {
-			completion(.failure(AuthAPIServiceError.invalidUrl))
-			return
-		}
+		with authRequestBody: AuthRequestBody
+	) async throws -> AppUser {
+		let url = URL(string: "\(Constants.url)auth/firebase/")!
 		var request = URLRequest(url: url)
 		request.httpMethod = "POST"
 		request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-		do {
-			let encoder = JSONEncoder()
-			request.httpBody = try encoder.encode(authRequestBody)
-		}
-		catch {
-			completion(.failure(error))
-			return
-		}
-		let task = URLSession.shared.dataTask(with: request) { data, _, error in
-			if let error = error {
-				completion(.failure(error))
-				return
-			}
-			guard let data = data else {
-				completion(.failure(AuthAPIServiceError.invalidUrl))
-				return
-			}
-
-			do {
-				let decoder = JSONDecoder()
-				let appUser = try decoder.decode(AppUser.self, from: data)
-				completion(.success(appUser))
-			}
-			catch {
-				completion(.failure(error))
-				return
-			}
-		}
-		task.resume()
+		let encoder = JSONEncoder()
+		request.httpBody = try encoder.encode(authRequestBody)
+		let data = try await URLSession.shared.data(for: request)
+		let decoder = JSONDecoder()
+		let appUser = try decoder.decode(AppUser.self, from: data.0)
+		return appUser
 	}
-
-	func checkUserExists(with authID: String, completion: @escaping (Result<Bool, Error>) -> Void) {
-		guard let url = URL(string: "\(Constants.url)auth/check-user-exists") else {
-			completion(.failure(AuthAPIServiceError.invalidUrl))
-			return
-		}
+	
+	func checkUserExists(with authID: String) async throws -> Bool {
+		let url = URL(string: "\(Constants.url)auth/check-user-exists")!
 		var request = URLRequest(url: url)
 		request.httpMethod = "POST"
 		request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-		do {
-			let encoder = JSONEncoder()
-			request.httpBody = try encoder.encode(["uuid": authID])
-		}
-		catch {
-			completion(.failure(error))
-			return
-		}
-		let task = URLSession.shared.dataTask(with: request) { data, response, error in
-			if let error = error {
-				completion(.failure(error))
-				return
-			}
-			guard let data = data else {
-				completion(.failure(AuthAPIServiceError.invalidUrl))
-				return
-			}
-			guard let response = response as? HTTPURLResponse else { return }
-
-			if response.statusCode == 200 {
-				completion(.success(true))
-			}
-			completion(.success(false))
-
-		}
-		task.resume()
+		let encoder = JSONEncoder()
+		request.httpBody = try encoder.encode(["uuid": authID])
+		let (data, res) = try await URLSession.shared.data(for: request)
+		let httpResponse = res as? HTTPURLResponse
+		return httpResponse?.statusCode == 200
 	}
 }

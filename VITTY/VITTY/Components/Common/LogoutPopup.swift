@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct LogoutPopup: View {
-	@Environment(AuthViewModel.self) private var authState
+	@Environment(AuthViewModel.self) private var authViewModel
 	@Binding var showLogout: Bool
 	var cornerRadius = 3.0
 	var fontSizeButton = 14.0
@@ -41,7 +41,7 @@ struct LogoutPopup: View {
 					cornerRad: cornerRadius
 				) {
 					print("signing out")
-					authState.signOut()
+					authViewModel.signOut()
 				}
 			}
 		}

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AddFriendCard: View {
 
-	@Environment(AuthViewModel.self) private var authState
+	@Environment(AuthViewModel.self) private var authViewModel
 	@Environment(SuggestedFriendsViewModel.self) private var suggestedFriendsViewModel
 
 	let friend: Friend
@@ -34,7 +34,7 @@ struct AddFriendCard: View {
 
 					request.httpMethod = "POST"
 					request.addValue(
-						"Bearer \(authState.token)",
+						"Bearer \(authViewModel)",
 						forHTTPHeaderField: "Authorization"
 					)
 
@@ -63,7 +63,7 @@ struct AddFriendCard: View {
 
 					suggestedFriendsViewModel.fetchData(
 						from: "\(APIConstants.base_url)/api/v2/users/suggested/",
-						token: authState.token,
+						token: authViewModel.appUser?.token ?? "",
 						loading: false
 					)
 				}

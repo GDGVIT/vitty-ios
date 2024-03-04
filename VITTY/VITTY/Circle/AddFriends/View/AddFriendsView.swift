@@ -9,15 +9,16 @@ import SwiftUI
 
 struct AddFriendsView: View {
 
-	@Environment(AuthViewModel.self) private var authState
+	@Environment(AuthViewModel.self) private var authViewModel
 	@Environment(SuggestedFriendsViewModel.self) private var suggestedFriendsViewModel
 	@Environment(FriendRequestViewModel.self) private var friendRequestViewModel
 
+	@State private var isSearchViewPresented = false
+
 	var body: some View {
-		Group {
+		NavigationStack {
 			ZStack {
 				VStack(alignment: .center) {
-					AddFriendsHeader()
 					if !suggestedFriendsViewModel.suggestedFriends.isEmpty
 						|| !friendRequestViewModel.requests.isEmpty
 					{
@@ -57,9 +58,19 @@ struct AddFriendsView: View {
 						Spacer()
 					}
 				}
-				.padding()
 			}
-			.padding(.top)
+			.toolbar {
+				NavigationLink(destination: SearchView(), isActive: $isSearchViewPresented) {
+					EmptyView()
+				}
+				Button(action: {
+					isSearchViewPresented = true
+				}) {
+					Image(systemName: "magnifyingglass")
+						.foregroundColor(.white)
+				}
+			}
+			.navigationTitle("Add Friends")
 			.background(
 				Image(
 					suggestedFriendsViewModel.suggestedFriends.isEmpty
@@ -73,7 +84,7 @@ struct AddFriendsView: View {
 		.onAppear {
 			suggestedFriendsViewModel.fetchData(
 				from: "\(APIConstants.base_url)/api/v2/users/suggested/",
-				token: authState.token,
+				token: authViewModel.appUser?.token ?? "",
 				loading: true
 			)
 		}

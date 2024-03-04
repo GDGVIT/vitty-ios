@@ -65,16 +65,16 @@ struct StringConstants {
 	static let setupFinalText = "BRAVO! That's it. You did it!"
 	static let followInstructionsText = "Fetching information. Follow the instructions given below"
 
-	// MARK: CLASS DATA
-	static let sampleClassDate = Classes(
-		courseType: "Theory",
-		courseCode: "MAT3004",
-		courseName: "Applied Linear Algebra",
-		location: "SJT112",
-		slot: "A1",
-		startTime: Date(),
-		endTime: Date(timeIntervalSinceNow: 3600)
-	)
+//	// MARK: CLASS DATA
+//	static let sampleClassDate = Classes(
+//		courseType: "Theory",
+//		courseCode: "MAT3004",
+//		courseName: "Applied Linear Algebra",
+//		location: "SJT112",
+//		slot: "A1",
+//		startTime: Date(),
+//		endTime: Date(timeIntervalSinceNow: 3600)
+//	)
 
 	// MARK: RANDOM STRINGS
 	static let noClassQuotesOnline = [
@@ -105,62 +105,4 @@ struct StringConstants {
 		"friday",
 		"saturday",
 	]
-}
-
-extension StringConstants {
-	// MARK: DUMMY DATA
-	static let dummyClassArray = [
-		Classes(
-			courseType: "Theory",
-			courseCode: "CSE1004",
-			courseName: "Network and Communication",
-			location: "SJT420",
-			slot: "C2+TC2",
-			startTime: Date(timeIntervalSince1970: 0),
-			endTime: Date(timeIntervalSince1970: 2700)
-		),
-		Classes(
-			courseType: "Lab",
-			courseCode: "CSE2010",
-			courseName: "Advanced C Programming",
-			location: "MGB420",
-			slot: "L11+L12",
-			startTime: Date(timeIntervalSince1970: 3600),
-			endTime: Date(timeIntervalSince1970: 6300)
-		),
-		Classes(
-			courseType: "Theory",
-			courseCode: "CSE1004",
-			courseName: "Network and Communication",
-			location: "SJT420",
-			slot: "C2+TC2",
-			startTime: Date(timeIntervalSince1970: 0),
-			endTime: Date(timeIntervalSince1970: 2700)
-		),
-		Classes(
-			courseType: "Lab",
-			courseCode: "CSE2010",
-			courseName: "Advanced C Programming",
-			location: "MGB420",
-			slot: "L11+L12",
-			startTime: Date(timeIntervalSince1970: 3600),
-			endTime: Date(timeIntervalSince1970: 6300)
-		),
-	]
-
-	// MARK: NAVIGATION
-	static let VITMap = "Vellore+Institute+of+Technology,+Vellore+India"
-	static let blocksMap = [
-		"CDMM": "Centre+For+Disaster+Mitigation+And+Management",
-		"SJT": "SJT+Building+%2F+Silver+Jubilee+Towers",
-		"MB": "MB+-+Main+Building",
-		"MGB": "Mahatma+Gandhi+Block",
-		"TT": "Technology+Tower+-+TT",
-		"SMV": "SMV",
-		"PLB": "12.971272,79.166357",
-		"CBMR": "CBMR+block",
-		"GDN": "GDN",
-	]
-
-	static let browserURL = "https://www.google.com/maps/dir/?api=1&destination="
 }

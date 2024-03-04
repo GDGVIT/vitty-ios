@@ -9,7 +9,7 @@ import SwiftUI
 
 struct FriendRequestView: View {
 
-	@Environment(AuthViewModel.self) private var authState
+	@Environment(AuthViewModel.self) private var authViewModel
 	@Environment(FriendRequestViewModel.self) private var friendRequestViewModel
 
 	var body: some View {
@@ -34,7 +34,7 @@ struct FriendRequestView: View {
 				.refreshable {
 					friendRequestViewModel.fetchFriendRequests(
 						from: URL(string: "\(APIConstants.base_url)/api/v2/requests/")!,
-						authToken: authState.token,
+						authToken: authViewModel.appUser?.token ?? "",
 						loading: false
 					)
 

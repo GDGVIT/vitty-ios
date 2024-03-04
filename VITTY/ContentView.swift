@@ -12,44 +12,41 @@ struct ContentView: View {
 	@State private var communityPageViewModel = CommunityPageViewModel()
 	@State private var suggestedFriendsViewModel = SuggestedFriendsViewModel()
 	@State private var friendRequestViewModel = FriendRequestViewModel()
-	@State var authState: AuthViewModel = AuthViewModel()
-	@StateObject var timeTableVM: TimetableViewModel = TimetableViewModel()
-//	@StateObject var localNotificationsManager = NotificationsManager()
-//	@StateObject var notifVM = NotificationsViewModel()
+	@State private var authViewModel = AuthViewModel()
+	//	@StateObject var localNotificationsManager = NotificationsManager()
+	//	@StateObject var notifVM = NotificationsViewModel()
 	var body: some View {
 		NavigationView {
-			if authState.loggedInUser != nil {
-				InstructionsView()
-					.navigationTitle("")
-					.navigationBarHidden(true)
-					.animation(.default, value: UUID())
-				//                    .animation(.default)
+			if authViewModel.loggedInFirebaseUser != nil {
+				if authViewModel.appUser == nil {
+					InstructionView()
+				}
+				else {
+					HomeView()
+				}
 			}
 			else {
-				SplashScreen()
-					.navigationTitle("")
-					.navigationBarHidden(true)
+				LoginView()
 			}
 		}
 		//        .animation(.default)
-//		.onAppear(perform: NotificationsManager.shared.getNotificationSettings)
-//		.onChange(of: NotificationsManager.shared.authStatus) { authorizationStat in
-//			switch authorizationStat {
-//				case .notDetermined:
-//					NotificationsManager.shared.requestPermission()
-//					break
-//				default:
-//					break
-//			}
-//		}
-//		.onReceive(
-//			NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)
-//		) { _ in
-//			NotificationsManager.shared.getNotificationSettings()
-//		}
-		.environment(authState)
-		.environmentObject(timeTableVM)
-//		.environmentObject(notifVM)
+		//		.onAppear(perform: NotificationsManager.shared.getNotificationSettings)
+		//		.onChange(of: NotificationsManager.shared.authStatus) { authorizationStat in
+		//			switch authorizationStat {
+		//				case .notDetermined:
+		//					NotificationsManager.shared.requestPermission()
+		//					break
+		//				default:
+		//					break
+		//			}
+		//		}
+		//		.onReceive(
+		//			NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)
+		//		) { _ in
+		//			NotificationsManager.shared.getNotificationSettings()
+		//		}
+		.environment(authViewModel)
+		//		.environmentObject(notifVM)
 		.environment(communityPageViewModel)
 		.environment(suggestedFriendsViewModel)
 		.environment(friendRequestViewModel)
@@ -59,10 +56,3 @@ struct ContentView: View {
 #Preview {
 	ContentView()
 }
-
-//
-//struct ContentView_Previews: PreviewProvider {
-//	static var previews: some View {
-//		ContentView(authState: AuthService())
-//	}
-//}

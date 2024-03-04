@@ -9,18 +9,16 @@ import SwiftUI
 
 struct CommunityPage: View {
 
-	@Environment(AuthViewModel.self) private var authState
-	@EnvironmentObject private var timeTableViewModel: TimetableViewModel
+	@Environment(AuthViewModel.self) private var authViewModel
+//	@EnvironmentObject private var timeTableViewModel: TimetableViewModel
 	@Environment(CommunityPageViewModel.self) private var communityPageViewModel
-	@State private var friend: Friend? = nil
 
-	@State private var isFriendViewPresented = false
+	@State private var isShowingRequestView = false
 
 	var body: some View {
-		Group {
+		NavigationStack {
 			ZStack {
 				VStack(alignment: .center) {
-					CommunityPageHeader()
 					if communityPageViewModel.error {
 						Spacer()
 						Text("No Friends?")
@@ -41,29 +39,53 @@ struct CommunityPage: View {
 						}
 						else {
 							List(communityPageViewModel.friends, id: \.username) { friend in
-								FriendCard(friend: friend)
-									.padding(.bottom)
-									.listRowBackground(
-										RoundedRectangle(cornerRadius: 15)
-											.fill(Color.theme.secondaryBlue).padding(.bottom)
-									)
-									.listRowSeparator(.hidden)
-									.onTapGesture {
-										self.friend = friend
-										timeTableViewModel.getTimeTable(
-											token: authState.token,
-											username: friend.username
-										)
-										isFriendViewPresented.toggle()
+								NavigationLink {
+									TimeTableView(friend: friend)
+								} label: {
+									HStack {
+										UserImage(url: friend.picture, height: 48, width: 48)
+										VStack(alignment: .leading) {
+											Text(friend.name)
+												.font(Font.custom("Poppins-SemiBold", size: 15))
+												.foregroundColor(Color.white)
+											if friend.currentStatus.status == "free" {
+												Text("Not in a class right now")
+													.font(Font.custom("Poppins-Regular", size: 14))
+													.foregroundColor(Color.vprimary)
+											}
+											else {
+												Text(friend.currentStatus.class ?? "")
+													.font(Font.custom("Poppins-Regular", size: 14))
+													.foregroundColor(Color.vprimary)
+											}
+										}
+										Spacer()
+										VStack {
+											Text("NOW")
+												.font(Font.custom("Poppins-Regular", size: 14))
+												.foregroundColor(Color.vprimary)
+											if friend.currentStatus.status == "free" {
+												Text(friend.currentStatus.status.capitalized)
+													.font(Font.custom("Poppins-SemiBold", size: 16))
+													.foregroundColor(Color.white)
+											}
+											else {
+												Text(friend.currentStatus.venue ?? "-")
+													.font(Font.custom("Poppins-SemiBold", size: 16))
+													.foregroundColor(Color.white)
+											}
+										}
+										.padding(.trailing, 4)
 									}
+								}
+								.listRowBackground(Color("DarkBG"))
 							}
-							.listStyle(.plain)
 							.scrollContentBackground(.hidden)
 							.refreshable {
 								communityPageViewModel.fetchData(
 									from:
-										"\(APIConstants.base_url)/api/v2/friends/\(authState.username)/",
-									token: authState.token,
+										"\(APIConstants.base_url)/api/v2/friends/\(authViewModel.appUser?.username ?? "")/",
+									token: authViewModel.appUser?.token ?? "",
 									loading: false
 								)
 							}
@@ -71,32 +93,33 @@ struct CommunityPage: View {
 						}
 					}
 				}
-				.padding()
 			}
-			.padding(.top)
 			.background(
 				Image(communityPageViewModel.error ? "HomeNoClassesBG" : "HomeBG")
 					.resizable()
 					.scaledToFill()
 					.edgesIgnoringSafeArea(.all)
 			)
-		}
-		.fullScreenCover(
-			isPresented: $isFriendViewPresented,
-			onDismiss: {
-				communityPageViewModel.fetchData(
-					from: "\(APIConstants.base_url)/api/v2/friends/\(authState.username)/",
-					token: authState.token,
-					loading: true
-				)
+			.toolbar {
+				NavigationLink(destination: AddFriendsView(), isActive: $isShowingRequestView) {
+					EmptyView()
+				}
+				Button(action: {
+					isShowingRequestView.toggle()
+
+				}) {
+					Image(systemName: "person.fill.badge.plus")
+						.foregroundColor(.white)
+				}
+
 			}
-		) {
-			FriendTimeTableView(friend: friend ?? Friend.sampleFriend)
+			.navigationTitle("Connect")
 		}
 		.onAppear {
 			communityPageViewModel.fetchData(
-				from: "\(APIConstants.base_url)/api/v2/friends/\(authState.username)/",
-				token: authState.token,
+				from:
+					"\(APIConstants.base_url)/api/v2/friends/\(authViewModel.appUser?.username ?? "")/",
+				token: authViewModel.appUser?.token ?? "",
 				loading: true
 			)
 		}

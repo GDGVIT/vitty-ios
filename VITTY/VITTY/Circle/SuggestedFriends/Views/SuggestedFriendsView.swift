@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SuggestedFriendsView: View {
 
-	@Environment(AuthViewModel.self) private var authState
+	@Environment(AuthViewModel.self) private var authViewModel
 	@Environment(SuggestedFriendsViewModel.self) private var suggestedFriendsViewModel
 
 	var body: some View {
@@ -34,7 +34,7 @@ struct SuggestedFriendsView: View {
 				.refreshable {
 					suggestedFriendsViewModel.fetchData(
 						from: "\(APIConstants.base_url)/api/v2/users/suggested/",
-						token: authState.token,
+						token: authViewModel.appUser?.token ?? "",
 						loading: false
 					)
 				}

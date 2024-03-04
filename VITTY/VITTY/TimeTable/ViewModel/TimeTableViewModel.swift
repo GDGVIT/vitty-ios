@@ -8,14 +8,19 @@
 import Foundation
 import SwiftData
 
+public enum Stage {
+	case loading
+	case error
+	case data
+}
+
 extension TimeTableView {
 
 	@Observable
 	class TimeTableViewModel {
 
 		var timeTable: TimeTable?
-		var isLoading: Bool = false
-		var error: String?
+		var stage: Stage = .loading
 		var lectures = [Lecture]()
 		var dayNo = Date.convertToMondayWeek()
 
@@ -40,16 +45,16 @@ extension TimeTableView {
 			}
 		}
 
-		func fetchTimeTable(username: String, authToken: String) {
-			TimeTableAPIService.shared.getTimeTable(with: username, authToken: authToken) {
-				[weak self] result in
-				switch result {
-					case let .success(response):
-						self?.timeTable = response
-						self?.changeDay()
-					case let .failure(response):
-						print("Error: \(response)")
-				}
+		func fetchTimeTable(username: String, authToken: String) async {
+			do {
+				stage = .loading
+				let data = try await TimeTableAPIService.shared.getTimeTable(with: username, authToken: authToken)
+				timeTable = data
+				changeDay()
+				stage = .data
+			} catch {
+				print(error)
+				stage = .error
 			}
 		}
 	}

@@ -12,8 +12,6 @@ struct TimeTableView: View {
 	@Environment(AuthViewModel.self) private var authViewModel
 	private let daysOfWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 
-	@State private var showingSheet = false
-
 	@State private var viewModel = TimeTableViewModel()
 	@State private var selectedLecture: Lecture? = nil
 
@@ -22,62 +20,84 @@ struct TimeTableView: View {
 	var body: some View {
 		NavigationStack {
 			ZStack {
-				Image("HomeBG")
+				Image(viewModel.lectures == [] ? "HomeNoClassesBG" : "HomeBG")
 					.resizable()
 					.ignoresSafeArea()
-				VStack {
-					ScrollView(.horizontal) {
-						HStack {
-							ForEach(daysOfWeek, id: \.self) { day in
-								Text(day)
-									.frame(width: 60, height: 54)
-									.background(
-										daysOfWeek[viewModel.dayNo] == day
-											? Color(Color.theme.secondary) : Color.clear
-									)
-									.onTapGesture {
-										withAnimation {
-											viewModel.dayNo = daysOfWeek.firstIndex(of: day)!
-											viewModel.changeDay()
-										}
-									}
-									.clipShape(RoundedRectangle(cornerRadius: 10))
-							}
-						}
+				switch viewModel.stage {
+				case .loading:
+					VStack {
+						Spacer()
+						ProgressView()
+						Spacer()
 					}
-					.scrollIndicators(.hidden)
-					.background(Color("DarkBG"))
-					.clipShape(RoundedRectangle(cornerRadius: 10))
-					.padding(.horizontal)
-					List(viewModel.lectures.sorted()) { lecture in
-						VStack(alignment: .leading) {
-							Text(lecture.name)
-								.font(.headline)
+				case .error:
+					VStack{
+						Spacer()
+						Text("Error")
+						Spacer()
+					}
+				case .data:
+					VStack {
+						ScrollView(.horizontal) {
 							HStack {
-								Text(
-									"\(formatTime(time: lecture.startTime)) - \(formatTime(time: lecture.endTime))"
-								)
-								Spacer()
-								Text("\(lecture.venue)")
+								ForEach(daysOfWeek, id: \.self) { day in
+									Text(day)
+										.frame(width: 60, height: 54)
+										.background(
+											daysOfWeek[viewModel.dayNo] == day
+												? Color(Color.theme.secondary) : Color.clear
+										)
+										.onTapGesture {
+											withAnimation {
+												viewModel.dayNo = daysOfWeek.firstIndex(of: day)!
+												viewModel.changeDay()
+											}
+										}
+										.clipShape(RoundedRectangle(cornerRadius: 10))
+								}
 							}
-							.foregroundColor(Color.vprimary)
-							.font(.caption)
 						}
-						.onTapGesture {
-							selectedLecture = lecture
+						.scrollIndicators(.hidden)
+						.background(Color("DarkBG"))
+						.clipShape(RoundedRectangle(cornerRadius: 10))
+						.padding(.horizontal)
+						if viewModel.lectures == [] {
+							Spacer()
+							Text("No classes today!")
+								.font(Font.custom("Poppins-Bold", size: 24))
+							Text(StringConstants.noClassQuotesOffline.randomElement()!)
+						} else {
+							List(viewModel.lectures.sorted()) { lecture in
+								VStack(alignment: .leading) {
+									Text(lecture.name)
+										.font(.headline)
+									HStack {
+										Text(
+											"\(formatTime(time: lecture.startTime)) - \(formatTime(time: lecture.endTime))"
+										)
+										Spacer()
+										Text("\(lecture.venue)")
+									}
+									.foregroundColor(Color.vprimary)
+									.font(.caption)
+								}
+								.onTapGesture {
+									selectedLecture = lecture
+								}
+								.listRowBackground(Color("DarkBG"))
+							}
+							.sheet(item: $selectedLecture) { lecture in
+								LectureDetailView(lecture: lecture)
+							}
+							.scrollContentBackground(.hidden)
 						}
-						.listRowBackground(Color("DarkBG"))
+						Spacer()
 					}
-					.sheet(item: $selectedLecture) { lecture in
-						LectureDetailView(lecture: lecture)
-					}
-					.scrollContentBackground(.hidden)
-					Spacer()
 				}
+				
 			}
 			.navigationTitle(friend?.name ?? "Schedule")
 			.toolbar {
-					
 					Menu {
 						if friend == nil {
 							NavigationLink {
@@ -96,13 +116,11 @@ struct TimeTableView: View {
 									string: "\(APIConstants.base_url)/api/v2/friends/\(friend?.username ?? "")"
 								)!
 								var request = URLRequest(url: url)
-
 								request.httpMethod = "DELETE"
 								request.addValue(
 									"Token \(authViewModel.appUser?.token ?? "")",
 									forHTTPHeaderField: "Authorization"
 								)
-
 								let task = URLSession.shared.dataTask(with: request) {
 									(data, response, error) in
 									if let error = error {
@@ -122,15 +140,15 @@ struct TimeTableView: View {
 							width: 40
 						)
 					}
-
-				
 			}
 		}
-		.task {
-			viewModel.fetchTimeTable(
-				username: friend?.username ?? (authViewModel.appUser?.username ?? ""),
-				authToken: authViewModel.appUser?.token ?? ""
-			)
+		.onAppear {
+			Task {
+				await viewModel.fetchTimeTable (
+					username: friend?.username ?? (authViewModel.appUser?.username ?? ""),
+					authToken: authViewModel.appUser?.token ?? ""
+				)
+			}
 		}
 	}
 

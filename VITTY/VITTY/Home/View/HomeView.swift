@@ -16,7 +16,7 @@ struct HomeView: View {
 				}
 			CommunityPage()
 				.tabItem {
-					Label("Circle", systemImage: "person.2")
+					Label("Connect", systemImage: "person.2")
 				}
 		}
 	}

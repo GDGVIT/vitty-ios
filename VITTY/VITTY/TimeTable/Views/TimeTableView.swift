@@ -33,7 +33,9 @@ struct TimeTableView: View {
 				case .error:
 					VStack{
 						Spacer()
-						Text("Error")
+						Text("It's an error!")
+							.font(Font.custom("Poppins-Bold", size: 24))
+						Text("Sorry if you are late for your class!")
 						Spacer()
 					}
 				case .data:

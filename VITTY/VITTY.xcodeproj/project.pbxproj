@@ -14,18 +14,14 @@
 		31128CFC2772F57E0084C9EA /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 31128CF62772F57E0084C9EA /* Poppins-Regular.ttf */; };
 		31128CFD2772F57E0084C9EA /* Poppins-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 31128CF72772F57E0084C9EA /* Poppins-SemiBold.ttf */; };
 		31128CFE2772F57E0084C9EA /* Poppins-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 31128CF82772F57E0084C9EA /* Poppins-MediumItalic.ttf */; };
-		31128D042772F8E90084C9EA /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31128D032772F8E90084C9EA /* CustomButton.swift */; };
 		31128D072772FA120084C9EA /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31128D062772FA120084C9EA /* Colors.swift */; };
 		31128D0C277300470084C9EA /* StringConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31128D0B277300470084C9EA /* StringConstants.swift */; };
 		31128D0E277302AC0084C9EA /* Poppins-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 31128D0D277302AC0084C9EA /* Poppins-Bold.ttf */; };
-		31128D1627730C460084C9EA /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31128D1527730C460084C9EA /* CustomTextField.swift */; };
 		314A408F27383BEC0058082F /* VITTYApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314A408E27383BEC0058082F /* VITTYApp.swift */; };
 		314A409127383BEC0058082F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314A409027383BEC0058082F /* ContentView.swift */; };
 		314A409327383BEE0058082F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 314A409227383BEE0058082F /* Assets.xcassets */; };
 		314A409627383BEE0058082F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 314A409527383BEE0058082F /* Preview Assets.xcassets */; };
 		317715DE279F1431009A532E /* IndexedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317715DD279F1431009A532E /* IndexedCollection.swift */; };
-		317EE1952775C555008AEB31 /* LogoutPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317EE1942775C555008AEB31 /* LogoutPopup.swift */; };
-		317EE1972775C8BE008AEB31 /* ExamHolidayMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317EE1962775C8BE008AEB31 /* ExamHolidayMode.swift */; };
 		317EE1992775D3C6008AEB31 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317EE1982775D3C6008AEB31 /* SettingsView.swift */; };
 		31900F0A27759DB60014A58D /* Gradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31900F0927759DB60014A58D /* Gradient.swift */; };
 		31A3BF4027D09AF300B6BB97 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A3BF3F27D09AF300B6BB97 /* Date+Extension.swift */; };
@@ -70,6 +66,14 @@
 		5247A3992B963877006C0DF9 /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 5247A3982B963877006C0DF9 /* FirebaseStorageCombine-Community */; };
 		5247A39C2B9638DA006C0DF9 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 5247A39B2B9638DA006C0DF9 /* GoogleSignIn */; };
 		5247A39E2B9638DA006C0DF9 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 5247A39D2B9638DA006C0DF9 /* GoogleSignInSwift */; };
+		5247A3A52B9645A2006C0DF9 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5247A3A42B9645A1006C0DF9 /* WidgetKit.framework */; };
+		5247A3A62B9645A2006C0DF9 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3105871C27A3ECBB00C2FC41 /* SwiftUI.framework */; };
+		5247A3A92B9645A2006C0DF9 /* vittywidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5247A3A82B9645A2006C0DF9 /* vittywidgetBundle.swift */; };
+		5247A3AB2B9645A2006C0DF9 /* vittywidgetLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5247A3AA2B9645A2006C0DF9 /* vittywidgetLiveActivity.swift */; };
+		5247A3AD2B9645A2006C0DF9 /* vittywidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5247A3AC2B9645A2006C0DF9 /* vittywidget.swift */; };
+		5247A3AF2B9645A2006C0DF9 /* AppIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5247A3AE2B9645A2006C0DF9 /* AppIntent.swift */; };
+		5247A3B12B9645A3006C0DF9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5247A3B02B9645A3006C0DF9 /* Assets.xcassets */; };
+		5247A3B52B9645A3006C0DF9 /* vittywidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 5247A3A32B9645A1006C0DF9 /* vittywidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		524B842F2B46EBBD006D18BD /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 524B842E2B46EBBD006D18BD /* HomeView.swift */; };
 		524B84332B46EF3A006D18BD /* CommunityPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 524B84322B46EF3A006D18BD /* CommunityPage.swift */; };
 		524B84362B46F10F006D18BD /* CommunityPageHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 524B84352B46F10F006D18BD /* CommunityPageHeader.swift */; };
@@ -82,7 +86,6 @@
 		525F759D2B809F8400E3B418 /* LectureDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525F759C2B809F8400E3B418 /* LectureDetailView.swift */; };
 		527E3E082B7662920086F23D /* TimeTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527E3E072B7662920086F23D /* TimeTableView.swift */; };
 		528CF16E2B769A84007298A0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 528CF16D2B769A84007298A0 /* GoogleService-Info.plist */; };
-		528CF1702B769A89007298A0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 528CF16F2B769A89007298A0 /* GoogleService-Info.plist */; };
 		528CF1732B769B18007298A0 /* TimeTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 528CF1722B769B18007298A0 /* TimeTable.swift */; };
 		528CF1762B769E22007298A0 /* TimeTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 528CF1752B769E22007298A0 /* TimeTableViewModel.swift */; };
 		528CF1782B769E64007298A0 /* TimeTableAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 528CF1772B769E64007298A0 /* TimeTableAPIService.swift */; };
@@ -92,9 +95,7 @@
 		52D5AB8F2B6FE82E00B2E66D /* AuthAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D5AB8E2B6FE82E00B2E66D /* AuthAPIService.swift */; };
 		52D5AB912B6FE90100B2E66D /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D5AB902B6FE90100B2E66D /* Constants.swift */; };
 		52D5AB972B6FFC8F00B2E66D /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D5AB962B6FFC8F00B2E66D /* LoginView.swift */; };
-		52D5AB992B700B6600B2E66D /* TrackableScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D5AB982B700B6600B2E66D /* TrackableScrollView.swift */; };
 		52DBBE882B47B6B30014C57A /* FriendCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52DBBE872B47B6B30014C57A /* FriendCard.swift */; };
-		5D141B052A2658CD005977F8 /* textField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D141B042A2658CD005977F8 /* textField.swift */; };
 		5D3D92592A1818150013803E /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3D92582A1818150013803E /* Color.swift */; };
 		5D72EDD82AB98D6D00704BF5 /* URLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D72EDD72AB98D6D00704BF5 /* URLSession.swift */; };
 		5D72EDDD2AB990BB00704BF5 /* AuthRequestBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D72EDDC2AB990BB00704BF5 /* AuthRequestBody.swift */; };
@@ -102,15 +103,26 @@
 		5DC0AF552AD2B586006B081D /* UserImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC0AF542AD2B586006B081D /* UserImage.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		5247A3B32B9645A3006C0DF9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 314A408327383BEC0058082F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5247A3A22B9645A1006C0DF9;
+			remoteInfo = vittywidgetExtension;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXCopyFilesBuildPhase section */
-		3105872727A3ECBD00C2FC41 /* Embed App Extensions */ = {
+		3105872727A3ECBD00C2FC41 /* Embed Foundation Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				5247A3B52B9645A3006C0DF9 /* vittywidgetExtension.appex in Embed Foundation Extensions */,
 			);
-			name = "Embed App Extensions";
+			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -125,11 +137,9 @@
 		31128CF62772F57E0084C9EA /* Poppins-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Regular.ttf"; sourceTree = "<group>"; };
 		31128CF72772F57E0084C9EA /* Poppins-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-SemiBold.ttf"; sourceTree = "<group>"; };
 		31128CF82772F57E0084C9EA /* Poppins-MediumItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-MediumItalic.ttf"; sourceTree = "<group>"; };
-		31128D032772F8E90084C9EA /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
 		31128D062772FA120084C9EA /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		31128D0B277300470084C9EA /* StringConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringConstants.swift; sourceTree = "<group>"; };
 		31128D0D277302AC0084C9EA /* Poppins-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Bold.ttf"; sourceTree = "<group>"; };
-		31128D1527730C460084C9EA /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		314A408B27383BEC0058082F /* VITTY.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VITTY.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		314A408E27383BEC0058082F /* VITTYApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VITTYApp.swift; sourceTree = "<group>"; };
 		314A409027383BEC0058082F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -137,8 +147,6 @@
 		314A409527383BEE0058082F /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		3164C46927CBCFBE00D6B53F /* vitty-widgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "vitty-widgetExtension.entitlements"; sourceTree = "<group>"; };
 		317715DD279F1431009A532E /* IndexedCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndexedCollection.swift; sourceTree = "<group>"; };
-		317EE1942775C555008AEB31 /* LogoutPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutPopup.swift; sourceTree = "<group>"; };
-		317EE1962775C8BE008AEB31 /* ExamHolidayMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExamHolidayMode.swift; sourceTree = "<group>"; };
 		317EE1982775D3C6008AEB31 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		31900F0927759DB60014A58D /* Gradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gradient.swift; sourceTree = "<group>"; };
 		31A3BF3F27D09AF300B6BB97 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
@@ -153,6 +161,14 @@
 		5238C7ED2B4A9E2C00413946 /* FriendRequestRaw.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequestRaw.swift; sourceTree = "<group>"; };
 		5238C7F02B4AAE8700413946 /* FriendRequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequestView.swift; sourceTree = "<group>"; };
 		5238C7F32B4AB07400413946 /* FriendReqCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendReqCard.swift; sourceTree = "<group>"; };
+		5247A3A32B9645A1006C0DF9 /* vittywidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = vittywidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		5247A3A42B9645A1006C0DF9 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		5247A3A82B9645A2006C0DF9 /* vittywidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = vittywidgetBundle.swift; sourceTree = "<group>"; };
+		5247A3AA2B9645A2006C0DF9 /* vittywidgetLiveActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = vittywidgetLiveActivity.swift; sourceTree = "<group>"; };
+		5247A3AC2B9645A2006C0DF9 /* vittywidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = vittywidget.swift; sourceTree = "<group>"; };
+		5247A3AE2B9645A2006C0DF9 /* AppIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIntent.swift; sourceTree = "<group>"; };
+		5247A3B02B9645A3006C0DF9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		5247A3B22B9645A3006C0DF9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		524B842E2B46EBBD006D18BD /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		524B84322B46EF3A006D18BD /* CommunityPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityPage.swift; sourceTree = "<group>"; };
 		524B84352B46F10F006D18BD /* CommunityPageHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityPageHeader.swift; sourceTree = "<group>"; };
@@ -173,9 +189,7 @@
 		52D5AB8E2B6FE82E00B2E66D /* AuthAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthAPIService.swift; sourceTree = "<group>"; };
 		52D5AB902B6FE90100B2E66D /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		52D5AB962B6FFC8F00B2E66D /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
-		52D5AB982B700B6600B2E66D /* TrackableScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackableScrollView.swift; sourceTree = "<group>"; };
 		52DBBE872B47B6B30014C57A /* FriendCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendCard.swift; sourceTree = "<group>"; };
-		5D141B042A2658CD005977F8 /* textField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = textField.swift; sourceTree = "<group>"; };
 		5D3D92582A1818150013803E /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		5D72EDD72AB98D6D00704BF5 /* URLSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSession.swift; sourceTree = "<group>"; };
 		5D72EDDC2AB990BB00704BF5 /* AuthRequestBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRequestBody.swift; sourceTree = "<group>"; };
@@ -226,6 +240,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		5247A3A02B9645A1006C0DF9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5247A3A62B9645A2006C0DF9 /* SwiftUI.framework in Frameworks */,
+				5247A3A52B9645A2006C0DF9 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -233,6 +256,7 @@
 			isa = PBXGroup;
 			children = (
 				3105871C27A3ECBB00C2FC41 /* SwiftUI.framework */,
+				5247A3A42B9645A1006C0DF9 /* WidgetKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -257,17 +281,6 @@
 				31128CF82772F57E0084C9EA /* Poppins-MediumItalic.ttf */,
 			);
 			path = Poppins;
-			sourceTree = "<group>";
-		};
-		31128D022772F8DA0084C9EA /* Common */ = {
-			isa = PBXGroup;
-			children = (
-				31128D032772F8E90084C9EA /* CustomButton.swift */,
-				31128D1527730C460084C9EA /* CustomTextField.swift */,
-				317EE1942775C555008AEB31 /* LogoutPopup.swift */,
-				317EE1962775C8BE008AEB31 /* ExamHolidayMode.swift */,
-			);
-			path = Common;
 			sourceTree = "<group>";
 		};
 		31128D052772FA030084C9EA /* Extensions */ = {
@@ -304,6 +317,7 @@
 				AFEFCB6B27C90042007B2029 /* VITTYRelease.entitlements */,
 				3164C46927CBCFBE00D6B53F /* vitty-widgetExtension.entitlements */,
 				314A408D27383BEC0058082F /* VITTY */,
+				5247A3A72B9645A2006C0DF9 /* vittywidget */,
 				3105871927A3ECBB00C2FC41 /* Frameworks */,
 				314A408C27383BEC0058082F /* Products */,
 			);
@@ -313,6 +327,7 @@
 			isa = PBXGroup;
 			children = (
 				314A408B27383BEC0058082F /* VITTY.app */,
+				5247A3A32B9645A1006C0DF9 /* vittywidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -325,7 +340,6 @@
 				52D5AB8A2B6FE4C600B2E66D /* Shared */,
 				5D3D92502A1816CC0013803E /* Username */,
 				5D1FF2632A32643400B0620A /* Settings */,
-				5D141B032A2658BE005977F8 /* Components */,
 				524B842C2B46EBA6006D18BD /* Home */,
 				524B84302B46EF07006D18BD /* Circle */,
 				52DC41DF2B6F8B1500CCF8DB /* Firebase */,
@@ -464,6 +478,19 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
+		5247A3A72B9645A2006C0DF9 /* vittywidget */ = {
+			isa = PBXGroup;
+			children = (
+				5247A3A82B9645A2006C0DF9 /* vittywidgetBundle.swift */,
+				5247A3AA2B9645A2006C0DF9 /* vittywidgetLiveActivity.swift */,
+				5247A3AC2B9645A2006C0DF9 /* vittywidget.swift */,
+				5247A3AE2B9645A2006C0DF9 /* AppIntent.swift */,
+				5247A3B02B9645A3006C0DF9 /* Assets.xcassets */,
+				5247A3B22B9645A3006C0DF9 /* Info.plist */,
+			);
+			path = vittywidget;
+			sourceTree = "<group>";
+		};
 		524B842C2B46EBA6006D18BD /* Home */ = {
 			isa = PBXGroup;
 			children = (
@@ -600,7 +627,6 @@
 		52CC87082B677FCC0030B7E9 /* Auth */ = {
 			isa = PBXGroup;
 			children = (
-				52D5AB932B6FF71300B2E66D /* Components */,
 				52D5AB922B6FF70000B2E66D /* Views */,
 				52D5AB8D2B6FE82300B2E66D /* Service */,
 				52D5AB872B6FE39700B2E66D /* Models */,
@@ -629,6 +655,7 @@
 		52D5AB8A2B6FE4C600B2E66D /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				5DC0AF542AD2B586006B081D /* UserImage.swift */,
 				52D5AB8B2B6FE4D500B2E66D /* UserDefaultKeys.swift */,
 				52D5AB902B6FE90100B2E66D /* Constants.swift */,
 			);
@@ -649,14 +676,6 @@
 				52D5AB962B6FFC8F00B2E66D /* LoginView.swift */,
 			);
 			path = Views;
-			sourceTree = "<group>";
-		};
-		52D5AB932B6FF71300B2E66D /* Components */ = {
-			isa = PBXGroup;
-			children = (
-				52D5AB982B700B6600B2E66D /* TrackableScrollView.swift */,
-			);
-			path = Components;
 			sourceTree = "<group>";
 		};
 		52DC41DF2B6F8B1500CCF8DB /* Firebase */ = {
@@ -682,16 +701,6 @@
 				528CF16D2B769A84007298A0 /* GoogleService-Info.plist */,
 			);
 			path = Prod;
-			sourceTree = "<group>";
-		};
-		5D141B032A2658BE005977F8 /* Components */ = {
-			isa = PBXGroup;
-			children = (
-				5DC0AF532AD2B577006B081D /* AsyncImage */,
-				31128D022772F8DA0084C9EA /* Common */,
-				5D141B042A2658CD005977F8 /* textField.swift */,
-			);
-			path = Components;
 			sourceTree = "<group>";
 		};
 		5D1FF2632A32643400B0620A /* Settings */ = {
@@ -726,14 +735,6 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		5DC0AF532AD2B577006B081D /* AsyncImage */ = {
-			isa = PBXGroup;
-			children = (
-				5DC0AF542AD2B586006B081D /* UserImage.swift */,
-			);
-			path = AsyncImage;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -745,12 +746,13 @@
 				314A408827383BEC0058082F /* Frameworks */,
 				310EAC3E27C62921003EBFAA /* Setup Firebase Environment GoogleService-Info.plist */,
 				314A408927383BEC0058082F /* Resources */,
-				3105872727A3ECBD00C2FC41 /* Embed App Extensions */,
+				3105872727A3ECBD00C2FC41 /* Embed Foundation Extensions */,
 				316BC45B27C8B6CA0001C12C /* Crashlytics Script */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				5247A3B42B9645A3006C0DF9 /* PBXTargetDependency */,
 			);
 			name = VITTY;
 			packageProductDependencies = (
@@ -792,6 +794,23 @@
 			productReference = 314A408B27383BEC0058082F /* VITTY.app */;
 			productType = "com.apple.product-type.application";
 		};
+		5247A3A22B9645A1006C0DF9 /* vittywidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5247A3B62B9645A3006C0DF9 /* Build configuration list for PBXNativeTarget "vittywidgetExtension" */;
+			buildPhases = (
+				5247A39F2B9645A1006C0DF9 /* Sources */,
+				5247A3A02B9645A1006C0DF9 /* Frameworks */,
+				5247A3A12B9645A1006C0DF9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = vittywidgetExtension;
+			productName = vittywidgetExtension;
+			productReference = 5247A3A32B9645A1006C0DF9 /* vittywidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -799,11 +818,14 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1300;
-				LastUpgradeCheck = 1300;
+				LastSwiftUpdateCheck = 1520;
+				LastUpgradeCheck = 1520;
 				TargetAttributes = {
 					314A408A27383BEC0058082F = {
 						CreatedOnToolsVersion = 13.0;
+					};
+					5247A3A22B9645A1006C0DF9 = {
+						CreatedOnToolsVersion = 15.2;
 					};
 				};
 			};
@@ -827,6 +849,7 @@
 			projectRoot = "";
 			targets = (
 				314A408A27383BEC0058082F /* VITTY */,
+				5247A3A22B9645A1006C0DF9 /* vittywidgetExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -844,9 +867,16 @@
 				31128CFA2772F57E0084C9EA /* Poppins-SemiBoldItalic.ttf in Resources */,
 				31128CFC2772F57E0084C9EA /* Poppins-Regular.ttf in Resources */,
 				528CF16E2B769A84007298A0 /* GoogleService-Info.plist in Resources */,
-				528CF1702B769A89007298A0 /* GoogleService-Info.plist in Resources */,
 				314A409627383BEE0058082F /* Preview Assets.xcassets in Resources */,
 				314A409327383BEE0058082F /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5247A3A12B9645A1006C0DF9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5247A3B12B9645A3006C0DF9 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -900,7 +930,6 @@
 			files = (
 				5238C7EB2B4A9D8C00413946 /* FriendRequestViewModel.swift in Sources */,
 				5D72EDDD2AB990BB00704BF5 /* AuthRequestBody.swift in Sources */,
-				52D5AB992B700B6600B2E66D /* TrackableScrollView.swift in Sources */,
 				520BA6452B48013200124850 /* SuggestedFriendsView.swift in Sources */,
 				524B842F2B46EBBD006D18BD /* HomeView.swift in Sources */,
 				527E3E082B7662920086F23D /* TimeTableView.swift in Sources */,
@@ -913,11 +942,9 @@
 				5DC0AF552AD2B586006B081D /* UserImage.swift in Sources */,
 				5238C7F42B4AB07400413946 /* FriendReqCard.swift in Sources */,
 				52D5AB892B6FE3B200B2E66D /* AppUser.swift in Sources */,
-				317EE1972775C8BE008AEB31 /* ExamHolidayMode.swift in Sources */,
 				31128D0C277300470084C9EA /* StringConstants.swift in Sources */,
 				522B8BB02B4732CC00EE686E /* Friend.swift in Sources */,
 				52D5AB8C2B6FE4D600B2E66D /* UserDefaultKeys.swift in Sources */,
-				31128D042772F8E90084C9EA /* CustomButton.swift in Sources */,
 				5D7F04F72AAB9E9900ECED15 /* APIConstants.swift in Sources */,
 				3109639F27824F6F0009A29C /* AppStorageConstants.swift in Sources */,
 				524B84332B46EF3A006D18BD /* CommunityPage.swift in Sources */,
@@ -928,17 +955,14 @@
 				314A409127383BEC0058082F /* ContentView.swift in Sources */,
 				520BA6482B4802EE00124850 /* AddFriendCard.swift in Sources */,
 				5238C7EE2B4A9E2C00413946 /* FriendRequestRaw.swift in Sources */,
-				31128D1627730C460084C9EA /* CustomTextField.swift in Sources */,
 				525AA7A92B4B0164003C6A12 /* SearchView.swift in Sources */,
 				52DBBE882B47B6B30014C57A /* FriendCard.swift in Sources */,
 				317715DE279F1431009A532E /* IndexedCollection.swift in Sources */,
 				525F759D2B809F8400E3B418 /* LectureDetailView.swift in Sources */,
 				520BA6432B47FFF900124850 /* SuggestedFriendsViewModel.swift in Sources */,
-				317EE1952775C555008AEB31 /* LogoutPopup.swift in Sources */,
 				314A408F27383BEC0058082F /* VITTYApp.swift in Sources */,
 				52D5AB862B6FE2ED00B2E66D /* AuthViewModel.swift in Sources */,
 				524B843C2B46F6FD006D18BD /* AddFriendsHeader.swift in Sources */,
-				5D141B052A2658CD005977F8 /* textField.swift in Sources */,
 				521562AC2B70B0FD0054F051 /* InstructionView.swift in Sources */,
 				522B8BAD2B47297A00EE686E /* CommunityPageViewModel.swift in Sources */,
 				528CF1762B769E22007298A0 /* TimeTableViewModel.swift in Sources */,
@@ -950,7 +974,26 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		5247A39F2B9645A1006C0DF9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5247A3AD2B9645A2006C0DF9 /* vittywidget.swift in Sources */,
+				5247A3AF2B9645A2006C0DF9 /* AppIntent.swift in Sources */,
+				5247A3A92B9645A2006C0DF9 /* vittywidgetBundle.swift in Sources */,
+				5247A3AB2B9645A2006C0DF9 /* vittywidgetLiveActivity.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		5247A3B42B9645A3006C0DF9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5247A3A22B9645A1006C0DF9 /* vittywidgetExtension */;
+			targetProxy = 5247A3B32B9645A3006C0DF9 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		314A409C27383BEE0058082F /* Debug */ = {
@@ -958,6 +1001,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
@@ -1020,6 +1064,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
@@ -1149,6 +1194,75 @@
 			};
 			name = Release;
 		};
+		5247A3B72B9645A3006C0DF9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = FYJ559CK7D;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = vittywidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = vittywidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.gdscvit.vittyios.vittywidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		5247A3B82B9645A3006C0DF9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = FYJ559CK7D;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = vittywidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = vittywidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.gdscvit.vittyios.vittywidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1166,6 +1280,15 @@
 			buildConfigurations = (
 				314A409F27383BEE0058082F /* Debug */,
 				314A40A027383BEE0058082F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5247A3B62B9645A3006C0DF9 /* Build configuration list for PBXNativeTarget "vittywidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5247A3B72B9645A3006C0DF9 /* Debug */,
+				5247A3B82B9645A3006C0DF9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

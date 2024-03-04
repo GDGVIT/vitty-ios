@@ -13,8 +13,6 @@ struct ContentView: View {
 	@State private var suggestedFriendsViewModel = SuggestedFriendsViewModel()
 	@State private var friendRequestViewModel = FriendRequestViewModel()
 	@State private var authViewModel = AuthViewModel()
-	//	@StateObject var localNotificationsManager = NotificationsManager()
-	//	@StateObject var notifVM = NotificationsViewModel()
 	var body: some View {
 		NavigationView {
 			if authViewModel.loggedInFirebaseUser != nil {
@@ -29,24 +27,7 @@ struct ContentView: View {
 				LoginView()
 			}
 		}
-		//        .animation(.default)
-		//		.onAppear(perform: NotificationsManager.shared.getNotificationSettings)
-		//		.onChange(of: NotificationsManager.shared.authStatus) { authorizationStat in
-		//			switch authorizationStat {
-		//				case .notDetermined:
-		//					NotificationsManager.shared.requestPermission()
-		//					break
-		//				default:
-		//					break
-		//			}
-		//		}
-		//		.onReceive(
-		//			NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)
-		//		) { _ in
-		//			NotificationsManager.shared.getNotificationSettings()
-		//		}
 		.environment(authViewModel)
-		//		.environmentObject(notifVM)
 		.environment(communityPageViewModel)
 		.environment(suggestedFriendsViewModel)
 		.environment(friendRequestViewModel)

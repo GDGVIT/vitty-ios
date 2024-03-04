@@ -10,7 +10,7 @@ import SwiftUI
 struct HomeView: View {
 	var body: some View {
 		TabView {
-			TimeTableView()
+			TimeTableView(friend: nil)
 				.tabItem {
 					Label("Time Table", systemImage: "calendar.day.timeline.left")
 				}

@@ -13,11 +13,12 @@ struct AddFriendsView: View {
 	@Environment(SuggestedFriendsViewModel.self) private var suggestedFriendsViewModel
 	@Environment(FriendRequestViewModel.self) private var friendRequestViewModel
 
+	@State private var isSearchViewPresented = false
+
 	var body: some View {
-		Group {
+		NavigationStack {
 			ZStack {
 				VStack(alignment: .center) {
-					AddFriendsHeader()
 					if !suggestedFriendsViewModel.suggestedFriends.isEmpty
 						|| !friendRequestViewModel.requests.isEmpty
 					{
@@ -57,9 +58,19 @@ struct AddFriendsView: View {
 						Spacer()
 					}
 				}
-				.padding()
 			}
-			.padding(.top)
+			.toolbar {
+				NavigationLink(destination: SearchView(), isActive: $isSearchViewPresented) {
+					EmptyView()
+				}
+				Button(action: {
+					isSearchViewPresented = true
+				}) {
+					Image(systemName: "magnifyingglass")
+						.foregroundColor(.white)
+				}
+			}
+			.navigationTitle("Add Friends")
 			.background(
 				Image(
 					suggestedFriendsViewModel.suggestedFriends.isEmpty

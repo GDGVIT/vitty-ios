@@ -9,17 +9,16 @@ import Foundation
 import SwiftData
 
 extension TimeTableView {
-	
-	
+
 	@Observable
 	class TimeTableViewModel {
-		
+
 		var timeTable: TimeTable?
 		var isLoading: Bool = false
 		var error: String?
 		var lectures = [Lecture]()
 		var dayNo = Date.convertToMondayWeek()
-		
+
 		func changeDay() {
 			switch dayNo {
 				case 0:
@@ -40,7 +39,7 @@ extension TimeTableView {
 					self.lectures = []
 			}
 		}
-		
+
 		func fetchTimeTable(username: String, authToken: String) {
 			TimeTableAPIService.shared.getTimeTable(with: username, authToken: authToken) {
 				[weak self] result in

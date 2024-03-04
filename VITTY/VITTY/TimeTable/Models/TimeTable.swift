@@ -6,11 +6,12 @@
 //
 
 import Foundation
+
 //import SwiftData
 
 class TimeTableRaw: Codable {
 	let data: TimeTable
-	
+
 	enum CodingKeys: String, CodingKey {
 		case data
 	}
@@ -25,8 +26,16 @@ class TimeTable: Codable {
 	let friday: [Lecture]
 	let saturday: [Lecture]
 	let sunday: [Lecture]
-	
-	init(monday: [Lecture], tuesday: [Lecture], wednesday: [Lecture], thursday: [Lecture], friday: [Lecture], saturday: [Lecture], sunday: [Lecture]) {
+
+	init(
+		monday: [Lecture],
+		tuesday: [Lecture],
+		wednesday: [Lecture],
+		thursday: [Lecture],
+		friday: [Lecture],
+		saturday: [Lecture],
+		sunday: [Lecture]
+	) {
 		self.monday = monday
 		self.tuesday = tuesday
 		self.wednesday = wednesday
@@ -35,7 +44,7 @@ class TimeTable: Codable {
 		self.saturday = saturday
 		self.sunday = sunday
 	}
-	
+
 	enum CodingKeys: String, CodingKey {
 		case monday = "Monday"
 		case tuesday = "Tuesday"
@@ -45,18 +54,67 @@ class TimeTable: Codable {
 		case saturday = "Saturday"
 		case sunday = "Sunday"
 	}
-	
+
 	required init(from decoder: Decoder) throws {
 		let container = try decoder.container(keyedBy: CodingKeys.self)
-		monday = try container.decode([Lecture].self, forKey: .monday)
-		tuesday = try container.decode([Lecture].self, forKey: .tuesday)
-		wednesday = try container.decode([Lecture].self, forKey: .wednesday)
-		thursday = try container.decode([Lecture].self, forKey: .thursday)
-		friday = try container.decode([Lecture].self, forKey: .friday)
-		saturday = try container.decode([Lecture].self, forKey: .saturday)
-		sunday = try container.decode([Lecture].self, forKey: .sunday)
+
+		do {
+			monday = try container.decode([Lecture].self, forKey: .monday)
+		}
+		catch {
+			print("Error decoding Monday lectures:", error)
+			monday = []
+		}
+
+		do {
+			tuesday = try container.decode([Lecture].self, forKey: .tuesday)
+		}
+		catch {
+			print("Error decoding Tuesday lectures:", error)
+			tuesday = []
+		}
+
+		do {
+			wednesday = try container.decode([Lecture].self, forKey: .wednesday)
+		}
+		catch {
+			print("Error decoding Wednesday lectures:", error)
+			wednesday = []
+		}
+
+		do {
+			thursday = try container.decode([Lecture].self, forKey: .thursday)
+		}
+		catch {
+			print("Error decoding Thursday lectures:", error)
+			thursday = []
+		}
+
+		do {
+			friday = try container.decode([Lecture].self, forKey: .friday)
+		}
+		catch {
+			print("Error decoding Friday lectures:", error)
+			friday = []
+		}
+
+		do {
+			saturday = try container.decode([Lecture].self, forKey: .saturday)
+		}
+		catch {
+			print("Error decoding Saturday lectures:", error)
+			saturday = []
+		}
+
+		do {
+			sunday = try container.decode([Lecture].self, forKey: .sunday)
+		}
+		catch {
+			print("Error decoding Sunday lectures:", error)
+			sunday = []
+		}
 	}
-	
+
 	func encode(to encoder: Encoder) throws {
 		var container = encoder.container(keyedBy: CodingKeys.self)
 		try container.encode(monday, forKey: .monday)
@@ -74,11 +132,11 @@ class Lecture: Codable, Identifiable, Comparable {
 	static func == (lhs: Lecture, rhs: Lecture) -> Bool {
 		return lhs.name == rhs.name
 	}
-	
+
 	static func < (lhs: Lecture, rhs: Lecture) -> Bool {
 		return lhs.startTime < rhs.startTime
 	}
-	
+
 	let name: String
 	let code: String
 	let venue: String
@@ -86,8 +144,16 @@ class Lecture: Codable, Identifiable, Comparable {
 	let type: String
 	let startTime: String
 	let endTime: String
-	
-	init(name: String, code: String, venue: String, slot: String, type: String, startTime: String, endTime: String) {
+
+	init(
+		name: String,
+		code: String,
+		venue: String,
+		slot: String,
+		type: String,
+		startTime: String,
+		endTime: String
+	) {
 		self.name = name
 		self.code = code
 		self.venue = venue
@@ -96,14 +162,13 @@ class Lecture: Codable, Identifiable, Comparable {
 		self.startTime = startTime
 		self.endTime = endTime
 	}
-	
+
 	enum CodingKeys: String, CodingKey {
 		case name, code, venue, slot, type
 		case startTime = "start_time"
 		case endTime = "end_time"
 	}
-	
-	
+
 	required init(from decoder: Decoder) throws {
 		let container = try decoder.container(keyedBy: CodingKeys.self)
 		name = try container.decode(String.self, forKey: .name)
@@ -114,7 +179,7 @@ class Lecture: Codable, Identifiable, Comparable {
 		startTime = try container.decode(String.self, forKey: .startTime)
 		endTime = try container.decode(String.self, forKey: .endTime)
 	}
-	
+
 	func encode(to encoder: Encoder) throws {
 		var container = encoder.container(keyedBy: CodingKeys.self)
 		try container.encode(name, forKey: .name)

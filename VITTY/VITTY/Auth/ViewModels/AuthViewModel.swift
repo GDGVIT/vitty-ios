@@ -33,13 +33,16 @@ class AuthViewModel: NSObject, ASAuthorizationControllerDelegate {
 		catch {
 			print("Error: AuthViewModel(useUserAccessGroup)")
 		}
-		
+
 		loggedInFirebaseUser = firebaseAuth.currentUser
 		super.init()
 		firebaseAuth.addStateDidChangeListener(authViewModelChanged)
 		do {
 			if UserDefaults.standard.string(forKey: UserDefaultKeys.userKey) != nil {
-				signInServer(username: UserDefaults.standard.string(forKey: UserDefaultKeys.userKey) ?? "", regNo: "")
+				signInServer(
+					username: UserDefaults.standard.string(forKey: UserDefaultKeys.userKey) ?? "",
+					regNo: ""
+				)
 			}
 		}
 	}

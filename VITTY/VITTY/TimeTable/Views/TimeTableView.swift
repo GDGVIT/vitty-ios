@@ -5,17 +5,20 @@
 //  Created by Chandram Dutta on 09/02/24.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 struct TimeTableView: View {
 	@Environment(AuthViewModel.self) private var authViewModel
 	private let daysOfWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-	
+
 	@State private var showingSheet = false
-	
+
 	@State private var viewModel = TimeTableViewModel()
-	
+	@State private var selectedLecture: Lecture? = nil
+
+	let friend: Friend?
+
 	var body: some View {
 		NavigationStack {
 			ZStack {
@@ -30,7 +33,7 @@ struct TimeTableView: View {
 									.frame(width: 60, height: 54)
 									.background(
 										daysOfWeek[viewModel.dayNo] == day
-										? Color(Color.theme.secondary) : Color.clear
+											? Color(Color.theme.secondary) : Color.clear
 									)
 									.onTapGesture {
 										withAnimation {
@@ -46,67 +49,104 @@ struct TimeTableView: View {
 					.background(Color("DarkBG"))
 					.clipShape(RoundedRectangle(cornerRadius: 10))
 					.padding(.horizontal)
-					List(viewModel.lectures.sorted(), id: \.startTime) { lecture in
-						Button (action: {
-							showingSheet.toggle()}){
-								VStack(alignment: .leading){
-									Text(lecture.name)
-										.font(.headline)
-									HStack{
-										Text("\(formatTime(time:lecture.startTime)) - \(formatTime(time:lecture.endTime))")
-										Spacer()
-										Text("\(lecture.venue)")
-									}
-									.foregroundColor(Color.vprimary)
-									.font(.caption)
-								}
+					List(viewModel.lectures.sorted()) { lecture in
+						VStack(alignment: .leading) {
+							Text(lecture.name)
+								.font(.headline)
+							HStack {
+								Text(
+									"\(formatTime(time: lecture.startTime)) - \(formatTime(time: lecture.endTime))"
+								)
+								Spacer()
+								Text("\(lecture.venue)")
 							}
-//							.sheet(isPresented: $showingSheet) {
-//								LectureDetailView(lecture: lecture)
-//							}
-							.listRowBackground(Color("DarkBG"))
+							.foregroundColor(Color.vprimary)
+							.font(.caption)
+						}
+						.onTapGesture {
+							selectedLecture = lecture
+						}
+						.listRowBackground(Color("DarkBG"))
 					}
-					.sheet(item: viewModel.lectures) {lecture in
+					.sheet(item: $selectedLecture) { lecture in
 						LectureDetailView(lecture: lecture)
-						
 					}
 					.scrollContentBackground(.hidden)
 					Spacer()
 				}
 			}
-			.navigationTitle(Text("Schedule"))
+			.navigationTitle(friend?.name ?? "Schedule")
 			.toolbar {
-				UserImage(url: authViewModel.appUser?.picture ?? "", height: 30, width: 40)
-				//					.onTapGesture {
-				//						viewModel.sideMenu()
-				//					}
+					
+					Menu {
+						if friend == nil {
+							NavigationLink {
+								SettingsView()
+							} label: {
+								Label("Settings", systemImage: "gear")
+							}
+							Button(role: .destructive) {
+								authViewModel.signOut()
+							} label: {
+								Label("Logout", systemImage: "rectangle.portrait.and.arrow.right")
+							}
+						} else {
+							Button{
+								let url = URL(
+									string: "\(APIConstants.base_url)/api/v2/friends/\(friend?.username ?? "")"
+								)!
+								var request = URLRequest(url: url)
+
+								request.httpMethod = "DELETE"
+								request.addValue(
+									"Token \(authViewModel.appUser?.token ?? "")",
+									forHTTPHeaderField: "Authorization"
+								)
+
+								let task = URLSession.shared.dataTask(with: request) {
+									(data, response, error) in
+									if let error = error {
+										print("Error: \(error.localizedDescription)")
+										return
+									}
+								}
+								task.resume()
+							} label: {
+								Label("Unfriend", systemImage: "person.fill.xmark")
+							}
+						}
+					} label: {
+						UserImage(
+							url: friend?.picture ?? (authViewModel.appUser?.picture ?? ""),
+							height: 30,
+							width: 40
+						)
+					}
+
+				
 			}
 		}
 		.task {
-			viewModel.fetchTimeTable(username: authViewModel.appUser?.username ?? "", authToken: authViewModel.appUser?.token ?? "")
+			viewModel.fetchTimeTable(
+				username: friend?.username ?? (authViewModel.appUser?.username ?? ""),
+				authToken: authViewModel.appUser?.token ?? ""
+			)
 		}
 	}
-	
+
 	private func formatTime(time: String) -> String {
 		var timeComponents = time.components(separatedBy: "T").last ?? ""
 		timeComponents = timeComponents.components(separatedBy: "Z").first ?? ""
-		
+
 		let dateFormatter = DateFormatter()
 		dateFormatter.dateFormat = "HH:mm:ss"
 		if let date = dateFormatter.date(from: timeComponents) {
 			dateFormatter.dateFormat = "h:mm a"
 			let formattedTime = dateFormatter.string(from: date)
-			return(formattedTime)
-		} else {
-			return("Failed to parse the time string.")
+			return (formattedTime)
 		}
-		
+		else {
+			return ("Failed to parse the time string.")
+		}
 	}
 }
-//
-//#Preview {
-//	TimeTableView()
-//		.preferredColorScheme(.dark)
-//		.environment(AuthViewModel())
-//		.modelContainer(for: TimeTable.self)
-//}

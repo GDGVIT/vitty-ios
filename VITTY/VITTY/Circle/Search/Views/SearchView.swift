@@ -14,58 +14,51 @@ struct SearchView: View {
 	@Environment(AuthViewModel.self) private var authViewModel
 	@Environment(\.dismiss) var dismiss
 	var body: some View {
-		Group {
-			VStack(alignment: .center) {
-				HStack {
-					Button(action: {
-						dismiss()
-					}) {
-						Image(systemName: "xmark")
-							.foregroundColor(.white)
-					}
-					VStack {
+		NavigationStack {
+			VStack(alignment: .leading) {
+				RoundedRectangle(cornerRadius: 20)
+					.foregroundColor(Color.theme.tfBlue)
+					.frame(maxWidth: .infinity)
+					.frame(height: 64)
+					.padding()
+					.overlay(
 						RoundedRectangle(cornerRadius: 20)
-							.foregroundColor(Color.theme.tfBlue)
+							.stroke(Color.theme.tfBlueLight, lineWidth: 1)
 							.frame(maxWidth: .infinity)
 							.frame(height: 64)
 							.padding()
-							.overlay(
-								RoundedRectangle(cornerRadius: 20)
-									.stroke(Color.theme.tfBlueLight, lineWidth: 1)
-									.frame(maxWidth: .infinity)
-									.frame(height: 64)
-									.padding()
-									.overlay(alignment: .leading) {
-										TextField(text: $searchText) {
-											Text("Search Friends")
-												.foregroundColor(Color.theme.tfBlueLight)
-										}
-										.onChange(of: searchText) {
-											search()
-										}
-										.padding(.horizontal, 42)
-										.foregroundColor(.white)
-										.foregroundColor(Color.theme.tfBlue)
-									}
-							)
-
-					}
-
-				}
-				.padding(.vertical)
+							.overlay(alignment: .leading) {
+								TextField(text: $searchText) {
+									Text("Search Friends")
+										.foregroundColor(Color.theme.tfBlueLight)
+								}
+								.onChange(of: searchText) {
+									search()
+								}
+								.padding(.horizontal, 42)
+								.foregroundColor(.white)
+								.foregroundColor(Color.theme.tfBlue)
+							}
+					)
 				if loading {
 					Spacer()
 					ProgressView()
 				}
 				else {
+					List(searchedFriends, id: \.username) { friend in
 
-					ForEach(searchedFriends, id: \.username) { friend in
 						AddFriendCard(friend: friend)
+
+							.listRowBackground(Color("DarkBG"))
+
 					}
+
+					.scrollContentBackground(.hidden)
 				}
+
 				Spacer()
 			}
-			.padding()
+			.navigationTitle("Search")
 			.background(
 				Image(
 					"HomeBG"

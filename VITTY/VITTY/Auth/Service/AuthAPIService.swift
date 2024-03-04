@@ -14,7 +14,7 @@ enum AuthAPIServiceError: Error {
 
 class AuthAPIService {
 	static let shared = AuthAPIService()
-	
+
 	func signInUser(
 		with authRequestBody: AuthRequestBody,
 		completion: @escaping (Result<AppUser, Error>) -> Void

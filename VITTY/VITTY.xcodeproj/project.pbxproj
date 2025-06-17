@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 55;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -23,6 +23,40 @@
 		317715DE279F1431009A532E /* IndexedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317715DD279F1431009A532E /* IndexedCollection.swift */; };
 		317EE1992775D3C6008AEB31 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317EE1982775D3C6008AEB31 /* SettingsView.swift */; };
 		31A3BF4027D09AF300B6BB97 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A3BF3F27D09AF300B6BB97 /* Date+Extension.swift */; };
+		4B183EB42D7998D500C9D801 /* Down in Frameworks */ = {isa = PBXBuildFile; productRef = 4B183EB32D7998D500C9D801 /* Down */; };
+		4B183EE82D7C78B600C9D801 /* Courses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B183EE72D7C78B300C9D801 /* Courses.swift */; };
+		4B183EEA2D7C793800C9D801 /* RemindersData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B183EE92D7C791400C9D801 /* RemindersData.swift */; };
+		4B183EEC2D7CB15800C9D801 /* CourseRefs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B183EEB2D7CB11500C9D801 /* CourseRefs.swift */; };
+		4B47CD7B2D7DCB8B00A46FEF /* CreateReminder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B47CD7A2D7DCB8400A46FEF /* CreateReminder.swift */; };
+		4B4FCF632D317AFD002B392C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4B4FCF622D317AFD002B392C /* GoogleService-Info.plist */; };
+		4B5977472DF97D5C009CC224 /* RemainderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B5977462DF97D5A009CC224 /* RemainderModel.swift */; };
+		4B5977482DFAC034009CC224 /* RemainderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B5977462DF97D5A009CC224 /* RemainderModel.swift */; };
+		4B7DA5DC2D708BD3007354A3 /* LectureItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7DA5DB2D708BCD007354A3 /* LectureItemView.swift */; };
+		4B7DA5DF2D7094E8007354A3 /* Academics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7DA5DE2D7094E3007354A3 /* Academics.swift */; };
+		4B7DA5E12D70A728007354A3 /* FriendRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7DA5E02D70A71C007354A3 /* FriendRow.swift */; };
+		4B7DA5E32D70B2C3007354A3 /* Freinds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7DA5E22D70B2C1007354A3 /* Freinds.swift */; };
+		4B7DA5E52D70B2CA007354A3 /* Circles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7DA5E42D70B2C8007354A3 /* Circles.swift */; };
+		4B7DA5E72D71AC54007354A3 /* CirclesRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7DA5E62D71AC51007354A3 /* CirclesRow.swift */; };
+		4B7DA5F22D7228F9007354A3 /* JoinGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7DA5F12D7228E5007354A3 /* JoinGroup.swift */; };
+		4B7DA5F52D7237BE007354A3 /* CreateGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7DA5F42D7237B8007354A3 /* CreateGroup.swift */; };
+		4B8B32CA2D6D75F4004F01BA /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8B32C92D6D75F4004F01BA /* WidgetKit.framework */; };
+		4B8B32CB2D6D75F4004F01BA /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3105871C27A3ECBB00C2FC41 /* SwiftUI.framework */; };
+		4B8B32DC2D6D75F6004F01BA /* VittyWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 4B8B32C82D6D75F4004F01BA /* VittyWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		4B8B33752D7029AA004F01BA /* SideBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B8B33742D7029A3004F01BA /* SideBar.swift */; };
+		4BA03C1D2D7584F3000756B0 /* AddFriend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA03C1C2D7584EA000756B0 /* AddFriend.swift */; };
+		4BBB00312D955163003B8FE2 /* AcademicsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBB00302D95515C003B8FE2 /* AcademicsViewModel.swift */; };
+		4BBB00332D957A6A003B8FE2 /* NotesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBB00322D957A6A003B8FE2 /* NotesModel.swift */; };
+		4BC853C32DF693780092B2E2 /* SaveTimeTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BC853C22DF6936E0092B2E2 /* SaveTimeTableView.swift */; };
+		4BC853C42DF6DA7A0092B2E2 /* TimeTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 528CF1722B769B18007298A0 /* TimeTable.swift */; };
+		4BD63D742D70547E00EEF5D7 /* EmptyClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD63D722D70547E00EEF5D7 /* EmptyClass.swift */; };
+		4BD63D772D70610B00EEF5D7 /* EmptyClassAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD63D762D70610000EEF5D7 /* EmptyClassAPIService.swift */; };
+		4BD63D7A2D70636400EEF5D7 /* EmptyClassRoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD63D792D70635D00EEF5D7 /* EmptyClassRoomViewModel.swift */; };
+		4BF03C992D7819E30098C803 /* Notes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF03C982D7819E00098C803 /* Notes.swift */; };
+		4BF03C9B2D7838C80098C803 /* NotesHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF03C9A2D7838C50098C803 /* NotesHelper.swift */; };
+		4BF0C77B2D93108B00016202 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF0C77A2D93108500016202 /* SearchBar.swift */; };
+		4BF0C77D2D932B8E00016202 /* CircleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF0C77C2D932B8A00016202 /* CircleModel.swift */; };
+		4BF0C79D2D94681000016202 /* InsideCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF0C79C2D94680A00016202 /* InsideCircle.swift */; };
+		4BF0C79F2D94694900016202 /* InsideCircleCards.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF0C79E2D94694000016202 /* InsideCircleCards.swift */; };
 		520BA6432B47FFF900124850 /* SuggestedFriendsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520BA6422B47FFF900124850 /* SuggestedFriendsViewModel.swift */; };
 		520BA6452B48013200124850 /* SuggestedFriendsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520BA6442B48013200124850 /* SuggestedFriendsView.swift */; };
 		520BA6482B4802EE00124850 /* AddFriendCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520BA6472B4802EE00124850 /* AddFriendCard.swift */; };
@@ -94,6 +128,16 @@
 		5DC0AF552AD2B586006B081D /* UserImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC0AF542AD2B586006B081D /* UserImage.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		4B8B32DA2D6D75F6004F01BA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 314A408327383BEC0058082F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4B8B32C72D6D75F4004F01BA;
+			remoteInfo = VittyWidgetExtension;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXCopyFilesBuildPhase section */
 		3105872727A3ECBD00C2FC41 /* Embed Foundation Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -101,6 +145,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				4B8B32DC2D6D75F6004F01BA /* VittyWidgetExtension.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -127,6 +172,37 @@
 		317715DD279F1431009A532E /* IndexedCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndexedCollection.swift; sourceTree = "<group>"; };
 		317EE1982775D3C6008AEB31 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		31A3BF3F27D09AF300B6BB97 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
+		4B183EE72D7C78B300C9D801 /* Courses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Courses.swift; sourceTree = "<group>"; };
+		4B183EE92D7C791400C9D801 /* RemindersData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemindersData.swift; sourceTree = "<group>"; };
+		4B183EEB2D7CB11500C9D801 /* CourseRefs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseRefs.swift; sourceTree = "<group>"; };
+		4B47CD7A2D7DCB8400A46FEF /* CreateReminder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateReminder.swift; sourceTree = "<group>"; };
+		4B4FCF622D317AFD002B392C /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		4B5977462DF97D5A009CC224 /* RemainderModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemainderModel.swift; sourceTree = "<group>"; };
+		4B7DA5DB2D708BCD007354A3 /* LectureItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureItemView.swift; sourceTree = "<group>"; };
+		4B7DA5DE2D7094E3007354A3 /* Academics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Academics.swift; sourceTree = "<group>"; };
+		4B7DA5E02D70A71C007354A3 /* FriendRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRow.swift; sourceTree = "<group>"; };
+		4B7DA5E22D70B2C1007354A3 /* Freinds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Freinds.swift; sourceTree = "<group>"; };
+		4B7DA5E42D70B2C8007354A3 /* Circles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Circles.swift; sourceTree = "<group>"; };
+		4B7DA5E62D71AC51007354A3 /* CirclesRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CirclesRow.swift; sourceTree = "<group>"; };
+		4B7DA5F12D7228E5007354A3 /* JoinGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinGroup.swift; sourceTree = "<group>"; };
+		4B7DA5F42D7237B8007354A3 /* CreateGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroup.swift; sourceTree = "<group>"; };
+		4B8B32C82D6D75F4004F01BA /* VittyWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = VittyWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		4B8B32C92D6D75F4004F01BA /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		4B8B33742D7029A3004F01BA /* SideBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBar.swift; sourceTree = "<group>"; };
+		4BA03C1C2D7584EA000756B0 /* AddFriend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFriend.swift; sourceTree = "<group>"; };
+		4BBB00302D95515C003B8FE2 /* AcademicsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcademicsViewModel.swift; sourceTree = "<group>"; };
+		4BBB00322D957A6A003B8FE2 /* NotesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesModel.swift; sourceTree = "<group>"; };
+		4BC853C22DF6936E0092B2E2 /* SaveTimeTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveTimeTableView.swift; sourceTree = "<group>"; };
+		4BC853C52DF6F71B0092B2E2 /* VittyWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = VittyWidgetExtension.entitlements; sourceTree = "<group>"; };
+		4BD63D722D70547E00EEF5D7 /* EmptyClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyClass.swift; sourceTree = "<group>"; };
+		4BD63D762D70610000EEF5D7 /* EmptyClassAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyClassAPIService.swift; sourceTree = "<group>"; };
+		4BD63D792D70635D00EEF5D7 /* EmptyClassRoomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyClassRoomViewModel.swift; sourceTree = "<group>"; };
+		4BF03C982D7819E00098C803 /* Notes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notes.swift; sourceTree = "<group>"; };
+		4BF03C9A2D7838C50098C803 /* NotesHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesHelper.swift; sourceTree = "<group>"; };
+		4BF0C77A2D93108500016202 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
+		4BF0C77C2D932B8A00016202 /* CircleModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleModel.swift; sourceTree = "<group>"; };
+		4BF0C79C2D94680A00016202 /* InsideCircle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsideCircle.swift; sourceTree = "<group>"; };
+		4BF0C79E2D94694000016202 /* InsideCircleCards.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsideCircleCards.swift; sourceTree = "<group>"; };
 		520BA6422B47FFF900124850 /* SuggestedFriendsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestedFriendsViewModel.swift; sourceTree = "<group>"; };
 		520BA6442B48013200124850 /* SuggestedFriendsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestedFriendsView.swift; sourceTree = "<group>"; };
 		520BA6472B4802EE00124850 /* AddFriendCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFriendCard.swift; sourceTree = "<group>"; };
@@ -168,11 +244,33 @@
 		AFEFCB6C27C90233007B2029 /* VITTY.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = VITTY.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		4B5977432DF85757009CC224 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				DataModel.swift,
+			);
+			target = 314A408A27383BEC0058082F /* VITTY */;
+		};
+		4B8B32DD2D6D75F6004F01BA /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 4B8B32C72D6D75F4004F01BA /* VittyWidgetExtension */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		4B8B32CC2D6D75F4004F01BA /* VittyWidget */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (4B5977432DF85757009CC224 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 4B8B32DD2D6D75F6004F01BA /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = VittyWidget; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
 		314A408827383BEC0058082F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4B183EB42D7998D500C9D801 /* Down in Frameworks */,
 				5247A38F2B963877006C0DF9 /* FirebaseMessaging in Frameworks */,
 				5247A37F2B963877006C0DF9 /* FirebaseFirestoreCombine-Community in Frameworks */,
 				5247A3772B963877006C0DF9 /* FirebaseDatabase in Frameworks */,
@@ -209,6 +307,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		4B8B32C52D6D75F4004F01BA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4B8B32CB2D6D75F4004F01BA /* SwiftUI.framework in Frameworks */,
+				4B8B32CA2D6D75F4004F01BA /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -216,6 +323,7 @@
 			isa = PBXGroup;
 			children = (
 				3105871C27A3ECBB00C2FC41 /* SwiftUI.framework */,
+				4B8B32C92D6D75F4004F01BA /* WidgetKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -265,6 +373,8 @@
 		314A408227383BEC0058082F = {
 			isa = PBXGroup;
 			children = (
+				4BC853C52DF6F71B0092B2E2 /* VittyWidgetExtension.entitlements */,
+				4B4FCF622D317AFD002B392C /* GoogleService-Info.plist */,
 				52EE849D2CB9CD1F00CD864C /* GoogleService-Info.plist */,
 				5251A7FF2B46E3C000D44CFE /* .swift-format */,
 				314A408E27383BEC0058082F /* VITTYApp.swift */,
@@ -273,6 +383,7 @@
 				AFEFCB6C27C90233007B2029 /* VITTY.entitlements */,
 				AFEFCB6B27C90042007B2029 /* VITTYRelease.entitlements */,
 				314A408D27383BEC0058082F /* VITTY */,
+				4B8B32CC2D6D75F4004F01BA /* VittyWidget */,
 				3105871927A3ECBB00C2FC41 /* Frameworks */,
 				314A408C27383BEC0058082F /* Products */,
 			);
@@ -282,6 +393,7 @@
 			isa = PBXGroup;
 			children = (
 				314A408B27383BEC0058082F /* VITTY.app */,
+				4B8B32C82D6D75F4004F01BA /* VittyWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -289,6 +401,9 @@
 		314A408D27383BEC0058082F /* VITTY */ = {
 			isa = PBXGroup;
 			children = (
+				4B7DA5DD2D7094CA007354A3 /* Academics */,
+				4BD63D732D70547E00EEF5D7 /* EmptyClassroom */,
+				4B8B33732D702957004F01BA /* UserProfileSideBar */,
 				527E3E022B76626A0086F23D /* TimeTable */,
 				521562A92B70B0E50054F051 /* Instruction */,
 				52D5AB8A2B6FE4C600B2E66D /* Shared */,
@@ -320,6 +435,152 @@
 				31128CF12772F55D0084C9EA /* Fonts */,
 			);
 			path = Utilities;
+			sourceTree = "<group>";
+		};
+		4B7DA5DD2D7094CA007354A3 /* Academics */ = {
+			isa = PBXGroup;
+			children = (
+				4BBB002F2D95510B003B8FE2 /* Model */,
+				4BBB002E2D955104003B8FE2 /* VIewModel */,
+				4BBB002D2D9550F8003B8FE2 /* View */,
+			);
+			path = Academics;
+			sourceTree = "<group>";
+		};
+		4B7DA5E82D71E0CE007354A3 /* Circles */ = {
+			isa = PBXGroup;
+			children = (
+				4B7DA5EC2D71E0FB007354A3 /* View */,
+				4B7DA5EB2D71E0F4007354A3 /* Components */,
+			);
+			path = Circles;
+			sourceTree = "<group>";
+		};
+		4B7DA5E92D71E0D7007354A3 /* Freinds */ = {
+			isa = PBXGroup;
+			children = (
+				4B7DA5ED2D71E100007354A3 /* View */,
+				4B7DA5EA2D71E0E2007354A3 /* Components */,
+			);
+			path = Freinds;
+			sourceTree = "<group>";
+		};
+		4B7DA5EA2D71E0E2007354A3 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		4B7DA5EB2D71E0F4007354A3 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				4BF0C79E2D94694000016202 /* InsideCircleCards.swift */,
+				4B7DA5E62D71AC51007354A3 /* CirclesRow.swift */,
+				4B7DA5F12D7228E5007354A3 /* JoinGroup.swift */,
+				4B7DA5F42D7237B8007354A3 /* CreateGroup.swift */,
+				4BA03C1C2D7584EA000756B0 /* AddFriend.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		4B7DA5EC2D71E0FB007354A3 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				4B7DA5E42D70B2C8007354A3 /* Circles.swift */,
+				4BF0C79C2D94680A00016202 /* InsideCircle.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		4B7DA5ED2D71E100007354A3 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				4B7DA5E02D70A71C007354A3 /* FriendRow.swift */,
+				52DBBE872B47B6B30014C57A /* FriendCard.swift */,
+				4B7DA5E22D70B2C1007354A3 /* Freinds.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		4B8B33732D702957004F01BA /* UserProfileSideBar */ = {
+			isa = PBXGroup;
+			children = (
+				4B8B33742D7029A3004F01BA /* SideBar.swift */,
+			);
+			path = UserProfileSideBar;
+			sourceTree = "<group>";
+		};
+		4BBB002D2D9550F8003B8FE2 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				4B183EE72D7C78B300C9D801 /* Courses.swift */,
+				4BF03C982D7819E00098C803 /* Notes.swift */,
+				4BF03C9A2D7838C50098C803 /* NotesHelper.swift */,
+				4B183EE92D7C791400C9D801 /* RemindersData.swift */,
+				4B7DA5DE2D7094E3007354A3 /* Academics.swift */,
+				4B183EEB2D7CB11500C9D801 /* CourseRefs.swift */,
+				4B47CD7A2D7DCB8400A46FEF /* CreateReminder.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		4BBB002E2D955104003B8FE2 /* VIewModel */ = {
+			isa = PBXGroup;
+			children = (
+				4BBB00302D95515C003B8FE2 /* AcademicsViewModel.swift */,
+			);
+			path = VIewModel;
+			sourceTree = "<group>";
+		};
+		4BBB002F2D95510B003B8FE2 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				4B5977462DF97D5A009CC224 /* RemainderModel.swift */,
+				4BBB00322D957A6A003B8FE2 /* NotesModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		4BD63D732D70547E00EEF5D7 /* EmptyClassroom */ = {
+			isa = PBXGroup;
+			children = (
+				4BD63D7D2D70638300EEF5D7 /* View */,
+				4BD63D782D70634F00EEF5D7 /* ViewModel */,
+				4BD63D752D7060F800EEF5D7 /* Service */,
+			);
+			path = EmptyClassroom;
+			sourceTree = "<group>";
+		};
+		4BD63D752D7060F800EEF5D7 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				4BD63D762D70610000EEF5D7 /* EmptyClassAPIService.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		4BD63D782D70634F00EEF5D7 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				4BD63D792D70635D00EEF5D7 /* EmptyClassRoomViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		4BD63D7D2D70638300EEF5D7 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				4BD63D722D70547E00EEF5D7 /* EmptyClass.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		4BF03C972D7819D30098C803 /* Academics */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Academics;
 			sourceTree = "<group>";
 		};
 		520BA63B2B47FF5700124850 /* SuggestedFriends */ = {
@@ -383,6 +644,7 @@
 		522B8BAE2B4732C200EE686E /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				4BF0C77C2D932B8A00016202 /* CircleModel.swift */,
 				522B8BAF2B4732CC00EE686E /* Friend.swift */,
 			);
 			path = Models;
@@ -464,6 +726,9 @@
 		524B84312B46EF28006D18BD /* View */ = {
 			isa = PBXGroup;
 			children = (
+				4BF03C972D7819D30098C803 /* Academics */,
+				4B7DA5E92D71E0D7007354A3 /* Freinds */,
+				4B7DA5E82D71E0CE007354A3 /* Circles */,
 				524B84342B46F0FE006D18BD /* Components */,
 				524B84322B46EF3A006D18BD /* ConnectPage.swift */,
 			);
@@ -473,7 +738,7 @@
 		524B84342B46F0FE006D18BD /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				52DBBE872B47B6B30014C57A /* FriendCard.swift */,
+				4BF0C77A2D93108500016202 /* SearchBar.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -534,6 +799,7 @@
 		527E3E032B7662710086F23D /* Service */ = {
 			isa = PBXGroup;
 			children = (
+				4BC853C22DF6936E0092B2E2 /* SaveTimeTableView.swift */,
 				528CF1772B769E64007298A0 /* TimeTableAPIService.swift */,
 			);
 			path = Service;
@@ -544,6 +810,7 @@
 			children = (
 				527E3E072B7662920086F23D /* TimeTableView.swift */,
 				525F759C2B809F8400E3B418 /* LectureDetailView.swift */,
+				4B7DA5DB2D708BCD007354A3 /* LectureItemView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -667,6 +934,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				4B8B32DB2D6D75F6004F01BA /* PBXTargetDependency */,
 			);
 			name = VITTY;
 			packageProductDependencies = (
@@ -703,10 +971,33 @@
 				5247A3982B963877006C0DF9 /* FirebaseStorageCombine-Community */,
 				5247A39B2B9638DA006C0DF9 /* GoogleSignIn */,
 				5247A39D2B9638DA006C0DF9 /* GoogleSignInSwift */,
+				4B183EB32D7998D500C9D801 /* Down */,
 			);
 			productName = VITTY;
 			productReference = 314A408B27383BEC0058082F /* VITTY.app */;
 			productType = "com.apple.product-type.application";
+		};
+		4B8B32C72D6D75F4004F01BA /* VittyWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4B8B32DE2D6D75F6004F01BA /* Build configuration list for PBXNativeTarget "VittyWidgetExtension" */;
+			buildPhases = (
+				4B8B32C42D6D75F4004F01BA /* Sources */,
+				4B8B32C52D6D75F4004F01BA /* Frameworks */,
+				4B8B32C62D6D75F4004F01BA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				4B8B32CC2D6D75F4004F01BA /* VittyWidget */,
+			);
+			name = VittyWidgetExtension;
+			packageProductDependencies = (
+			);
+			productName = VittyWidgetExtension;
+			productReference = 4B8B32C82D6D75F4004F01BA /* VittyWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -715,11 +1006,14 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1540;
+				LastSwiftUpdateCheck = 1610;
 				LastUpgradeCheck = 1610;
 				TargetAttributes = {
 					314A408A27383BEC0058082F = {
 						CreatedOnToolsVersion = 13.0;
+					};
+					4B8B32C72D6D75F4004F01BA = {
+						CreatedOnToolsVersion = 16.1;
 					};
 				};
 			};
@@ -737,12 +1031,14 @@
 				522B8BB12B473FEA00EE686E /* XCRemoteSwiftPackageReference "Alamofire" */,
 				5247A3632B963877006C0DF9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				5247A39A2B9638D9006C0DF9 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+				4BF03C9C2D78395D0098C803 /* XCRemoteSwiftPackageReference "Down" */,
 			);
 			productRefGroup = 314A408C27383BEC0058082F /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				314A408A27383BEC0058082F /* VITTY */,
+				4B8B32C72D6D75F4004F01BA /* VittyWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -760,8 +1056,16 @@
 				31128CFA2772F57E0084C9EA /* Poppins-SemiBoldItalic.ttf in Resources */,
 				31128CFC2772F57E0084C9EA /* Poppins-Regular.ttf in Resources */,
 				52EE849E2CB9CD1F00CD864C /* GoogleService-Info.plist in Resources */,
+				4B4FCF632D317AFD002B392C /* GoogleService-Info.plist in Resources */,
 				314A409627383BEE0058082F /* Preview Assets.xcassets in Resources */,
 				314A409327383BEE0058082F /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4B8B32C62D6D75F4004F01BA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -776,48 +1080,92 @@
 				5D72EDDD2AB990BB00704BF5 /* AuthRequestBody.swift in Sources */,
 				528D32232C18C679007C9106 /* BackgroundView.swift in Sources */,
 				520BA6452B48013200124850 /* SuggestedFriendsView.swift in Sources */,
+				4B7DA5DF2D7094E8007354A3 /* Academics.swift in Sources */,
+				4B7DA5F22D7228F9007354A3 /* JoinGroup.swift in Sources */,
 				524B842F2B46EBBD006D18BD /* HomeView.swift in Sources */,
 				527E3E082B7662920086F23D /* TimeTableView.swift in Sources */,
 				524B843A2B46F5C6006D18BD /* AddFriendsView.swift in Sources */,
+				4B7DA5E12D70A728007354A3 /* FriendRow.swift in Sources */,
 				5D72EDD82AB98D6D00704BF5 /* URLSession.swift in Sources */,
+				4B8B33752D7029AA004F01BA /* SideBar.swift in Sources */,
 				52D5AB912B6FE90100B2E66D /* Constants.swift in Sources */,
 				317EE1992775D3C6008AEB31 /* SettingsView.swift in Sources */,
 				31A3BF4027D09AF300B6BB97 /* Date+Extension.swift in Sources */,
+				4B183EEA2D7C793800C9D801 /* RemindersData.swift in Sources */,
+				4B5977472DF97D5C009CC224 /* RemainderModel.swift in Sources */,
 				5DC0AF552AD2B586006B081D /* UserImage.swift in Sources */,
 				5238C7F42B4AB07400413946 /* FriendReqCard.swift in Sources */,
+				4B7DA5DC2D708BD3007354A3 /* LectureItemView.swift in Sources */,
+				4BC853C32DF693780092B2E2 /* SaveTimeTableView.swift in Sources */,
 				52D5AB892B6FE3B200B2E66D /* AppUser.swift in Sources */,
 				31128D0C277300470084C9EA /* StringConstants.swift in Sources */,
 				522B8BB02B4732CC00EE686E /* Friend.swift in Sources */,
 				52D5AB8C2B6FE4D600B2E66D /* UserDefaultKeys.swift in Sources */,
 				5D7F04F72AAB9E9900ECED15 /* APIConstants.swift in Sources */,
+				4BF03C9B2D7838C80098C803 /* NotesHelper.swift in Sources */,
 				3109639F27824F6F0009A29C /* AppStorageConstants.swift in Sources */,
+				4BD63D742D70547E00EEF5D7 /* EmptyClass.swift in Sources */,
+				4BF0C79D2D94681000016202 /* InsideCircle.swift in Sources */,
 				524B84332B46EF3A006D18BD /* ConnectPage.swift in Sources */,
 				521E1E8B2C21DF0D00E8C7D2 /* AddFriendCardSearch.swift in Sources */,
+				4B183EE82D7C78B600C9D801 /* Courses.swift in Sources */,
 				5238C7F12B4AAE8700413946 /* FriendRequestView.swift in Sources */,
 				528CF1782B769E64007298A0 /* TimeTableAPIService.swift in Sources */,
 				52D5AB972B6FFC8F00B2E66D /* LoginView.swift in Sources */,
+				4B183EEC2D7CB15800C9D801 /* CourseRefs.swift in Sources */,
+				4BBB00312D955163003B8FE2 /* AcademicsViewModel.swift in Sources */,
 				314A409127383BEC0058082F /* ContentView.swift in Sources */,
 				520BA6482B4802EE00124850 /* AddFriendCard.swift in Sources */,
+				4B7DA5E32D70B2C3007354A3 /* Freinds.swift in Sources */,
+				4BBB00332D957A6A003B8FE2 /* NotesModel.swift in Sources */,
+				4BF0C77B2D93108B00016202 /* SearchBar.swift in Sources */,
 				5238C7EE2B4A9E2C00413946 /* FriendRequestRaw.swift in Sources */,
 				525AA7A92B4B0164003C6A12 /* SearchView.swift in Sources */,
+				4BF03C992D7819E30098C803 /* Notes.swift in Sources */,
 				52DBBE882B47B6B30014C57A /* FriendCard.swift in Sources */,
+				4B47CD7B2D7DCB8B00A46FEF /* CreateReminder.swift in Sources */,
 				317715DE279F1431009A532E /* IndexedCollection.swift in Sources */,
+				4B7DA5E72D71AC54007354A3 /* CirclesRow.swift in Sources */,
+				4B7DA5E52D70B2CA007354A3 /* Circles.swift in Sources */,
 				525F759D2B809F8400E3B418 /* LectureDetailView.swift in Sources */,
 				520BA6432B47FFF900124850 /* SuggestedFriendsViewModel.swift in Sources */,
 				314A408F27383BEC0058082F /* VITTYApp.swift in Sources */,
 				52978F8E2C3A7924008CF46C /* BottomBarView.swift in Sources */,
+				4BA03C1D2D7584F3000756B0 /* AddFriend.swift in Sources */,
 				52D5AB862B6FE2ED00B2E66D /* AuthViewModel.swift in Sources */,
+				4BF0C79F2D94694900016202 /* InsideCircleCards.swift in Sources */,
 				524B843C2B46F6FD006D18BD /* AddFriendsHeader.swift in Sources */,
+				4BD63D7A2D70636400EEF5D7 /* EmptyClassRoomViewModel.swift in Sources */,
 				521562AC2B70B0FD0054F051 /* InstructionView.swift in Sources */,
 				522B8BAD2B47297A00EE686E /* CommunityPageViewModel.swift in Sources */,
+				4BF0C77D2D932B8E00016202 /* CircleModel.swift in Sources */,
 				528CF1762B769E22007298A0 /* TimeTableViewModel.swift in Sources */,
+				4B7DA5F52D7237BE007354A3 /* CreateGroup.swift in Sources */,
 				52D5AB8F2B6FE82E00B2E66D /* AuthAPIService.swift in Sources */,
+				4BD63D772D70610B00EEF5D7 /* EmptyClassAPIService.swift in Sources */,
 				528CF1732B769B18007298A0 /* TimeTable.swift in Sources */,
 				521562AE2B710E730054F051 /* UsernameView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		4B8B32C42D6D75F4004F01BA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4B5977482DFAC034009CC224 /* RemainderModel.swift in Sources */,
+				4BC853C42DF6DA7A0092B2E2 /* TimeTable.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		4B8B32DB2D6D75F6004F01BA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4B8B32C72D6D75F4004F01BA /* VittyWidgetExtension */;
+			targetProxy = 4B8B32DA2D6D75F6004F01BA /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		314A409C27383BEE0058082F /* Debug */ = {
@@ -952,7 +1300,7 @@
 				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "\"VITTY/Preview Content\"";
-				DEVELOPMENT_TEAM = 2TS98F9X52;
+				DEVELOPMENT_TEAM = C7RX29D33F;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = VITTY/Info.plist;
@@ -992,7 +1340,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"VITTY/Preview Content\"";
-				DEVELOPMENT_TEAM = 2TS98F9X52;
+				DEVELOPMENT_TEAM = C7RX29D33F;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = VITTY/Info.plist;
@@ -1010,7 +1358,7 @@
 				);
 				MARKETING_VERSION = 2.0.0;
 				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = com.gdscvit.vittyios;
+				PRODUCT_BUNDLE_IDENTIFIER = com.gdcvit.vittyios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1019,6 +1367,75 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		4B8B32DF2D6D75F6004F01BA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_ENTITLEMENTS = VittyWidgetExtension.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = C7RX29D33F;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = VittyWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = VittyWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.gdscvit.vittyios.VittyWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		4B8B32E02D6D75F6004F01BA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_ENTITLEMENTS = VittyWidgetExtension.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = C7RX29D33F;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = VittyWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = VittyWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.gdscvit.vittyios.VittyWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -1043,9 +1460,26 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		4B8B32DE2D6D75F6004F01BA /* Build configuration list for PBXNativeTarget "VittyWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4B8B32DF2D6D75F6004F01BA /* Debug */,
+				4B8B32E02D6D75F6004F01BA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		4BF03C9C2D78395D0098C803 /* XCRemoteSwiftPackageReference "Down" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/johnxnguyen/Down.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 		522B8BB12B473FEA00EE686E /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
@@ -1081,6 +1515,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		4B183EB32D7998D500C9D801 /* Down */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4BF03C9C2D78395D0098C803 /* XCRemoteSwiftPackageReference "Down" */;
+			productName = Down;
+		};
 		522B8BB22B473FEA00EE686E /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 522B8BB12B473FEA00EE686E /* XCRemoteSwiftPackageReference "Alamofire" */;

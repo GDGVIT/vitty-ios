@@ -31,6 +31,7 @@ extension TimeTableView {
 			)
 		)
 
+
 		func changeDay() {
 			switch dayNo {
 				case 0:
@@ -51,6 +52,7 @@ extension TimeTableView {
 					self.lectures = []
 			}
 		}
+        
 
 		func fetchTimeTable(username: String, authToken: String) async {
 			logger.info("Fetching TimeTable Started")
@@ -71,5 +73,8 @@ extension TimeTableView {
 			}
 			logger.info("Fetching TimeTable Ended")
 		}
+        
+     
+        
 	}
 }

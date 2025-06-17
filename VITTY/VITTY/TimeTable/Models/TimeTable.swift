@@ -7,8 +7,9 @@
 
 import Foundation
 import OSLog
+import SwiftData
 
-//import SwiftData
+
 
 class TimeTableRaw: Codable {
 	let data: TimeTable
@@ -18,22 +19,25 @@ class TimeTableRaw: Codable {
 	}
 }
 
-//@Model
-class TimeTable: Codable {
-	let monday: [Lecture]
-	let tuesday: [Lecture]
-	let wednesday: [Lecture]
-	let thursday: [Lecture]
-	let friday: [Lecture]
-	let saturday: [Lecture]
-	let sunday: [Lecture]
-	private let logger = Logger(
+
+
+@Model
+class TimeTable: Codable  {
+	var monday: [Lecture]
+	var tuesday: [Lecture]
+	var wednesday: [Lecture]
+	var thursday: [Lecture]
+	var friday: [Lecture]
+	var  saturday: [Lecture]
+	var sunday: [Lecture]
+   
+    @Transient
+	var logger = Logger(
 		subsystem: Bundle.main.bundleIdentifier!,
 		category: String(
 			describing: TimeTable.self
 		)
 	)
-
 	init(
 		monday: [Lecture],
 		tuesday: [Lecture],
@@ -52,7 +56,7 @@ class TimeTable: Codable {
 		self.sunday = sunday
 	}
 
-	enum CodingKeys: String, CodingKey {
+    enum CodingKeys: String, CodingKey,Codable {
 		case monday = "Monday"
 		case tuesday = "Tuesday"
 		case wednesday = "Wednesday"
@@ -134,7 +138,7 @@ class TimeTable: Codable {
 	}
 }
 
-//@Model
+@Model
 class Lecture: Codable, Identifiable, Comparable {
 	static func == (lhs: Lecture, rhs: Lecture) -> Bool {
 		return lhs.name == rhs.name
@@ -144,13 +148,13 @@ class Lecture: Codable, Identifiable, Comparable {
 		return lhs.startTime < rhs.startTime
 	}
 
-	let name: String
-	let code: String
-	let venue: String
-	let slot: String
-	let type: String
-	let startTime: String
-	let endTime: String
+	var  name: String
+    var code: String
+    var venue: String
+    var slot: String
+    var type: String
+    var startTime: String
+	var endTime: String
 
 	init(
 		name: String,
@@ -170,7 +174,7 @@ class Lecture: Codable, Identifiable, Comparable {
 		self.endTime = endTime
 	}
 
-	enum CodingKeys: String, CodingKey {
+    enum CodingKeys: String, CodingKey,Codable {
 		case name, code, venue, slot, type
 		case startTime = "start_time"
 		case endTime = "end_time"
@@ -197,4 +201,70 @@ class Lecture: Codable, Identifiable, Comparable {
 		try container.encode(startTime, forKey: .startTime)
 		try container.encode(endTime, forKey: .endTime)
 	}
+}
+extension TimeTable {
+    var isEmpty: Bool {
+        monday.isEmpty && tuesday.isEmpty && wednesday.isEmpty &&
+        thursday.isEmpty && friday.isEmpty && saturday.isEmpty && sunday.isEmpty
+    }
+    private func extractStartDate(from timeString: String) -> Date? {
+        let components = timeString.components(separatedBy: " - ")
+        guard let startTimeString = components.first else { return nil }
+
+        let formatter = DateFormatter()
+        formatter.dateFormat = "h:mm a"
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+
+        return formatter.date(from: startTimeString)
+    }
+
+    func classesFor(date: Date) -> [Classes] {
+        let calendar = Calendar.current
+        let weekday = calendar.component(.weekday, from: date)
+
+        let lectures: [Lecture]
+        switch weekday {
+        case 1: lectures = sunday
+        case 2: lectures = monday
+        case 3: lectures = tuesday
+        case 4: lectures = wednesday
+        case 5: lectures = thursday
+        case 6: lectures = friday
+        case 7: lectures = saturday
+        default: lectures = []
+        }
+
+        let mapped = lectures.map {
+            Classes(
+                title: $0.name,
+                time: "\(formatTime(time: $0.startTime)) - \(formatTime(time: $0.endTime))",
+                slot: $0.slot
+            )
+        }
+
+        return mapped.sorted {
+            guard let d1 = extractStartDate(from: $0.time),
+                  let d2 = extractStartDate(from: $1.time) else {
+                return false
+            }
+            return d1 < d2
+        }
+    }
+
+    
+
+    private func formatTime(time: String) -> String {      
+        var timeComponents = time.components(separatedBy: "T").last ?? ""
+        timeComponents = timeComponents.components(separatedBy: "Z").first ?? ""
+
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH:mm:ss"
+        if let date = dateFormatter.date(from: timeComponents) {
+            dateFormatter.dateFormat = "h:mm a"
+            let formattedTime = dateFormatter.string(from: date)
+            return formattedTime
+        } else {
+            return "Failed to parse the time string."
+        }
+    }
 }

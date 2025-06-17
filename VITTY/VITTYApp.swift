@@ -8,6 +8,7 @@
 import Firebase
 import OSLog
 import SwiftUI
+import SwiftData
 
 /**
  `NOTE FOR FUTURE/NEW DEVS:`
@@ -55,8 +56,16 @@ struct VITTYApp: App {
 		WindowGroup {
 			ContentView()
 				.preferredColorScheme(.dark)
-		}
+        }.modelContainer(sharedModelContainer)
 	}
+    var sharedModelContainer: ModelContainer {
+        let schema = Schema([TimeTable.self,Remainder.self])
+            let config = ModelConfiguration(
+                "group.com.gdscvit.vittyioswidget"
+        
+            )
+            return try! ModelContainer(for: schema, configurations: config)
+        }
 }
 
 extension VITTYApp {

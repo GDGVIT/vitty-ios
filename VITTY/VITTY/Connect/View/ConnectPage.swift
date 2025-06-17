@@ -1,162 +1,165 @@
 //
-//  CommunityView.swift
+//  Freinds.swift
 //  VITTY
 //
-//  Created by Chandram Dutta on 04/01/24.
-//
+//  Created by Rujin Devkota on 2/27/25.
+
 
 import SwiftUI
 
+
 struct ConnectPage: View {
+    @Environment(AuthViewModel.self) private var authViewModel
+    @Environment(CommunityPageViewModel.self) private var communityPageViewModel
+    @Environment(FriendRequestViewModel.self) private var friendRequestViewModel
+    @State private var isShowingRequestView = false
+    @State var isCircleView = false
+    @State var isAddCircleFunc = false
+    @State var showCreateGroupSheet = false
+    @State var showJoinGroupSheet = false
+    
+    @Binding var isCreatingGroup : Bool
+    
+    @State private var isAddFriendsViewPresented = false
+    @State private var selectedTab = 0
+    
+    var body: some View {
+        ZStack {
+            BackgroundView()
+            
+            
+            
+            VStack(spacing: 0) {
+                
+                HStack {
+                    AcademicsTabButton(title: "Friends", isActive: selectedTab == 0) {
+                        selectedTab = 0
+                        isCircleView = false
+                    }
+                    AcademicsTabButton(title: "Circles", isActive: selectedTab == 1) {
+                       
+                        selectedTab = 1
+                        isCircleView = true
+                 
+                    }
+                }
+                .padding(.top,20)
+              
+                TabView(selection: $selectedTab) {
+                    FriendsView()
+                        .tag(0)
+                    CirclesView(isCreatingGroup: $isCreatingGroup)
+                        .tag(1)
+                }
+                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+            }
+            if isCircleView == false {
+                Button(action: {
+                    isShowingRequestView.toggle()
 
-	@Environment(AuthViewModel.self) private var authViewModel
-	@Environment(CommunityPageViewModel.self) private var communityPageViewModel
-	@Environment(FriendRequestViewModel.self) private var friendRequestViewModel
+                }) {
+                    Image(systemName: "person.fill.badge.plus")
+                        .foregroundColor(.white)
+                }
+                .navigationDestination(
+                    isPresented: $isShowingRequestView,
+                    destination: {
+                        AddFriendsView()
+                    }
+                ).offset(x: UIScreen.main.bounds.width*0.4228, y: UIScreen.main.bounds.height*0.38901*(-1))
+            } else{
+                Button(action: {
+                    isAddCircleFunc.toggle()
 
-	@State private var isShowingRequestView = false
-	@State private var isAddFriendsViewPresented = false
+                }) {
+                    Image(systemName: "person.fill.badge.plus")
+                        .foregroundColor(.white)
+                }
+               .offset(x: UIScreen.main.bounds.width*0.4228, y: UIScreen.main.bounds.height*0.38901*(-1))
+            }
+            
+        }.sheet(isPresented: $isAddCircleFunc){
+            ZStack{
+                Color("Background")
+                HStack(spacing: 40) {
+                      
+                    Button(action:{
+                        showJoinGroupSheet.toggle()
+                    }) {
+                        VStack {
+                            Image("joingroup")
+                                .resizable()
+                                .frame(width: 55, height: 55)
+                            Text("Join Group")
+                                .font(.system(size: 15))
+                                .foregroundStyle(Color.white)
+                        }
+                    }
+                    
+                    Button(action:{
+                        showJoinGroupSheet.toggle()
+                    }) {
+                        VStack {
+                            Image("creategroup")
+                                .resizable()
+                                .frame(width: 55, height: 55)
+                            Text("Create Group")
+                                .font(.system(size: 15))
+                                .foregroundStyle(Color.white)
+                        }
+                    }
+                }.presentationDetents([.height(200)])
+                .padding(.top, 10)
+            }.background(Color("Background"))
+        }
+        .sheet(isPresented: $showCreateGroupSheet) {
+            CreateGroup(groupCode:.constant(""))
+        }
+        .sheet(isPresented: $showJoinGroupSheet) {
+            JoinGroup(groupCode: .constant(""))
+        }
+        .onAppear {
+           
+            communityPageViewModel.fetchFriendsData(
+                from: "\(APIConstants.base_url)friends/\(authViewModel.loggedInBackendUser?.username ?? "")/",
+                token: authViewModel.loggedInBackendUser?.token ?? "",
+                loading: true
+            )
+            communityPageViewModel.fetchCircleData(
+                from: "\(APIConstants.base_url)circles",
+                token: authViewModel.loggedInBackendUser?.token ?? "",
+                loading: true
+            )
+            friendRequestViewModel.fetchFriendRequests(
+                from: URL(string: "\(APIConstants.base_url)requests/")!,
+                authToken: authViewModel.loggedInBackendUser?.token ?? "",
+                loading: true
+            )
+           
+            
+        }
+    }
+}
 
-	var body: some View {
-		NavigationStack {
-			ZStack {
-				BackgroundView()
-				VStack(alignment: .center) {
-					if communityPageViewModel.error {
-						Spacer()
-						Text("No Friends?")
-							.multilineTextAlignment(.center)
-							.font(Font.custom("Poppins-SemiBold", size: 18))
-							.foregroundColor(Color.white)
-						Text("Add your friends and see their timetable")
-							.multilineTextAlignment(.center)
-							.font(Font.custom("Poppins-Regular", size: 12))
-							.foregroundColor(Color.white)
-						Spacer()
-					}
-					else {
-						if communityPageViewModel.loading {
-							Spacer()
-							ProgressView()
-							Spacer()
-						}
-						else {
-							List(communityPageViewModel.friends, id: \.username) { friend in
-								NavigationLink {
-									TimeTableView(friend: friend)
-								} label: {
-									HStack {
-										UserImage(url: friend.picture, height: 48, width: 48)
-										VStack(alignment: .leading) {
-											Text(friend.name)
-												.font(Font.custom("Poppins-SemiBold", size: 15))
-												.foregroundColor(Color.white)
-											if friend.currentStatus.status == "free" {
-												Text("Not in a class right now")
-													.font(Font.custom("Poppins-Regular", size: 14))
-													.foregroundColor(Color("Accent"))
-											}
-											else {
-												Text(friend.currentStatus.class ?? "")
-													.font(Font.custom("Poppins-Regular", size: 14))
-													.foregroundColor(Color("Accent"))
-											}
-										}
-										Spacer()
-										VStack {
-											Text("NOW")
-												.font(Font.custom("Poppins-Regular", size: 14))
-												.foregroundColor(Color.white)
-											if friend.currentStatus.status == "free" {
-												Text(friend.currentStatus.status.capitalized)
-													.font(Font.custom("Poppins-SemiBold", size: 16))
-													.foregroundColor(Color.white)
-											}
-											else {
-												Text(friend.currentStatus.venue ?? "-")
-													.font(Font.custom("Poppins-SemiBold", size: 16))
-													.foregroundColor(Color.white)
-											}
-										}
-									}
-									.padding(.bottom)
-								}
-								.listRowBackground(
-									RoundedRectangle(cornerRadius: 15)
-										.fill(Color("Secondary"))
-										.padding(.bottom)
-								)
-								.listRowSeparator(.hidden)
-							}
-							.safeAreaPadding(EdgeInsets(top: 0, leading: 0, bottom: 100, trailing: 0))
-							.scrollContentBackground(.hidden)
-							.refreshable {
-								communityPageViewModel.fetchData(
-									from:
-										"\(APIConstants.base_url)/api/v2/friends/\(authViewModel.loggedInBackendUser?.username ?? "")/",
-									token: authViewModel.loggedInBackendUser?.token ?? "",
-									loading: false
-								)
-							}
-							Spacer()
-						}
-					}
-				}
-			}
-			.toolbar {
-				Group {
-					if !(friendRequestViewModel.error) && !(friendRequestViewModel.loading) {
 
-						Text("\(friendRequestViewModel.requests.count) req")
-							.font(Font.custom("Poppins-Regular", size: 12))
-							.padding(4)
-							.foregroundStyle(.white)
-							.background(.red)
-							.clipShape(RoundedRectangle(cornerRadius: 4))
-							.onTapGesture {
-								isAddFriendsViewPresented.toggle()
-							}
-							.sheet(
-								isPresented: $isAddFriendsViewPresented,
-								onDismiss: {
-									communityPageViewModel.fetchData(
-										from:
-											"\(APIConstants.base_url)/api/v2/friends/\(authViewModel.loggedInBackendUser?.username ?? "")/",
-										token: authViewModel.loggedInBackendUser?.token ?? "",
-										loading: true
-									)
-								},
-								content: FriendRequestView.init
-							)
+struct FilterPill: View {
+    let title: String
+    let isSelected: Bool
 
-					}
-				}
-				Button(action: {
-					isShowingRequestView.toggle()
-
-				}) {
-					Image(systemName: "person.fill.badge.plus")
-						.foregroundColor(.white)
-				}
-				.navigationDestination(
-					isPresented: $isShowingRequestView,
-					destination: { AddFriendsView() }
-				)
-
-			}
-			.navigationTitle("Connect")
-		}
-		.onAppear {
-			communityPageViewModel.fetchData(
-				from:
-					"\(APIConstants.base_url)/api/v2/friends/\(authViewModel.loggedInBackendUser?.username ?? "")/",
-				token: authViewModel.loggedInBackendUser?.token ?? "",
-				loading: true
-			)
-			friendRequestViewModel.fetchFriendRequests(
-				from: URL(string: "\(APIConstants.base_url)/api/v2/requests/")!,
-				authToken: authViewModel.loggedInBackendUser?.token ?? "",
-				loading: true
-			)
-		}
-	}
+    var body: some View {
+        Text(title)
+            .font(Font.custom("Poppins-Regular", size: 14))
+            .foregroundColor(isSelected ? .white : .gray)
+            .padding(.horizontal, 16)
+            .padding(.vertical, 8)
+            .background(
+                Capsule()
+                    .stroke(Color("Accent"), lineWidth: isSelected ? 2 : 0)
+                    .background(
+                        Capsule()
+                            .fill(Color("Secondary").opacity(0.5))
+                    )
+            )
+    }
+    
 }

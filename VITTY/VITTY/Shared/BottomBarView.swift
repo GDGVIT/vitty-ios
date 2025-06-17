@@ -14,9 +14,11 @@ struct BottomBarView: View {
 	
 	var body: some View {
 		HStack {
-//			TabButtonView(value: $presentTab, name: "Courses", image: "book.closed.fill", tabNo: 0, namespace: bottomBarAnimation)
+            TabButtonView(value: $presentTab, name: "Academics", image: "bookmark.fill", tabNo: 3, namespace: bottomBarAnimation)
 			TabButtonView(value: $presentTab, name: "Schedule", image: "calendar.badge.clock", tabNo: 1, namespace: bottomBarAnimation)
 			TabButtonView(value: $presentTab, name: "Connect", image: "person.2.fill", tabNo: 2, namespace: bottomBarAnimation)
+         
+            
 		}
 		.padding()
 		.frame(height: 84)

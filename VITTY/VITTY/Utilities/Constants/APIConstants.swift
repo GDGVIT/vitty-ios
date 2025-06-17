@@ -8,5 +8,5 @@
 import Foundation
 
 struct APIConstants {
-	static let base_url = "https://vitty-api.dscvit.com"
+	static let base_url = "http://visiting-eba-vitty-d61856bb.koyeb.app/api/v2/"
 }

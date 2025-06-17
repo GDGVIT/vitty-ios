@@ -18,6 +18,7 @@ class AuthAPIService {
 	func signInUser(
 		with authRequestBody: AuthRequestBody
 	) async throws -> AppUser {
+        print(authRequestBody.uuid)
 		let url = URL(string: "\(Constants.url)auth/firebase/")!
 		var request = URLRequest(url: url)
 		request.httpMethod = "POST"

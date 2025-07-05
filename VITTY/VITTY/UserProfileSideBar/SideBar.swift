@@ -16,13 +16,11 @@ struct UserProfileSidebar: View {
         ZStack(alignment: .topTrailing) {
             Button {
                 isPresented = false
-                isPresented = false
             } label: {
                 Image(systemName: "xmark")
                     .foregroundColor(.white)
                     .padding()
             }
-            
             
             VStack(alignment: .leading, spacing: 24) {
                 VStack(alignment: .leading, spacing: 8) {
@@ -40,9 +38,7 @@ struct UserProfileSidebar: View {
                 }
                 .padding(.top, 40)
                 
-                
                 Divider().background(Color.clear)
-                
                 
                 NavigationLink {
                     EmptyClassRoom()
@@ -50,14 +46,12 @@ struct UserProfileSidebar: View {
                     MenuOption(icon: "emptyclassroom", title: "Find Empty Classroom")
                 }
                 
-                
                 NavigationLink {
                     SettingsView()
                 } label: {
                     MenuOption(icon: "settings", title: "Settings")
                 }
                 
-                
                 Divider().background(Color.clear)
                 
 //                MenuOption(icon: "share", title: "Share")
@@ -67,16 +61,7 @@ struct UserProfileSidebar: View {
                 }
 //                MenuOption(icon: "about", title: "About")
                 
-                
-//                MenuOption(icon: "share", title: "Share")
-                MenuOption(icon: "support", title: "Support").onTapGesture {
-                    let supportUrl = URL(string: "https://github.com/GDGVIT/vitty-ios/issues/new?template=bug_report.md")
-                    UIApplication.shared.open(supportUrl!)
-                }
-//                MenuOption(icon: "about", title: "About")
-                
                 Divider().background(Color.clear)
-                
                 
                 VStack(alignment: .leading, spacing: 4) {
                     Text("Ghost Mode")
@@ -102,28 +87,9 @@ struct UserProfileSidebar: View {
                                 .foregroundColor(.white)
                         }
                     }
-                    
-                    HStack {
-                        Toggle("", isOn: $ghostMode)
-                            .labelsHidden()
-                            .toggleStyle(SwitchToggleStyle(tint: Color("Accent")))
-                            .disabled(isUpdatingGhostMode)
-                            .padding(.top, 4)
-                            .onChange(of: ghostMode) { oldValue, newValue in
-                                updateGhostMode(enabled: newValue)
-                            }
-                        
-                        if isUpdatingGhostMode {
-                            ProgressView()
-                                .scaleEffect(0.8)
-                                .foregroundColor(.white)
-                        }
-                    }
                 }
                 
-                
                 Spacer()
-                
                 
                 Button {
                     authViewModel.signOut()
@@ -213,76 +179,12 @@ struct UserProfileSidebar: View {
                 }
             }
         }.resume()
-            .transition(.move(edge: .trailing))
-        }
-        .animation(.easeInOut(duration: 0.3), value: isPresented)
-        .onAppear {
-            loadGhostModeState()
-        }
-    }
-    
-    // MARK: - Ghost Mode Functions
-    
-    private func loadGhostModeState() {
-        
-        let username = authViewModel.loggedInBackendUser?.username ?? ""
-        ghostMode = UserDefaults.standard.bool(forKey: "ghostMode_\(username)")
-    }
-    
-    private func updateGhostMode(enabled: Bool) {
-        guard let username = authViewModel.loggedInBackendUser?.username,
-              let token = authViewModel.loggedInBackendUser?.token else {
-            return
-        }
-        
-        isUpdatingGhostMode = true
-        
-       
-        let endpoint = enabled ? "ghost" : "alive"
-        let urlString = "\(APIConstants.base_url)friends/\(endpoint)/\(username)"
-        
-        guard let url = URL(string: urlString) else {
-            isUpdatingGhostMode = false
-            return
-        }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            DispatchQueue.main.async {
-                isUpdatingGhostMode = false
-                
-                if let error = error {
-                    print("Ghost mode update failed: \(error.localizedDescription)")
-                    
-                    ghostMode = !enabled
-                    return
-                }
-                
-                if let httpResponse = response as? HTTPURLResponse {
-                    if httpResponse.statusCode == 200 {
-                       
-                        UserDefaults.standard.set(enabled, forKey: "ghostMode_\(username)")
-                        print("Ghost mode \(enabled ? "enabled" : "disabled") successfully")
-                    } else {
-                        print("Ghost mode update failed with status code: \(httpResponse.statusCode)")
-                      
-                        ghostMode = !enabled
-                    }
-                }
-            }
-        }.resume()
     }
 }
 
 struct MenuOption: View {
     let icon: String
     let title: String
-    
-    
     
     
     var body: some View {

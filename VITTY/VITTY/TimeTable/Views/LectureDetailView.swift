@@ -105,15 +105,4 @@ struct LectureDetailView: View {
                 return ("Failed to parse the time string.")
             }
         }
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "HH:mm:ss"
-            if let date = dateFormatter.date(from: timeComponents) {
-                dateFormatter.dateFormat = "h:mm a"
-                let formattedTime = dateFormatter.string(from: date)
-                return (formattedTime)
-            }
-            else {
-                return ("Failed to parse the time string.")
-            }
-        }
 }

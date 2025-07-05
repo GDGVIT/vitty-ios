@@ -4,12 +4,6 @@
 //
 //  Created by Rujin Devkota on 2/27/25.
 
-//
-//  Academics.swift
-//  VITTY
-//
-//  Created by Rujin Devkota on 2/27/25.
-
 import SwiftUI
 import UIKit
 
@@ -18,7 +12,6 @@ struct RichTextView: UIViewRepresentable {
     @Binding var selectedRange: NSRange
     @Binding var typingAttributes: [NSAttributedString.Key: Any]
     @Binding var isEmpty: Bool
-    
     
    
     func makeUIView(context: Context) -> UITextView {
@@ -32,7 +25,6 @@ struct RichTextView: UIViewRepresentable {
         textView.textColor = .white
         
        
-       
         textView.attributedText = attributedText
         textView.selectedRange = selectedRange
         
@@ -41,12 +33,10 @@ struct RichTextView: UIViewRepresentable {
 
     func updateUIView(_ uiView: UITextView, context: Context) {
        
-       
         if context.coordinator.isUpdating {
             return
         }
         
-       
        
         if !uiView.attributedText.isEqual(to: attributedText) {
             let previousSelectedRange = uiView.selectedRange
@@ -54,11 +44,7 @@ struct RichTextView: UIViewRepresentable {
             uiView.attributedText = attributedText
             
     
-    
             if previousSelectedRange.location <= uiView.attributedText.length {
-                let maxRange = min(previousSelectedRange.location + previousSelectedRange.length, uiView.attributedText.length)
-                let validRange = NSRange(location: previousSelectedRange.location, length: maxRange - previousSelectedRange.location)
-                uiView.selectedRange = validRange
                 let maxRange = min(previousSelectedRange.location + previousSelectedRange.length, uiView.attributedText.length)
                 let validRange = NSRange(location: previousSelectedRange.location, length: maxRange - previousSelectedRange.location)
                 uiView.selectedRange = validRange
@@ -66,7 +52,6 @@ struct RichTextView: UIViewRepresentable {
             context.coordinator.isUpdating = false
         }
         
-
 
         if !NSEqualRanges(uiView.selectedRange, selectedRange) &&
            selectedRange.location <= uiView.attributedText.length &&
@@ -76,7 +61,6 @@ struct RichTextView: UIViewRepresentable {
             context.coordinator.isUpdating = false
         }
         
- 
  
         if !NSDictionary(dictionary: uiView.typingAttributes).isEqual(to: typingAttributes) {
             uiView.typingAttributes = typingAttributes
@@ -97,26 +81,20 @@ struct RichTextView: UIViewRepresentable {
 
         func textViewDidChange(_ textView: UITextView) {
            
-           
             guard !isUpdating else { return }
             
             isUpdating = true
             defer { isUpdating = false }
             
          
-         
             parent.attributedText = NSMutableAttributedString(attributedString: textView.attributedText)
             parent.isEmpty = textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-            
-            
-            parent.typingAttributes = textView.typingAttributes
             
             
             parent.typingAttributes = textView.typingAttributes
         }
 
         func textViewDidChangeSelection(_ textView: UITextView) {
-     
      
             guard !isUpdating else { return }
             
@@ -140,27 +118,10 @@ struct RichTextView: UIViewRepresentable {
 
 
 
-            
-           
-            if textView.selectedRange.length == 0 && textView.selectedRange.location > 0 {
-               
-                let location = min(textView.selectedRange.location - 1, textView.attributedText.length - 1)
-                if location >= 0 {
-                    let attributes = textView.attributedText.attributes(at: location, effectiveRange: nil)
-                    parent.typingAttributes = attributes
-                }
-            }
-        }
-    }
-}
-
-
-
 struct NoteEditorView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(AcademicsViewModel.self) private var academicsViewModel
     @Environment(AuthViewModel.self) private var authViewModel
-    @Environment(\.presentationMode) var presentationMode
     @Environment(\.presentationMode) var presentationMode
     
     @State private var attributedText = NSMutableAttributedString()
@@ -172,7 +133,6 @@ struct NoteEditorView: View {
     
     let existingNote: CreateNoteModel?
     let preloadedAttributedString: NSAttributedString? // Pre-processed content
-    let preloadedAttributedString: NSAttributedString? // Pre-processed content
     @State private var selectedFont: UIFont = UIFont.systemFont(ofSize: 18)
     @State private var selectedColor: Color = .white
     @State private var showFontPicker = false
@@ -181,20 +141,15 @@ struct NoteEditorView: View {
     @State private var hasUnsavedChanges = false
     @State private var isInitialized = false
     @State private var goback = false
-    @State private var goback = false
     
     @Environment(\.modelContext) private var modelContext
     let courseCode: String
     let courseName: String
     let courseIns : String
     let courseSlot : String
-    let courseIns : String
-    let courseSlot : String
     
     init(existingNote: CreateNoteModel? = nil, preloadedAttributedString: NSAttributedString? = nil, courseCode: String, courseName: String,courseIns: String , courseSlot: String) {
-    init(existingNote: CreateNoteModel? = nil, preloadedAttributedString: NSAttributedString? = nil, courseCode: String, courseName: String,courseIns: String , courseSlot: String) {
         self.existingNote = existingNote
-        self.preloadedAttributedString = preloadedAttributedString
         self.preloadedAttributedString = preloadedAttributedString
         self.courseCode = existingNote?.courseId ?? courseCode
         self.courseName = existingNote?.courseName ?? courseName
@@ -225,20 +180,8 @@ struct NoteEditorView: View {
                     await loadNoteContent(note)
                     isInitialized = true
                 }
-            if let preloaded = preloadedAttributedString {
-              
-                attributedText = NSMutableAttributedString(attributedString: preloaded)
-                isEmpty = preloaded.string.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-                isInitialized = true
-            } else {
-               
-                Task { @MainActor in
-                    await loadNoteContent(note)
-                    isInitialized = true
-                }
             }
         } else {
-            
             
             attributedText = NSMutableAttributedString()
             isEmpty = true
@@ -248,15 +191,6 @@ struct NoteEditorView: View {
     
     @MainActor
     private func loadNoteContent(_ note: CreateNoteModel) async {
-     
-        if let cachedAttributedString = note.cachedAttributedString {
-            attributedText = NSMutableAttributedString(attributedString: cachedAttributedString)
-            isEmpty = cachedAttributedString.string.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-            return
-        }
-        
-  
-        do {
      
         if let cachedAttributedString = note.cachedAttributedString {
             attributedText = NSMutableAttributedString(attributedString: cachedAttributedString)
@@ -291,10 +225,8 @@ struct NoteEditorView: View {
     func saveContent() {
         guard hasUnsavedChanges || existingNote == nil else {
             handleBackNavigation()
-            handleBackNavigation()
             return
         }
-        
         
         do {
             let data = try NSKeyedArchiver.archivedData(withRootObject: attributedText, requiringSecureCoding: false)
@@ -305,8 +237,6 @@ struct NoteEditorView: View {
                 note.noteName = title
                 note.noteContent = dataString
                 note.createdAt = Date.now
-               
-                CreateNoteModel.clearCache()
                
                 CreateNoteModel.clearCache()
             } else {
@@ -356,25 +286,20 @@ struct NoteEditorView: View {
             if isInitialized {
                 VStack {
                  
-                 
                     headerView
                     
                   
-                  
                     textEditorView
                     
-                  
                   
                     toolbarView
                 }
             } else {
               
-              
                 ProgressView("Loading...")
                     .foregroundColor(.white)
             }
 
-            
             
             if showFontPicker {
                 fontPickerOverlay
@@ -403,9 +328,7 @@ struct NoteEditorView: View {
     private var headerView: some View {
         HStack {
             Button(action: { handleBackNavigation() }) {
-            Button(action: { handleBackNavigation() }) {
                 Image(systemName: "chevron.left")
-                    .foregroundColor(Color("Accent")).font(.title2)
                     .foregroundColor(Color("Accent")).font(.title2)
             }
             Spacer()
@@ -447,7 +370,6 @@ struct NoteEditorView: View {
     private var toolbarView: some View {
         HStack(spacing: 20) {
           
-          
             Button(action: {
                 showFontPicker.toggle()
                 showFontSizePicker = false
@@ -456,7 +378,6 @@ struct NoteEditorView: View {
                     .foregroundColor(Color("Accent"))
             }
             
-          
           
             Button(action: {
                 showFontSizePicker.toggle()
@@ -473,12 +394,10 @@ struct NoteEditorView: View {
             }
             
            
-           
             formatButton(action: toggleBold, icon: "bold", isActive: isBoldActive())
             formatButton(action: toggleItalic, icon: "italic", isActive: isItalicActive())
             formatButton(action: toggleUnderline, icon: "underline", isActive: isUnderlineActive())
 
-        
         
             ColorPicker("", selection: $selectedColor, supportsOpacity: false)
                 .labelsHidden()
@@ -487,7 +406,6 @@ struct NoteEditorView: View {
                     applyAttribute(.foregroundColor, value: UIColor(newColor))
                 }
 
-           
            
             Button(action: addBulletPoints) {
                 Image(systemName: "list.bullet")
@@ -588,7 +506,6 @@ struct NoteEditorView: View {
     }
 
 
-
     
     func addBulletPoints() {
         guard selectedRange.length > 0 else { return }
@@ -606,39 +523,15 @@ struct NoteEditorView: View {
 
     func isBoldActive() -> Bool {
         return checkTraitActive(.traitBold)
-        return checkTraitActive(.traitBold)
     }
 
     func isItalicActive() -> Bool {
-        return checkTraitActive(.traitItalic)
         return checkTraitActive(.traitItalic)
     }
 
     func isUnderlineActive() -> Bool {
         let underline = getCurrentUnderlineStyle()
         return underline == NSUnderlineStyle.single.rawValue
-    }
-    
-    private func checkTraitActive(_ trait: UIFontDescriptor.SymbolicTraits) -> Bool {
-        if selectedRange.length > 0 {
-            var hasTraitThroughout = true
-            let endLocation = min(selectedRange.location + selectedRange.length, attributedText.length)
-            
-            attributedText.enumerateAttribute(.font, in: NSRange(location: selectedRange.location, length: endLocation - selectedRange.location), options: []) { value, range, stop in
-                if let font = value as? UIFont {
-                    if !font.fontDescriptor.symbolicTraits.contains(trait) {
-                        hasTraitThroughout = false
-                        stop.pointee = true
-                    }
-                }
-            }
-            return hasTraitThroughout
-        } else {
-            if let font = typingAttributes[.font] as? UIFont {
-                return font.fontDescriptor.symbolicTraits.contains(trait)
-            }
-            return false
-        }
     }
     
     private func checkTraitActive(_ trait: UIFontDescriptor.SymbolicTraits) -> Bool {
@@ -680,8 +573,6 @@ struct NoteEditorView: View {
     }
     
     func applyFontFamily(_ font: UIFont) {
-        let size = getCurrentFont().pointSize
-        let newFont = UIFont(name: font.fontName, size: size) ?? font
         let size = getCurrentFont().pointSize
         let newFont = UIFont(name: font.fontName, size: size) ?? font
         applyAttribute(.font, value: newFont)
@@ -726,40 +617,7 @@ struct NoteEditorView: View {
                 let newFont = UIFont(descriptor: newFontDescriptor, size: currentFont.pointSize)
                 typingAttributes[.font] = newFont
             }
-        if selectedRange.length > 0 {
-            let mutableAttributedString = NSMutableAttributedString(attributedString: attributedText)
-            let endLocation = min(selectedRange.location + selectedRange.length, attributedText.length)
-            let range = NSRange(location: selectedRange.location, length: endLocation - selectedRange.location)
-            
-            mutableAttributedString.enumerateAttribute(.font, in: range, options: []) { value, subRange, _ in
-                if let font = value as? UIFont {
-                    var traits = font.fontDescriptor.symbolicTraits
-                    if traits.contains(.traitBold) {
-                        traits.remove(.traitBold)
-                    } else {
-                        traits.insert(.traitBold)
-                    }
-                    if let newFontDescriptor = font.fontDescriptor.withSymbolicTraits(traits) {
-                        let newFont = UIFont(descriptor: newFontDescriptor, size: font.pointSize)
-                        mutableAttributedString.addAttribute(.font, value: newFont, range: subRange)
-                    }
-                }
-            }
-            attributedText = mutableAttributedString
-        } else {
-            let currentFont = typingAttributes[.font] as? UIFont ?? UIFont.systemFont(ofSize: 18)
-            var traits = currentFont.fontDescriptor.symbolicTraits
-            if traits.contains(.traitBold) {
-                traits.remove(.traitBold)
-            } else {
-                traits.insert(.traitBold)
-            }
-            if let newFontDescriptor = currentFont.fontDescriptor.withSymbolicTraits(traits) {
-                let newFont = UIFont(descriptor: newFontDescriptor, size: currentFont.pointSize)
-                typingAttributes[.font] = newFont
-            }
         }
-        hasUnsavedChanges = true
         hasUnsavedChanges = true
     }
 
@@ -796,62 +654,11 @@ struct NoteEditorView: View {
                 let newFont = UIFont(descriptor: newFontDescriptor, size: currentFont.pointSize)
                 typingAttributes[.font] = newFont
             }
-        if selectedRange.length > 0 {
-            let mutableAttributedString = NSMutableAttributedString(attributedString: attributedText)
-            let endLocation = min(selectedRange.location + selectedRange.length, attributedText.length)
-            let range = NSRange(location: selectedRange.location, length: endLocation - selectedRange.location)
-            
-            mutableAttributedString.enumerateAttribute(.font, in: range, options: []) { value, subRange, _ in
-                if let font = value as? UIFont {
-                    var traits = font.fontDescriptor.symbolicTraits
-                    if traits.contains(.traitItalic) {
-                        traits.remove(.traitItalic)
-                    } else {
-                        traits.insert(.traitItalic)
-                    }
-                    if let newFontDescriptor = font.fontDescriptor.withSymbolicTraits(traits) {
-                        let newFont = UIFont(descriptor: newFontDescriptor, size: font.pointSize)
-                        mutableAttributedString.addAttribute(.font, value: newFont, range: subRange)
-                    }
-                }
-            }
-            attributedText = mutableAttributedString
-        } else {
-            let currentFont = typingAttributes[.font] as? UIFont ?? UIFont.systemFont(ofSize: 18)
-            var traits = currentFont.fontDescriptor.symbolicTraits
-            if traits.contains(.traitItalic) {
-                traits.remove(.traitItalic)
-            } else {
-                traits.insert(.traitItalic)
-            }
-            if let newFontDescriptor = currentFont.fontDescriptor.withSymbolicTraits(traits) {
-                let newFont = UIFont(descriptor: newFontDescriptor, size: currentFont.pointSize)
-                typingAttributes[.font] = newFont
-            }
         }
-        hasUnsavedChanges = true
         hasUnsavedChanges = true
     }
    
-   
     func toggleUnderline() {
-        if selectedRange.length > 0 {
-            let mutableAttributedString = NSMutableAttributedString(attributedString: attributedText)
-            let endLocation = min(selectedRange.location + selectedRange.length, attributedText.length)
-            let range = NSRange(location: selectedRange.location, length: endLocation - selectedRange.location)
-            
-            mutableAttributedString.enumerateAttribute(.underlineStyle, in: range, options: []) { value, subRange, _ in
-                let currentUnderline = value as? Int ?? 0
-                let newUnderline = currentUnderline == NSUnderlineStyle.single.rawValue ? 0 : NSUnderlineStyle.single.rawValue
-                mutableAttributedString.addAttribute(.underlineStyle, value: newUnderline, range: subRange)
-            }
-            attributedText = mutableAttributedString
-        } else {
-            let currentUnderline = typingAttributes[.underlineStyle] as? Int ?? 0
-            let newUnderline = currentUnderline == NSUnderlineStyle.single.rawValue ? 0 : NSUnderlineStyle.single.rawValue
-            typingAttributes[.underlineStyle] = newUnderline
-        }
-        hasUnsavedChanges = true
         if selectedRange.length > 0 {
             let mutableAttributedString = NSMutableAttributedString(attributedString: attributedText)
             let endLocation = min(selectedRange.location + selectedRange.length, attributedText.length)
@@ -874,9 +681,6 @@ struct NoteEditorView: View {
     func applyAttribute(_ key: NSAttributedString.Key, value: Any) {
         if selectedRange.length > 0 {
             let mutableAttributedString = NSMutableAttributedString(attributedString: attributedText)
-            let endLocation = min(selectedRange.location + selectedRange.length, attributedText.length)
-            let range = NSRange(location: selectedRange.location, length: endLocation - selectedRange.location)
-            mutableAttributedString.addAttribute(key, value: value, range: range)
             let endLocation = min(selectedRange.location + selectedRange.length, attributedText.length)
             let range = NSRange(location: selectedRange.location, length: endLocation - selectedRange.location)
             mutableAttributedString.addAttribute(key, value: value, range: range)

@@ -7,11 +7,9 @@
 import SwiftUI
 import SwiftData
 
-
 struct RemindersView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var allReminders: [Remainder]
-    @Query private var timeTables: [TimeTable]
     @Query private var timeTables: [TimeTable]
     
     @State private var searchText = ""
@@ -67,16 +65,9 @@ struct RemindersView: View {
         }.sorted { $0.daysToGo < $1.daysToGo }
     }
     
-    // Extract courses from timetable
-    private var availableCourses: [Course] {
-        let courses = timeTables.first.map { extractCourses(from: $0) } ?? []
-        return courses
-    }
-    
     var body: some View {
         ScrollView {
             VStack(spacing: 0) {
-                
                 
                 HStack {
                     Image(systemName: "magnifyingglass")

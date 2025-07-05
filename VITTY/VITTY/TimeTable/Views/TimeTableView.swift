@@ -1,5 +1,4 @@
 
-
 import OSLog
 import SwiftData
 import SwiftUI
@@ -8,21 +7,14 @@ struct TimeTableView: View {
     @Environment(AuthViewModel.self) private var authViewModel
     @Environment(\.modelContext) private var context
     @Environment(\.scenePhase) private var scenePhase
-    @Environment(\.scenePhase) private var scenePhase
     
     private let daysOfWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-    
     
     @State private var viewModel = TimeTableViewModel()
     @State private var selectedLecture: Lecture? = nil
     @Query private var timetableItem: [TimeTable]
     @Environment(\.dismiss) private var dismiss
-    @Query private var timetableItem: [TimeTable]
-    @Environment(\.dismiss) private var dismiss
     let friend: Friend?
-    
-    var isFriendsTimeTable: Bool
-    
     
     var isFriendsTimeTable: Bool
     
@@ -33,24 +25,10 @@ struct TimeTableView: View {
         )
     )
     
-    
     var body: some View {
-        NavigationStack {
         NavigationStack {
             ZStack {
                 BackgroundView()
-                VStack {
-                    if isFriendsTimeTable {
-                        HStack {
-                            Button(action: { dismiss() }) {
-                                Image(systemName: "chevron.left")
-                                    .foregroundColor(Color("Accent")).font(.title2)
-                            }
-                            Spacer()
-                        }.padding(8)
-                    }
-                    
-                    switch viewModel.stage {
                 VStack {
                     if isFriendsTimeTable {
                         HStack {
@@ -86,11 +64,9 @@ struct TimeTableView: View {
                                         Text(day)
                                             .foregroundStyle(daysOfWeek[viewModel.dayNo] == day
                                                            ? Color("Background") : Color("Accent"))
-                                                           ? Color("Background") : Color("Accent"))
                                             .frame(width: 60, height: 54)
                                             .background(
                                                 daysOfWeek[viewModel.dayNo] == day
-                                                ? Color("Accent") : Color.clear
                                                 ? Color("Accent") : Color.clear
                                             )
                                             .onTapGesture {
@@ -109,7 +85,6 @@ struct TimeTableView: View {
                             .background(Color("Secondary"))
                             .clipShape(RoundedRectangle(cornerRadius: 10))
                             .padding(.horizontal)
-                            
                             
                             if viewModel.lectures.isEmpty {
                                 Spacer()

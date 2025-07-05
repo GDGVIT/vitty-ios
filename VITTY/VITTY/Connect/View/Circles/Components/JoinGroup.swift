@@ -3,36 +3,17 @@
 //
 //  Created by Rujin Devkota on 2/28/25.
 //
-//  JoinGroup.swift
-//  VITTY
-//
-//  Created by Rujin Devkota on 2/28/25.
-//
 import SwiftUI
 import AVFoundation
-import UIKit
 import UIKit
 
 struct JoinGroup: View {
     let screenHeight = UIScreen.main.bounds.height
     let screenWidth = UIScreen.main.bounds.width
 
-
     @Binding var groupCode: String
     @State private var isScanning = false
     @State private var scannedCode: String = ""
-    @State private var showingAlert = false
-    @State private var alertMessage = ""
-    @State private var isJoining = false
-    @State private var showToast = false
-    @State private var toastMessage = ""
-    @State private var circleName = ""
-    @State private var localGroupCode = ""
-
-    @Environment(AuthViewModel.self) private var authViewModel
-    @Environment(CommunityPageViewModel.self) private var communityPageViewModel
-    @Environment(\.dismiss) private var dismiss
-
     @State private var showingAlert = false
     @State private var alertMessage = ""
     @State private var isJoining = false

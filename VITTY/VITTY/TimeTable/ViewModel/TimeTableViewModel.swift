@@ -14,11 +14,7 @@ public enum Stage {
     case loading
     case error
     case data
-    case loading
-    case error
-    case data
 }
-
 
 extension TimeTableView {
     @Observable
@@ -251,20 +247,10 @@ extension TimeTableView {
         var updatedTimeTable: TimeTable? {
             timeTable
         }
-        var updatedTimeTable: TimeTable? {
-            timeTable
-        }
         
         func resetSyncStatus() {
             hasSyncedThisSession = false
             logger.debug("Sync status reset")
         }
     }
-        func resetSyncStatus() {
-            hasSyncedThisSession = false
-            logger.debug("Sync status reset")
-        }
-    }
 }
-
-

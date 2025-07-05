@@ -5,7 +5,6 @@
 //  Created by Chandram Dutta on 04/01/24.
 //
 //
-//
 
 import Foundation
 import Alamofire
@@ -17,13 +16,9 @@ class CommunityPageViewModel {
     var circles = [CircleModel]()
     var circleRequests = [CircleRequest]()
     
-    var circleRequests = [CircleRequest]()
-    
     var loadingFreinds = false
     var loadingCircle = false
     var loadingCircleMembers = false
-    var loadingCircleRequests = false
-    var loadingRequestAction = false
     var loadingCircleRequests = false
     var loadingRequestAction = false
     
@@ -32,12 +27,7 @@ class CommunityPageViewModel {
     var errorCircleMembers = false
     var errorCircleRequests = false
     
-    var errorCircleRequests = false
-    
     var circleMembers = [CircleUserTemp]()
-    
-    var circleMembersDict: [String: [CircleUserTemp]] = [:]
-    var loadingCircleMembersDict: [String: Bool] = [:]
     
     var circleMembersDict: [String: [CircleUserTemp]] = [:]
     var loadingCircleMembersDict: [String: Bool] = [:]
@@ -67,23 +57,11 @@ class CommunityPageViewModel {
                     self.loadingFreinds = false
                     
                     switch response.result {
-                DispatchQueue.main.async {
-                    self.loadingFreinds = false
-                    
-                    switch response.result {
                     case .success(let data):
                         self.friends = data.data
                         self.errorFreinds = false
                         
-                        self.errorFreinds = false
-                        
                     case .failure(let error):
-                        self.logger.error("Error fetching friends: \(error)")
-                      
-                        if self.friends.isEmpty {
-                            self.errorFreinds = true
-                        }
-                    }
                         self.logger.error("Error fetching friends: \(error)")
                       
                         if self.friends.isEmpty {
@@ -105,15 +83,6 @@ class CommunityPageViewModel {
       
         self.errorCircle = false
         
-    func fetchCircleData(from url: String, token: String, loading: Bool = false) {
-       
-        if loading || circles.isEmpty {
-            self.loadingCircle = true
-        }
-        
-      
-        self.errorCircle = false
-        
         AF.request(url, method: .get, headers: ["Authorization": "Token \(token)"])
             .validate()
             .responseDecodable(of: CircleResponse.self) { response in
@@ -121,15 +90,8 @@ class CommunityPageViewModel {
                     self.loadingCircle = false
                     
                     switch response.result {
-                DispatchQueue.main.async {
-                    self.loadingCircle = false
-                    
-                    switch response.result {
                     case .success(let data):
                         self.circles = data.data
-                        self.errorCircle = false
-                        print("Successfully fetched circles: \(data.data)")
-                        
                         self.errorCircle = false
                         print("Successfully fetched circles: \(data.data)")
                         
@@ -287,8 +249,6 @@ class CommunityPageViewModel {
             .responseDecodable(of: CircleUserResponseTemp.self) { response in
                 DispatchQueue.main.async {
                     switch response.result {
-                DispatchQueue.main.async {
-                    switch response.result {
                     case .success(let data):
                         if let circleID = circleID {
                             self.circleMembersDict[circleID] = data.data
@@ -299,27 +259,7 @@ class CommunityPageViewModel {
                         }
                         print("Successfully fetched circle members: \(data.data)")
                         
-                        if let circleID = circleID {
-                            self.circleMembersDict[circleID] = data.data
-                            self.loadingCircleMembersDict[circleID] = false
-                        } else {
-                            self.circleMembers = data.data
-                            self.loadingCircleMembers = false
-                        }
-                        print("Successfully fetched circle members: \(data.data)")
-                        
                     case .failure(let error):
-                        self.logger.error("Error fetching circle members: \(error)")
-                        
-                        if let circleID = circleID {
-                            self.loadingCircleMembersDict[circleID] = false
-                        } else {
-                            self.loadingCircleMembers = false
-                            if self.circleMembers.isEmpty {
-                                self.errorCircleMembers = true
-                            }
-                        }
-                    }
                         self.logger.error("Error fetching circle members: \(error)")
                         
                         if let circleID = circleID {
@@ -335,12 +275,7 @@ class CommunityPageViewModel {
             }
     }
     
-    
     //MARK : Circle Leave
-    func fetchCircleLeave(from url: String, token: String, loading: Bool = false) {
-        if loading {
-            self.loadingCircleMembers = true
-        }
     func fetchCircleLeave(from url: String, token: String, loading: Bool = false) {
         if loading {
             self.loadingCircleMembers = true
@@ -351,24 +286,13 @@ class CommunityPageViewModel {
             .responseDecodable(of: CircleUserResponseTemp.self) { response in
                 DispatchQueue.main.async {
                     self.loadingCircleMembers = false
-                DispatchQueue.main.async {
-                    self.loadingCircleMembers = false
                     
-                    switch response.result {
                     switch response.result {
                     case .success(let data):
                         self.circleMembers = data.data
                         print("Successfully fetched circle members after leave: \(data.data)")
                         
-                        self.circleMembers = data.data
-                        print("Successfully fetched circle members after leave: \(data.data)")
-                        
                     case .failure(let error):
-                        self.logger.error("Error fetching circle members: \(error)")
-                        if self.circleMembers.isEmpty {
-                            self.errorCircleMembers = true
-                        }
-                    }
                         self.logger.error("Error fetching circle members: \(error)")
                         if self.circleMembers.isEmpty {
                             self.errorCircleMembers = true

@@ -34,15 +34,11 @@ struct ConnectPage: View {
     @State private var activeSheet: SheetType?
     @State private var showCircleMenu = false
     @Environment(\.dismiss) private var dismiss
-    @State private var activeSheet: SheetType?
-    @State private var showCircleMenu = false
-    @Environment(\.dismiss) private var dismiss
     
     @Binding var isCreatingGroup : Bool
     
     @State private var isAddFriendsViewPresented = false
     @State private var selectedTab = 0
-    @State private var hasLoadedInitialData = false
     @State private var hasLoadedInitialData = false
     
     var body: some View {
@@ -71,7 +67,6 @@ struct ConnectPage: View {
                 }
                 .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
             }
-            
             
             if isCircleView == false {
                 Button(action: {
@@ -107,20 +102,13 @@ struct ConnectPage: View {
                 )
                 .offset(x: UIScreen.main.bounds.width*0.4228, y: UIScreen.main.bounds.height*0.38901*(-1))
             } else {
-                )
-                .offset(x: UIScreen.main.bounds.width*0.4228, y: UIScreen.main.bounds.height*0.38901*(-1))
-            } else {
                 Button(action: {
-                    showCircleMenu = true
                     showCircleMenu = true
                 }) {
                     Image(systemName: "ellipsis")
-                    Image(systemName: "ellipsis")
                         .foregroundColor(.white)
                         .font(.system(size: 18))
-                        .font(.system(size: 18))
                 }
-                .offset(x: UIScreen.main.bounds.width*0.4228, y: UIScreen.main.bounds.height*0.38901*(-1))
                 .offset(x: UIScreen.main.bounds.width*0.4228, y: UIScreen.main.bounds.height*0.38901*(-1))
             }
         }

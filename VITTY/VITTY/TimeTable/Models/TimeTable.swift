@@ -209,7 +209,6 @@ class Lecture: Codable, Identifiable, Comparable {
     }
 }
 
-
 extension TimeTable {
     var isEmpty: Bool {
         monday.isEmpty && tuesday.isEmpty && wednesday.isEmpty &&
@@ -221,25 +220,13 @@ extension TimeTable {
             
             
             guard formattedTime != "Failed to parse the time string." else { return nil }
-    
-    private func extractStartTime(from lecture: Lecture) -> Date? {
-            let formattedTime = formatTime(time: lecture.startTime)
-            
-            
-            guard formattedTime != "Failed to parse the time string." else { return nil }
 
-            let formatter = DateFormatter()
-            formatter.dateFormat = "h:mm a"
-            formatter.locale = Locale(identifier: "en_US_POSIX")
             let formatter = DateFormatter()
             formatter.dateFormat = "h:mm a"
             formatter.locale = Locale(identifier: "en_US_POSIX")
 
             return formatter.date(from: formattedTime)
         }
-            return formatter.date(from: formattedTime)
-        }
-
 
 
     func classesFor(date: Date) -> [Classes] {
@@ -270,21 +257,8 @@ extension TimeTable {
         return lectures.sorted { lecture1, lecture2 in
             guard let time1 = extractStartTime(from: lecture1),
                   let time2 = extractStartTime(from: lecture2) else {
-        // Sort using the original lecture objects instead of formatted strings
-        return lectures.sorted { lecture1, lecture2 in
-            guard let time1 = extractStartTime(from: lecture1),
-                  let time2 = extractStartTime(from: lecture2) else {
                 return false
             }
-            return time1 < time2
-        }.map {
-            Classes(
-                title: $0.name,
-                time: "\(formatTime(time: $0.startTime)) - \(formatTime(time: $0.endTime))",
-                slot: $0.slot
-            )
-        }
-    }
             return time1 < time2
         }.map {
             Classes(
@@ -300,26 +274,6 @@ extension TimeTable {
             timeComponents = timeComponents.components(separatedBy: "+").first ?? ""
         timeComponents = timeComponents.components(separatedBy: "Z").first ?? ""
 
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "HH:mm:ss"
-            if let date = dateFormatter.date(from: timeComponents) {
-                dateFormatter.dateFormat = "h:mm a"
-                let formattedTime = dateFormatter.string(from: date)
-                return (formattedTime)
-            }
-            else {
-                return ("Failed to parse the time string.")
-            }
-        }
-    
-    func isDifferentFrom(_ other: TimeTable) -> Bool {
-        return monday != other.monday ||
-               tuesday != other.tuesday ||
-               wednesday != other.wednesday ||
-               thursday != other.thursday ||
-               friday != other.friday ||
-               saturday != other.saturday ||
-               sunday != other.sunday
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "HH:mm:ss"
             if let date = dateFormatter.date(from: timeComponents) {

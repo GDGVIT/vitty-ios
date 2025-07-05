@@ -6,7 +6,6 @@
 
 import SwiftUI
 import Alamofire
-import Alamofire
 
 struct CreateGroup: View {
     let screenHeight = UIScreen.main.bounds.height
@@ -42,7 +41,6 @@ struct CreateGroup: View {
                 .foregroundColor(.white)
             
             Spacer().frame(height: 20)
-            
             
             
             Button(action: {
@@ -121,7 +119,6 @@ struct CreateGroup: View {
                 Spacer()
                 
                 Button(action: {
-                    showFriendSelector = true
                     showFriendSelector = true
                 }) {
                     Image(systemName: "person.badge.plus")
@@ -226,7 +223,6 @@ struct CreateGroup: View {
                 Spacer()
                 Button(action: {
                     createGroup()
-                    createGroup()
                 }) {
                     HStack {
                         if isCreatingGroup {
@@ -242,7 +238,6 @@ struct CreateGroup: View {
                     .background(groupName.isEmpty ? Color.gray : Color("Accent"))
                     .cornerRadius(10)
                 }
-                .disabled(groupName.isEmpty || isCreatingGroup)
                 .disabled(groupName.isEmpty || isCreatingGroup)
                 .padding(.trailing, 20)
             }

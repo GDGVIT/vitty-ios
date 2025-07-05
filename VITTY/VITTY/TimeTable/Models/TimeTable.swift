@@ -36,6 +36,9 @@ class TimeTable: Codable  {
     var friday: [Lecture]
     var  saturday: [Lecture]
     var sunday: [Lecture]
+    
+    // NEW property
+    var saturdaySourceDay: String?
    
     @Transient
     var logger = Logger(
@@ -51,7 +54,8 @@ class TimeTable: Codable  {
         thursday: [Lecture],
         friday: [Lecture],
         saturday: [Lecture],
-        sunday: [Lecture]
+        sunday: [Lecture],
+        saturdaySourceDay: String? = nil
     ) {
         self.monday = monday
         self.tuesday = tuesday
@@ -60,6 +64,7 @@ class TimeTable: Codable  {
         self.friday = friday
         self.saturday = saturday
         self.sunday = sunday
+        self.saturdaySourceDay = saturdaySourceDay // Set in initializer
     }
 
     enum CodingKeys: String, CodingKey,Codable {
@@ -73,64 +78,29 @@ class TimeTable: Codable  {
     }
 
     required init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-
-        do {
-            monday = try container.decode([Lecture].self, forKey: .monday)
-        }
-        catch {
-            logger.error("Error decoding Monday lectures: \(error)")
-            monday = []
-        }
-
-        do {
-            tuesday = try container.decode([Lecture].self, forKey: .tuesday)
-        }
-        catch {
-            logger.error("Error decoding Tuesday lectures: \(error)")
-            tuesday = []
-        }
-
-        do {
-            wednesday = try container.decode([Lecture].self, forKey: .wednesday)
-        }
-        catch {
-            logger.error("Error decoding Wednesday lectures: \(error)")
-            wednesday = []
-        }
-
-        do {
-            thursday = try container.decode([Lecture].self, forKey: .thursday)
-        }
-        catch {
-            logger.error("Error decoding Thursday lectures: \(error)")
-            thursday = []
-        }
-
-        do {
-            friday = try container.decode([Lecture].self, forKey: .friday)
-        }
-        catch {
-            logger.error("Error decoding Friday lectures: \(error)")
-            friday = []
-        }
-
-        do {
-            saturday = try container.decode([Lecture].self, forKey: .saturday)
-        }
-        catch {
-            logger.error("Error decoding Saturday lectures: \(error)")
-            saturday = []
-        }
-
-        do {
-            sunday = try container.decode([Lecture].self, forKey: .sunday)
-        }
-        catch {
-            logger.error("Error decoding Sunday lectures: \(error)")
-            sunday = []
-        }
-    }
+          let container = try decoder.container(keyedBy: CodingKeys.self)
+          
+          monday = (try? container.decode([Lecture].self, forKey: .monday)) ?? []
+          tuesday = (try? container.decode([Lecture].self, forKey: .tuesday)) ?? []
+          wednesday = (try? container.decode([Lecture].self, forKey: .wednesday)) ?? []
+          thursday = (try? container.decode([Lecture].self, forKey: .thursday)) ?? []
+          friday = (try? container.decode([Lecture].self, forKey: .friday)) ?? []
+          saturday = (try? container.decode([Lecture].self, forKey: .saturday)) ?? []
+          sunday = (try? container.decode([Lecture].self, forKey: .sunday)) ?? []
+          
+          self.saturdaySourceDay = nil
+      }
+    //MARK:  NEW FUNC
+    func lectures(forDay day: String) -> [Lecture] {
+           switch day {
+           case "Monday": return self.monday
+           case "Tuesday": return self.tuesday
+           case "Wednesday": return self.wednesday
+           case "Thursday": return self.thursday
+           case "Friday": return self.friday
+           default: return []
+           }
+       }
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
@@ -185,6 +155,18 @@ class Lecture: Codable, Identifiable, Comparable {
         case startTime = "start_time"
         case endTime = "end_time"
     }
+    
+    func deepCopy() -> Lecture {
+           return Lecture(
+               name: self.name,
+               code: self.code,
+               venue: self.venue,
+               slot: self.slot,
+               type: self.type,
+               startTime: self.startTime,
+               endTime: self.endTime
+           )
+       }
 
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -296,3 +278,4 @@ extension TimeTable {
                sunday != other.sunday
     }
 }
+

@@ -1,9 +1,6 @@
 import SwiftUI
 import SwiftData
 
-
-
-
 struct SettingsView: View {
     @Environment(AuthViewModel.self) private var authViewModel
     @Environment(\.dismiss) private var dismiss
@@ -12,12 +9,12 @@ struct SettingsView: View {
 
     @StateObject private var viewModel = SettingsViewModel()
 
-   
     @State private var showDaySelection = false
     @State private var selectedDay: String? = nil
     @State private var showResetAlert = false
+    @State private var showDeleteUserAlert = false
+    @State private var isDeletingUser = false
     
- 
     private let selectedDayKey = "SelectedSaturdayDay"
 
     var body: some View {
@@ -51,12 +48,14 @@ struct SettingsView: View {
                         SettingsSectionView(title: "Class Settings") {
                             VStack(alignment: .leading, spacing: 12) {
                                 Button {
-                                    showDaySelection.toggle()
+                                    withAnimation {
+                                        showDaySelection.toggle()
+                                    }
                                 } label: {
                                     SettingsRowView(
                                         icon: "calendar.badge.plus",
                                         title: "Saturday Class",
-                                        subtitle: selectedDay == nil ? "Select a day to copy classes to Saturday" : "Copy \(selectedDay!) classes to Saturday"
+                                        subtitle: selectedDay == nil ? "Select a day to copy to Saturday" : "Saturday classes are a copy of \(selectedDay!)"
                                     )
                                 }
                                 .buttonStyle(PlainButtonStyle())
@@ -67,30 +66,23 @@ struct SettingsView: View {
                                             HStack(spacing: 12) {
                                                 Image(systemName: selectedDay == day ? "largecircle.fill.circle" : "circle")
                                                     .foregroundColor(.blue)
-                                                    .font(.system(size: 16))
                                                 Text(day)
                                                     .foregroundColor(.white)
-                                                    .font(.system(size: 14))
                                                 Spacer()
                                             }
-                                            .padding(.leading, 16)
-                                            .padding(.vertical, 4)
+                                            .padding([.leading, .vertical], 4)
                                             .contentShape(Rectangle())
                                             .onTapGesture {
-                                                selectedDay = day
-                                                UserDefaults.standard.set(day, forKey: selectedDayKey)
                                                 copyLecturesToSaturday(from: day)
-                                                showDaySelection = false
+                                                withAnimation {
+                                                    showDaySelection = false
+                                                }
                                             }
                                         }
                                     }
                                     .padding(.top, 8)
-                                    .transition(.asymmetric(
-                                        insertion: .opacity.combined(with: .scale(scale: 0.95, anchor: .top)),
-                                        removal: .opacity.combined(with: .scale(scale: 0.95, anchor: .top))
-                                    ))
+                                    .transition(.opacity.combined(with: .scale(scale: 0.95, anchor: .top)))
                                 }
-                                
                                 
                                 Button {
                                     showResetAlert = true
@@ -102,6 +94,7 @@ struct SettingsView: View {
                                     )
                                 }
                                 .buttonStyle(PlainButtonStyle())
+                                
                                 Button {
                                     if let url = URL(string: "https://vitty.dscvit.com") {
                                         UIApplication.shared.open(url)
@@ -130,6 +123,20 @@ struct SettingsView: View {
                             .toggleStyle(SwitchToggleStyle(tint: .green))
                         }
 
+                        SettingsSectionView(title: "Account Management") {
+                            Button {
+                                showDeleteUserAlert = true
+                            } label: {
+                                SettingsRowView(
+                                    icon: "person.badge.minus",
+                                    title: "Delete Account",
+                                    subtitle: "Permanently delete your account and all data"
+                                )
+                            }
+                            .buttonStyle(PlainButtonStyle())
+                            .disabled(isDeletingUser)
+                        }
+
                         SettingsSectionView(title: "About") {
                             AboutLinkView(image: "github-icon", title: "GitHub Repository", url: URL(string: "https://github.com/GDGVIT/vitty-ios"))
                             AboutLinkView(image: "gdsc-logo", title: "GDSC VIT", url: URL(string: "https://dscvit.com/"))
@@ -138,15 +145,25 @@ struct SettingsView: View {
                     .scrollContentBackground(.hidden)
                 }
                 
-                
                 if showResetAlert {
                     ResetSaturdayAlert(
-                        onCancel: {
-                            showResetAlert = false
-                        },
+                        onCancel: { showResetAlert = false },
                         onReset: {
                             resetSaturdayClasses()
                             showResetAlert = false
+                        }
+                    )
+                    .zIndex(1)
+                }
+                
+                if showDeleteUserAlert {
+                    DeleteUserAlert(
+                        isDeleting: isDeletingUser,
+                        onCancel: {
+                            showDeleteUserAlert = false
+                        },
+                        onDelete: {
+                            deleteUser()
                         }
                     )
                     .zIndex(1)
@@ -158,8 +175,7 @@ struct SettingsView: View {
                 viewModel.timetable = timeTables.first
                 viewModel.checkNotificationAuthorization()
                 loadSelectedDay()
-                print("Saturday before save:", timeTables[0].saturday.map { $0.name })
-
+                print("Saturday before save:", timeTables.first?.saturday.map { $0.name } ?? [])
             }
             .alert("Notifications Disabled", isPresented: $viewModel.showNotificationDisabledAlert) {
                 Button("OK", role: .cancel) {}
@@ -169,95 +185,193 @@ struct SettingsView: View {
         }
     }
     
- 
-    
     private func loadSelectedDay() {
-        selectedDay = UserDefaults.standard.string(forKey: selectedDayKey)
+        selectedDay = timeTables.first?.saturdaySourceDay
     }
     
-    private func resetSaturdayClasses() {
-        guard let timeTable = timeTables.first else { return }
+    private func deleteUser() {
+        guard let username = authViewModel.loggedInBackendUser?.username else {
+            print("No username found")
+            return
+        }
         
-      
-        let newTimeTable = TimeTable(
-            monday: timeTable.monday,
-            tuesday: timeTable.tuesday,
-            wednesday: timeTable.wednesday,
-            thursday: timeTable.thursday,
-            friday: timeTable.friday,
-            saturday: [], // Empty Saturday
-            sunday: timeTable.sunday
-        )
+        isDeletingUser = true
         
-        
-        modelContext.delete(timeTable)
-        modelContext.insert(newTimeTable)
-        
-      
-        do {
-            try modelContext.save()
-            print("Successfully reset Saturday classes")
-            
-            
-            UserDefaults.standard.removeObject(forKey: selectedDayKey)
-            selectedDay = nil
-            
-        } catch {
-            print("Error saving context: \(error)")
+        Task {
+            do {
+                try await deleteUserFromServer(username: username)
+                
+                await MainActor.run {
+                    cleanupLocalData()
+                    authViewModel.signOut()
+                    showDeleteUserAlert = false
+                    isDeletingUser = false
+                }
+            } catch {
+                await MainActor.run {
+                    isDeletingUser = false
+                    print("Failed to delete user: \(error)")
+                }
+            }
         }
     }
     
+    private func deleteUserFromServer(username: String) async throws {
+        guard let url = URL(string: "\(APIConstants.base_url)/users/\(username)") else {
+            throw URLError(.badURL)
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "DELETE"
+        
+        let token = authViewModel.loggedInBackendUser?.token ?? ""
+        
+        let (_, response) = try await URLSession.shared.data(for: request)
+        
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw URLError(.badServerResponse)
+        }
+        
+        guard 200...299 ~= httpResponse.statusCode else {
+            throw URLError(.badServerResponse)
+        }
+    }
+    
+    private func cleanupLocalData() {
+        do {
+            try modelContext.delete(model: TimeTable.self)
+            try modelContext.delete(model: Remainder.self)
+            try modelContext.delete(model: CreateNoteModel.self)
+            try modelContext.delete(model: UploadedFile.self)
+            try modelContext.save()
+            print("Successfully cleaned up local data")
+        } catch {
+            print("Failed to clean up local data: \(error)")
+        }
+    }
+    
+
     private func copyLecturesToSaturday(from day: String) {
-        guard let timeTable = timeTables.first else { return }
-        
-        let lecturesToCopy: [Lecture]
-        
-        switch day {
-        case "Monday":
-            lecturesToCopy = timeTable.monday
-        case "Tuesday":
-            lecturesToCopy = timeTable.tuesday
-        case "Wednesday":
-            lecturesToCopy = timeTable.wednesday
-        case "Thursday":
-            lecturesToCopy = timeTable.thursday
-        case "Friday":
-            lecturesToCopy = timeTable.friday
-        default:
-            lecturesToCopy = []
+        guard let currentTimeTable = timeTables.first else {
+            print("No timetable found")
+            return
         }
         
+     
+        
       
+        let lecturesToCopy = currentTimeTable.lectures(forDay: day)
+        print("Found \(lecturesToCopy.count) lectures to copy")
+        
+        
+        let newSaturdayLectures = lecturesToCopy.map { originalLecture in
+            let newLecture = Lecture(
+                name: originalLecture.name,
+                code: originalLecture.code,
+                venue: originalLecture.venue,
+                slot: originalLecture.slot,
+                type: originalLecture.type,
+                startTime: originalLecture.startTime,
+                endTime: originalLecture.endTime
+            )
+            return newLecture
+        }
+        
+       
         let newTimeTable = TimeTable(
-            monday: timeTable.monday,
-            tuesday: timeTable.tuesday,
-            wednesday: timeTable.wednesday,
-            thursday: timeTable.thursday,
-            friday: timeTable.friday,
-            saturday: lecturesToCopy.map { lecture in
-                Lecture(
-                    name: lecture.name,
-                    code: lecture.code,
-                    venue: lecture.venue,
-                    slot: lecture.slot,
-                    type: lecture.type,
-                    startTime: lecture.startTime,
-                    endTime: lecture.endTime
-                )
-            },
-            sunday: timeTable.sunday
+            monday: currentTimeTable.monday.map { $0.deepCopy() },
+            tuesday: currentTimeTable.tuesday.map { $0.deepCopy() },
+            wednesday: currentTimeTable.wednesday.map { $0.deepCopy() },
+            thursday: currentTimeTable.thursday.map { $0.deepCopy() },
+            friday: currentTimeTable.friday.map { $0.deepCopy() },
+            saturday: newSaturdayLectures,
+            sunday: currentTimeTable.sunday.map { $0.deepCopy() },
+            saturdaySourceDay: day
         )
         
        
-        modelContext.delete(timeTable)
-        modelContext.insert(newTimeTable)
-        
-       
         do {
+            print("Deleting old timetable")
+            modelContext.delete(currentTimeTable)
+            
+           
+            print("Inserting new timetable with Saturday lectures")
+            modelContext.insert(newTimeTable)
+            
+          
             try modelContext.save()
-            print("Successfully replaced timetable with copied lectures from \(day) to Saturday")
+            
+           
+            self.selectedDay = day
+            
+            print("Successfully copied \(day) to Saturday using orthodox method")
+            print("New Saturday has \(newTimeTable.saturday.count) lectures")
+            
+            
+            Task { @MainActor in
+                NotificationCenter.default.post(
+                    name: NSNotification.Name("TimetableDidChange"),
+                    object: nil
+                )
+            }
+            
         } catch {
-            print("Error saving context: \(error)")
+            print("Error during orthodox copy: \(error)")
+            
+            modelContext.rollback()
+        }
+    }
+    
+   
+    private func resetSaturdayClasses() {
+        guard let currentTimeTable = timeTables.first else {
+            print("No timetable found")
+            return
+        }
+        
+        print("Starting orthodox reset of Saturday classes")
+        
+        
+        let newTimeTable = TimeTable(
+            monday: currentTimeTable.monday.map { $0.deepCopy() },
+            tuesday: currentTimeTable.tuesday.map { $0.deepCopy() },
+            wednesday: currentTimeTable.wednesday.map { $0.deepCopy() },
+            thursday: currentTimeTable.thursday.map { $0.deepCopy() },
+            friday: currentTimeTable.friday.map { $0.deepCopy() },
+            saturday: [],
+            sunday: currentTimeTable.sunday.map { $0.deepCopy() },
+            saturdaySourceDay: nil
+        )
+        
+     
+        do {
+            print("Deleting old timetable")
+            modelContext.delete(currentTimeTable)
+            
+         
+            print("Inserting new timetable with empty Saturday")
+            modelContext.insert(newTimeTable)
+            
+           
+            try modelContext.save()
+            
+           
+            self.selectedDay = nil
+            
+            print("Successfully reset Saturday classes using orthodox method")
+            
+            
+            Task { @MainActor in
+                NotificationCenter.default.post(
+                    name: NSNotification.Name("TimetableDidChange"),
+                    object: nil
+                )
+            }
+            
+        } catch {
+            print("Error during orthodox reset: \(error)")
+            
+            modelContext.rollback()
         }
     }
 
@@ -398,7 +512,73 @@ struct ResetSaturdayAlert: View {
         }
         .background(Color.black.opacity(0.5).edgesIgnoringSafeArea(.all))
         .onTapGesture {
-           
+            // Empty tap gesture to prevent dismissal
+        }
+    }
+}
+
+// Custom Delete User Alert Component
+struct DeleteUserAlert: View {
+    let isDeleting: Bool
+    let onCancel: () -> Void
+    let onDelete: () -> Void
+    
+    var body: some View {
+        VStack {
+            Spacer()
+            VStack(spacing: 16) {
+                Image(systemName: "exclamationmark.triangle.fill")
+                    .font(.system(size: 40))
+                    .foregroundColor(.red)
+                
+                Text("Delete Account?")
+                    .font(.custom("Poppins-SemiBold", size: 18))
+                    .foregroundColor(.white)
+                
+                Text("This action will permanently delete your account and all associated data. This cannot be undone.")
+                    .font(.custom("Poppins-Regular", size: 14))
+                    .foregroundColor(.white)
+                    .multilineTextAlignment(.center)
+                
+                if isDeleting {
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                        .frame(height: 40)
+                } else {
+                    HStack(spacing: 10) {
+                        Button(action: onCancel) {
+                            Text("Cancel")
+                                .font(.custom("Poppins-Regular", size: 14))
+                                .padding(.vertical, 10)
+                                .frame(maxWidth: .infinity)
+                                .background(Color.gray.opacity(0.3))
+                                .foregroundColor(.white)
+                                .cornerRadius(8)
+                        }
+                        
+                        Button(action: onDelete) {
+                            Text("Delete Account")
+                                .font(.custom("Poppins-Regular", size: 14))
+                                .padding(.vertical, 10)
+                                .frame(maxWidth: .infinity)
+                                .background(Color.red)
+                                .foregroundColor(.white)
+                                .cornerRadius(8)
+                        }
+                    }
+                }
+            }
+            .frame(minHeight: 200)
+            .padding(20)
+            .background(Color("Background"))
+            .cornerRadius(16)
+            .padding(.horizontal, 30)
+            .transition(.scale.combined(with: .opacity))
+            Spacer()
+        }
+        .background(Color.black.opacity(0.5).edgesIgnoringSafeArea(.all))
+        .onTapGesture {
+            // Empty tap gesture to prevent dismissal
         }
     }
 }

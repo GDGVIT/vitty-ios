@@ -53,6 +53,7 @@ struct AssignmentRow: View {
                                 .foregroundColor(.white)
                             Spacer()
                            
+                           
                         }
                         
                         Text(assignment.subject)

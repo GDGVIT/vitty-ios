@@ -338,6 +338,7 @@ class AuthViewModel: NSObject, ASAuthorizationControllerDelegate {
         do {
             try firebaseAuth.signOut()
             UserDefaults.resetDefaults()
+            
         }
         catch {
             logger.error("Error Signing Out: \(error)")

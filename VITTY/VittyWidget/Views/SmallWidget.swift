@@ -27,6 +27,8 @@ struct DueSmallWidgetView: View {
                     .font(.system(size: 12, weight: .bold))
                     .foregroundColor(.white)
                 Spacer()
+                Image("widgetIcon").resizable().frame(width: 25, height: 10)
+                
             }
             
             if entry.isEmpty {

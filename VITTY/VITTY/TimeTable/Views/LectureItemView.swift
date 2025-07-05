@@ -60,7 +60,7 @@ struct LectureItemView: View {
                 .padding(.horizontal, 16)
             
             HStack {
-                Text("\(formatTime(time: lecture.startTime)) - \(formatTime(time: lecture.endTime))")
+                Text("\(formatTime(time: lecture.startTime)) - \(formatTime(time: lecture.endTime)) | \(lecture.slot)")
                     .font(Font.custom("Poppins-Regular", size: 14))
                     .foregroundColor(Color("Accent"))
                 

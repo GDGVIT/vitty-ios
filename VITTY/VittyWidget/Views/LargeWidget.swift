@@ -150,7 +150,7 @@ struct ScheduleLargeWidgetView: View {
                                 )
                             }
                             
-                            let remainingCount = entry.classes.count - displayClasses.count
+                            let remainingCount = getUpcomingClasses().count - displayClasses.count
                             if remainingCount > 0 {
                                 Text("+\(remainingCount) More")
                                     .foregroundColor(.white.opacity(0.6))
@@ -167,14 +167,14 @@ struct ScheduleLargeWidgetView: View {
         .padding(.vertical, 6)
     }
     
-    private func getDisplayClasses() -> [Classes] {
+    private func getUpcomingClasses() -> [Classes] {
         let currentTime = Date()
         let calendar = Calendar.current
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "h:mm a"
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         
-        // Sort all classes by their start time
+      
         let sortedClasses = entry.classes.sorted { class1, class2 in
             let time1Components = class1.time.components(separatedBy: " - ")
             let time2Components = class2.time.components(separatedBy: " - ")
@@ -194,27 +194,15 @@ struct ScheduleLargeWidgetView: View {
             return startTime1 < startTime2
         }
         
-        // Find the next upcoming class or current class
-        var currentIndex = 0
+       
         let now = Date()
-        
-        for (index, classItem) in sortedClasses.enumerated() {
+        let upcomingClasses = sortedClasses.filter { classItem in
             let timeComponents = classItem.time.components(separatedBy: " - ")
-            guard timeComponents.count == 2 else { continue }
+            guard timeComponents.count == 2 else { return true }
             
-            let startTimeStr = timeComponents[0].trimmingCharacters(in: .whitespaces)
             let endTimeStr = timeComponents[1].trimmingCharacters(in: .whitespaces)
+            guard let endTime = dateFormatter.date(from: endTimeStr) else { return true }
             
-            guard let startTime = dateFormatter.date(from: startTimeStr),
-                  let endTime = dateFormatter.date(from: endTimeStr) else { continue }
-            
-            // Convert to today's date
-            let todayStart = calendar.date(
-                bySettingHour: calendar.component(.hour, from: startTime),
-                minute: calendar.component(.minute, from: startTime),
-                second: 0,
-                of: now
-            )
             
             let todayEnd = calendar.date(
                 bySettingHour: calendar.component(.hour, from: endTime),
@@ -223,29 +211,22 @@ struct ScheduleLargeWidgetView: View {
                 of: now
             )
             
-            if let todayStart = todayStart, let todayEnd = todayEnd {
-                // If current time is before this class starts, or if we're currently in this class
-                if now <= todayEnd {
-                    currentIndex = index
-                    break
-                }
+        
+            if let todayEnd = todayEnd {
+                return now <= todayEnd
             }
             
-            // If we've passed all classes, start from the beginning for next day
-            if index == sortedClasses.count - 1 {
-                currentIndex = 0
-            }
+            return true
         }
         
-        // Get up to 4 classes starting from the current position
-        let maxDisplay = min(4, sortedClasses.count)
-        var displayClasses: [Classes] = []
+        return upcomingClasses
+    }
+    
+    private func getDisplayClasses() -> [Classes] {
+        let upcomingClasses = getUpcomingClasses()
         
-        for i in 0..<maxDisplay {
-            let classIndex = (currentIndex + i) % sortedClasses.count
-            displayClasses.append(sortedClasses[classIndex])
-        }
-        
-        return displayClasses
+      
+        let maxDisplay = min(4, upcomingClasses.count)
+        return Array(upcomingClasses.prefix(maxDisplay))
     }
 }

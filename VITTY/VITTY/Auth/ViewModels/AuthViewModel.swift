@@ -187,13 +187,7 @@ class AuthViewModel: NSObject, ASAuthorizationControllerDelegate {
     }
     
     
-    private func firebaseUserAuthUpdate(with auth: Auth, user: User?) {
-        logger.info("Firebase User Auth State Updated")
-        DispatchQueue.main.async {
-            guard user != self.loggedInFirebaseUser else { return }
-            self.loggedInFirebaseUser = user
-        }
-    }
+  
     
     func login(with loginOptions: LoginOptions) async {
         logger.info("Loging In...")
@@ -337,11 +331,36 @@ class AuthViewModel: NSObject, ASAuthorizationControllerDelegate {
     func signOut() {
         do {
             try firebaseAuth.signOut()
+            
+          
             UserDefaults.resetDefaults()
             
-        }
-        catch {
+        
+            DispatchQueue.main.async {
+                self.loggedInBackendUser = nil
+                self.loggedInFirebaseUser = nil
+            }
+            
+            
+            print(self.loggedInBackendUser ?? "the backend user is set to nil ")
+            
+            logger.info("User signed out successfully")
+            
+        } catch {
             logger.error("Error Signing Out: \(error)")
+        }
+    }
+
+ 
+    private func firebaseUserAuthUpdate(with auth: Auth, user: User?) {
+        logger.info("Firebase User Auth State Updated")
+        DispatchQueue.main.async {
+            self.loggedInFirebaseUser = user
+            
+           
+            if user == nil {
+                self.loggedInBackendUser = nil
+            }
         }
     }
 }

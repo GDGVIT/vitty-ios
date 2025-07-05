@@ -11,6 +11,7 @@ struct UserProfileSidebar: View {
     @State private var ghostMode: Bool = false
     @State private var isUpdatingGhostMode: Bool = false
     @Environment(\.modelContext) private var modelContext
+    @State private var isLoggingOut: Bool = false
     
     var body: some View {
         ZStack(alignment: .topTrailing) {
@@ -92,16 +93,22 @@ struct UserProfileSidebar: View {
                 Spacer()
                 
                 Button {
-                    authViewModel.signOut()
-                    do{
-                        try modelContext.delete(model:TimeTable.self)
-                        try modelContext.delete(model:Remainder.self)
-                        try modelContext.delete(model:CreateNoteModel.self)
-                        try modelContext.delete(model:UploadedFile.self)
-                        try modelContext.save()
-                    }catch{
-                        print("Failed to load data")
+                    Task{
+                        await performLogout()
                     }
+//                    authViewModel.signOut()
+                    
+//                    do{
+//                        try modelContext.delete(model:TimeTable.self)
+//                        try modelContext.delete(model:Remainder.self)
+//                        try modelContext.delete(model:CreateNoteModel.self)
+//                        try modelContext.delete(model:UploadedFile.self)
+//                        try modelContext.save()
+//                    }catch{
+//                        print("Failed to load data")
+//                    }
+                    
+                    
                 } label: {
                     HStack {
                         Image(systemName: "rectangle.portrait.and.arrow.right")
@@ -179,6 +186,42 @@ struct UserProfileSidebar: View {
                 }
             }
         }.resume()
+    }
+    private func performLogout() async {
+        isLoggingOut = true
+        
+     
+        await MainActor.run {
+            authViewModel.signOut()
+        }
+        
+        
+        await clearLocalData()
+        
+   
+        await MainActor.run {
+            isLoggingOut = false
+            isPresented = false
+        }
+    }
+    
+    private func clearLocalData() async {
+        do {
+           
+            await Task.detached { [modelContext] in
+                do {
+                    try modelContext.delete(model: TimeTable.self)
+                    try modelContext.delete(model: Remainder.self)
+                    try modelContext.delete(model: CreateNoteModel.self)
+                    try modelContext.delete(model: UploadedFile.self)
+                    try modelContext.save()
+                } catch {
+                    print("Failed to delete local data: \(error)")
+                }
+            }.value
+        } catch {
+            print("Failed to clear local data: \(error)")
+        }
     }
 }
 

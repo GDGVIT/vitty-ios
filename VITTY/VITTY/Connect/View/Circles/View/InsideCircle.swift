@@ -198,7 +198,9 @@ struct GenerateJoinCodeModal: View {
 
 struct CircleMenuView: View {
     let circleName: String
+    let role: String
     let onLeaveGroup: () -> Void
+   
     let onDeleteGroup: () -> Void
     let onGroupRequests: () -> Void
     let onGenerateJoinCode: () -> Void
@@ -227,20 +229,23 @@ struct CircleMenuView: View {
                 Divider()
                     .background(Color.gray.opacity(0.3))
                 
-                Button(action: {
-                    onCancel()
-                    onDeleteGroup()
-                }) {
-                    HStack {
-                        Image(systemName: "trash")
-                            .foregroundColor(.red)
-                        Text("Delete Circle")
-                            .font(.custom("Poppins-Regular", size: 16))
-                            .foregroundColor(.red)
-                        Spacer()
+                if role == "admin"{
+                    
+                    Button(action: {
+                        onCancel()
+                        onDeleteGroup()
+                    }) {
+                        HStack {
+                            Image(systemName: "trash")
+                                .foregroundColor(.red)
+                            Text("Delete Circle")
+                                .font(.custom("Poppins-Regular", size: 16))
+                                .foregroundColor(.red)
+                            Spacer()
+                        }
+                        .padding()
+                        .background(Color("Background"))
                     }
-                    .padding()
-                    .background(Color("Background"))
                 }
                 
                 Divider()
@@ -300,7 +305,9 @@ struct DualIconMenu: View {
 
 struct InsideCircle: View {
     var circleName : String
-    var groupCode: String
+    var circle_id: String
+    var circle_join_code : String
+    var circle_role : String 
     @State var searchText: String = ""
     @State var showLeaveAlert: Bool = false
     @State var showDeleteAlert: Bool = false
@@ -336,6 +343,7 @@ struct InsideCircle: View {
     }
     
     // MARK: - Filtered members for search
+    
     private var filteredMembers: [CircleUserTemp] {
         if searchText.isEmpty {
             return communityPageViewModel.circleMembers
@@ -353,7 +361,7 @@ struct InsideCircle: View {
         
         let token = authViewModel.loggedInBackendUser?.token ?? ""
         
-        communityPageViewModel.generateJoinCode(circleId: groupCode, token: token) { result in
+        communityPageViewModel.generateJoinCode(circleId: circle_id, token: token) { result in
             DispatchQueue.main.async {
                 self.isGeneratingCode = false
                 
@@ -371,10 +379,11 @@ struct InsideCircle: View {
     // MARK: - Copy Join Code Function
     private func copyJoinCode() {
         UIPasteboard.general.string = generatedJoinCode
-        // You might want to show a toast or feedback that the code was copied
+     
     }
     
     var body: some View {
+        
         VStack(spacing: 0) {
             HStack {
                 Button(action: {
@@ -489,7 +498,7 @@ struct InsideCircle: View {
         })
         .onAppear {
             communityPageViewModel.fetchCircleMemberData(
-                from: "\(APIConstants.base_url)circles/\(groupCode)",
+                from: "\(APIConstants.base_url)circles/\(circle_id)",
                 token: authViewModel.loggedInBackendUser?.token ?? "",
                 loading: true
             )
@@ -500,7 +509,7 @@ struct InsideCircle: View {
                     LeaveCircleAlert(circleName: "\(circleName)", onCancel: {
                         showLeaveAlert = false
                     }, onLeave: {
-                        let url = "\(APIConstants.base_url)circles/\(groupCode)/leave"
+                        let url = "\(APIConstants.base_url)circles/\(circle_id)/leave"
                         let token = authViewModel.loggedInBackendUser?.token ?? ""
 
                         communityPageViewModel.leaveCircle(from: url, token: token)
@@ -516,7 +525,7 @@ struct InsideCircle: View {
                     DeleteCircleAlert(circleName: "\(circleName)", onCancel: {
                         showDeleteAlert = false
                     }, onDelete: {
-                        let url = "\(APIConstants.base_url)circles/\(groupCode)"
+                        let url = "\(APIConstants.base_url)circles/\(circle_id)"
                         let token = authViewModel.loggedInBackendUser?.token ?? ""
 
                         communityPageViewModel.deleteCircle(from: url, token: token)
@@ -549,6 +558,7 @@ struct InsideCircle: View {
                 if showCircleMenu {
                     CircleMenuView(
                         circleName: circleName,
+                        role : circle_role,
                         onLeaveGroup: {
                             showLeaveAlert = true
                         },
@@ -570,8 +580,9 @@ struct InsideCircle: View {
                 
                 if showQRCode {
                     QRCodeModalView(
-                        groupCode: groupCode,
+                        groupCode: circle_id,
                         circleName: circleName,
+                        existingJoinCode: circle_join_code,
                         onDismiss: {
                             showQRCode = false
                         }

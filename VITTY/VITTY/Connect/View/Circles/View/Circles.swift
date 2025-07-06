@@ -52,7 +52,7 @@ struct CirclesView: View {
                             VStack(spacing: 10) {
                                 ForEach(filteredCircles, id: \.circleID) { circle in
                                     
-                                    NavigationLink(destination: InsideCircle(circleName: circle.circleName, groupCode: circle.circleID)) {
+                                    NavigationLink(destination: InsideCircle(circleName: circle.circleName, circle_id:circle.circleID, circle_join_code: circle.circleJoinCode,circle_role: circle.circleRole)) {
                                         CirclesRow(circle: circle)
                                     }
                                     .buttonStyle(PlainButtonStyle())

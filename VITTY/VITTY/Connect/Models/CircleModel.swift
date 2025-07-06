@@ -15,11 +15,16 @@ struct CircleModel: Decodable {
     let circleID: String
     let circleName: String
     let circleRole: String
+    let circleJoinCode: String
     
     enum CodingKeys: String, CodingKey {
         case circleID = "circle_id"
         case circleName = "circle_name"
         case circleRole = "circle_role"
+        case circleJoinCode = "circle_join_code"
+        
+        
+        
     }
 }
 

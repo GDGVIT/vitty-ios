@@ -2,16 +2,17 @@ import Foundation
 import SwiftUI
 import UserNotifications
 
-class SettingsViewModel : ObservableObject{
-    @Published var notificationsEnabled: Bool = false {
+class SettingsViewModel: ObservableObject {
+    @Published var notificationsEnabled: Bool = UserDefaults.standard.bool(forKey: "notificationsEnabled") {
         didSet {
             UserDefaults.standard.set(notificationsEnabled, forKey: "notificationsEnabled")
             if notificationsEnabled {
-                if let timetable = self.timetable {
-                    self.scheduleAllNotifications(from: timetable)
-                }
+               
+                requestPermissionAndSchedule()
             } else {
+       
                 UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+                print("All pending notifications have been cleared.")
                 showNotificationDisabledAlert = true
             }
         }
@@ -22,11 +23,11 @@ class SettingsViewModel : ObservableObject{
 
     init(timetable: TimeTable? = nil) {
         self.timetable = timetable
-       
-        self.notificationsEnabled = UserDefaults.standard.bool(forKey: "notificationsEnabled")
+        
         checkNotificationAuthorization()
     }
 
+  
     func checkNotificationAuthorization() {
         UNUserNotificationCenter.current().getNotificationSettings { settings in
             DispatchQueue.main.async {
@@ -37,147 +38,108 @@ class SettingsViewModel : ObservableObject{
         }
     }
 
-    func requestNotificationPermission() {
-        UNUserNotificationCenter.current().getNotificationSettings { settings in
+ 
+    func requestPermissionAndSchedule() {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
             DispatchQueue.main.async {
-                if settings.authorizationStatus == .authorized {
+                if granted {
+                    print("Notification permission granted.")
                     if let timetable = self.timetable {
                         self.scheduleAllNotifications(from: timetable)
                     }
                 } else {
+                    print("Notification permission denied.")
+                   
                     self.notificationsEnabled = false
                 }
             }
         }
     }
 
+  
     func scheduleAllNotifications(from timetable: TimeTable) {
-        // Clear existing notifications first
+      
         UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
-        
+
         let weekdays: [(Int, [Lecture])] = [
-            (2, timetable.monday),    // Monday = 2
-            (3, timetable.tuesday),   // Tuesday = 3
-            (4, timetable.wednesday), // Wednesday = 4
-            (5, timetable.thursday),  // Thursday = 5
-            (6, timetable.friday),    // Friday = 6
-            (7, timetable.saturday),  // Saturday = 7
-            (1, timetable.sunday)     // Sunday = 1
+            (1, timetable.sunday), (2, timetable.monday), (3, timetable.tuesday),
+            (4, timetable.wednesday), (5, timetable.thursday), (6, timetable.friday),
+            (7, timetable.saturday)
         ]
 
         for (weekday, lectures) in weekdays {
             for lecture in lectures {
-                guard let startDate = parseLectureTime(lecture.startTime, weekday: weekday) else {
-                    print("Failed to parse time for lecture: \(lecture.name) with time: \(lecture.startTime)")
-                    continue
-                }
-
               
-                scheduleNotification(for: lecture.name, at: startDate, title: "Class Starting", minutesBefore: 0)
-                
-               
-                scheduleNotification(for: lecture.name, at: startDate, title: "Upcoming Class", minutesBefore: 10)
+                scheduleNotificationForNextOccurence(lecture: lecture, weekday: weekday)
             }
         }
-        
-        print("Scheduled notifications for all lectures")
+        print("Scheduled all notifications for the next 7 days.")
     }
 
-    private func scheduleNotification(for lectureName: String, at date: Date, title: String, minutesBefore: Int) {
-        let triggerDate = Calendar.current.date(byAdding: .minute, value: -minutesBefore, to: date) ?? date
+  
+    private func scheduleNotificationForNextOccurence(lecture: Lecture, weekday: Int) {
+        guard let time = parseTime(from: lecture.startTime) else { return }
 
+        var dateComponents = DateComponents()
+        dateComponents.hour = Calendar.current.component(.hour, from: time)
+        dateComponents.minute = Calendar.current.component(.minute, from: time)
+        dateComponents.weekday = weekday
+        
+        
+        guard let nextTriggerDate = Calendar.current.nextDate(after: Date(), matching: dateComponents, matchingPolicy: .nextTime) else { return }
+
+     
+        scheduleNotification(
+            lectureName: lecture.name,
+            date: nextTriggerDate,
+            title: "Upcoming Class",
+            body: "\(lecture.name) starts in 10 minutes.",
+            minutesBefore: 10
+        )
+        
+      
+        scheduleNotification(
+            lectureName: lecture.name,
+            date: nextTriggerDate,
+            title: "Class Starting!",
+            body: "\(lecture.name) is starting now.",
+            minutesBefore: 0
+        )
+    }
+    
+    
+    private func scheduleNotification(lectureName: String, date: Date, title: String, body: String, minutesBefore: Int) {
         let content = UNMutableNotificationContent()
         content.title = title
-        content.body = "\(lectureName) is starting soon."
+        content.body = body
         content.sound = .default
 
-        let triggerComponents = Calendar.current.dateComponents([.weekday, .hour, .minute], from: triggerDate)
-        let trigger = UNCalendarNotificationTrigger(dateMatching: triggerComponents, repeats: true)
+       
+        guard let triggerDate = Calendar.current.date(byAdding: .minute, value: -minutesBefore, to: date) else { return }
+        let triggerComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: triggerDate)
+        
+        let trigger = UNCalendarNotificationTrigger(dateMatching: triggerComponents, repeats: false)
 
-        let identifier = "\(lectureName)-\(title)-\(minutesBefore)min-weekday\(triggerComponents.weekday ?? 0)"
-        let request = UNNotificationRequest(
-            identifier: identifier,
-            content: content,
-            trigger: trigger
-        )
+        let identifier = "\(lectureName)-\(title)-\(triggerDate.timeIntervalSince1970)"
+        let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
 
         UNUserNotificationCenter.current().add(request) { error in
             if let error = error {
-                print("Error scheduling notification: \(error)")
+                print("Error scheduling notification for \(lectureName): \(error.localizedDescription)")
             } else {
-                print("Successfully scheduled notification: \(identifier)")
+                print("Successfully scheduled notification: '\(title)' for \(lectureName)")
             }
         }
     }
 
-    
-    private func parseLectureTime(_ timeString: String, weekday: Int) -> Date? {
-      
-        let formattedTimeString = formatTime(time: timeString)
-        
+ 
+    private func parseTime(from timeString: String) -> Date? {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm:ss"
        
-        if formattedTimeString == "Failed to parse the time string." {
-            return nil
+        if let timePart = timeString.components(separatedBy: "T").last?.components(separatedBy: "+").first {
+            return formatter.date(from: timePart)
         }
-       
-        let timeFormatter = DateFormatter()
-        timeFormatter.dateFormat = "h:mm a"
-        timeFormatter.locale = Locale(identifier: "en_US_POSIX")
-        
-        guard let timeDate = timeFormatter.date(from: formattedTimeString) else {
-            print("Failed to parse formatted time: \(formattedTimeString)")
-            return nil
-        }
-        
-     
-        let calendar = Calendar.current
-        let timeComponents = calendar.dateComponents([.hour, .minute], from: timeDate)
-        
-        
-        let today = Date()
-        let currentWeekday = calendar.component(.weekday, from: today)
-        
-      
-        let daysFromToday = weekday - currentWeekday
-        let targetDate = calendar.date(byAdding: .day, value: daysFromToday, to: today) ?? today
-        
-        
-        var finalDateComponents = calendar.dateComponents([.year, .month, .day], from: targetDate)
-        finalDateComponents.hour = timeComponents.hour
-        finalDateComponents.minute = timeComponents.minute
-        finalDateComponents.second = 0
-        
-        guard let lectureDate = calendar.date(from: finalDateComponents) else {
-            print("Failed to create lecture date")
-            return nil
-        }
-        
-       
-        if weekday == currentWeekday && lectureDate < today {
-            return calendar.date(byAdding: .weekOfYear, value: 1, to: lectureDate)
-        }
-        
-       
-        if lectureDate < today {
-            return calendar.date(byAdding: .weekOfYear, value: 1, to: lectureDate)
-        }
-        
-        return lectureDate
-    }
-    
-    // Your existing formatTime function
-    private func formatTime(time: String) -> String {
-        var timeComponents = time.components(separatedBy: "T").last ?? ""
-        timeComponents = timeComponents.components(separatedBy: "+").first ?? ""
-        timeComponents = timeComponents.components(separatedBy: "Z").first ?? ""
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "HH:mm:ss"
-        if let date = dateFormatter.date(from: timeComponents) {
-            dateFormatter.dateFormat = "h:mm a"
-            let formattedTime = dateFormatter.string(from: date)
-            return formattedTime
-        } else {
-            return "Failed to parse the time string."
-        }
+        return nil
     }
 }

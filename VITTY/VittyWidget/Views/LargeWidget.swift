@@ -75,7 +75,7 @@ struct ScheduleLargeWidgetView: View {
         HStack(alignment: .top) {
             Spacer().frame(width: 2)
             VStack(alignment: .leading, spacing: 15) {
-                Spacer().frame(height: 5)
+              
                 WidgetTitle(title: "Today's Schedule", fontSize: 18)
                 Spacer().frame(height: 5)
                 
@@ -92,7 +92,7 @@ struct ScheduleLargeWidgetView: View {
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                     }
                     else if entry.completed == entry.total {
-                        // Center the CircleProgressView
+                       
                         VStack {
                             Spacer()
                             CircleProgressView(
@@ -123,7 +123,7 @@ struct ScheduleLargeWidgetView: View {
                         }
                         .frame(maxWidth: .infinity)
                     } else {
-                        // Center the CircleProgressView
+                      
                         VStack {
                             Spacer()
                             CircleProgressView(
@@ -164,7 +164,7 @@ struct ScheduleLargeWidgetView: View {
             Spacer()
         }
         .padding(.horizontal, 4)
-        .padding(.vertical, 6)
+        .padding(.vertical, 6).ignoresSafeArea()
     }
     
     private func getUpcomingClasses() -> [Classes] {

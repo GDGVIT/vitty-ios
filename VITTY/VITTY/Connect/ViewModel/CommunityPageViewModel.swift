@@ -43,15 +43,12 @@ class CommunityPageViewModel {
             self.loadingFreinds = true
         }
         
-       
         self.errorFreinds = false
         print("This is the token used in the app \(token)")
         print("this is the url used for the endpoint \(url)")
         
         AF.request(url, method: .get, headers: ["Authorization": "Token \(token)"])
-       
             .validate()
-        
             .responseDecodable(of: FriendRaw.self) { response in
                 DispatchQueue.main.async {
                     self.loadingFreinds = false
@@ -63,7 +60,6 @@ class CommunityPageViewModel {
                         
                     case .failure(let error):
                         self.logger.error("Error fetching friends: \(error)")
-                      
                         if self.friends.isEmpty {
                             self.errorFreinds = true
                         }
@@ -75,12 +71,10 @@ class CommunityPageViewModel {
     //MARK: Circle DATA
     
     func fetchCircleData(from url: String, token: String, loading: Bool = false) {
-       
         if loading || circles.isEmpty {
             self.loadingCircle = true
         }
         
-      
         self.errorCircle = false
         
         AF.request(url, method: .get, headers: ["Authorization": "Token \(token)"])
@@ -97,7 +91,6 @@ class CommunityPageViewModel {
                         
                     case .failure(let error):
                         self.logger.error("Error fetching circles: \(error)")
-                      
                         if self.circles.isEmpty {
                             self.errorCircle = true
                         }
@@ -137,7 +130,6 @@ class CommunityPageViewModel {
                                 self.logger.info("Raw response: \(jsonString)")
                             }
                             
-                             response
                             self.circleRequests = []
                             self.errorCircleRequests = false
                         }
@@ -155,17 +147,16 @@ class CommunityPageViewModel {
     func acceptCircleRequest(circleId: String, token: String, completion: @escaping (Bool) -> Void) {
         self.loadingRequestAction = true
         
-       
         let url = "\(APIConstants.base_url)circles/acceptRequest/\(circleId)"
         
-        // Debug logging to see the actual URL being called
+       
         logger.info("Attempting to accept circle request with URL: \(url)")
         logger.info("Circle ID: \(circleId)")
         logger.info("Token: \(token.prefix(10))...")
         
         AF.request(url, method: .post, headers: ["Authorization": "Token \(token)"])
             .validate()
-            .responseData { response in // Changed to responseData to get more details
+            .responseData { response in
                 DispatchQueue.main.async {
                     self.loadingRequestAction = false
                     
@@ -178,10 +169,10 @@ class CommunityPageViewModel {
                             self.logger.info("Response: \(responseString)")
                         }
                         
-                        // Remove the accepted request from the list
+                      
                         self.circleRequests.removeAll { $0.circle_id == circleId }
                         
-                        // Refresh circles data to show the newly joined circle
+                    
                         self.fetchCircleData(
                             from: "\(APIConstants.base_url)circles",
                             token: token,
@@ -193,7 +184,7 @@ class CommunityPageViewModel {
                     case .failure(let error):
                         self.logger.error("Error accepting circle request: \(error)")
                         
-                        // Log more details about the error
+                      
                         if let data = response.data, let errorString = String(data: data, encoding: .utf8) {
                             self.logger.error("Error response: \(errorString)")
                         }
@@ -314,10 +305,8 @@ class CommunityPageViewModel {
                     self.loadingCircleMembers = false
                     
                     switch response.result {
-                    case .success(let value):
-                        if let json = value as? [String: Any], let detail = json["detail"] as? String {
-                            self.logger.info("Success: \(detail)")
-                        }
+                    case .success:
+                        self.logger.info("Successfully left circle")
                         
                     case .failure(let error):
                         self.logger.error("Error leaving circle: \(error)")
@@ -339,21 +328,15 @@ class CommunityPageViewModel {
                     self.loadingCircleMembers = false
                     
                     switch response.result {
-                    case .success(let value):
-                        if let json = value as? [String: Any], let detail = json["detail"] as? String {
-                            self.logger.info("Successfully deleted circle: \(detail)")
-                        } else {
-                            self.logger.info("Successfully deleted circle")
-                        }
+                    case .success:
+                        self.logger.info("Successfully deleted circle")
                         
-                        
-                    self.fetchCircleData(
-                              from: "\(APIConstants.base_url)circles",
-                              token: token,
-                              loading: false
-                          )
-                          
-                      
+                     
+                        self.fetchCircleData(
+                            from: "\(APIConstants.base_url)circles",
+                            token: token,
+                            loading: false
+                        )
                         
                     case .failure(let error):
                         self.logger.error("Error deleting circle: \(error)")
@@ -379,7 +362,12 @@ class CommunityPageViewModel {
     }
     
     // MARK: - Group Creation
-       
+    
+  
+    struct CreateCircleResponse: Codable {
+        let detail: String
+    }
+    
     func createCircle(name: String, token: String, completion: @escaping (Result<String, Error>) -> Void) {
         
         guard let encodedName = name.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) else {
@@ -392,30 +380,20 @@ class CommunityPageViewModel {
         
         AF.request(url, method: .post, headers: ["Authorization": "Token \(token)"])
             .validate()
-            .responseJSON { response in
+            .responseDecodable(of: CreateCircleResponse.self) { response in
                 DispatchQueue.main.async {
                     switch response.result {
                     case .success(let data):
-                        if let json = data as? [String: Any],
-                           let detail = json["detail"] as? String {
-                            
-                           
-                            if detail.lowercased().contains("successfully") {
-                                self.logger.info("Successfully created circle: \(name)")
-                               
-                                completion(.success(name))
-                            } else {
-                               
-                                let error = NSError(domain: "CreateCircleError", code: 1, userInfo: [NSLocalizedDescriptionKey: detail])
-                                self.logger.error("Error creating circle: \(detail)")
-                                completion(.failure(error))
-                            }
+                        if data.detail.lowercased().contains("successfully") {
+                            self.logger.info("Successfully created circle: \(name)")
+                            completion(.success(name))
                         } else {
-                            let error = NSError(domain: "CreateCircleError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid response format"])
+                            let error = NSError(domain: "CreateCircleError", code: 1, userInfo: [NSLocalizedDescriptionKey: data.detail])
+                            self.logger.error("Error creating circle: \(data.detail)")
                             completion(.failure(error))
                         }
                         
-                    
+                       
                         self.fetchCircleData(
                             from: "\(APIConstants.base_url)circles",
                             token: token,
@@ -434,6 +412,7 @@ class CommunityPageViewModel {
         
         let url = "\(APIConstants.base_url)circles/sendRequest/\(circleId)/\(username)"
         print("this is the endpoint \(url)")
+        
         AF.request(url, method: .post, headers: ["Authorization": "Token \(token)"])
             .validate()
             .response { response in
@@ -472,52 +451,54 @@ class CommunityPageViewModel {
     // MARK: - Refresh Methods
     
     func refreshAllData(token: String, username: String) {
-       
         fetchFriendsData(
             from: "\(APIConstants.base_url)friends/\(username)/",
             token: token,
             loading: false
         )
         
-      
         fetchCircleData(
             from: "\(APIConstants.base_url)circles",
             token: token,
             loading: false
         )
         
-       
         fetchCircleRequests(token: token, loading: false)
+    }
+    
+
+    struct JoinCodeResponse: Codable {
+        
+        let joinCode: String?
+        let detail: String?
+        
+        enum CodingKeys: String, CodingKey {
+            case joinCode = "join_code"
+            case detail
+        }
     }
     
     func generateJoinCode(circleId: String, token: String, completion: @escaping (Result<String, Error>) -> Void) {
         let url = "\(APIConstants.base_url)circles/\(circleId)/generateJoinCode"
         
-       print("Generating join code for circle: \(circleId)")
-       print("Request URL: \(url)")
+        print("Generating join code for circle: \(circleId)")
+        print("Request URL: \(url)")
         
         AF.request(url, method: .post, headers: ["Authorization": "Token \(token)"])
             .validate()
-            .responseJSON { response in
+            .responseDecodable(of: JoinCodeResponse.self) { response in
                 DispatchQueue.main.async {
                     switch response.result {
                     case .success(let data):
-                        if let json = data as? [String: Any] {
-                            if let joinCode = json["joinCode"] as? String {
-                                print("Successfully generated join code: \(joinCode)")
-                                completion(.success(joinCode))
-                            } else if let detail = json["detail"] as? String {
-                                // Handle error case where detail contains error message
-                               print("Error generating join code: \(detail)")
-                                let error = NSError(domain: "GenerateJoinCodeError", code: 1, userInfo: [NSLocalizedDescriptionKey: detail])
-                                completion(.failure(error))
-                            } else {
-                                // Handle unexpected response format
-                               print("Unexpected response format")
-                                let error = NSError(domain: "GenerateJoinCodeError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid response format"])
-                                completion(.failure(error))
-                            }
+                        if let joinCode = data.joinCode {
+                            print("Successfully generated join code: \(joinCode)")
+                            completion(.success(joinCode))
+                        } else if let detail = data.detail {
+                            print("Error generating join code: \(detail)")
+                            let error = NSError(domain: "GenerateJoinCodeError", code: 1, userInfo: [NSLocalizedDescriptionKey: detail])
+                            completion(.failure(error))
                         } else {
+                            print("Unexpected response format")
                             let error = NSError(domain: "GenerateJoinCodeError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid response format"])
                             completion(.failure(error))
                         }
@@ -530,5 +511,3 @@ class CommunityPageViewModel {
             }
     }
 }
-
-

@@ -3,6 +3,7 @@
 //
 //  Created by Rujin Devkota on 2/28/25.
 //
+
 import SwiftUI
 import AVFoundation
 import UIKit
@@ -156,17 +157,15 @@ struct JoinGroup: View {
                 }
                 .transition(.move(edge: .bottom).combined(with: .opacity))
             }
-        }.onReceive(NotificationCenter.default.publisher(for: Notification.Name("JoinCircleFromDeepLink"))) { notification in
+        }
+        .onReceive(NotificationCenter.default.publisher(for: Notification.Name("JoinCircleFromDeepLink"))) { notification in
             if let userInfo = notification.userInfo,
-               let circleId = userInfo["circleId"] as? String,
-               let circleName = userInfo["circleName"] as? String {
+               let code = userInfo["code"] as? String {
                 
-             
-                localGroupCode = circleId
-                groupCode = circleId
-                self.circleName = circleName
+                localGroupCode = code
+                groupCode = code
                 
-               
+                
                 joinCircle()
             }
         }
@@ -179,9 +178,6 @@ struct JoinGroup: View {
         } message: {
             Text(alertMessage)
         }
-        .onOpenURL { url in
-            handleDeepLink(url)
-        }
         .onAppear {
             localGroupCode = groupCode
         }
@@ -190,61 +186,49 @@ struct JoinGroup: View {
         }
     }
 
-    // MARK: - Handle Deep Link
-    private func handleDeepLink(_ url: URL) {
-        guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
-              let circleId = components.queryItems?.first(where: { $0.name == "circleId" })?.value else {
-            return
-        }
-
-        let circleName = components.queryItems?.first(where: { $0.name == "circleName" })?.value ?? "Unknown Circle"
-
-        showJoinAlert(circleId: circleId, circleName: circleName)
-    }
-
-    // MARK: - Show Join Alert
-    private func showJoinAlert(circleId: String, circleName: String) {
-        let alert = UIAlertController(
-            title: "Join Circle",
-            message: "Do you want to join '\(circleName)'?",
-            preferredStyle: .alert
-        )
-
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-        alert.addAction(UIAlertAction(title: "Join", style: .default) { _ in
-            self.localGroupCode = circleId
-            self.groupCode = circleId
-            self.circleName = circleName
-            self.joinCircle()
-        })
-
-        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-           let rootViewController = windowScene.windows.first?.rootViewController {
-            rootViewController.present(alert, animated: true)
-        }
-    }
-
+    // MARK: - Handle Scanned Code
     private func handleScannedCode(_ code: String) {
-        if code.contains("vitty.app/invite") || code.contains("circleId=") {
-            if let components = URLComponents(string: code),
-               let circleId = components.queryItems?.first(where: { $0.name == "circleId" })?.value {
-                localGroupCode = circleId
-                groupCode = circleId
-                if let name = components.queryItems?.first(where: { $0.name == "circleName" })?.value {
-                    circleName = name
-                }
-                joinCircle()
+        print("Scanned code: \(code)")
+        
+        
+        if code.contains("vitty.app/join") {
+            if let url = URL(string: code) {
+                handleDeepLink(url)
             }
         } else {
+          
             localGroupCode = code
             groupCode = code
+            
+          
             joinCircle()
         }
+        
         isScanning = false
+    }
+    
+    // MARK: - Handle Deep Link
+    
+    private func handleDeepLink(_ url: URL) {
+        print("Deep link received in JoinGroup: \(url.absoluteString)")
+        
+        guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false) else {
+            print("Failed to parse URL components")
+            return
+        }
+        
+        // Handle the URL format: https://vitty.app/join?code=ABC123
+        
+        if let code = components.queryItems?.first(where: { $0.name == "code" })?.value {
+            localGroupCode = code
+            groupCode = code
+            
+        
+            joinCircle()
+        }
     }
 
     // MARK: - Join Circle
-    
     private func joinCircle() {
         guard !localGroupCode.isEmpty,
               let username = authViewModel.loggedInBackendUser?.username,
@@ -261,7 +245,7 @@ struct JoinGroup: View {
         isJoining = true
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
 
-       
+      
         let urlString = "\(APIConstants.base_url)circles/join?code=\(localGroupCode)"
         guard let url = URL(string: urlString) else {
             showToast(message: "Error: Invalid URL", isError: true)
@@ -274,11 +258,15 @@ struct JoinGroup: View {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue("Token \(token)", forHTTPHeaderField: "Authorization")
 
+        print("Joining circle with code: \(localGroupCode)")
+        print("Request URL: \(urlString)")
+
         URLSession.shared.dataTask(with: request) { data, response, error in
             DispatchQueue.main.async {
                 isJoining = false
 
                 if let error = error {
+                    print("Network error: \(error.localizedDescription)")
                     showToast(message: "Network error: \(error.localizedDescription)", isError: true)
                     return
                 }
@@ -288,13 +276,15 @@ struct JoinGroup: View {
                     return
                 }
 
+                print("Response status code: \(httpResponse.statusCode)")
+
                 if httpResponse.statusCode == 200 || httpResponse.statusCode == 201 {
                     showToast(message: "Successfully joined the circle! 🎉", isError: false)
 
                     let impactFeedback = UIImpactFeedbackGenerator(style: .medium)
                     impactFeedback.impactOccurred()
 
-                  
+                    
                     communityPageViewModel.fetchCircleData(
                         from: "\(APIConstants.base_url)circles",
                         token: token,
@@ -308,27 +298,38 @@ struct JoinGroup: View {
                         dismiss()
                     }
                 } else {
-                    if let data = data,
-                       let errorResponse = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
-                       let message = errorResponse["message"] as? String {
-                        showToast(message: "Error: \(message)", isError: true)
-                    } else {
-                        switch httpResponse.statusCode {
-                        case 400:
-                            showToast(message: "Error: Invalid circle code", isError: true)
-                        case 404:
-                            showToast(message: "Error: Circle not found", isError: true)
-                        case 409:
-                            showToast(message: "Error: Already a member of this circle", isError: true)
-                        case 403:
-                            showToast(message: "Error: Not authorized to join this circle", isError: true)
-                        default:
-                            showToast(message: "Error: Failed to join circle (Code: \(httpResponse.statusCode))", isError: true)
+                   
+                    if let data = data {
+                        print("Error response data: \(String(data: data, encoding: .utf8) ?? "No data")")
+                        
+                        if let errorResponse = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+                           let message = errorResponse["message"] as? String {
+                            showToast(message: "Error: \(message)", isError: true)
+                        } else {
+                            handleHTTPError(statusCode: httpResponse.statusCode)
                         }
+                    } else {
+                        handleHTTPError(statusCode: httpResponse.statusCode)
                     }
                 }
             }
         }.resume()
+    }
+    
+    // MARK: - Handle HTTP Errors
+    private func handleHTTPError(statusCode: Int) {
+        switch statusCode {
+        case 400:
+            showToast(message: "Error: Invalid circle code", isError: true)
+        case 404:
+            showToast(message: "Error: Circle not found", isError: true)
+        case 409:
+            showToast(message: "Error: Already a member of this circle", isError: true)
+        case 403:
+            showToast(message: "Error: Not authorized to join this circle", isError: true)
+        default:
+            showToast(message: "Error: Failed to join circle (Code: \(statusCode))", isError: true)
+        }
     }
 
     // MARK: - Show Toast
@@ -345,7 +346,6 @@ struct JoinGroup: View {
         }
     }
 }
-
 
 // MARK: - Toast View
 struct ToastView: View {
@@ -377,7 +377,7 @@ struct ToastView: View {
     }
 }
 
-
+// MARK: - QR Scanner Components
 struct QRScannerView: UIViewControllerRepresentable {
     @Binding var scannedCode: String
     @Binding var isScanning: Bool
@@ -411,7 +411,6 @@ struct QRScannerView: UIViewControllerRepresentable {
         }
     }
 }
-
 
 protocol QRScannerDelegate: AnyObject {
     func didScanCode(_ code: String)

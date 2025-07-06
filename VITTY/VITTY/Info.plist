@@ -16,6 +16,16 @@
 				<string>com.googleusercontent.apps.272763363329-i8n51oo9m30h9it7qq9ufmd0lahnmm63</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.gdscvit.vittyios</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>vitty</string>
+			</array>
+		</dict>
 	</array>
 	<key>FirebaseAppDelegateProxyEnabled</key>
 	<false/>
@@ -26,6 +36,8 @@
 		<string>comgooglemaps</string>
 		<string>maps</string>
 	</array>
+	<key>NSUserNotificationUsageDescription</key>
+	<string>We use notifications to remind you about your academic events</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Poppins-Medium.ttf</string>
@@ -47,7 +59,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>NSUserNotificationUsageDescription</key>
-	<string>We use notifications to remind you about your academic events</string>
 </dict>
 </plist>

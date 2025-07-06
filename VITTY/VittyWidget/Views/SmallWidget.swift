@@ -89,7 +89,7 @@ struct ScheduleSmallWidgetView: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            Spacer().frame(height: 10)
+           
             
             WidgetTitle(title: "Schedule", fontSize: 12.0)
             Spacer().frame(height: 15)
@@ -121,13 +121,18 @@ struct ScheduleSmallWidgetView: View {
                         .foregroundColor(Color(.accentBlue))
                 }
             } else {
-                Text("No more classes")
-                    .font(.system(size: 10, weight: .medium))
-                    .foregroundColor(.white)
+                HStack{
+                    Spacer()
+                    Text("No more classes")
+                        .font(.system(size: 10, weight: .medium))
+                        .foregroundColor(.white)
+                    Spacer()
+                    
+                }
             }
             
             Spacer()
-        }
+        }.ignoresSafeArea()
         
     }
     

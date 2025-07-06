@@ -202,10 +202,13 @@ struct SettingsView: View {
                 try await deleteUserFromServer(username: username)
                 
                 await MainActor.run {
-                    cleanupLocalData()
-                    authViewModel.signOut()
-                    showDeleteUserAlert = false
-                    isDeletingUser = false
+                    
+                    Task {
+                        await cleanupLocalData()
+                        authViewModel.signOut()
+                        showDeleteUserAlert = false
+                        isDeletingUser = false
+                    }
                 }
             } catch {
                 await MainActor.run {
@@ -237,18 +240,26 @@ struct SettingsView: View {
         }
     }
     
-    private func cleanupLocalData() {
+    private func cleanupLocalData() async {
         do {
-            try modelContext.delete(model: TimeTable.self)
-            try modelContext.delete(model: Remainder.self)
-            try modelContext.delete(model: CreateNoteModel.self)
-            try modelContext.delete(model: UploadedFile.self)
-            try modelContext.save()
-            print("Successfully cleaned up local data")
+            
+            await Task.detached { [modelContext] in
+                do {
+                    try modelContext.delete(model: TimeTable.self)
+                    try modelContext.delete(model: Remainder.self)
+                    try modelContext.delete(model: CreateNoteModel.self)
+                    try modelContext.delete(model: UploadedFile.self)
+                    try modelContext.save()
+                    print("Successfully cleaned up local data")
+                } catch {
+                    print("Failed to clean up local data: \(error)")
+                }
+            }.value
         } catch {
-            print("Failed to clean up local data: \(error)")
+            print("Failed to clear local data: \(error)")
         }
     }
+
     
 
     private func copyLecturesToSaturday(from day: String) {

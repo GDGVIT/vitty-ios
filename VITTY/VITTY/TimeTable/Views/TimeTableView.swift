@@ -7,15 +7,10 @@ struct TimeTableView: View {
     @Environment(\.modelContext) private var context
     @Environment(\.scenePhase) private var scenePhase
 
-
     private let daysOfWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-
 
     @State private var viewModel = TimeTableViewModel()
     @State private var selectedLecture: Lecture? = nil
-    @State private var isRefreshing = false
-    @State private var showingRefreshAlert = false
-    
     @State private var isRefreshing = false
     @State private var showingRefreshAlert = false
     
@@ -23,9 +18,7 @@ struct TimeTableView: View {
     @Environment(\.dismiss) private var dismiss
     let friend: Friend?
 
-
     var isFriendsTimeTable: Bool
-
 
     private let logger = Logger(
         subsystem: Bundle.main.bundleIdentifier!,
@@ -33,7 +26,6 @@ struct TimeTableView: View {
             describing: TimeTableView.self
         )
     )
-
 
     var body: some View {
         NavigationStack {
@@ -50,17 +42,11 @@ struct TimeTableView: View {
                         }.padding(8)
                     }
 
-
                     switch viewModel.stage {
                     case .loading:
                         VStack {
                             Spacer()
                             ProgressView()
-                                .scaleEffect(1.2)
-                            Text("Loading timetable...")
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                                .padding(.top, 8)
                                 .scaleEffect(1.2)
                             Text("Loading timetable...")
                                 .font(.caption)
@@ -77,36 +63,10 @@ struct TimeTableView: View {
                                 .padding(.bottom, 16)
                             
                             Text("Something went wrong!")
-                            Image(systemName: "exclamationmark.triangle")
-                                .font(.system(size: 50))
-                                .foregroundColor(.orange)
-                                .padding(.bottom, 16)
-                            
-                            Text("Something went wrong!")
                                 .font(Font.custom("Poppins-Bold", size: 24))
                                 .padding(.bottom, 8)
                             
-                                .padding(.bottom, 8)
-                            
                             Text("Sorry if you are late for your class!")
-                                .font(.subheadline)
-                                .foregroundColor(.secondary)
-                                .padding(.bottom, 20)
-                            
-                            Button(action: {
-                                showingRefreshAlert = true
-                            }) {
-                                HStack {
-                                    Image(systemName: "arrow.clockwise")
-                                    Text("Refresh Timetable")
-                                }
-                                .foregroundColor(.white)
-                                .padding()
-                                .background(Color("Accent"))
-                                .cornerRadius(10)
-                            }
-                            .disabled(isRefreshing)
-                            
                                 .font(.subheadline)
                                 .foregroundColor(.secondary)
                                 .padding(.bottom, 20)
@@ -177,7 +137,6 @@ struct TimeTableView: View {
                             .clipShape(RoundedRectangle(cornerRadius: 10))
                             .padding(.horizontal)
 
-
                             if viewModel.lectures.isEmpty {
                                 Spacer()
                                 VStack(spacing: 16) {
@@ -232,40 +191,10 @@ struct TimeTableView: View {
         } message: {
             Text("This will clear your local timetable and fetch fresh data from the server. Continue?")
         }
-        .alert("Refresh Timetable", isPresented: $showingRefreshAlert) {
-            Button("Cancel", role: .cancel) { }
-            Button("Refresh", role: .destructive) {
-                Task {
-                    await refreshTimetable()
-                }
-            }
-        } message: {
-            Text("This will clear your local timetable and fetch fresh data from the server. Continue?")
-        }
         .navigationBarBackButtonHidden(true)
         .onAppear {
             logger.debug("onAppear triggered")
             loadTimetable()
-        }
-        .onChange(of: timetableItem) { oldValue, newValue in
-            logger.debug("Timetable data changed, reloading view.")
-            
-            // NEW: Check if this is a meaningful change
-            let oldCount = oldValue.count
-            let newCount = newValue.count
-            
-            // Handle different change scenarios
-            if oldCount != newCount {
-                // Data was added or removed
-                loadTimetable()
-            } else if let oldTable = oldValue.first, let newTable = newValue.first {
-                // Check if the actual content changed (especially Saturday)
-                if oldTable.isDifferentFrom(newTable) {
-                    logger.debug("Timetable content changed, refreshing ViewModel")
-                    // Directly refresh the ViewModel with the new data
-                    viewModel.refreshFromDatabase(newTable)
-                }
-            }
         }
         .onChange(of: timetableItem) { oldValue, newValue in
             logger.debug("Timetable data changed, reloading view.")
@@ -295,21 +224,11 @@ struct TimeTableView: View {
                 if viewModel.stage == .error || viewModel.timeTable == nil {
                     loadTimetable()
                 }
-                
-                // Check if we need to reload due to potential data corruption
-                if viewModel.stage == .error || viewModel.timeTable == nil {
-                    loadTimetable()
-                }
             }
         }
     }
 
-
     private func loadTimetable() {
-        guard !isRefreshing else { return }
-        
-       
-        Task { @MainActor in
         guard !isRefreshing else { return }
         
        
@@ -320,24 +239,6 @@ struct TimeTableView: View {
                 authToken: authViewModel.loggedInBackendUser?.token ?? "",
                 context: context
             )
-        }
-        
-        logger.debug("User token: \(authViewModel.loggedInBackendUser?.token ?? "empty")")
-    }
-    
-    private func refreshTimetable() async {
-        await MainActor.run {
-            isRefreshing = true
-        }
-        
-        await viewModel.forceRefresh(
-            username: friend?.username ?? (authViewModel.loggedInBackendUser?.username ?? ""),
-            authToken: authViewModel.loggedInBackendUser?.token ?? "",
-            context: context
-        )
-        
-        await MainActor.run {
-            isRefreshing = false
         }
         
         logger.debug("User token: \(authViewModel.loggedInBackendUser?.token ?? "empty")")

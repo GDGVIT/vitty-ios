@@ -89,6 +89,7 @@ struct UserProfileSidebar: View {
                         }
                     }
                 }
+                }
                 
                 Spacer()
                 

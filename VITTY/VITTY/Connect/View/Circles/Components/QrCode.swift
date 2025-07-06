@@ -5,9 +5,17 @@ struct QRCodeModalView: View {
     let groupCode: String
     let circleName: String
     let existingJoinCode: String
+    let existingJoinCode: String
     let onDismiss: () -> Void
     
     @State private var showingShareSheet = false
+    @State private var isGeneratingCode = false
+    @State private var joinCode: String = ""
+    @State private var showError = false
+    @State private var errorMessage = ""
+    
+    @Environment(AuthViewModel.self) private var authViewModel
+    @Environment(CommunityPageViewModel.self) private var communityPageViewModel
     @State private var isGeneratingCode = false
     @State private var joinCode: String = ""
     @State private var showError = false

@@ -4,6 +4,7 @@
 //  Created by Rujin Devkota on 2/28/25.
 //
 
+
 import SwiftUI
 import AVFoundation
 import UIKit
@@ -159,11 +160,17 @@ struct JoinGroup: View {
             }
         }
         .onReceive(NotificationCenter.default.publisher(for: Notification.Name("JoinCircleFromDeepLink"))) { notification in
+        }
+        .onReceive(NotificationCenter.default.publisher(for: Notification.Name("JoinCircleFromDeepLink"))) { notification in
             if let userInfo = notification.userInfo,
+               let code = userInfo["code"] as? String {
                let code = userInfo["code"] as? String {
                 
                 localGroupCode = code
                 groupCode = code
+                localGroupCode = code
+                groupCode = code
+                
                 
                 
                 joinCircle()
@@ -209,7 +216,12 @@ struct JoinGroup: View {
     
     // MARK: - Handle Deep Link
     
+    
     private func handleDeepLink(_ url: URL) {
+        print("Deep link received in JoinGroup: \(url.absoluteString)")
+        
+        guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false) else {
+            print("Failed to parse URL components")
         print("Deep link received in JoinGroup: \(url.absoluteString)")
         
         guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false) else {
@@ -220,8 +232,14 @@ struct JoinGroup: View {
         // Handle the URL format: https://vitty.app/join?code=ABC123
         
         if let code = components.queryItems?.first(where: { $0.name == "code" })?.value {
+        
+        // Handle the URL format: https://vitty.app/join?code=ABC123
+        
+        if let code = components.queryItems?.first(where: { $0.name == "code" })?.value {
             localGroupCode = code
             groupCode = code
+            
+        
             
         
             joinCircle()
@@ -246,6 +264,7 @@ struct JoinGroup: View {
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
 
       
+      
         let urlString = "\(APIConstants.base_url)circles/join?code=\(localGroupCode)"
         guard let url = URL(string: urlString) else {
             showToast(message: "Error: Invalid URL", isError: true)
@@ -261,11 +280,15 @@ struct JoinGroup: View {
         print("Joining circle with code: \(localGroupCode)")
         print("Request URL: \(urlString)")
 
+        print("Joining circle with code: \(localGroupCode)")
+        print("Request URL: \(urlString)")
+
         URLSession.shared.dataTask(with: request) { data, response, error in
             DispatchQueue.main.async {
                 isJoining = false
 
                 if let error = error {
+                    print("Network error: \(error.localizedDescription)")
                     print("Network error: \(error.localizedDescription)")
                     showToast(message: "Network error: \(error.localizedDescription)", isError: true)
                     return
@@ -278,12 +301,15 @@ struct JoinGroup: View {
 
                 print("Response status code: \(httpResponse.statusCode)")
 
+                print("Response status code: \(httpResponse.statusCode)")
+
                 if httpResponse.statusCode == 200 || httpResponse.statusCode == 201 {
                     showToast(message: "Successfully joined the circle! 🎉", isError: false)
 
                     let impactFeedback = UIImpactFeedbackGenerator(style: .medium)
                     impactFeedback.impactOccurred()
 
+                    
                     
                     communityPageViewModel.fetchCircleData(
                         from: "\(APIConstants.base_url)circles",
@@ -308,7 +334,38 @@ struct JoinGroup: View {
                         } else {
                             handleHTTPError(statusCode: httpResponse.statusCode)
                         }
+                   
+                    if let data = data {
+                        print("Error response data: \(String(data: data, encoding: .utf8) ?? "No data")")
+                        
+                        if let errorResponse = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+                           let message = errorResponse["message"] as? String {
+                            showToast(message: "Error: \(message)", isError: true)
+                        } else {
+                            handleHTTPError(statusCode: httpResponse.statusCode)
+                        }
                     } else {
+                        handleHTTPError(statusCode: httpResponse.statusCode)
+                    }
+                }
+            }
+        }.resume()
+    }
+    
+    // MARK: - Handle HTTP Errors
+    private func handleHTTPError(statusCode: Int) {
+        switch statusCode {
+        case 400:
+            showToast(message: "Error: Invalid circle code", isError: true)
+        case 404:
+            showToast(message: "Error: Circle not found", isError: true)
+        case 409:
+            showToast(message: "Error: Already a member of this circle", isError: true)
+        case 403:
+            showToast(message: "Error: Not authorized to join this circle", isError: true)
+        default:
+            showToast(message: "Error: Failed to join circle (Code: \(statusCode))", isError: true)
+        }
                         handleHTTPError(statusCode: httpResponse.statusCode)
                     }
                 }
@@ -377,6 +434,7 @@ struct ToastView: View {
     }
 }
 
+// MARK: - QR Scanner Components
 // MARK: - QR Scanner Components
 struct QRScannerView: UIViewControllerRepresentable {
     @Binding var scannedCode: String

@@ -9,9 +9,13 @@ struct SettingsView: View {
 
     @StateObject private var viewModel = SettingsViewModel()
 
+
     @State private var showDaySelection = false
     @State private var selectedDay: String? = nil
     @State private var showResetAlert = false
+    @State private var showDeleteUserAlert = false
+    @State private var isDeletingUser = false
+    
     @State private var showDeleteUserAlert = false
     @State private var isDeletingUser = false
     
@@ -51,10 +55,14 @@ struct SettingsView: View {
                                     withAnimation {
                                         showDaySelection.toggle()
                                     }
+                                    withAnimation {
+                                        showDaySelection.toggle()
+                                    }
                                 } label: {
                                     SettingsRowView(
                                         icon: "calendar.badge.plus",
                                         title: "Saturday Class",
+                                        subtitle: selectedDay == nil ? "Select a day to copy to Saturday" : "Saturday classes are a copy of \(selectedDay!)"
                                         subtitle: selectedDay == nil ? "Select a day to copy to Saturday" : "Saturday classes are a copy of \(selectedDay!)"
                                     )
                                 }
@@ -71,9 +79,13 @@ struct SettingsView: View {
                                                 Spacer()
                                             }
                                             .padding([.leading, .vertical], 4)
+                                            .padding([.leading, .vertical], 4)
                                             .contentShape(Rectangle())
                                             .onTapGesture {
                                                 copyLecturesToSaturday(from: day)
+                                                withAnimation {
+                                                    showDaySelection = false
+                                                }
                                                 withAnimation {
                                                     showDaySelection = false
                                                 }
@@ -81,6 +93,7 @@ struct SettingsView: View {
                                         }
                                     }
                                     .padding(.top, 8)
+                                    .transition(.opacity.combined(with: .scale(scale: 0.95, anchor: .top)))
                                     .transition(.opacity.combined(with: .scale(scale: 0.95, anchor: .top)))
                                 }
                                 
@@ -94,6 +107,7 @@ struct SettingsView: View {
                                     )
                                 }
                                 .buttonStyle(PlainButtonStyle())
+                                
                                 
                                 Button {
                                     if let url = URL(string: "https://vitty.dscvit.com") {
@@ -137,6 +151,20 @@ struct SettingsView: View {
                             .disabled(isDeletingUser)
                         }
 
+                        SettingsSectionView(title: "Account Management") {
+                            Button {
+                                showDeleteUserAlert = true
+                            } label: {
+                                SettingsRowView(
+                                    icon: "person.badge.minus",
+                                    title: "Delete Account",
+                                    subtitle: "Permanently delete your account and all data"
+                                )
+                            }
+                            .buttonStyle(PlainButtonStyle())
+                            .disabled(isDeletingUser)
+                        }
+
                         SettingsSectionView(title: "About") {
                             AboutLinkView(image: "github-icon", title: "GitHub Repository", url: URL(string: "https://github.com/GDGVIT/vitty-ios"))
                             AboutLinkView(image: "gdsc-logo", title: "GDSC VIT", url: URL(string: "https://dscvit.com/"))
@@ -148,9 +176,23 @@ struct SettingsView: View {
                 if showResetAlert {
                     ResetSaturdayAlert(
                         onCancel: { showResetAlert = false },
+                        onCancel: { showResetAlert = false },
                         onReset: {
                             resetSaturdayClasses()
                             showResetAlert = false
+                        }
+                    )
+                    .zIndex(1)
+                }
+                
+                if showDeleteUserAlert {
+                    DeleteUserAlert(
+                        isDeleting: isDeletingUser,
+                        onCancel: {
+                            showDeleteUserAlert = false
+                        },
+                        onDelete: {
+                            deleteUser()
                         }
                     )
                     .zIndex(1)
@@ -175,6 +217,7 @@ struct SettingsView: View {
                 viewModel.timetable = timeTables.first
                 viewModel.checkNotificationAuthorization()
                 loadSelectedDay()
+                print("Saturday before save:", timeTables.first?.saturday.map { $0.name } ?? [])
                 print("Saturday before save:", timeTables.first?.saturday.map { $0.name } ?? [])
             }
             .alert("Notifications Disabled", isPresented: $viewModel.showNotificationDisabledAlert) {
@@ -379,7 +422,24 @@ struct SettingsView: View {
                 )
             }
             
+            
+           
+            self.selectedDay = nil
+            
+            print("Successfully reset Saturday classes using orthodox method")
+            
+            
+            Task { @MainActor in
+                NotificationCenter.default.post(
+                    name: NSNotification.Name("TimetableDidChange"),
+                    object: nil
+                )
+            }
+            
         } catch {
+            print("Error during orthodox reset: \(error)")
+            
+            modelContext.rollback()
             print("Error during orthodox reset: \(error)")
             
             modelContext.rollback()
@@ -523,6 +583,73 @@ struct ResetSaturdayAlert: View {
         }
         .background(Color.black.opacity(0.5).edgesIgnoringSafeArea(.all))
         .onTapGesture {
+            // Empty tap gesture to prevent dismissal
+        }
+    }
+}
+
+// Custom Delete User Alert Component
+struct DeleteUserAlert: View {
+    let isDeleting: Bool
+    let onCancel: () -> Void
+    let onDelete: () -> Void
+    
+    var body: some View {
+        VStack {
+            Spacer()
+            VStack(spacing: 16) {
+                Image(systemName: "exclamationmark.triangle.fill")
+                    .font(.system(size: 40))
+                    .foregroundColor(.red)
+                
+                Text("Delete Account?")
+                    .font(.custom("Poppins-SemiBold", size: 18))
+                    .foregroundColor(.white)
+                
+                Text("This action will permanently delete your account and all associated data. This cannot be undone.")
+                    .font(.custom("Poppins-Regular", size: 14))
+                    .foregroundColor(.white)
+                    .multilineTextAlignment(.center)
+                
+                if isDeleting {
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                        .frame(height: 40)
+                } else {
+                    HStack(spacing: 10) {
+                        Button(action: onCancel) {
+                            Text("Cancel")
+                                .font(.custom("Poppins-Regular", size: 14))
+                                .padding(.vertical, 10)
+                                .frame(maxWidth: .infinity)
+                                .background(Color.gray.opacity(0.3))
+                                .foregroundColor(.white)
+                                .cornerRadius(8)
+                        }
+                        
+                        Button(action: onDelete) {
+                            Text("Delete Account")
+                                .font(.custom("Poppins-Regular", size: 14))
+                                .padding(.vertical, 10)
+                                .frame(maxWidth: .infinity)
+                                .background(Color.red)
+                                .foregroundColor(.white)
+                                .cornerRadius(8)
+                        }
+                    }
+                }
+            }
+            .frame(minHeight: 200)
+            .padding(20)
+            .background(Color("Background"))
+            .cornerRadius(16)
+            .padding(.horizontal, 30)
+            .transition(.scale.combined(with: .opacity))
+            Spacer()
+        }
+        .background(Color.black.opacity(0.5).edgesIgnoringSafeArea(.all))
+        .onTapGesture {
+            // Empty tap gesture to prevent dismissal
             // Empty tap gesture to prevent dismissal
         }
     }

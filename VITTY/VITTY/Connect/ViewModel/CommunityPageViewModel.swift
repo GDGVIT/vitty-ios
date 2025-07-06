@@ -265,6 +265,9 @@ class CommunityPageViewModel {
                 }
             }
     }
+                }
+            }
+    }
     
     //MARK : Circle Leave
     func fetchCircleLeave(from url: String, token: String, loading: Bool = false) {

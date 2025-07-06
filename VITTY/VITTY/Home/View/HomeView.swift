@@ -7,6 +7,9 @@ struct HomeView: View {
     @State private var showProfileSidebar: Bool = false
     @State private var isCreatingGroup = false
     @StateObject private var tipManager = CustomTipManager()
+    
+   
+    @EnvironmentObject private var navigationCoordinator: NavigationCoordinator
 
     var body: some View {
         NavigationStack {
@@ -38,6 +41,16 @@ struct HomeView: View {
             }
             .onChange(of: selectedPage) { _, newValue in
                 handleTabChange(newValue)
+            }
+            // NEW: Listen for deep link navigation
+            .onReceive(NotificationCenter.default.publisher(for: Notification.Name("NavigateToCircles"))) { _ in
+                selectedPage = 2 // Navigate to Connects tab
+            }
+            // NEW: Handle navigation coordinator changes
+            .onChange(of: navigationCoordinator.shouldNavigateToCircles) { _, shouldNavigate in
+                if shouldNavigate {
+                    selectedPage = 2
+                }
             }
         }
     }
@@ -138,7 +151,6 @@ struct HomeView: View {
     }
     
     private func handleTabChange(_ newTab: Int) {
-       
         print("Switched to tab: \(newTab)")
     }
 }

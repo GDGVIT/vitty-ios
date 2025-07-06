@@ -307,13 +307,17 @@ class CommunityPageViewModel {
                     switch response.result {
                     case .success:
                         self.logger.info("Successfully left circle")
+                       
                         
                     case .failure(let error):
                         self.logger.error("Error leaving circle: \(error)")
                         self.errorCircleMembers = true
                     }
                 }
+                
+                
             }
+        
     }
     
     //MARK: Delete Circle

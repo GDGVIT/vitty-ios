@@ -38,7 +38,7 @@ struct QRCodeModalView: View {
                         .foregroundColor(.white)
                 }
                 
-                // QR Code Display
+               
                 if isGeneratingCode {
                     Rectangle()
                         .fill(Color.gray.opacity(0.3))
@@ -54,7 +54,7 @@ struct QRCodeModalView: View {
                             }
                         )
                 } else if !joinCode.isEmpty {
-                    if let qrImage = generateQRCode(from: createInvitationLink()) {
+                    if let qrImage = generateQRCode(from: createDeepLink()) {
                         Image(uiImage: qrImage)
                             .interpolation(.none)
                             .resizable()
@@ -134,28 +134,29 @@ struct QRCodeModalView: View {
                     .multilineTextAlignment(.center)
                     .padding(.horizontal)
                 
-                // Action Buttons
+                
                 HStack(spacing: 12) {
-                    
-                    Button(action: {
-                        if joinCode.isEmpty {
-                            generateJoinCode()
-                        } else {
-                            showingShareSheet = true
+                    if joinCode.isEmpty{
+                        Button(action: {
+                            if joinCode.isEmpty {
+                                generateJoinCode()
+                            }
+                        }) {
+                            HStack {
+                                Image(systemName:"qrcode" )
+                                Text( "Generate QR Code")
+                            }
+                            .font(.custom("Poppins-SemiBold", size: 14))
+                            .foregroundColor(Color("Background"))
+                            .padding(.horizontal, 16)
+                            .padding(.vertical, 8)
+                            .background(Color("Accent"))
+                            .cornerRadius(8)
                         }
-                    }) {
-                        HStack {
-                            Image(systemName: joinCode.isEmpty ? "qrcode" : "square.and.arrow.up")
-                            Text(joinCode.isEmpty ? "Generate QR Code" : "Share Invitation")
-                        }
-                        .font(.custom("Poppins-SemiBold", size: 14))
-                        .foregroundColor(Color("Background"))
-                        .padding(.horizontal, 16)
-                        .padding(.vertical, 8)
-                        .background(Color("Accent"))
-                        .cornerRadius(8)
+                        .disabled(isGeneratingCode)
                     }
-                    .disabled(isGeneratingCode)
+                    
+                   
                 }
             }
             .frame(maxWidth: 300)
@@ -167,12 +168,7 @@ struct QRCodeModalView: View {
             Spacer()
         }
         .background(Color.black.opacity(0.5).edgesIgnoringSafeArea(.all))
-        .sheet(isPresented: $showingShareSheet) {
-            ShareSheetQr(items: [
-                createInvitationLink(),
-                "Join my circle '\(circleName)' on VITTY! Use code: \(joinCode)"
-            ])
-        }
+        
         .alert("Error", isPresented: $showError) {
             Button("OK") { }
         } message: {
@@ -225,14 +221,13 @@ struct QRCodeModalView: View {
         print("Join code copied to clipboard")
     }
     
-    private func createInvitationLink() -> String {
-        let baseURL = "https://vitty.app/join"
-        
+ 
+    private func createDeepLink() -> String {
         guard let encodedCircleName = circleName.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
-            return "\(baseURL)?code=\(joinCode)"
+            return "vitty://join?code=\(joinCode)"
         }
-        
-        return "\(baseURL)?code=\(joinCode)&circleName=\(encodedCircleName)"
+       //vitty://join?code=Ow2tWaHExs&circleName=newircircle
+        return "vitty://join?code=\(joinCode)&circleName=\(encodedCircleName)"
     }
     
     private func generateQRCode(from string: String) -> UIImage? {
@@ -254,13 +249,3 @@ struct QRCodeModalView: View {
     }
 }
 
-struct ShareSheetQr: UIViewControllerRepresentable {
-    let items: [Any]
-
-    func makeUIViewController(context: Context) -> UIActivityViewController {
-        let controller = UIActivityViewController(activityItems: items, applicationActivities: nil)
-        return controller
-    }
-
-    func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
-}

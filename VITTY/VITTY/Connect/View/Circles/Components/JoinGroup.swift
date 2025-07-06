@@ -191,7 +191,7 @@ struct JoinGroup: View {
         print("Scanned code: \(code)")
         
         
-        if code.contains("vitty.app/join") {
+        if code.contains("vitty://join") {
             if let url = URL(string: code) {
                 handleDeepLink(url)
             }

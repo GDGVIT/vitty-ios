@@ -11,36 +11,6 @@ import SwiftUI
 import SwiftData
 import TipKit
 
-/**
- `NOTE FOR FUTURE/NEW DEVS:`
-
- - always use the latest and greatest apple tools, don't use something that's been replaced by apple (start watching WWDC to stay updated)
- for eg: use SwiftData and not CoreData. use @Observable and not ObservableObject and u don't want to use UIKit instead of SwiftUI. trust me on this.
- reason: it makes the code more future proof and incase there's no activity on the development for a year, the app wont be outdated.
- downside: minimum deployment target has to be raised which hurts adoption but apple doesn't care about this either so we don't too.
-
- `personal experience, we have had issues when this app would just crash for iOS 16+ because the code were not updated.`
- `we lost a lot of users and our ratings dropped to 3.`
-
- - continuation to the first point, pls replace parts of the app that uses these old tech as soon as you can.
-
- - focus on keeping the package dependencies on latest versions
-
- - use `swift-format` to format the code before pushing. it's already configured for the project. double click on VITTY on left panel and click on format code.
-
- - use `tabs` and `not` spaces  pls.
-
- - try to focus on subtle animations and transitions. it makes the app feel more polished. `withAnimation{ }` is the greatest tool ever made by apple.
-
- - try to use haptics wherever possible. users love to feel those and apple makes it easier for us to implement
-
- - try to stick to Apple HIG as much as possible. ik it's difficult considering the UI we have now but it's worth it.
-
- - use // MARK: <title> when u create a function, it helps to navigate.
- */
-
-
-
 @main
 struct VITTYApp: App {
 
@@ -54,6 +24,15 @@ struct VITTYApp: App {
     @State private var deepLinkURL: URL?
     @State private var showJoinCircleAlert = false
     @State private var pendingCircleInvite: (code: String, circleName: String?)?
+    
+    
+    @State private var isProcessingDeepLink = false
+    
+ 
+    @StateObject private var navigationCoordinator = NavigationCoordinator()
+    
+   
+    @StateObject private var toastManager = ToastManager()
 
     init() {
         setupFirebase()
@@ -62,28 +41,44 @@ struct VITTYApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .preferredColorScheme(.dark)
-                .task {
-                    try? Tips.configure([.displayFrequency(.immediate), .datastoreLocation(.applicationDefault)])
-                }
-                .onOpenURL { url in
-                    handleDeepLink(url)
-                }
-                .alert("Join Circle", isPresented: $showJoinCircleAlert) {
-                    Button("Cancel", role: .cancel) {
-                        pendingCircleInvite = nil
+            ZStack {
+                ContentView()
+                    .preferredColorScheme(.dark)
+                    .environmentObject(navigationCoordinator)
+                    .task {
+                        try? Tips.configure([.displayFrequency(.immediate), .datastoreLocation(.applicationDefault)])
                     }
-                    Button("Join") {
+                    .onOpenURL { url in
+                        handleDeepLink(url)
+                    }
+                    .alert("Join Circle", isPresented: $showJoinCircleAlert) {
+                        Button("Cancel", role: .cancel) {
+                            pendingCircleInvite = nil
+                            isProcessingDeepLink = false
+                        }
+                        Button("Join") {
+                            if let invite = pendingCircleInvite {
+                                handleCircleInvite(invite)
+                            }
+                        }
+                    } message: {
                         if let invite = pendingCircleInvite {
-                            handleCircleInvite(invite)
+                            Text("Do you want to join the circle with code '\(invite.code)'?")
                         }
                     }
-                } message: {
-                    if let invite = pendingCircleInvite {
-                        Text("Do you want to join the circle with code '\(invite.code)'?")
-                    }
+                
+               
+                if toastManager.isShowing {
+                    CircleToastView(
+                        message: toastManager.message,
+                        isError: toastManager.isError,
+                        isShowing: $toastManager.isShowing
+                    )
+                    .animation(.easeInOut(duration: 0.3), value: toastManager.isShowing)
+                    .zIndex(1000)
                 }
+            }
+            .environmentObject(toastManager)
         }
         .modelContainer(sharedModelContainer)
     }
@@ -97,6 +92,116 @@ struct VITTYApp: App {
     }
 }
 
+// MARK: - Toast Manager
+class ToastManager: ObservableObject {
+    @Published var isShowing = false
+    @Published var message = ""
+    @Published var isError = false
+    
+    private var hideTimer: Timer?
+    
+    init() {
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(showToastNotification),
+            name: Notification.Name("ShowToast"),
+            object: nil
+        )
+    }
+    
+    @objc private func showToastNotification(_ notification: Notification) {
+        guard let userInfo = notification.userInfo,
+              let message = userInfo["message"] as? String,
+              let isError = userInfo["isError"] as? Bool else {
+            return
+        }
+        
+        showToast(message: message, isError: isError)
+    }
+    
+    func showToast(message: String, isError: Bool) {
+        DispatchQueue.main.async {
+            self.message = message
+            self.isError = isError
+            self.isShowing = true
+            
+          
+            self.hideTimer?.invalidate()
+            self.hideTimer = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { _ in
+                self.hideToast()
+            }
+        }
+    }
+    
+    func hideToast() {
+        DispatchQueue.main.async {
+            self.isShowing = false
+            self.hideTimer?.invalidate()
+        }
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+        hideTimer?.invalidate()
+    }
+}
+
+// MARK: - Toast View
+struct CircleToastView: View {
+    let message: String
+    let isError: Bool
+    @Binding var isShowing: Bool
+    
+    var body: some View {
+        VStack {
+            Spacer()
+            
+            HStack {
+                Image(systemName: isError ? "xmark.circle.fill" : "checkmark.circle.fill")
+                    .foregroundColor(isError ? .red : .green)
+                    .font(.system(size: 20))
+                
+                Text(message)
+                    .font(.system(size: 16, weight: .medium))
+                    .foregroundColor(.white)
+                    .multilineTextAlignment(.leading)
+                
+                Spacer()
+            }
+            .padding(.horizontal, 20)
+            .padding(.vertical, 16)
+            .background(
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(Color.black.opacity(0.9))
+                    .shadow(color: .black.opacity(0.3), radius: 10, x: 0, y: 5)
+            )
+            .padding(.horizontal, 20)
+            .padding(.bottom, 100)
+        }
+        .transition(.move(edge: .bottom).combined(with: .opacity))
+        .onTapGesture {
+            isShowing = false
+        }
+    }
+}
+
+// MARK: - Navigation Coordinator
+class NavigationCoordinator: ObservableObject {
+    @Published var shouldNavigateToCircles = false
+    @Published var pendingCircleInvite: (code: String, circleName: String?)?
+    
+    func navigateToCirclesForInvite(code: String, circleName: String?) {
+        pendingCircleInvite = (code: code, circleName: circleName)
+        shouldNavigateToCircles = true
+    }
+    
+    func resetNavigation() {
+        shouldNavigateToCircles = false
+        pendingCircleInvite = nil
+    }
+}
+
 // MARK: - Deep Link Handling
 extension VITTYApp {
     
@@ -104,51 +209,182 @@ extension VITTYApp {
         logger.info("Deep link received: \(url.absoluteString)")
         
        
-        if url.absoluteString.contains("vitty.app/join") {
+        guard !isProcessingDeepLink else {
+            logger.info("Already processing a deep link, ignoring")
+            return
+        }
+        
+        isProcessingDeepLink = true
+        
+        if url.absoluteString.contains("vitty://join") {
             handleJoinCircleURL(url)
         } else {
-            
             logger.info("Unhandled deep link type: \(url.absoluteString)")
+            isProcessingDeepLink = false
         }
     }
-    
+
     private func handleJoinCircleURL(_ url: URL) {
+        logger.info("Handling join circle URL")
+        
         guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false) else {
             logger.error("Failed to parse URL components")
+            isProcessingDeepLink = false
             return
         }
         
-      
         guard let code = components.queryItems?.first(where: { $0.name == "code" })?.value else {
             logger.error("No code found in URL")
+            showToast(message: "Error: Invalid invitation link", isError: true)
+            isProcessingDeepLink = false
             return
         }
-        
         
         let circleName = components.queryItems?.first(where: { $0.name == "circleName" })?.value
         
-        // Store the invite and show alert
-        pendingCircleInvite = (code: code, circleName: circleName)
-        showJoinCircleAlert = true
+        logger.info("Parsed circle code: \(code)")
+        if let name = circleName {
+            logger.info("Parsed circle name: \(name)")
+        }
         
-        logger.info("Circle join code prepared: \(code)")
+       
+        navigationCoordinator.navigateToCirclesForInvite(code: code, circleName: circleName)
+        
+        let invite = (code: code, circleName: circleName)
+        
+     
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.pendingCircleInvite = invite
+            self.showJoinCircleAlert = true
+        }
+        
+        logger.info("Circle join alert prepared for code: \(code)")
     }
     
     private func handleCircleInvite(_ invite: (code: String, circleName: String?)) {
-      
-        NotificationCenter.default.post(
-            name: Notification.Name("JoinCircleFromDeepLink"),
-            object: nil,
-            userInfo: [
-                "code": invite.code,
-                "circleName": invite.circleName ?? "Unknown Circle"
-            ]
-        )
         
-     
+        guard let token = UserDefaults.standard.string(forKey: UserDefaultKeys.tokenKey),
+              !token.isEmpty else {
+            logger.error("No token found in UserDefaults")
+            showToast(message: "Error: Unable to get user information", isError: true)
+            cleanup()
+            return
+        }
+        
+        if invite.code.count < 3 {
+            showToast(message: "Error: Circle code must be at least 3 characters", isError: true)
+            cleanup()
+            return
+        }
+        
+        let urlString = "\(APIConstants.base_url)circles/join?code=\(invite.code)"
+        guard let url = URL(string: urlString) else {
+            logger.error("Invalid URL: \(urlString)")
+            showToast(message: "Error: Invalid URL", isError: true)
+            cleanup()
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("Token \(token)", forHTTPHeaderField: "Authorization")
+        
+        logger.info("Joining circle with code: \(invite.code)")
+        logger.info("Request URL: \(urlString)")
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            DispatchQueue.main.async {
+                
+                if let error = error {
+                    self.logger.error("Network error: \(error.localizedDescription)")
+                    self.showToast(message: "Network error: \(error.localizedDescription)", isError: true)
+                    self.cleanup()
+                    return
+                }
+                
+                guard let httpResponse = response as? HTTPURLResponse else {
+                    self.showToast(message: "Error: Invalid response", isError: true)
+                    self.cleanup()
+                    return
+                }
+                
+                self.logger.info("Response status code: \(httpResponse.statusCode)")
+                
+                if httpResponse.statusCode == 200 || httpResponse.statusCode == 201 {
+                    self.showToast(message: "Successfully joined the circle! 🎉", isError: false)
+                    
+                    let impactFeedback = UIImpactFeedbackGenerator(style: .medium)
+                    impactFeedback.impactOccurred()
+                    
+                  
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        NotificationCenter.default.post(
+                            name: Notification.Name("CircleJoinedSuccessfully"),
+                            object: nil,
+                            userInfo: ["code": invite.code]
+                        )
+                    }
+                    
+                    self.logger.info("Successfully joined circle with code: \(invite.code)")
+                } else {
+                    
+                    if let data = data {
+                        self.logger.error("Error response data: \(String(data: data, encoding: .utf8) ?? "No data")")
+                        
+                        if let errorResponse = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+                           let message = errorResponse["message"] as? String {
+                            self.showToast(message: "Error: \(message)", isError: true)
+                        } else {
+                            self.handleHTTPError(statusCode: httpResponse.statusCode)
+                        }
+                    } else {
+                        self.handleHTTPError(statusCode: httpResponse.statusCode)
+                    }
+                }
+                
+                self.cleanup()
+            }
+        }.resume()
+    }
+
+    // MARK: - Helper Methods
+    
+    
+    private func cleanup() {
         pendingCircleInvite = nil
+        isProcessingDeepLink = false
+        navigationCoordinator.resetNavigation()
+    }
+    
+    private func handleHTTPError(statusCode: Int) {
+        switch statusCode {
+        case 400:
+            showToast(message: "Error: Bad request", isError: true)
+        case 401:
+            showToast(message: "Error: Unauthorized", isError: true)
+        case 403:
+            showToast(message: "Error: Forbidden", isError: true)
+        case 404:
+            showToast(message: "Error: Circle not found", isError: true)
+        case 409:
+            showToast(message: "Error: Already a member of this circle", isError: true)
+        case 500:
+            showToast(message: "Error: Server error", isError: true)
+        default:
+            showToast(message: "Error: Something went wrong", isError: true)
+        }
+    }
+    
+    private func showToast(message: String, isError: Bool) {
+        // NEW: Use ToastManager directly
+        toastManager.showToast(message: message, isError: isError)
         
-        logger.info("Circle join notification posted for code: \(invite.code)")
+        if isError {
+            logger.error("Toast Error: \(message)")
+        } else {
+            logger.info("Toast Success: \(message)")
+        }
     }
 }
 

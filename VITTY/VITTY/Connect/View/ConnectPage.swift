@@ -35,6 +35,7 @@ struct ConnectPage: View {
     @State private var showCircleMenu = false
     @Environment(\.dismiss) private var dismiss
     
+    @EnvironmentObject private var navigationCoordinator: NavigationCoordinator
     @Binding var isCreatingGroup : Bool
     
     @State private var isAddFriendsViewPresented = false
@@ -143,8 +144,20 @@ struct ConnectPage: View {
             case .groupRequests:
                 CircleRequestsView()
             }
+        }.onChange(of: navigationCoordinator.shouldNavigateToCircles) { _, shouldNavigate in
+            if shouldNavigate {
+                selectedTab = 0
+            }
+            communityPageViewModel.fetchCircleData(
+                from: "\(APIConstants.base_url)circles",
+                token: authViewModel.loggedInBackendUser?.token ?? "",
+                loading: true
+            )
         }
         .onAppear {
+            if navigationCoordinator.shouldNavigateToCircles {
+                            selectedTab = 0
+                        }
             let shouldShowLoading = !hasLoadedInitialData
             
         
@@ -152,6 +165,7 @@ struct ConnectPage: View {
                 token: authViewModel.loggedInBackendUser?.token ?? "",
                 loading: shouldShowLoading
             )
+            
             
             if communityPageViewModel.friends.isEmpty || !hasLoadedInitialData {
                 communityPageViewModel.fetchFriendsData(

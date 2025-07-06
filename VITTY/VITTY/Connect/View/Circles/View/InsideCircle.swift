@@ -509,12 +509,13 @@ struct InsideCircle: View {
                     LeaveCircleAlert(circleName: "\(circleName)", onCancel: {
                         showLeaveAlert = false
                     }, onLeave: {
-                        let url = "\(APIConstants.base_url)circles/\(circle_id)/leave"
+                        let url = "\(APIConstants.base_url)circles/leave/\(circle_id)"
                         let token = authViewModel.loggedInBackendUser?.token ?? ""
 
                         communityPageViewModel.leaveCircle(from: url, token: token)
                         
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                            communityPageViewModel.fetchCircleData(from:"\(APIConstants.base_url)circles" , token: token)
                             showLeaveAlert = false
                             presentationMode.wrappedValue.dismiss()
                         }
@@ -532,6 +533,7 @@ struct InsideCircle: View {
                         
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                             showDeleteAlert = false
+                            
                             presentationMode.wrappedValue.dismiss()
                         }
                     })

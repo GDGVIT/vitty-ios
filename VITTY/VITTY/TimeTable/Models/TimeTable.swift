@@ -4,18 +4,11 @@
 //
 //  Created by Chandram Dutta on 09/02/24.
 //
-//
-//  TimeTable.swift
-//  VITTY
-//
-//  Created by Chandram Dutta on 09/02/24.
-//
+
 
 import Foundation
 import OSLog
 import SwiftData
-
-
 
 class TimeTableRaw: Codable {
     let data: TimeTable
@@ -231,7 +224,7 @@ extension TimeTable {
             Classes(
                 title: $0.name,
                 time: "\(formatTime(time: $0.startTime)) - \(formatTime(time: $0.endTime))",
-                slot: $0.slot
+                slot: $0.venue // NOTE: Passing venue instead of slot for display purposes
             )
         }
 
@@ -246,7 +239,7 @@ extension TimeTable {
             Classes(
                 title: $0.name,
                 time: "\(formatTime(time: $0.startTime)) - \(formatTime(time: $0.endTime))",
-                slot: $0.slot
+                slot: $0.venue // NOTE: Passing venue instead of slot for display purposes
             )
         }
     }
@@ -278,4 +271,3 @@ extension TimeTable {
                sunday != other.sunday
     }
 }
-

@@ -115,9 +115,9 @@ struct Provider: TimelineProvider {
         }.count
     }
     
-    // MARK: - Widget Content Preparation
+    // MARK: - Widget Size-Specific Content Preparation
     
-    private func prepareWidgetContent() -> (classes: [Classes], total: Int, completed: Int) {
+    private func prepareSmallMediumContent() -> (classes: [Classes], total: Int, completed: Int) {
         let allClasses = fetchAllTodaysClasses()
         let upcomingClasses = fetchUpcomingClasses()
         let currentClass = fetchCurrentClass()
@@ -125,12 +125,12 @@ struct Provider: TimelineProvider {
         
         var displayClasses: [Classes] = []
         
-       
+        // Add current class first
         if let current = currentClass {
             displayClasses.append(current)
         }
         
-       
+        // Add upcoming classes
         displayClasses.append(contentsOf: upcomingClasses)
         
         return (
@@ -138,6 +138,75 @@ struct Provider: TimelineProvider {
             total: allClasses.count,
             completed: completedCount
         )
+    }
+    
+    private func prepareLargeContent() -> (classes: [Classes], total: Int, completed: Int) {
+        let allClasses = fetchAllTodaysClasses()
+        let completedCount = calculateCompletedClassesCount()
+        
+        // Get all classes sorted by time
+        let sortedClasses = getSortedClasses(allClasses)
+        
+        // Group classes into batches of 4
+        let currentGroupClasses = getCurrentGroupOfFour(sortedClasses)
+        
+        return (
+            classes: currentGroupClasses,
+            total: allClasses.count,
+            completed: completedCount
+        )
+    }
+    
+    private func getSortedClasses(_ classes: [Classes]) -> [Classes] {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "h:mm a"
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        
+        return classes.sorted { class1, class2 in
+            let time1Components = class1.time.components(separatedBy: " - ")
+            let time2Components = class2.time.components(separatedBy: " - ")
+            
+            guard time1Components.count == 2, time2Components.count == 2 else {
+                return false
+            }
+            
+            let startTime1Str = time1Components[0].trimmingCharacters(in: .whitespaces)
+            let startTime2Str = time2Components[0].trimmingCharacters(in: .whitespaces)
+            
+            guard let startTime1 = dateFormatter.date(from: startTime1Str),
+                  let startTime2 = dateFormatter.date(from: startTime2Str) else {
+                return false
+            }
+            
+            return startTime1 < startTime2
+        }
+    }
+    
+    private func getCurrentGroupOfFour(_ sortedClasses: [Classes]) -> [Classes] {
+        let currentTime = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "h:mm a"
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        let calendar = Calendar.current
+        
+        // Find the current or next active class
+        var pivotIndex = 0
+        
+        for (index, classItem) in sortedClasses.enumerated() {
+            let status = getClassStatus(classItem, at: currentTime)
+            if status == .current || status == .upcoming {
+                pivotIndex = index
+                break
+            }
+        }
+        
+        // Create groups of 4 starting from the beginning
+        let groupSize = 4
+        let currentGroupIndex = pivotIndex / groupSize
+        let startIndex = currentGroupIndex * groupSize
+        let endIndex = min(startIndex + groupSize, sortedClasses.count)
+        
+        return Array(sortedClasses[startIndex..<endIndex])
     }
     
     // MARK: - Timeline Provider Methods
@@ -154,7 +223,15 @@ struct Provider: TimelineProvider {
     }
     
     func getSnapshot(in context: Context, completion: @escaping (ScheduleEntry) -> ()) {
-        let content = prepareWidgetContent()
+        let content: (classes: [Classes], total: Int, completed: Int)
+        
+        // Use different content preparation based on widget size
+        switch context.family {
+        case .systemLarge:
+            content = prepareLargeContent()
+        default:
+            content = prepareSmallMediumContent()
+        }
         
         completion(ScheduleEntry(
             date: Date(),
@@ -165,8 +242,16 @@ struct Provider: TimelineProvider {
     }
     
     func getTimeline(in context: Context, completion: @escaping (Timeline<ScheduleEntry>) -> ()) {
-        let content = prepareWidgetContent()
+        let content: (classes: [Classes], total: Int, completed: Int)
         let currentTime = Date()
+        
+        // Use different content preparation based on widget size
+        switch context.family {
+        case .systemLarge:
+            content = prepareLargeContent()
+        default:
+            content = prepareSmallMediumContent()
+        }
         
         let entry = ScheduleEntry(
             date: currentTime,
@@ -175,8 +260,14 @@ struct Provider: TimelineProvider {
             completed: content.completed
         )
         
-       
-        let nextRefreshTime = calculateNextRefreshTime(currentTime: currentTime, classes: content.classes)
+        // Calculate next refresh time based on widget size
+        let nextRefreshTime: Date
+        switch context.family {
+        case .systemLarge:
+            nextRefreshTime = calculateNextGroupRefreshTime(currentTime: currentTime, classes: content.classes)
+        default:
+            nextRefreshTime = calculateNextRefreshTime(currentTime: currentTime, classes: content.classes)
+        }
         
         let timeline = Timeline(entries: [entry], policy: .after(nextRefreshTime))
         completion(timeline)
@@ -187,20 +278,20 @@ struct Provider: TimelineProvider {
     private func calculateNextRefreshTime(currentTime: Date, classes: [Classes]) -> Date {
         let calendar = Calendar.current
         
-       
+        // Find next significant time (class start/end)
         var nextSignificantTime: Date?
         
         for classItem in classes {
             let (startTime, endTime) = parseClassTime(classItem.time)
             
-            
+            // Check for next class start
             if let start = startTime, start > currentTime {
                 if nextSignificantTime == nil || start < nextSignificantTime! {
                     nextSignificantTime = start
                 }
             }
             
-           
+            // Check for current class end
             if let end = endTime, end > currentTime {
                 if nextSignificantTime == nil || end < nextSignificantTime! {
                     nextSignificantTime = end
@@ -208,12 +299,76 @@ struct Provider: TimelineProvider {
             }
         }
         
-       
+        // Use significant time if found, otherwise refresh in 15 minutes
         if let significantTime = nextSignificantTime {
             return significantTime
         }
         
-      
         return calendar.date(byAdding: .minute, value: 15, to: currentTime) ?? currentTime
+    }
+    
+    private func calculateNextGroupRefreshTime(currentTime: Date, classes: [Classes]) -> Date {
+        let calendar = Calendar.current
+        let allClasses = fetchAllTodaysClasses()
+        let sortedClasses = getSortedClasses(allClasses)
+        
+        // Find when the current group of 4 will change
+        let currentGroupIndex = getCurrentGroupIndex(sortedClasses, currentTime: currentTime)
+        let groupSize = 4
+        let currentGroupStart = currentGroupIndex * groupSize
+        let currentGroupEnd = min(currentGroupStart + groupSize, sortedClasses.count)
+        
+        // Find the next significant time that would cause a group change
+        var nextGroupChangeTime: Date?
+        
+        // Check if we need to move to the next group when current classes in this group end
+        for i in currentGroupStart..<currentGroupEnd {
+            if i < sortedClasses.count {
+                let classItem = sortedClasses[i]
+                let (_, endTime) = parseClassTime(classItem.time)
+                
+                if let end = endTime, end > currentTime {
+                    // Check if this would trigger a group change
+                    if isLastClassInGroup(index: i, groupSize: groupSize, totalClasses: sortedClasses.count) {
+                        if nextGroupChangeTime == nil || end < nextGroupChangeTime! {
+                            nextGroupChangeTime = end
+                        }
+                    }
+                }
+            }
+        }
+        
+        // If no group change time found, use regular refresh timing
+        if let groupChangeTime = nextGroupChangeTime {
+            return groupChangeTime
+        }
+        
+        // Fallback to regular refresh timing
+        return calculateNextRefreshTime(currentTime: currentTime, classes: classes)
+    }
+    
+    private func getCurrentGroupIndex(_ sortedClasses: [Classes], currentTime: Date) -> Int {
+        let groupSize = 4
+        
+        // Find the current or next active class
+        var pivotIndex = 0
+        
+        for (index, classItem) in sortedClasses.enumerated() {
+            let status = getClassStatus(classItem, at: currentTime)
+            if status == .current || status == .upcoming {
+                pivotIndex = index
+                break
+            }
+        }
+        
+        return pivotIndex / groupSize
+    }
+    
+    private func isLastClassInGroup(index: Int, groupSize: Int, totalClasses: Int) -> Bool {
+        let groupIndex = index / groupSize
+        let groupStart = groupIndex * groupSize
+        let groupEnd = min(groupStart + groupSize, totalClasses)
+        
+        return index == groupEnd - 1
     }
 }

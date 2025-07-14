@@ -109,7 +109,6 @@ struct TimeTableView: View {
                                                         )!
                                                         viewModel.changeDay()
                                                         
-                                                        
                                                         proxy.scrollTo(day, anchor: .center)
                                                     }
                                                 }
@@ -121,12 +120,10 @@ struct TimeTableView: View {
                                 }
                                 .scrollIndicators(.hidden)
                                 .onAppear {
-                                    
                                     let currentDay = daysOfWeek[viewModel.dayNo]
                                     proxy.scrollTo(currentDay, anchor: .center)
                                 }
                                 .onChange(of: viewModel.dayNo) { oldValue, newValue in
-                                    
                                     let selectedDay = daysOfWeek[newValue]
                                     withAnimation(.easeInOut(duration: 0.3)) {
                                         proxy.scrollTo(selectedDay, anchor: .center)
@@ -199,29 +196,21 @@ struct TimeTableView: View {
         .onChange(of: timetableItem) { oldValue, newValue in
             logger.debug("Timetable data changed, reloading view.")
             
-            // NEW: Check if this is a meaningful change
-            let oldCount = oldValue.count
-            let newCount = newValue.count
-            
-            // Handle different change scenarios
-            if oldCount != newCount {
+            // Simplified change detection
+            if oldValue.count != newValue.count {
                 // Data was added or removed
                 loadTimetable()
-            } else if let oldTable = oldValue.first, let newTable = newValue.first {
-                // Check if the actual content changed (especially Saturday)
-                if oldTable.isDifferentFrom(newTable) {
-                    logger.debug("Timetable content changed, refreshing ViewModel")
-                    // Directly refresh the ViewModel with the new data
-                    viewModel.refreshFromDatabase(newTable)
-                }
+            } else if let newTable = newValue.first {
+                // Data content changed
+                viewModel.refreshFromDatabase(newTable)
             }
         }
         .onChange(of: scenePhase) { _, newPhase in
             if newPhase == .active {
                 viewModel.resetSyncStatus()
                 
-                // Check if we need to reload due to potential data corruption
-                if viewModel.stage == .error || viewModel.timeTable == nil {
+                // Reload if in error state
+                if viewModel.stage == .error {
                     loadTimetable()
                 }
             }
@@ -229,19 +218,30 @@ struct TimeTableView: View {
     }
 
     private func loadTimetable() {
-        guard !isRefreshing else { return }
+        logger.debug("Loading timetable with local-first approach")
         
-       
-        Task { @MainActor in
+      
+        let calendar = Calendar.current
+        let today = calendar.component(.weekday, from: Date())
+        
+        
+        let dayIndex = (today == 1) ? 6 : today - 2
+        
+        if dayIndex >= 0 && dayIndex < daysOfWeek.count {
+            viewModel.dayNo = dayIndex
+        } else {
+            viewModel.dayNo = 0
+        }
+        
+        
+        Task {
             await viewModel.loadTimeTable(
                 existingTimeTable: timetableItem.first,
-                username: friend?.username ?? (authViewModel.loggedInBackendUser?.username ?? ""),
+                username: authViewModel.loggedInBackendUser?.username ?? "",
                 authToken: authViewModel.loggedInBackendUser?.token ?? "",
                 context: context
             )
         }
-        
-        logger.debug("User token: \(authViewModel.loggedInBackendUser?.token ?? "empty")")
     }
     
     private func refreshTimetable() async {

@@ -136,7 +136,7 @@ class AuthViewModel: NSObject, ASAuthorizationControllerDelegate {
                       token: backendUser.token,
                       username: backendUser.username
                   )
-                  
+                  print("this is the log need to check \(backendUser)")
                 
                   UserDefaults.standard.set(backendUser.token, forKey: UserDefaultKeys.tokenKey)
                   UserDefaults.standard.set(backendUser.username, forKey: UserDefaultKeys.usernameKey)
@@ -271,8 +271,9 @@ class AuthViewModel: NSObject, ASAuthorizationControllerDelegate {
         if let firebaseUser = self.loggedInFirebaseUser {
             await checkBackendUserExists(uuid: firebaseUser.uid,url: APIConstants.base_url)
               }
-        
-        
+
+
+  
     }
     
     private func signInWithApple() {

@@ -372,6 +372,7 @@ class CommunityPageViewModel {
         let detail: String
     }
     
+   
     func createCircle(name: String, token: String, completion: @escaping (Result<String, Error>) -> Void) {
         
         guard let encodedName = name.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) else {
@@ -390,22 +391,54 @@ class CommunityPageViewModel {
                     case .success(let data):
                         if data.detail.lowercased().contains("successfully") {
                             self.logger.info("Successfully created circle: \(name)")
-                            completion(.success(name))
+                            
+                            // Now fetch the updated circles data and wait for completion
+                            self.fetchCircleDataWithCompletion(
+                                from: "\(APIConstants.base_url)circles",
+                                token: token,
+                                circleName: name,
+                                completion: completion
+                            )
+                            
                         } else {
                             let error = NSError(domain: "CreateCircleError", code: 1, userInfo: [NSLocalizedDescriptionKey: data.detail])
                             self.logger.error("Error creating circle: \(data.detail)")
                             completion(.failure(error))
                         }
                         
-                       
-                        self.fetchCircleData(
-                            from: "\(APIConstants.base_url)circles",
-                            token: token,
-                            loading: false
-                        )
-                        
                     case .failure(let error):
                         self.logger.error("Error creating circle: \(error)")
+                        completion(.failure(error))
+                    }
+                }
+            }
+    }
+
+   
+    private func fetchCircleDataWithCompletion(from url: String, token: String, circleName: String, completion: @escaping (Result<String, Error>) -> Void) {
+        
+        AF.request(url, method: .get, headers: ["Authorization": "Token \(token)"])
+            .validate()
+            .responseDecodable(of: CircleResponse.self) { response in
+                DispatchQueue.main.async {
+                    switch response.result {
+                    case .success(let data):
+                        self.circles = data.data
+                        self.errorCircle = false
+                        print("Successfully fetched circles after creation: \(data.data)")
+                        
+                        
+                        if let createdCircle = self.circles.first(where: { $0.circleName == circleName }) {
+                            print("Found created circle with ID: \(createdCircle.circleID)")
+                            completion(.success(createdCircle.circleID))
+                        } else {
+                            let error = NSError(domain: "CreateCircleError", code: 2, userInfo: [NSLocalizedDescriptionKey: "Could not find created circle in updated data"])
+                            self.logger.error("Could not find created circle: \(circleName)")
+                            completion(.failure(error))
+                        }
+                        
+                    case .failure(let error):
+                        self.logger.error("Error fetching circles after creation: \(error)")
                         completion(.failure(error))
                     }
                 }

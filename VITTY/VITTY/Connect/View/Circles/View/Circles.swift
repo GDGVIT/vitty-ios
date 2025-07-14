@@ -4,9 +4,9 @@
 //
 //  Created by Rujin Devkota on 2/27/25.
 //
-import SwiftUI
 
 import SwiftUI
+
 
 struct CirclesView: View {
     @Binding var isCreatingGroup: Bool

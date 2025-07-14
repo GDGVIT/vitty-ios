@@ -54,13 +54,11 @@ struct UserProfileSidebar: View {
                 }
                 
                 Divider().background(Color.clear)
-                
-//                MenuOption(icon: "share", title: "Share")
+
                 MenuOption(icon: "support", title: "Support").onTapGesture {
                     let supportUrl = URL(string: "https://github.com/GDGVIT/vitty-ios/issues/new?template=bug_report.md")
                     UIApplication.shared.open(supportUrl!)
                 }
-//                MenuOption(icon: "about", title: "About")
                 
                 Divider().background(Color.clear)
                 

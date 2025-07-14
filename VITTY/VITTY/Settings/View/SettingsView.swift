@@ -14,6 +14,10 @@ struct SettingsView: View {
     @State private var showResetAlert = false
     @State private var showDeleteUserAlert = false
     @State private var isDeletingUser = false
+    @State private var isSyncing = false
+    @State private var showSyncAlert = false
+    @State private var syncMessage = ""
+    @State private var syncSuccess = false
     
     private let selectedDayKey = "SelectedSaturdayDay"
 
@@ -42,6 +46,36 @@ struct SettingsView: View {
                                         .font(.system(size: 13))
                                         .foregroundColor(.gray.opacity(0.8))
                                 }
+                            }
+                        }
+
+                        SettingsSectionView(title: "Timetable Management") {
+                            VStack(alignment: .leading, spacing: 12) {
+                                Button {
+                                    syncTimetable()
+                                } label: {
+                                    SettingsRowView(
+                                        icon: "arrow.clockwise.circle.fill",
+                                        title: "Sync Timetable",
+                                        subtitle: isSyncing ? "Syncing..." : "Update timetable from server",
+                                        isLoading: isSyncing
+                                    )
+                                }
+                                .buttonStyle(PlainButtonStyle())
+                                .disabled(isSyncing)
+                                
+                                Button {
+                                    if let url = URL(string: "https://vitty.dscvit.com") {
+                                        UIApplication.shared.open(url)
+                                    }
+                                } label: {
+                                    SettingsRowView(
+                                        icon: "pencil.and.ellipsis.rectangle",
+                                        title: "Update Timetable Online",
+                                        subtitle: "Modify your timetable on the web portal"
+                                    )
+                                }
+                                .buttonStyle(PlainButtonStyle())
                             }
                         }
 
@@ -91,19 +125,6 @@ struct SettingsView: View {
                                         icon: "trash.circle.fill",
                                         title: "Reset Saturday Classes",
                                         subtitle: "Remove all classes from Saturday"
-                                    )
-                                }
-                                .buttonStyle(PlainButtonStyle())
-                                
-                                Button {
-                                    if let url = URL(string: "https://vitty.dscvit.com") {
-                                        UIApplication.shared.open(url)
-                                    }
-                                } label: {
-                                    SettingsRowView(
-                                        icon: "pencil.and.ellipsis.rectangle",
-                                        title: "Update Timetable",
-                                        subtitle: "Keep your timetable up-to-date. Don't miss a class."
                                     )
                                 }
                                 .buttonStyle(PlainButtonStyle())
@@ -168,6 +189,17 @@ struct SettingsView: View {
                     )
                     .zIndex(1)
                 }
+                
+                if showSyncAlert {
+                    SyncAlert(
+                        message: syncMessage,
+                        isSuccess: syncSuccess,
+                        onDismiss: {
+                            showSyncAlert = false
+                        }
+                    )
+                    .zIndex(1)
+                }
             }
             .navigationBarBackButtonHidden(true)
             .interactiveDismissDisabled(true)
@@ -175,7 +207,6 @@ struct SettingsView: View {
                 viewModel.timetable = timeTables.first
                 viewModel.checkNotificationAuthorization()
                 loadSelectedDay()
-                print("Saturday before save:", timeTables.first?.saturday.map { $0.name } ?? [])
             }
             .alert("Notifications Disabled", isPresented: $viewModel.showNotificationDisabledAlert) {
                 Button("OK", role: .cancel) {}
@@ -184,6 +215,163 @@ struct SettingsView: View {
             }
         }
     }
+    
+    // MARK: - Sync Timetable Functions
+    
+    // MARK: - Updated Sync Timetable Functions for SettingsView
+
+    private func syncTimetable() {
+        guard let username = authViewModel.loggedInBackendUser?.username,
+              let authToken = authViewModel.loggedInBackendUser?.token else {
+            showSyncMessage("Unable to sync: No authentication credentials", success: false)
+            return
+        }
+        
+        isSyncing = true
+        
+        Task {
+           
+            let syncViewModel = TimeTableView.TimeTableViewModel()
+            
+            await syncViewModel.forceSync(
+                username: username,
+                authToken: authToken,
+                context: modelContext
+            )
+            
+            await MainActor.run {
+                isSyncing = false
+                
+                // Check if sync was successful
+                if syncViewModel.stage == .data {
+                    showSyncMessage("Timetable synced successfully!", success: true)
+                } else {
+                    showSyncMessage("Sync failed. Please try again.", success: false)
+                }
+            }
+        }
+    }
+
+    
+    private func syncTimetableAlternative() {
+        guard let username = authViewModel.loggedInBackendUser?.username,
+              let authToken = authViewModel.loggedInBackendUser?.token else {
+            showSyncMessage("Unable to sync: No authentication credentials", success: false)
+            return
+        }
+        
+        isSyncing = true
+        
+        Task {
+            do {
+                // Fetch latest timetable from API
+                let remoteTimeTable = try await TimeTableAPIService.shared.getTimeTable(
+                    with: username,
+                    authToken: authToken
+                )
+                
+                await MainActor.run {
+                    updateLocalTimetable(with: remoteTimeTable)
+                }
+                
+            } catch {
+                await MainActor.run {
+                    isSyncing = false
+                    showSyncMessage("Sync failed: \(error.localizedDescription)", success: false)
+                }
+            }
+        }
+    }
+    
+    private func updateLocalTimetable(with remoteTimeTable: TimeTable) {
+        guard let currentTimeTable = timeTables.first else {
+            
+            insertNewTimetable(remoteTimeTable)
+            return
+        }
+        
+       
+        let finalTimeTable = preserveSaturdayCustomization(
+            remote: remoteTimeTable,
+            local: currentTimeTable
+        )
+        
+        do {
+          
+            modelContext.delete(currentTimeTable)
+            
+            
+            modelContext.insert(finalTimeTable)
+            
+            
+            try modelContext.save()
+            
+            isSyncing = false
+            showSyncMessage("Timetable synced successfully!", success: true)
+            
+            
+            NotificationCenter.default.post(
+                name: NSNotification.Name("TimetableDidChange"),
+                object: nil
+            )
+            
+        } catch {
+            isSyncing = false
+            showSyncMessage("Failed to save synced timetable: \(error.localizedDescription)", success: false)
+            modelContext.rollback()
+        }
+    }
+    
+    private func insertNewTimetable(_ timeTable: TimeTable) {
+        do {
+            modelContext.insert(timeTable)
+            try modelContext.save()
+            
+            isSyncing = false
+            showSyncMessage("Timetable synced successfully!", success: true)
+            
+            NotificationCenter.default.post(
+                name: NSNotification.Name("TimetableDidChange"),
+                object: nil
+            )
+            
+        } catch {
+            isSyncing = false
+            showSyncMessage("Failed to save new timetable: \(error.localizedDescription)", success: false)
+        }
+    }
+    
+    private func preserveSaturdayCustomization(remote: TimeTable, local: TimeTable) -> TimeTable {
+        // Create new timetable with remote data
+        let newTimeTable = TimeTable(
+            monday: remote.monday.map { $0.deepCopy() },
+            tuesday: remote.tuesday.map { $0.deepCopy() },
+            wednesday: remote.wednesday.map { $0.deepCopy() },
+            thursday: remote.thursday.map { $0.deepCopy() },
+            friday: remote.friday.map { $0.deepCopy() },
+            saturday: remote.saturday.map { $0.deepCopy() },
+            sunday: remote.sunday.map { $0.deepCopy() }
+        )
+        
+        // Preserve Saturday customization from local if it exists
+        if let saturdaySourceDay = local.saturdaySourceDay {
+            print("Preserving Saturday customization from: \(saturdaySourceDay)")
+            
+            let lecturesToCopy = newTimeTable.lectures(forDay: saturdaySourceDay)
+            newTimeTable.saturday = lecturesToCopy.map { $0.deepCopy() }
+            newTimeTable.saturdaySourceDay = saturdaySourceDay
+        }
+        
+        return newTimeTable
+    }
+    
+    private func showSyncMessage(_ message: String, success: Bool) {
+        syncMessage = message
+        syncSuccess = success
+        showSyncAlert = true
+    }
+    
+    // MARK: - Existing Functions
     
     private func loadSelectedDay() {
         selectedDay = timeTables.first?.saturdaySourceDay
@@ -202,7 +390,6 @@ struct SettingsView: View {
                 try await deleteUserFromServer(username: username)
                 
                 await MainActor.run {
-                    
                     Task {
                         await cleanupLocalData()
                         authViewModel.signOut()
@@ -242,7 +429,6 @@ struct SettingsView: View {
     
     private func cleanupLocalData() async {
         do {
-            
             await Task.detached { [modelContext] in
                 do {
                     try modelContext.delete(model: TimeTable.self)
@@ -261,65 +447,75 @@ struct SettingsView: View {
     }
 
     
-
     private func copyLecturesToSaturday(from day: String) {
         guard let currentTimeTable = timeTables.first else {
             print("No timetable found")
             return
         }
         
-     
+        print("Starting SAFE copy from \(day) to Saturday - DELETE & RECREATE approach")
         
-      
         let lecturesToCopy = currentTimeTable.lectures(forDay: day)
-        print("Found \(lecturesToCopy.count) lectures to copy")
-        
-        
-        let newSaturdayLectures = lecturesToCopy.map { originalLecture in
-            let newLecture = Lecture(
-                name: originalLecture.name,
-                code: originalLecture.code,
-                venue: originalLecture.venue,
-                slot: originalLecture.slot,
-                type: originalLecture.type,
-                startTime: originalLecture.startTime,
-                endTime: originalLecture.endTime
-            )
-            return newLecture
-        }
-        
-       
-        let newTimeTable = TimeTable(
+        print("Found \(lecturesToCopy.count) lectures to copy from \(day)")
+     
+        let backupData = (
             monday: currentTimeTable.monday.map { $0.deepCopy() },
             tuesday: currentTimeTable.tuesday.map { $0.deepCopy() },
             wednesday: currentTimeTable.wednesday.map { $0.deepCopy() },
             thursday: currentTimeTable.thursday.map { $0.deepCopy() },
             friday: currentTimeTable.friday.map { $0.deepCopy() },
-            saturday: newSaturdayLectures,
+            saturday: currentTimeTable.saturday.map { $0.deepCopy() },
             sunday: currentTimeTable.sunday.map { $0.deepCopy() },
-            saturdaySourceDay: day
+            saturdaySourceDay: currentTimeTable.saturdaySourceDay
         )
         
-       
         do {
-            print("Deleting old timetable")
+            
             modelContext.delete(currentTimeTable)
+            print("Deleted existing timetable")
             
            
-            print("Inserting new timetable with Saturday lectures")
-            modelContext.insert(newTimeTable)
+            let newSaturdayLectures = lecturesToCopy.map { originalLecture in
+                Lecture(
+                    name: originalLecture.name,
+                    code: originalLecture.code,
+                    venue: originalLecture.venue,
+                    slot: originalLecture.slot,
+                    type: originalLecture.type,
+                    startTime: originalLecture.startTime,
+                    endTime: originalLecture.endTime
+                )
+            }
             
-          
+            print("Created \(newSaturdayLectures.count) new lectures for Saturday")
+            
+            
+            let newTimeTable = TimeTable(
+                monday: backupData.monday,
+                tuesday: backupData.tuesday,
+                wednesday: backupData.wednesday,
+                thursday: backupData.thursday,
+                friday: backupData.friday,
+                saturday: newSaturdayLectures,
+                sunday: backupData.sunday,
+                saturdaySourceDay: day
+            )
+            
+           
+            modelContext.insert(newTimeTable)
+            print("Inserted new timetable with Saturday lectures")
+            
+           
             try modelContext.save()
             
            
             self.selectedDay = day
             
-            print("Successfully copied \(day) to Saturday using orthodox method")
+            print("Successfully recreated timetable with \(day) copied to Saturday")
             print("New Saturday has \(newTimeTable.saturday.count) lectures")
             
             
-            Task { @MainActor in
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                 NotificationCenter.default.post(
                     name: NSNotification.Name("TimetableDidChange"),
                     object: nil
@@ -327,41 +523,72 @@ struct SettingsView: View {
             }
             
         } catch {
-            print("Error during orthodox copy: \(error)")
-            
+            print("Error during timetable recreation: \(error)")
             modelContext.rollback()
+            
+           
+            print("Attempting to restore backup data...")
+            do {
+                let restoredTimeTable = TimeTable(
+                    monday: backupData.monday,
+                    tuesday: backupData.tuesday,
+                    wednesday: backupData.wednesday,
+                    thursday: backupData.thursday,
+                    friday: backupData.friday,
+                    saturday: backupData.saturday,
+                    sunday: backupData.sunday,
+                    saturdaySourceDay: backupData.saturdaySourceDay
+                )
+                
+                modelContext.insert(restoredTimeTable)
+                try modelContext.save()
+                print("Successfully restored backup data")
+            } catch {
+                print("Failed to restore backup data: \(error)")
+            }
         }
     }
-    
-   
+
     private func resetSaturdayClasses() {
         guard let currentTimeTable = timeTables.first else {
             print("No timetable found")
             return
         }
         
-        print("Starting orthodox reset of Saturday classes")
+        print("Starting SAFE reset of Saturday classes - DELETE & RECREATE approach")
         
-        
-        let newTimeTable = TimeTable(
+       
+        let backupData = (
             monday: currentTimeTable.monday.map { $0.deepCopy() },
             tuesday: currentTimeTable.tuesday.map { $0.deepCopy() },
             wednesday: currentTimeTable.wednesday.map { $0.deepCopy() },
             thursday: currentTimeTable.thursday.map { $0.deepCopy() },
             friday: currentTimeTable.friday.map { $0.deepCopy() },
-            saturday: [],
+            saturday: currentTimeTable.saturday.map { $0.deepCopy() },
             sunday: currentTimeTable.sunday.map { $0.deepCopy() },
-            saturdaySourceDay: nil
+            saturdaySourceDay: currentTimeTable.saturdaySourceDay
         )
         
-     
         do {
-            print("Deleting old timetable")
+           
             modelContext.delete(currentTimeTable)
+            print("Deleted existing timetable")
             
-         
-            print("Inserting new timetable with empty Saturday")
+           
+            let newTimeTable = TimeTable(
+                monday: backupData.monday,
+                tuesday: backupData.tuesday,
+                wednesday: backupData.wednesday,
+                thursday: backupData.thursday,
+                friday: backupData.friday,
+                saturday: [],
+                sunday: backupData.sunday,
+                saturdaySourceDay: nil
+            )
+            
+   
             modelContext.insert(newTimeTable)
+            print("Inserted new timetable with empty Saturday")
             
            
             try modelContext.save()
@@ -369,10 +596,10 @@ struct SettingsView: View {
            
             self.selectedDay = nil
             
-            print("Successfully reset Saturday classes using orthodox method")
+            print("Successfully recreated timetable with empty Saturday")
             
-            
-            Task { @MainActor in
+           
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                 NotificationCenter.default.post(
                     name: NSNotification.Name("TimetableDidChange"),
                     object: nil
@@ -380,11 +607,32 @@ struct SettingsView: View {
             }
             
         } catch {
-            print("Error during orthodox reset: \(error)")
-            
+            print("Error during timetable reset: \(error)")
             modelContext.rollback()
+            
+          
+            print("Attempting to restore backup data...")
+            do {
+                let restoredTimeTable = TimeTable(
+                    monday: backupData.monday,
+                    tuesday: backupData.tuesday,
+                    wednesday: backupData.wednesday,
+                    thursday: backupData.thursday,
+                    friday: backupData.friday,
+                    saturday: backupData.saturday,
+                    sunday: backupData.sunday,
+                    saturdaySourceDay: backupData.saturdaySourceDay
+                )
+                
+                modelContext.insert(restoredTimeTable)
+                try modelContext.save()
+                print("Successfully restored backup data")
+            } catch {
+                print("Failed to restore backup data: \(error)")
+            }
         }
     }
+    
 
     private var headerView: some View {
         HStack {
@@ -423,12 +671,27 @@ struct SettingsView: View {
         let icon: String
         let title: String
         let subtitle: String
+        let isLoading: Bool
+        
+        init(icon: String, title: String, subtitle: String, isLoading: Bool = false) {
+            self.icon = icon
+            self.title = title
+            self.subtitle = subtitle
+            self.isLoading = isLoading
+        }
 
         var body: some View {
             HStack(alignment: .top, spacing: 12) {
-                Image(systemName: icon)
-                    .foregroundColor(.white)
-                    .frame(width: 30, height: 30)
+                if isLoading {
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                        .scaleEffect(0.8)
+                        .frame(width: 30, height: 30)
+                } else {
+                    Image(systemName: icon)
+                        .foregroundColor(.white)
+                        .frame(width: 30, height: 30)
+                }
 
                 VStack(alignment: .leading, spacing: 4) {
                     Text(title)
@@ -473,7 +736,8 @@ struct SettingsView: View {
     }
 }
 
-// Custom Reset Alert Component
+// MARK: - Alert Components
+
 struct ResetSaturdayAlert: View {
     let onCancel: () -> Void
     let onReset: () -> Void
@@ -523,12 +787,11 @@ struct ResetSaturdayAlert: View {
         }
         .background(Color.black.opacity(0.5).edgesIgnoringSafeArea(.all))
         .onTapGesture {
-            // Empty tap gesture to prevent dismissal
+            
         }
     }
 }
 
-// Custom Delete User Alert Component
 struct DeleteUserAlert: View {
     let isDeleting: Bool
     let onCancel: () -> Void
@@ -589,7 +852,54 @@ struct DeleteUserAlert: View {
         }
         .background(Color.black.opacity(0.5).edgesIgnoringSafeArea(.all))
         .onTapGesture {
-            // Empty tap gesture to prevent dismissal
+            
+        }
+    }
+}
+
+struct SyncAlert: View {
+    let message: String
+    let isSuccess: Bool
+    let onDismiss: () -> Void
+    
+    var body: some View {
+        VStack {
+            Spacer()
+            VStack(spacing: 16) {
+                Image(systemName: isSuccess ? "checkmark.circle.fill" : "exclamationmark.triangle.fill")
+                    .font(.system(size: 40))
+                    .foregroundColor(isSuccess ? .green : .red)
+                
+                Text(isSuccess ? "Sync Successful" : "Sync Failed")
+                    .font(.custom("Poppins-SemiBold", size: 18))
+                    .foregroundColor(.white)
+                
+                Text(message)
+                    .font(.custom("Poppins-Regular", size: 14))
+                    .foregroundColor(.white)
+                    .multilineTextAlignment(.center)
+                
+                Button(action: onDismiss) {
+                    Text("OK")
+                        .font(.custom("Poppins-Regular", size: 14))
+                        .padding(.vertical, 10)
+                        .frame(maxWidth: .infinity)
+                        .background(isSuccess ? Color.green : Color.red)
+                        .foregroundColor(.white)
+                        .cornerRadius(8)
+                }
+            }
+            .frame(minHeight: 180)
+            .padding(20)
+            .background(Color("Background"))
+            .cornerRadius(16)
+            .padding(.horizontal, 30)
+            .transition(.scale.combined(with: .opacity))
+            Spacer()
+        }
+        .background(Color.black.opacity(0.5).edgesIgnoringSafeArea(.all))
+        .onTapGesture {
+           
         }
     }
 }

@@ -75,7 +75,7 @@ struct ScheduleLargeWidgetView: View {
         HStack(alignment: .top) {
             Spacer().frame(width: 2)
             VStack(alignment: .leading, spacing: 15) {
-              
+                Spacer().frame(height: 5)
                 WidgetTitle(title: "Today's Schedule", fontSize: 18)
                 Spacer().frame(height: 5)
                 

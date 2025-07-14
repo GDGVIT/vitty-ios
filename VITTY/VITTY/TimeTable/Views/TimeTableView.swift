@@ -140,7 +140,6 @@ struct TimeTableView: View {
                                     Image(systemName: "calendar.badge.exclamationmark")
                                         .font(.system(size: 50))
                                     .foregroundColor(.secondary)
-                                    .foregroundColor(.secondary)
                                     
                                     Text("No classes today!")
                                         .font(Font.custom("Poppins-Bold", size: 24))
@@ -152,7 +151,6 @@ struct TimeTableView: View {
                                         .padding(.horizontal)
                                 }
                                 Spacer()
-                                
                                 
                             } else {
                                 ScrollView {

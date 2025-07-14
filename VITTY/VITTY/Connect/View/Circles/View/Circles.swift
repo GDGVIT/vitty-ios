@@ -17,10 +17,6 @@ struct CirclesView: View {
     
     @EnvironmentObject private var navigationCoordinator: NavigationCoordinator
     
-    
-    
-    @EnvironmentObject private var navigationCoordinator: NavigationCoordinator
-    
     var body: some View {
         NavigationStack {
             VStack(spacing: 12) {
@@ -62,7 +58,6 @@ struct CirclesView: View {
                                 ForEach(filteredCircles, id: \.circleID) { circle in
                                     
                                     NavigationLink(destination: InsideCircle(circleName: circle.circleName, circle_id: circle.circleID, circle_join_code: circle.circleJoinCode, circle_role: circle.circleRole)) {
-                                    NavigationLink(destination: InsideCircle(circleName: circle.circleName, circle_id: circle.circleID, circle_join_code: circle.circleJoinCode, circle_role: circle.circleRole)) {
                                         CirclesRow(circle: circle)
                                     }
                                     .buttonStyle(PlainButtonStyle())
@@ -80,24 +75,6 @@ struct CirclesView: View {
                     token: authViewModel.loggedInBackendUser?.token ?? "",
                     loading: true
                 )
-            }
-            .onReceive(NotificationCenter.default.publisher(for: Notification.Name("CircleJoinedSuccessfully"))) { _ in
-               
-                communityPageViewModel.fetchCircleData(
-                    from: "\(APIConstants.base_url)circles",
-                    token: authViewModel.loggedInBackendUser?.token ?? "",
-                    loading: true
-                )
-            }
-           
-            .onAppear {
-                
-                if let pendingInvite = navigationCoordinator.pendingCircleInvite {
-                    
-                    print("CirclesView appeared with pending invite: \(pendingInvite.code)")
-                    
-                    
-                }
             }
             .onReceive(NotificationCenter.default.publisher(for: Notification.Name("CircleJoinedSuccessfully"))) { _ in
                

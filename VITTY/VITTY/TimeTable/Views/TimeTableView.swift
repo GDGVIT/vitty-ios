@@ -87,87 +87,108 @@ struct TimeTableView: View {
                             
                             Spacer()
                         }
+                    case .empty:
+                        // Show empty timetable view with reload functionality
+                        EmptyTimetableView(
+                            onReload: {
+                                Task {
+                                    await refreshTimetable()
+                                }
+                            },
+                            isRefreshing: isRefreshing
+                        )
                     case .data:
-                        VStack(spacing: 0) {
-                           
-                            ScrollViewReader { proxy in
-                                ScrollView(.horizontal) {
-                                    HStack {
-                                        ForEach(daysOfWeek, id: \.self) { day in
-                                            Text(day)
-                                                .foregroundStyle(daysOfWeek[viewModel.dayNo] == day
-                                                    ? Color("Background") : Color("Accent"))
-                                                .frame(width: 60, height: 54)
-                                                .background(
-                                                    daysOfWeek[viewModel.dayNo] == day
-                                                    ? Color("Accent") : Color.clear
-                                                )
-                                                .onTapGesture {
-                                                    withAnimation(.easeInOut(duration: 0.2)) {
-                                                        viewModel.dayNo = daysOfWeek.firstIndex(
-                                                            of: day
-                                                        )!
-                                                        viewModel.changeDay()
-                                                        
-                                                        proxy.scrollTo(day, anchor: .center)
+                        if viewModel.isEmpty{
+                            EmptyTimetableView(
+                                onReload: {
+                                    Task {
+                                        await refreshTimetable()
+                                    }
+                                },
+                                isRefreshing: isRefreshing
+                            )
+                        } else{
+                            VStack(spacing: 0) {
+                               
+                                ScrollViewReader { proxy in
+                                    ScrollView(.horizontal) {
+                                        HStack {
+                                            ForEach(daysOfWeek, id: \.self) { day in
+                                                Text(day)
+                                                    .foregroundStyle(daysOfWeek[viewModel.dayNo] == day
+                                                        ? Color("Background") : Color("Accent"))
+                                                    .frame(width: 60, height: 54)
+                                                    .background(
+                                                        daysOfWeek[viewModel.dayNo] == day
+                                                        ? Color("Accent") : Color.clear
+                                                    )
+                                                    .onTapGesture {
+                                                        withAnimation(.easeInOut(duration: 0.2)) {
+                                                            viewModel.dayNo = daysOfWeek.firstIndex(
+                                                                of: day
+                                                            )!
+                                                            viewModel.changeDay()
+                                                            
+                                                            proxy.scrollTo(day, anchor: .center)
+                                                        }
                                                     }
-                                                }
-                                                .clipShape(RoundedRectangle(cornerRadius: 10))
-                                                .id(day)
-                                        }
-                                    }
-                                    .padding(.horizontal, 8)
-                                }
-                                .scrollIndicators(.hidden)
-                                .onAppear {
-                                    let currentDay = daysOfWeek[viewModel.dayNo]
-                                    proxy.scrollTo(currentDay, anchor: .center)
-                                }
-                                .onChange(of: viewModel.dayNo) { oldValue, newValue in
-                                    let selectedDay = daysOfWeek[newValue]
-                                    withAnimation(.easeInOut(duration: 0.3)) {
-                                        proxy.scrollTo(selectedDay, anchor: .center)
-                                    }
-                                }
-                            }
-                            .background(Color("Secondary"))
-                            .clipShape(RoundedRectangle(cornerRadius: 10))
-                            .padding(.horizontal)
-
-                            if viewModel.lectures.isEmpty {
-                                Spacer()
-                                VStack(spacing: 16) {
-                                    Image(systemName: "calendar.badge.exclamationmark")
-                                        .font(.system(size: 50))
-                                    .foregroundColor(.secondary)
-                                    
-                                    Text("No classes today!")
-                                        .font(Font.custom("Poppins-Bold", size: 24))
-                                    
-                                    Text(StringConstants.noClassQuotesOffline.randomElement() ?? "Enjoy your free time!")
-                                        .font(.subheadline)
-                                        .foregroundColor(.secondary)
-                                        .multilineTextAlignment(.center)
-                                        .padding(.horizontal)
-                                }
-                                Spacer()
-                                
-                            } else {
-                                ScrollView {
-                                    VStack(spacing: 12) {
-                                        ForEach(viewModel.lectures.sorted()) { lecture in
-                                            LectureItemView(
-                                                lecture: lecture,
-                                                selectedDayIndex: viewModel.dayNo,
-                                                allLectures: viewModel.lectures
-                                            ) {
-                                                selectedLecture = lecture
+                                                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                                                    .id(day)
                                             }
                                         }
+                                        .padding(.horizontal, 8)
                                     }
-                                    .padding(.horizontal)
-                                    .padding(.top, 12)
-                                    .padding(.bottom, 100)
+                                    .scrollIndicators(.hidden)
+                                    .onAppear {
+                                        let currentDay = daysOfWeek[viewModel.dayNo]
+                                        proxy.scrollTo(currentDay, anchor: .center)
+                                    }
+                                    .onChange(of: viewModel.dayNo) { oldValue, newValue in
+                                        let selectedDay = daysOfWeek[newValue]
+                                        withAnimation(.easeInOut(duration: 0.3)) {
+                                            proxy.scrollTo(selectedDay, anchor: .center)
+                                        }
+                                    }
+                                }
+                                .background(Color("Secondary"))
+                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                                .padding(.horizontal)
+
+                                if viewModel.lectures.isEmpty {
+                                    Spacer()
+                                    VStack(spacing: 16) {
+                                        Image(systemName: "calendar.badge.exclamationmark")
+                                            .font(.system(size: 50))
+                                        .foregroundColor(.secondary)
+                                        
+                                        Text("No classes today!")
+                                            .font(Font.custom("Poppins-Bold", size: 24))
+                                        
+                                        Text(StringConstants.noClassQuotesOffline.randomElement() ?? "Enjoy your free time!")
+                                            .font(.subheadline)
+                                            .foregroundColor(.secondary)
+                                            .multilineTextAlignment(.center)
+                                            .padding(.horizontal)
+                                    }
+                                    Spacer()
+                                    
+                                } else {
+                                    ScrollView {
+                                        VStack(spacing: 12) {
+                                            ForEach(viewModel.lectures.sorted()) { lecture in
+                                                LectureItemView(
+                                                    lecture: lecture,
+                                                    selectedDayIndex: viewModel.dayNo,
+                                                    allLectures: viewModel.lectures
+                                                ) {
+                                                    selectedLecture = lecture
+                                                }
+                                            }
+                                        }
+                                        .padding(.horizontal)
+                                        .padding(.top, 12)
+                                        .padding(.bottom, 100)
+                                    }
                                 }
                             }
                         }
@@ -209,8 +230,8 @@ struct TimeTableView: View {
             if newPhase == .active {
                 viewModel.resetSyncStatus()
                 
-                // Reload if in error state
-                if viewModel.stage == .error {
+                // Reload if in error state or empty state
+                if viewModel.stage == .error || viewModel.stage == .empty {
                     loadTimetable()
                 }
             }
@@ -220,10 +241,8 @@ struct TimeTableView: View {
     private func loadTimetable() {
         logger.debug("Loading timetable with local-first approach")
         
-      
         let calendar = Calendar.current
         let today = calendar.component(.weekday, from: Date())
-        
         
         let dayIndex = (today == 1) ? 6 : today - 2
         
@@ -232,7 +251,6 @@ struct TimeTableView: View {
         } else {
             viewModel.dayNo = 0
         }
-        
         
         Task {
             await viewModel.loadTimeTable(

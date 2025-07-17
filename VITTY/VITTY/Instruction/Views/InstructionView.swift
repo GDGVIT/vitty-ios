@@ -107,8 +107,4 @@ struct InstructionView: View {
 	}
 }
 
-#Preview {
-	InstructionView()
-		.environment(AuthViewModel())
-		.preferredColorScheme(.dark)
-}
+

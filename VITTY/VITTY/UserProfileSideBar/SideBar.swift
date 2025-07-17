@@ -41,10 +41,13 @@ struct UserProfileSidebar: View {
                 
                 Divider().background(Color.clear)
                 
-                NavigationLink {
-                    EmptyClassRoom()
-                } label: {
-                    MenuOption(icon: "emptyclassroom", title: "Find Empty Classroom")
+                if(authViewModel.loggedInBackendUser?.campus == "vellore"){
+                    
+                    NavigationLink {
+                        EmptyClassRoom()
+                    } label: {
+                        MenuOption(icon: "emptyclassroom", title: "Find Empty Classroom")
+                    }
                 }
                 
                 NavigationLink {

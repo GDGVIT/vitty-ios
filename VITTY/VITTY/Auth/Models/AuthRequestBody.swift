@@ -8,7 +8,8 @@
 import Foundation
 
 struct AuthRequestBody: Codable {
-	let uuid: String
-	let reg_no: String
-	let username: String
+    let uuid: String
+    let reg_no: String
+    let username: String
+    let campus: String
 }

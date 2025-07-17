@@ -13,4 +13,5 @@ class UserDefaultKeys {
 	static let nameKey = "name"
 	static let pictureKey = "image"
 	static let roleKey = "role"
+    static let campusKey = "campus"
 }

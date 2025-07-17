@@ -20,15 +20,15 @@ struct ContentView: View {
     
     var body: some View {
         Group {
-            // Check if backend user exists first
+          
             if authViewModel.loggedInBackendUser != nil {
                 HomeView()
             }
-            // If no backend user but Firebase user exists, show instruction
+           
             else if authViewModel.loggedInFirebaseUser != nil {
                 InstructionView()
             }
-            // If neither exists, show login
+           
             else {
                 LoginView()
             }

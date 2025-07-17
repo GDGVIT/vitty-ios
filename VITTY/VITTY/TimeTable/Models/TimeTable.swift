@@ -57,7 +57,7 @@ class TimeTable: Codable  {
         self.friday = friday
         self.saturday = saturday
         self.sunday = sunday
-        self.saturdaySourceDay = saturdaySourceDay // Set in initializer
+        self.saturdaySourceDay = saturdaySourceDay 
     }
 
     enum CodingKeys: String, CodingKey,Codable {
@@ -70,6 +70,7 @@ class TimeTable: Codable  {
         case sunday = "Sunday"
     }
 
+   
     required init(from decoder: Decoder) throws {
           let container = try decoder.container(keyedBy: CodingKeys.self)
           
@@ -224,11 +225,11 @@ extension TimeTable {
             Classes(
                 title: $0.name,
                 time: "\(formatTime(time: $0.startTime)) - \(formatTime(time: $0.endTime))",
-                slot: $0.venue // NOTE: Passing venue instead of slot for display purposes
+                slot: $0.venue
             )
         }
 
-        // Sort using the original lecture objects instead of formatted strings
+       
         return lectures.sorted { lecture1, lecture2 in
             guard let time1 = extractStartTime(from: lecture1),
                   let time2 = extractStartTime(from: lecture2) else {
@@ -239,7 +240,7 @@ extension TimeTable {
             Classes(
                 title: $0.name,
                 time: "\(formatTime(time: $0.startTime)) - \(formatTime(time: $0.endTime))",
-                slot: $0.venue // NOTE: Passing venue instead of slot for display purposes
+                slot: $0.venue 
             )
         }
     }

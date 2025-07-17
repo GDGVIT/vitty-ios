@@ -167,7 +167,7 @@ struct SettingsView: View {
                     .scrollContentBackground(.hidden)
                 }
                 
-                // Existing alerts
+               
                 if showResetAlert {
                     ResetSaturdayAlert(
                         onCancel: { showResetAlert = false },
@@ -203,9 +203,9 @@ struct SettingsView: View {
                     .zIndex(1)
                 }
                 
-                // Add the tooltip overlay - this will show on top of everything
+              
                 SettingsTipOverlay(tipManager: settingsTipManager)
-                    .zIndex(2) // Higher z-index to appear above other overlays
+                    .zIndex(2)
             }
             .navigationBarBackButtonHidden(true)
             .interactiveDismissDisabled(true)
@@ -213,7 +213,7 @@ struct SettingsView: View {
                 viewModel.timetable = timeTables.first
                 viewModel.checkNotificationAuthorization()
                 loadSelectedDay()
-                setupSettingsOnboarding() // Setup tooltip onboarding
+                setupSettingsOnboarding()
             }
             .alert("Notifications Disabled", isPresented: $viewModel.showNotificationDisabledAlert) {
                 Button("OK", role: .cancel) {}
@@ -225,7 +225,7 @@ struct SettingsView: View {
     
     // MARK: - Settings Tooltip Setup
     private func setupSettingsOnboarding() {
-        // Start settings onboarding if not completed, with a slight delay for better UX
+       
         if !settingsTipManager.hasCompletedSettingsOnboarding {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 settingsTipManager.startOnboarding()
@@ -255,7 +255,7 @@ struct SettingsView: View {
             await MainActor.run {
                 isSyncing = false
                 
-                // Check if sync was successful
+              
                 if syncViewModel.stage == .data {
                     showSyncMessage("Timetable synced successfully!", success: true)
                 } else {
@@ -276,7 +276,7 @@ struct SettingsView: View {
         
         Task {
             do {
-                // Fetch latest timetable from API
+               
                 let remoteTimeTable = try await TimeTableAPIService.shared.getTimeTable(
                     with: username,
                     authToken: authToken
@@ -346,7 +346,7 @@ struct SettingsView: View {
     }
     
     private func preserveSaturdayCustomization(remote: TimeTable, local: TimeTable) -> TimeTable {
-        // Create new timetable with remote data
+      
         let newTimeTable = TimeTable(
             monday: remote.monday.map { $0.deepCopy() },
             tuesday: remote.tuesday.map { $0.deepCopy() },
@@ -357,7 +357,7 @@ struct SettingsView: View {
             sunday: remote.sunday.map { $0.deepCopy() }
         )
         
-        // Preserve Saturday customization from local if it exists
+       
         if let saturdaySourceDay = local.saturdaySourceDay {
             print("Preserving Saturday customization from: \(saturdaySourceDay)")
             
@@ -375,7 +375,7 @@ struct SettingsView: View {
         showSyncAlert = true
     }
     
-    // MARK: - Existing Functions
+    
     private func loadSelectedDay() {
         selectedDay = timeTables.first?.saturdaySourceDay
     }
@@ -772,7 +772,7 @@ struct ResetSaturdayAlert: View {
         }
         .background(Color.black.opacity(0.5).edgesIgnoringSafeArea(.all))
         .onTapGesture {
-            // Prevent dismissal on tap
+          
         }
     }
 }
@@ -837,7 +837,7 @@ struct DeleteUserAlert: View {
         }
         .background(Color.black.opacity(0.5).edgesIgnoringSafeArea(.all))
         .onTapGesture {
-            // Prevent dismissal on tap
+           
         }
     }
 }

@@ -40,6 +40,7 @@
 		4B37F1E62E03D7D300DCEE5F /* ExistingHotelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B37F1E52E03D7D300DCEE5F /* ExistingHotelView.swift */; };
 		4B37F1E92E04173A00DCEE5F /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B37F1E82E04173500DCEE5F /* SettingsViewModel.swift */; };
 		4B40E1DA2E27E133004F8447 /* SettingsTololtip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B40E1D92E27E12B004F8447 /* SettingsTololtip.swift */; };
+		4B40E1DC2E28D0C0004F8447 /* EmptyTimeTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B40E1DB2E28D0B9004F8447 /* EmptyTimeTable.swift */; };
 		4B40FE5D2E0A917F000BDD07 /* QrCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B40FE5C2E0A9179000BDD07 /* QrCode.swift */; };
 		4B47CD7B2D7DCB8B00A46FEF /* CreateReminder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B47CD7A2D7DCB8400A46FEF /* CreateReminder.swift */; };
 		4B5977472DF97D5C009CC224 /* RemainderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B5977462DF97D5A009CC224 /* RemainderModel.swift */; };
@@ -205,6 +206,7 @@
 		4B37F1E52E03D7D300DCEE5F /* ExistingHotelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExistingHotelView.swift; sourceTree = "<group>"; };
 		4B37F1E82E04173500DCEE5F /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		4B40E1D92E27E12B004F8447 /* SettingsTololtip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTololtip.swift; sourceTree = "<group>"; };
+		4B40E1DB2E28D0B9004F8447 /* EmptyTimeTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyTimeTable.swift; sourceTree = "<group>"; };
 		4B40FE5C2E0A9179000BDD07 /* QrCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QrCode.swift; sourceTree = "<group>"; };
 		4B47CD7A2D7DCB8400A46FEF /* CreateReminder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateReminder.swift; sourceTree = "<group>"; };
 		4B5977462DF97D5A009CC224 /* RemainderModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemainderModel.swift; sourceTree = "<group>"; };
@@ -863,6 +865,7 @@
 		527E3E042B7662760086F23D /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				4B40E1DB2E28D0B9004F8447 /* EmptyTimeTable.swift */,
 				527E3E072B7662920086F23D /* TimeTableView.swift */,
 				525F759C2B809F8400E3B418 /* LectureDetailView.swift */,
 				4B7DA5DB2D708BCD007354A3 /* LectureItemView.swift */,
@@ -1160,6 +1163,7 @@
 				4B7DA5DC2D708BD3007354A3 /* LectureItemView.swift in Sources */,
 				4B37F1E62E03D7D300DCEE5F /* ExistingHotelView.swift in Sources */,
 				4BC853C32DF693780092B2E2 /* SaveTimeTableView.swift in Sources */,
+				4B40E1DC2E28D0C0004F8447 /* EmptyTimeTable.swift in Sources */,
 				52D5AB892B6FE3B200B2E66D /* AppUser.swift in Sources */,
 				31128D0C277300470084C9EA /* StringConstants.swift in Sources */,
 				4B341C102E1803070073906B /* FreindRequestViewModel.swift in Sources */,

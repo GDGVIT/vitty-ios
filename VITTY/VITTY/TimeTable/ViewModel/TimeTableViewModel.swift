@@ -15,6 +15,7 @@ public enum Stage {
     case loading
     case error
     case data
+    case empty
 }
 
 extension TimeTableView {
@@ -25,6 +26,7 @@ extension TimeTableView {
         var stage: Stage = .loading
         var lectures = [Lecture]()
         var dayNo = Date.convertToMondayWeek()
+        var isEmpty: Bool = false
         
         private var networkMonitor = NetworkMonitor()
         
@@ -59,38 +61,56 @@ extension TimeTableView {
         }
 
         private func forceRefreshCurrentDay() {
-                    logger.info("Forcing refresh of current day due to timetable change")
-                    
-                
-                    changeDay()
-                    
-             
-                    let currentStage = stage
-                    stage = .loading
-                    
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
-                        self.stage = currentStage
-                    }
-                }
+            logger.info("Forcing refresh of current day due to timetable change")
+            
+            changeDay()
+            
+            let currentStage = stage
+            stage = .loading
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                self.stage = currentStage
+            }
+        }
       
-               @MainActor
-               func refreshFromDatabase(_ updatedTimeTable: TimeTable?) {
-                   logger.info("Refreshing from database")
-                   
-                   guard let updatedTimeTable = updatedTimeTable else {
-                       self.timeTable = nil
-                       self.lectures = []
-                       self.stage = .error
-                       logger.error("No updated timetable provided")
-                       return
-                   }
-                   
-                   self.timeTable = updatedTimeTable
-                   changeDay()
-                   self.stage = .data
-                   
-                   logger.info("Timetable refreshed from database successfully")
-               }
+        @MainActor
+        func refreshFromDatabase(_ updatedTimeTable: TimeTable?) {
+            logger.info("Refreshing from database")
+            
+            guard let updatedTimeTable = updatedTimeTable else {
+                self.timeTable = nil
+                self.lectures = []
+                self.stage = .empty
+                logger.error("No updated timetable provided")
+                return
+            }
+            
+            
+            if isTimeTableEmpty(updatedTimeTable) {
+                self.timeTable = updatedTimeTable
+                self.lectures = []
+                self.stage = .empty
+                logger.info("Timetable is empty")
+                return
+            }
+            
+            self.timeTable = updatedTimeTable
+            changeDay()
+            self.stage = .data
+            
+            logger.info("Timetable refreshed from database successfully")
+        }
+        
+       
+        private func isTimeTableEmpty(_ timeTable: TimeTable) -> Bool {
+            return timeTable.monday.isEmpty &&
+                   timeTable.tuesday.isEmpty &&
+                   timeTable.wednesday.isEmpty &&
+                   timeTable.thursday.isEmpty &&
+                   timeTable.friday.isEmpty &&
+                   timeTable.saturday.isEmpty &&
+                   timeTable.sunday.isEmpty
+        }
         
         func changeDay() {
             guard let timeTable = timeTable else {
@@ -120,18 +140,25 @@ extension TimeTableView {
         ) async {
             logger.info("Starting local-first timetable loading process")
             
-            // Step 1: Check if we have local data
             if let existingTimeTable = existingTimeTable {
-                logger.info("Found local timetable data - using it")
+                logger.info("Found local timetable data - checking if empty")
+                
+               
+                if isTimeTableEmpty(existingTimeTable) {
+                    self.timeTable = existingTimeTable
+                    self.lectures = []
+                    self.stage = .empty
+                    logger.info("Local timetable is empty")
+                    return
+                }
+                
                 useLocalData(existingTimeTable: existingTimeTable)
                 return
             }
             
-            // Step 2: No local data exists - fetch from API and save
             logger.info("No local timetable found - fetching from API")
             stage = .loading
             
-            // Only fetch if we have credentials
             if !username.isEmpty && !authToken.isEmpty {
                 await fetchAndSaveFromAPI(
                     username: username,
@@ -144,7 +171,7 @@ extension TimeTableView {
             }
         }
         
-        // MARK: - Use Local Data (Always prioritized)
+        // MARK: - Use Local Data
         @MainActor
         private func useLocalData(existingTimeTable: TimeTable) {
             logger.info("Using local timetable data")
@@ -167,13 +194,27 @@ extension TimeTableView {
                     authToken: authToken
                 )
                 
-                // Save to local storage
+               
+                if isTimeTableEmpty(remoteTimeTable) {
+                    logger.info("API returned empty timetable")
+                    self.timeTable = remoteTimeTable
+                    self.lectures = []
+                    self.stage = .empty
+                    
+                  
+                    await saveToLocalStorage(
+                        newTimeTable: remoteTimeTable,
+                        context: context
+                    )
+                    return
+                }
+                
+               
                 await saveToLocalStorage(
                     newTimeTable: remoteTimeTable,
                     context: context
                 )
-                
-                // Update UI
+              
                 self.timeTable = remoteTimeTable
                 changeDay()
                 stage = .data
@@ -193,13 +234,13 @@ extension TimeTableView {
             context: ModelContext
         ) async {
             do {
-                // Insert new timetable
+                
                 context.insert(newTimeTable)
                 try context.save()
                 
                 logger.info("Successfully saved timetable to local storage")
                 
-                // Notify other components
+               
                 NotificationCenter.default.post(
                     name: NSNotification.Name("TimetableDidChange"),
                     object: nil
@@ -211,7 +252,7 @@ extension TimeTableView {
             }
         }
         
-        // MARK: - Force Sync (Explicit user action)
+        // MARK: - Force Sync
         @MainActor
         func forceSync(
             username: String,
@@ -220,13 +261,13 @@ extension TimeTableView {
         ) async {
             logger.info("Force syncing timetable from server")
             
-            // Set loading state
+          
             stage = .loading
             
-            // Get existing timetable for Saturday preservation
+           
             let existingTimeTable = timeTable
             
-            // Force fetch from API
+           
             if !username.isEmpty && !authToken.isEmpty {
                 await fetchAndUpdateFromAPI(
                     existingTimeTable: existingTimeTable,
@@ -240,7 +281,7 @@ extension TimeTableView {
             }
         }
         
-        // MARK: - Fetch and Update from API (for sync)
+        // MARK: - Fetch and Update from API
         @MainActor
         private func fetchAndUpdateFromAPI(
             existingTimeTable: TimeTable?,
@@ -255,20 +296,36 @@ extension TimeTableView {
                     authToken: authToken
                 )
                 
-                // Preserve Saturday customization if it exists
+               
+                if isTimeTableEmpty(remoteTimeTable) {
+                    logger.info("API returned empty timetable during sync")
+                    self.timeTable = remoteTimeTable
+                    self.lectures = []
+                    self.stage = .empty
+                    
+                   
+                    await updateLocalStorage(
+                        newTimeTable: remoteTimeTable,
+                        oldTimeTable: existingTimeTable,
+                        context: context
+                    )
+                    return
+                }
+                
+                
                 let finalTimeTable = preserveSaturdayCustomization(
                     remote: remoteTimeTable,
                     local: existingTimeTable
                 )
                 
-                // Update local storage
+                
                 await updateLocalStorage(
                     newTimeTable: finalTimeTable,
                     oldTimeTable: existingTimeTable,
                     context: context
                 )
                 
-                // Update UI
+                
                 self.timeTable = finalTimeTable
                 changeDay()
                 stage = .data
@@ -289,18 +346,18 @@ extension TimeTableView {
             context: ModelContext
         ) async {
             do {
-                // Remove old timetable if it exists
+             
                 if let oldTimeTable = oldTimeTable {
                     context.delete(oldTimeTable)
                 }
                 
-                // Insert new timetable
+                
                 context.insert(newTimeTable)
                 try context.save()
                 
                 logger.info("Successfully updated local storage")
                 
-                // Notify other components
+            
                 NotificationCenter.default.post(
                     name: NSNotification.Name("TimetableDidChange"),
                     object: nil
@@ -310,7 +367,7 @@ extension TimeTableView {
                 logger.error("Failed to update local storage: \(error.localizedDescription)")
                 context.rollback()
                 
-                // Re-insert old timetable if it existed
+                
                 if let oldTimeTable = oldTimeTable {
                     context.insert(oldTimeTable)
                     try? context.save()
@@ -318,12 +375,12 @@ extension TimeTableView {
             }
         }
         
-        // MARK: - Preserve Saturday Customization
+     
         private func preserveSaturdayCustomization(
             remote: TimeTable,
             local: TimeTable?
         ) -> TimeTable {
-            // Create new timetable with remote data
+           
             let newTimeTable = TimeTable(
                 monday: remote.monday.map { $0.deepCopy() },
                 tuesday: remote.tuesday.map { $0.deepCopy() },
@@ -334,7 +391,7 @@ extension TimeTableView {
                 sunday: remote.sunday.map { $0.deepCopy() }
             )
             
-            // Preserve Saturday customization from local if it exists
+            
             if let local = local,
                let saturdaySourceDay = local.saturdaySourceDay {
                 logger.info("Preserving Saturday customization from: \(saturdaySourceDay)")
@@ -346,6 +403,7 @@ extension TimeTableView {
             
             return newTimeTable
         }
+        
         
         // MARK: - Saturday Management
         @MainActor

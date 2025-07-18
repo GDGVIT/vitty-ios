@@ -30,6 +30,11 @@ class CommunityPageViewModel {
     
     var circleMembersDict: [String: [CircleUserTemp]] = [:]
     var loadingCircleMembersDict: [String: Bool] = [:]
+    
+    // MARK: - New Member Timetable Properties
+    var memberTimetable: TimeTable?
+    var loadingMemberTimetable = false
+    var errorMemberTimetable = false
 
     private let logger = Logger(
         subsystem: Bundle.main.bundleIdentifier!,
@@ -133,6 +138,48 @@ class CommunityPageViewModel {
         dispatchGroup.notify(queue: .main) {
             print("Finished fetching all circle member data")
         }
+    }
+    
+    // MARK: - New Member Timetable Function
+    
+    func fetchMemberTimetable(circleId: String, username: String, token: String, loading: Bool = true) {
+        if loading {
+            self.loadingMemberTimetable = true
+        }
+        
+        self.errorMemberTimetable = false
+        
+        let url = "\(APIConstants.base_url)circles/\(circleId)/\(username)"
+        
+        print("Fetching member timetable from: \(url)")
+        
+        AF.request(url, method: .get, headers: ["Authorization": "Token \(token)"])
+            .validate()
+            .responseDecodable(of: TimeTableRaw.self) { response in
+                DispatchQueue.main.async {
+                    self.loadingMemberTimetable = false
+                    
+                    switch response.result {
+                    case .success(let data):
+                        self.memberTimetable = data.data
+                        self.errorMemberTimetable = false
+                        self.logger.info("Successfully fetched member timetable for \(username)")
+                        
+                    case .failure(let error):
+                        self.logger.error("Error fetching member timetable for \(username): \(error)")
+                        self.errorMemberTimetable = true
+                        self.memberTimetable = nil
+                    }
+                }
+            }
+    }
+    
+    // MARK: - Clear Member Timetable
+    
+    func clearMemberTimetable() {
+        self.memberTimetable = nil
+        self.loadingMemberTimetable = false
+        self.errorMemberTimetable = false
     }
     
     // MARK: - Circle Requests

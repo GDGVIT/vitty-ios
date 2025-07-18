@@ -12,6 +12,7 @@ struct FriendRequestCard: View {
     @Environment(AuthViewModel.self) private var authViewModel
     @Environment(RequestsViewModel.self) private var friendRequestsViewModel
     @Environment(SuggestedFriendsViewModel.self) private var suggestedFriendsViewModel
+    @Environment(CommunityPageViewModel.self) private var communityViewModel
     
     let request: FriendRequest
     @State private var isAccepting = false
@@ -121,6 +122,7 @@ struct FriendRequestCard: View {
                 }
                 isAccepting = false
             }
+            communityViewModel.fetchFriendsData(from: "\(APIConstants.base_url)friends/\(authViewModel.loggedInBackendUser?.username ?? "")/", token: authViewModel.loggedInBackendUser?.token ?? "")
         }
     }
     

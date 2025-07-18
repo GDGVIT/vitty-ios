@@ -211,13 +211,8 @@ class AuthViewModel: NSObject, ASAuthorizationControllerDelegate {
         
         do {
             if (try await AuthAPIService.shared.checkUserExists(with: self.loggedInFirebaseUser!.uid)) {
-                self.loggedInBackendUser = try await AuthAPIService.shared.signInUser(
-                    with: AuthRequestBody(
-                        uuid: self.loggedInFirebaseUser!.uid,
-                        reg_no: "",
-                        username: "",
-                        campus: ""
-                    )
+                self.loggedInBackendUser = try await AuthAPIService.shared.signInUserWhenExists(
+                    with: FirebaseAuthRequest(uuid: self.loggedInFirebaseUser?.uid ?? "")
                 )
                 
                 UserDefaults.standard.set(

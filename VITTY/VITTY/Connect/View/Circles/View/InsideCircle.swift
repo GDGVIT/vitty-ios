@@ -479,13 +479,19 @@ struct InsideCircle: View {
                 ScrollView {
                     VStack(spacing: 10) {
                         ForEach(filteredMembers, id: \.username) { member in
-                            InsideCircleRow(
-                                picture: member.picture,
-                                name: member.name,
-                                status: getDisplayStatus(for: member),
-                                
-                                venue: getDisplayVenue(for: member)
-                            )
+                          
+                            NavigationLink(destination: CircleMemberTimetableView(
+                                member: member,
+                                circleId: circle_id
+                            )) {
+                                InsideCircleRow(
+                                    picture: member.picture,
+                                    name: member.name,
+                                    status: getDisplayStatus(for: member),
+                                    venue: getDisplayVenue(for: member)
+                                )
+                            }
+                            .buttonStyle(PlainButtonStyle())
                             .padding(.horizontal)
                         }
                     }

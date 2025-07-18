@@ -1,5 +1,5 @@
 //
-//  Freinds.swift
+//  Friends.swift
 //  VITTY
 //
 //  Created by Rujin Devkota on 2/27/25.
@@ -99,7 +99,8 @@ struct FriendsView: View {
                     ScrollView {
                         VStack(spacing: 10) {
                             ForEach(filteredFriends, id: \.username) { friend in
-                                NavigationLink(destination: TimeTableView(friend: friend,isFriendsTimeTable: true)) {
+                                // Updated to use FriendsTimeTableView instead of TimeTableView
+                                NavigationLink(destination: FriendsTimeTableView(friend: friend)) {
                                     FriendRow(friend: friend)
                                 }
                             }

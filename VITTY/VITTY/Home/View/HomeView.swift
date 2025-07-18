@@ -349,7 +349,7 @@ struct HomeView: View {
         ZStack {
             switch selectedPage {
             case 1:
-                TimeTableView(friend: nil, isFriendsTimeTable: false)
+                TimeTableView(friend: nil)
             case 2:
                 ConnectPage(isCreatingGroup: $isCreatingGroup)
             case 3:

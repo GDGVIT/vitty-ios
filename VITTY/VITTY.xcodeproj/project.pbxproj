@@ -58,6 +58,8 @@
 		4B7DA5E72D71AC54007354A3 /* CirclesRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7DA5E62D71AC51007354A3 /* CirclesRow.swift */; };
 		4B7DA5F22D7228F9007354A3 /* JoinGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7DA5F12D7228E5007354A3 /* JoinGroup.swift */; };
 		4B7DA5F52D7237BE007354A3 /* CreateGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7DA5F42D7237B8007354A3 /* CreateGroup.swift */; };
+		4B80972B2E2947A300FF2F63 /* FriendsTimetableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B80972A2E29479800FF2F63 /* FriendsTimetableView.swift */; };
+		4B80972D2E2ABD8500FF2F63 /* CircleTimetable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B80972C2E2ABD8100FF2F63 /* CircleTimetable.swift */; };
 		4B8B32CA2D6D75F4004F01BA /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8B32C92D6D75F4004F01BA /* WidgetKit.framework */; };
 		4B8B32CB2D6D75F4004F01BA /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3105871C27A3ECBB00C2FC41 /* SwiftUI.framework */; };
 		4B8B32DC2D6D75F6004F01BA /* VittyWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 4B8B32C82D6D75F4004F01BA /* VittyWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -222,6 +224,8 @@
 		4B7DA5E62D71AC51007354A3 /* CirclesRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CirclesRow.swift; sourceTree = "<group>"; };
 		4B7DA5F12D7228E5007354A3 /* JoinGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinGroup.swift; sourceTree = "<group>"; };
 		4B7DA5F42D7237B8007354A3 /* CreateGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroup.swift; sourceTree = "<group>"; };
+		4B80972A2E29479800FF2F63 /* FriendsTimetableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsTimetableView.swift; sourceTree = "<group>"; };
+		4B80972C2E2ABD8100FF2F63 /* CircleTimetable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleTimetable.swift; sourceTree = "<group>"; };
 		4B8B32C82D6D75F4004F01BA /* VittyWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = VittyWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B8B32C92D6D75F4004F01BA /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		4B8B33742D7029A3004F01BA /* SideBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBar.swift; sourceTree = "<group>"; };
@@ -543,6 +547,7 @@
 		4B7DA5EC2D71E0FB007354A3 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				4B80972C2E2ABD8100FF2F63 /* CircleTimetable.swift */,
 				4B2DD6942E0A702D00BC3B67 /* CircleRequests.swift */,
 				4B7DA5E42D70B2C8007354A3 /* Circles.swift */,
 				4BF0C79C2D94680A00016202 /* InsideCircle.swift */,
@@ -865,6 +870,7 @@
 		527E3E042B7662760086F23D /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				4B80972A2E29479800FF2F63 /* FriendsTimetableView.swift */,
 				4B40E1DB2E28D0B9004F8447 /* EmptyTimeTable.swift */,
 				527E3E072B7662920086F23D /* TimeTableView.swift */,
 				525F759C2B809F8400E3B418 /* LectureDetailView.swift */,
@@ -1159,6 +1165,7 @@
 				4B5977472DF97D5C009CC224 /* RemainderModel.swift in Sources */,
 				5DC0AF552AD2B586006B081D /* UserImage.swift in Sources */,
 				5238C7F42B4AB07400413946 /* FriendReqCard.swift in Sources */,
+				4B80972D2E2ABD8500FF2F63 /* CircleTimetable.swift in Sources */,
 				4B1BDBCC2E1396B1008C2DE9 /* ToolTip.swift in Sources */,
 				4B7DA5DC2D708BD3007354A3 /* LectureItemView.swift in Sources */,
 				4B37F1E62E03D7D300DCEE5F /* ExistingHotelView.swift in Sources */,
@@ -1221,6 +1228,7 @@
 				521562AC2B70B0FD0054F051 /* InstructionView.swift in Sources */,
 				522B8BAD2B47297A00EE686E /* CommunityPageViewModel.swift in Sources */,
 				4BF0C77D2D932B8E00016202 /* CircleModel.swift in Sources */,
+				4B80972B2E2947A300FF2F63 /* FriendsTimetableView.swift in Sources */,
 				528CF1762B769E22007298A0 /* TimeTableViewModel.swift in Sources */,
 				4B7DA5F52D7237BE007354A3 /* CreateGroup.swift in Sources */,
 				52D5AB8F2B6FE82E00B2E66D /* AuthAPIService.swift in Sources */,

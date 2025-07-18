@@ -18,7 +18,7 @@ struct TimeTableView: View {
     @Environment(\.dismiss) private var dismiss
     let friend: Friend?
 
-    var isFriendsTimeTable: Bool
+   
 
     private let logger = Logger(
         subsystem: Bundle.main.bundleIdentifier!,
@@ -32,15 +32,7 @@ struct TimeTableView: View {
             ZStack {
                 BackgroundView()
                 VStack {
-                    if isFriendsTimeTable {
-                        HStack {
-                            Button(action: { dismiss() }) {
-                                Image(systemName: "chevron.left")
-                                    .foregroundColor(Color("Accent")).font(.title2)
-                            }
-                            Spacer()
-                        }.padding(8)
-                    }
+                  
 
                     switch viewModel.stage {
                     case .loading:

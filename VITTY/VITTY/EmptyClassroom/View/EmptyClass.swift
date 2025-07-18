@@ -149,7 +149,7 @@ struct EmptyClassRoom: View {
                         .foregroundColor(.blue.opacity(0.8))
                         .font(.subheadline)
                     
-                    Text("Please try reloading in a moment")
+                    Text("Please check again after a while")
                         .foregroundColor(.white.opacity(0.6))
                         .font(.caption)
                 }

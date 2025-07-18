@@ -10,6 +10,7 @@ struct AddFriendsView: View {
     @Environment(AuthViewModel.self) private var authViewModel
     @Environment(SuggestedFriendsViewModel.self) private var suggestedFriendsViewModel
     @Environment(RequestsViewModel.self) private var friendRequestsViewModel
+    @Environment(CommunityPageViewModel.self) private var communityViewModel
     @Environment(\.dismiss) private var dismiss
     
     @State private var isSearchViewPresented = false

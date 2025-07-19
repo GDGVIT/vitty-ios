@@ -57,6 +57,10 @@
 		<string>fetch</string>
 		<string>remote-notification</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>Allow camera access to enable capturing notes and  information</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Allow photo library access to save or attach notes, files .</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 </dict>

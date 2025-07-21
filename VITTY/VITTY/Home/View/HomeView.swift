@@ -48,7 +48,7 @@ class CampusUpdateService {
     }
 }
 
-// MARK: - Campus Selection Dialog
+
 import SwiftUI
 
 struct CampusSelectionDialog: View {
@@ -59,7 +59,6 @@ struct CampusSelectionDialog: View {
     @State private var showError: Bool = false
     @State private var errorMessage: String = ""
     
-   
     private let campusOptions = [
         ("VIT Chennai", "chennai"),
         ("VIT Vellore", "vellore"),
@@ -68,22 +67,26 @@ struct CampusSelectionDialog: View {
     
     var body: some View {
         ZStack {
-            Color.black.opacity(0.4)
+            Color.black.opacity(0.5)
                 .ignoresSafeArea()
+                .onTapGesture {
+                   
+                }
             
-            VStack(spacing: 20) {
-             
+            VStack(spacing: 24) {
+                // Header Section
                 VStack(spacing: 8) {
                     Text("Select Your Campus")
                         .font(.custom("Poppins-Bold", size: 20))
-                        .foregroundColor(.primary)
+                        .foregroundColor(.white)
                     
                     Text("Please select your campus to continue")
                         .font(.custom("Poppins-Regular", size: 14))
-                        .foregroundColor(.secondary)
+                        .foregroundColor(.white.opacity(0.7))
+                        .multilineTextAlignment(.center)
                 }
                 
-             
+               
                 VStack(spacing: 12) {
                     ForEach(campusOptions, id: \.0) { campus in
                         Button(action: {
@@ -92,23 +95,31 @@ struct CampusSelectionDialog: View {
                             HStack {
                                 Text(campus.0)
                                     .font(.custom("Poppins-Medium", size: 16))
-                                    .foregroundColor(.primary)
+                                    .foregroundColor(.white)
                                 
                                 Spacer()
                                 
                                 if selectedCampus == campus.1 {
                                     Image(systemName: "checkmark.circle.fill")
-                                        .foregroundColor(.blue)
+                                        .foregroundColor(Color("Accent"))
+                                        .font(.system(size: 20))
                                 }
                             }
                             .padding(.horizontal, 16)
-                            .padding(.vertical, 12)
+                            .padding(.vertical, 14)
                             .background(
-                                RoundedRectangle(cornerRadius: 8)
+                                RoundedRectangle(cornerRadius: 12)
                                     .fill(selectedCampus == campus.1 ?
-                                          Color.blue.opacity(0.1) : Color.gray.opacity(0.1))
+                                          Color("Accent").opacity(0.15) : Color("Secondary").opacity(0.6))
+                            )
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .stroke(selectedCampus == campus.1 ?
+                                            Color("Accent") : Color.clear, lineWidth: 1)
                             )
                         }
+                        .buttonStyle(PlainButtonStyle())
+                        .disabled(isUpdating)
                     }
                 }
                 
@@ -118,39 +129,61 @@ struct CampusSelectionDialog: View {
                         .font(.custom("Poppins-Regular", size: 12))
                         .foregroundColor(.red)
                         .padding(.horizontal)
+                        .multilineTextAlignment(.center)
                 }
                 
-               
-                HStack(spacing: 16) {
-                    Button("Update") {
+                
+                if isUpdating {
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                        .scaleEffect(1.2)
+                }
+                
+            
+                HStack(spacing: 12) {
+                   
+                    Button("Skip for now") {
+                        isPresented = false
+                    }
+                    .disabled(isUpdating)
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 12)
+                    .background(
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(Color("Secondary").opacity(0.8))
+                    )
+                    .foregroundColor(.white.opacity(0.8))
+                    .font(.custom("Poppins-Medium", size: 14))
+                    
+                   
+                    Button("Update Campus") {
                         Task {
                             await updateCampus()
                         }
                     }
                     .disabled(selectedCampus.isEmpty || isUpdating)
-                    .padding(.horizontal, 32)
+                    .padding(.horizontal, 20)
                     .padding(.vertical, 12)
                     .background(
-                        RoundedRectangle(cornerRadius: 8)
+                        RoundedRectangle(cornerRadius: 10)
                             .fill(selectedCampus.isEmpty || isUpdating ?
-                                  Color.gray.opacity(0.3) : Color.blue)
+                                  Color.gray.opacity(0.3) : Color("Accent"))
                     )
                     .foregroundColor(.white)
-                    .font(.custom("Poppins-Medium", size: 16))
+                    .font(.custom("Poppins-Medium", size: 14))
                 }
-                
-                if isUpdating {
-                    ProgressView()
-                        .progressViewStyle(CircularProgressViewStyle())
-                }
+                .padding(.top, 8)
             }
             .padding(24)
             .background(
-                RoundedRectangle(cornerRadius: 16)
-                    .fill(Color(UIColor.systemBackground))
+                RoundedRectangle(cornerRadius: 20)
+                    .fill(Color("Background"))
+                    .shadow(color: .black.opacity(0.3), radius: 20, x: 0, y: 10)
             )
-            .padding(.horizontal, 40)
+            .padding(.horizontal, 32)
         }
+        .animation(.easeInOut(duration: 0.3), value: isUpdating)
+        .animation(.easeInOut(duration: 0.3), value: showError)
     }
     
     private func updateCampus() async {
@@ -167,7 +200,6 @@ struct CampusSelectionDialog: View {
                 campus: selectedCampus,
                 token: token
             )
-            
             
             DispatchQueue.main.async {
                 authViewModel.updateUserCampus(selectedCampus)

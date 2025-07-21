@@ -88,21 +88,228 @@ struct LectureDetailView: View {
 			return CLLocationCoordinate2D(latitude: 12.96972, longitude: 79.15658)
 		}
 	}
-
+    
     private func formatTime(time: String) -> String {
-            var timeComponents = time.components(separatedBy: "T").last ?? ""
-            timeComponents = timeComponents.components(separatedBy: "+").first ?? ""
-            timeComponents = timeComponents.components(separatedBy: "Z").first ?? ""
-
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "HH:mm:ss"
-            if let date = dateFormatter.date(from: timeComponents) {
-                dateFormatter.dateFormat = "h:mm a"
-                let formattedTime = dateFormatter.string(from: date)
-                return (formattedTime)
-            }
-            else {
-                return ("Failed to parse the time string.")
+      
+        if let formattedTime = parseWithISO8601(time: time) {
+            return formattedTime
+        } else if let formattedTime = parseWithCustomFormat(time: time) {
+            return formattedTime
+        } else {
+         
+            return parseTimeOnlyFallback(time: time)
+        }
+    }
+    
+    private func parseWithISO8601(time: String) -> String? {
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withInternetDateTime, .withTimeZone]
+        
+        if let date = formatter.date(from: time) {
+            let displayFormatter = DateFormatter()
+            displayFormatter.dateFormat = "h:mm a"
+            displayFormatter.locale = Locale(identifier: "en_US_POSIX")
+            return displayFormatter.string(from: date)
+        }
+        
+        return nil
+    }
+    
+    private func parseWithCustomFormat(time: String) -> String? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        dateFormatter.timeZone = TimeZone.current
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+        
+        if let date = dateFormatter.date(from: time) {
+            let displayFormatter = DateFormatter()
+            displayFormatter.dateFormat = "h:mm a"
+            displayFormatter.locale = Locale(identifier: "en_US_POSIX")
+            return displayFormatter.string(from: date)
+        }
+        
+        return nil
+    }
+    
+    private func parseTimeOnlyFallback(time: String) -> String {
+       
+        var timeComponents = time.components(separatedBy: "T").last ?? time
+        
+      
+        if timeComponents.contains("+") {
+            timeComponents = timeComponents.components(separatedBy: "+").first ?? timeComponents
+        }
+        if timeComponents.contains("Z") {
+            timeComponents = timeComponents.components(separatedBy: "Z").first ?? timeComponents
+        }
+        if timeComponents.contains("-") && timeComponents.count > 8 {
+            let parts = timeComponents.components(separatedBy: "-")
+            if parts.count > 1 && parts[0].count >= 8 {
+                timeComponents = parts[0]
             }
         }
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        dateFormatter.dateFormat = "HH:mm:ss"
+        
+        if let date = dateFormatter.date(from: timeComponents) {
+            let displayFormatter = DateFormatter()
+            displayFormatter.dateFormat = "h:mm a"
+            displayFormatter.locale = Locale(identifier: "en_US_POSIX")
+            return displayFormatter.string(from: date)
+        }
+        
+      
+        let timePattern = "\\d{2}:\\d{2}"
+        if let range = timeComponents.range(of: timePattern, options: .regularExpression) {
+            let timeOnly = String(timeComponents[range])
+            dateFormatter.dateFormat = "HH:mm"
+            
+            if let date = dateFormatter.date(from: timeOnly) {
+                let displayFormatter = DateFormatter()
+                displayFormatter.dateFormat = "h:mm a"
+                displayFormatter.locale = Locale(identifier: "en_US_POSIX")
+                return displayFormatter.string(from: date)
+            }
+        }
+        
+        return "Invalid Time"
+    }
+    
+
+    
+    private func parseTime(_ timeString: String) -> Int? {
+       
+        if let minutes = parseTimeWithISO8601(timeString) {
+            return minutes
+        }
+        
+   
+        return parseTimeCustom(timeString)
+    }
+    
+    private func parseTimeWithISO8601(_ timeString: String) -> Int? {
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withInternetDateTime, .withTimeZone]
+        
+        if let date = formatter.date(from: timeString) {
+            let calendar = Calendar.current
+            let components = calendar.dateComponents([.hour, .minute], from: date)
+            if let hour = components.hour, let minute = components.minute {
+                return hour * 60 + minute
+            }
+        }
+        
+        return nil
+    }
+    
+    private func parseTimeCustom(_ timeString: String) -> Int? {
+        var timeComponents = timeString.components(separatedBy: "T").last ?? timeString
+        
+       
+        if timeComponents.contains("+") {
+            timeComponents = timeComponents.components(separatedBy: "+").first ?? timeComponents
+        }
+        if timeComponents.contains("Z") {
+            timeComponents = timeComponents.components(separatedBy: "Z").first ?? timeComponents
+        }
+        if timeComponents.contains("-") && timeComponents.count > 8 {
+            let parts = timeComponents.components(separatedBy: "-")
+            if parts.count > 1 && parts[0].count >= 8 {
+                timeComponents = parts[0]
+            }
+        }
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        dateFormatter.dateFormat = "HH:mm:ss"
+        
+        if let date = dateFormatter.date(from: timeComponents) {
+            let calendar = Calendar.current
+            let hour = calendar.component(.hour, from: date)
+            let minute = calendar.component(.minute, from: date)
+            return hour * 60 + minute
+        }
+        
+        return nil
+    }
+    
+
+    
+    private func parseTimeToDate(_ timeString: String) -> Date? {
+       
+        if let date = parseTimeToDateISO8601(timeString) {
+            return date
+        }
+        
+  
+        return parseTimeToDateCustom(timeString)
+    }
+    
+    private func parseTimeToDateISO8601(_ timeString: String) -> Date? {
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withInternetDateTime, .withTimeZone]
+        
+        if let originalDate = formatter.date(from: timeString) {
+            let calendar = Calendar.current
+            let timeComponents = calendar.dateComponents([.hour, .minute, .second], from: originalDate)
+            let todayComponents = calendar.dateComponents([.year, .month, .day], from: Date())
+            
+            var combinedComponents = DateComponents()
+            combinedComponents.year = todayComponents.year
+            combinedComponents.month = todayComponents.month
+            combinedComponents.day = todayComponents.day
+            combinedComponents.hour = timeComponents.hour
+            combinedComponents.minute = timeComponents.minute
+            combinedComponents.second = timeComponents.second
+            
+            return calendar.date(from: combinedComponents)
+        }
+        
+        return nil
+    }
+    
+    private func parseTimeToDateCustom(_ timeString: String) -> Date? {
+        var timeComponents = timeString.components(separatedBy: "T").last ?? timeString
+        
+        
+        if timeComponents.contains("+") {
+            timeComponents = timeComponents.components(separatedBy: "+").first ?? timeComponents
+        }
+        if timeComponents.contains("Z") {
+            timeComponents = timeComponents.components(separatedBy: "Z").first ?? timeComponents
+        }
+        if timeComponents.contains("-") && timeComponents.count > 8 {
+            let parts = timeComponents.components(separatedBy: "-")
+            if parts.count > 1 && parts[0].count >= 8 {
+                timeComponents = parts[0]
+            }
+        }
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        dateFormatter.dateFormat = "HH:mm:ss"
+        
+        if let time = dateFormatter.date(from: timeComponents) {
+            let calendar = Calendar.current
+            let now = Date()
+            
+            let todayComponents = calendar.dateComponents([.year, .month, .day], from: now)
+            let timeComps = calendar.dateComponents([.hour, .minute, .second], from: time)
+            
+            var combinedComponents = DateComponents()
+            combinedComponents.year = todayComponents.year
+            combinedComponents.month = todayComponents.month
+            combinedComponents.day = todayComponents.day
+            combinedComponents.hour = timeComps.hour
+            combinedComponents.minute = timeComps.minute
+            combinedComponents.second = timeComps.second
+            
+            return calendar.date(from: combinedComponents)
+        }
+        
+        return nil
+    }
+    
 }

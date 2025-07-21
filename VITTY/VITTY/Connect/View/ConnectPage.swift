@@ -149,7 +149,7 @@ struct ConnectPage: View {
                 selectedTab = 0
             }
             communityPageViewModel.fetchCircleData(
-                from: "\(APIConstants.base_url)circles",
+                from: "\(APIConstants.base_urlv3)circles",
                 token: authViewModel.loggedInBackendUser?.token ?? "",
                 loading: true
             )
@@ -177,7 +177,7 @@ struct ConnectPage: View {
             
             if communityPageViewModel.circles.isEmpty || !hasLoadedInitialData {
                 communityPageViewModel.fetchCircleData(
-                    from: "\(APIConstants.base_url)circles",
+                    from: "\(APIConstants.base_urlv3)circles",
                     token: authViewModel.loggedInBackendUser?.token ?? "",
                     loading: shouldShowLoading
                 )
@@ -185,7 +185,7 @@ struct ConnectPage: View {
             
             if communityPageViewModel.circleRequests.isEmpty || !hasLoadedInitialData {
                 friendRequestViewModel.fetchFriendRequests(
-                    from: URL(string: "\(APIConstants.base_url)requests/")!,
+                    from: URL(string: "\(APIConstants.base_urlv3)requests/")!,
                     authToken: authViewModel.loggedInBackendUser?.token ?? "",
                     loading: shouldShowLoading
                 )

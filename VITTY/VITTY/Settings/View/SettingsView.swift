@@ -8,7 +8,7 @@ struct SettingsView: View {
     @Query private var timeTables: [TimeTable]
 
     @StateObject private var viewModel = SettingsViewModel()
-    @StateObject private var settingsTipManager = SettingsTipManager() 
+    @StateObject private var settingsTipManager = SettingsTipManager()
 
     @State private var showDaySelection = false
     @State private var selectedDay: String? = nil
@@ -160,8 +160,35 @@ struct SettingsView: View {
                         }
 
                         SettingsSectionView(title: "About") {
-                            AboutLinkView(image: "github-icon", title: "GitHub Repository", url: URL(string: "https://github.com/GDGVIT/vitty-ios"))
-                            AboutLinkView(image: "gdsc-logo", title: "GDSC VIT", url: URL(string: "https://dscvit.com/"))
+                            VStack(alignment: .leading, spacing: 12) {
+                                AboutLinkView(image: "github-icon", title: "GitHub Repository", url: URL(string: "https://github.com/GDGVIT/vitty-ios"))
+                                AboutLinkView(image: "gdsc-logo", title: "GDSC VIT", url: URL(string: "https://dscvit.com/"))
+                                
+                                // Support Email
+                                HStack(spacing: 12) {
+                                    Image(systemName: "envelope.fill")
+                                        .foregroundColor(.white)
+                                        .frame(width: 30, height: 30)
+
+                                    VStack(alignment: .leading, spacing: 4) {
+                                        Text("Support")
+                                            .font(.system(size: 15, weight: .semibold))
+                                            .foregroundColor(.white)
+                                        
+                                        Text("dscvit.vitty@gmail.com")
+                                            .font(.system(size: 12))
+                                            .foregroundColor(.gray.opacity(0.8))
+                                    }
+                                    
+                                    Spacer()
+                                }
+                                .padding(.vertical, 6)
+                                .onTapGesture {
+                                    if let url = URL(string: "mailto:dscvit.vitty@gmail.com") {
+                                        UIApplication.shared.open(url)
+                                    }
+                                }
+                            }
                         }
                     }
                     .scrollContentBackground(.hidden)
@@ -841,6 +868,7 @@ struct DeleteUserAlert: View {
         }
     }
 }
+
 
 struct SyncAlert: View {
     let message: String

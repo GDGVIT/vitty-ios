@@ -114,7 +114,7 @@ class CommunityPageViewModel {
         for circle in circles {
             dispatchGroup.enter()
             
-            let url = "\(APIConstants.base_url)circles/\(circle.circleID)"
+            let url = "\(APIConstants.base_urlv3)circles/\(circle.circleID)"
             
             AF.request(url, method: .get, headers: ["Authorization": "Token \(token)"])
                 .validate()
@@ -149,7 +149,7 @@ class CommunityPageViewModel {
         
         self.errorMemberTimetable = false
         
-        let url = "\(APIConstants.base_url)circles/\(circleId)/\(username)"
+        let url = "\(APIConstants.base_urlv3)circles/\(circleId)/\(username)"
         
         print("Fetching member timetable from: \(url)")
         
@@ -191,7 +191,7 @@ class CommunityPageViewModel {
         
         self.errorCircleRequests = false
         
-        let url = "\(APIConstants.base_url)circles/requests/received"
+        let url = "\(APIConstants.base_urlv3)circles/requests/received"
         
         AF.request(url, method: .get, headers: ["Authorization": "Token \(token)"])
             .validate()
@@ -230,7 +230,7 @@ class CommunityPageViewModel {
     func acceptCircleRequest(circleId: String, token: String, completion: @escaping (Bool) -> Void) {
         self.loadingRequestAction = true
         
-        let url = "\(APIConstants.base_url)circles/acceptRequest/\(circleId)"
+        let url = "\(APIConstants.base_urlv3)circles/acceptRequest/\(circleId)"
         
        
         logger.info("Attempting to accept circle request with URL: \(url)")
@@ -247,7 +247,7 @@ class CommunityPageViewModel {
                     case .success(let data):
                         self.logger.info("Successfully accepted circle request for circle: \(circleId)")
                         
-                        // Log the response for debugging
+                      
                         if let responseString = String(data: data, encoding: .utf8) {
                             self.logger.info("Response: \(responseString)")
                         }
@@ -257,7 +257,7 @@ class CommunityPageViewModel {
                         
                     
                         self.fetchCircleData(
-                            from: "\(APIConstants.base_url)circles",
+                            from: "\(APIConstants.base_urlv3)circles",
                             token: token,
                             loading: false
                         )
@@ -285,7 +285,7 @@ class CommunityPageViewModel {
     func declineCircleRequest(circleId: String, token: String, completion: @escaping (Bool) -> Void) {
         self.loadingRequestAction = true
         
-        let url = "\(APIConstants.base_url)circles/declineRequest/\(circleId)"
+        let url = "\(APIConstants.base_urlv3)circles/declineRequest/\(circleId)"
         
         AF.request(url, method: .post, headers: ["Authorization": "Token \(token)"])
             .validate()
@@ -420,7 +420,7 @@ class CommunityPageViewModel {
                         
                      
                         self.fetchCircleData(
-                            from: "\(APIConstants.base_url)circles",
+                            from: "\(APIConstants.base_urlv3)circles",
                             token: token,
                             loading: false
                         )
@@ -464,7 +464,7 @@ class CommunityPageViewModel {
             return
         }
         
-        let url = "\(APIConstants.base_url)circles/create/\(encodedName)"
+        let url = "\(APIConstants.base_urlv3)circles/create/\(encodedName)"
         
         AF.request(url, method: .post, headers: ["Authorization": "Token \(token)"])
             .validate()
@@ -477,7 +477,7 @@ class CommunityPageViewModel {
                             
                             // Now fetch the updated circles data and wait for completion
                             self.fetchCircleDataWithCompletion(
-                                from: "\(APIConstants.base_url)circles",
+                                from: "\(APIConstants.base_urlv3)circles",
                                 token: token,
                                 circleName: name,
                                 completion: completion
@@ -510,7 +510,7 @@ class CommunityPageViewModel {
                         self.errorCircle = false
                         print("Successfully fetched circles after creation: \(data.data)")
                         
-                        // Fetch member data for all circles after successfully fetching circles
+                       
                         self.fetchAllCircleMemberData(token: token)
                         
                         if let createdCircle = self.circles.first(where: { $0.circleName == circleName }) {
@@ -530,9 +530,11 @@ class CommunityPageViewModel {
             }
     }
     
+    // MARK: - Updated Circle Invitations with New Endpoint
+   
     func sendCircleInvitation(circleId: String, username: String, token: String, completion: @escaping (Bool) -> Void) {
         
-        let url = "\(APIConstants.base_url)circles/sendRequest/\(circleId)/\(username)"
+        let url = "\(APIConstants.base_urlv3)circles/sendRequest/\(circleId)/\(username)"
         print("this is the endpoint \(url)")
         
         AF.request(url, method: .post, headers: ["Authorization": "Token \(token)"])
@@ -552,35 +554,102 @@ class CommunityPageViewModel {
             }
     }
     
-    func sendMultipleInvitations(circleId: String, usernames: [String], token: String, completion: @escaping ([String: Bool]) -> Void) {
-        let dispatchGroup = DispatchGroup()
-        var results: [String: Bool] = [:]
-        
-        for username in usernames {
-            dispatchGroup.enter()
-            
-            sendCircleInvitation(circleId: circleId, username: username, token: token) { success in
-                results[username] = success
-                dispatchGroup.leave()
-            }
-        }
-        
-        dispatchGroup.notify(queue: .main) {
-            completion(results)
-        }
+   
+    
+    struct SendInvitationsRequest: Codable {
+        let usernames: [String]
     }
     
+    struct SendInvitationsResponse: Codable {
+        let data: [InvitationResult]?
+        let detail: String?
+        let message: String?
+    }
+    struct InvitationResult: Codable {
+        let request_status: String
+        let username: String
+    }
+    
+    func sendMultipleInvitations(circleId: String, usernames: [String], token: String, completion: @escaping ([String: Bool]) -> Void) {
+        guard !usernames.isEmpty else {
+            completion([:])
+            return
+        }
+        
+        let url = "\(APIConstants.base_urlv3)circles/sendRequest/\(circleId)"
+        let requestBody = SendInvitationsRequest(usernames: usernames)
+        
+        print("Sending multiple invitations to endpoint: \(url)")
+        print("Usernames: \(usernames)")
+        
+        AF.request(
+            url,
+            method: .post,
+            parameters: requestBody,
+            encoder: JSONParameterEncoder.default,
+            headers: ["Authorization": "Token \(token)", "Content-Type": "application/json"]
+        )
+        .validate()
+        .responseData { response in
+            DispatchQueue.main.async {
+                var results: [String: Bool] = [:]
+                
+                
+                for username in usernames {
+                    results[username] = false
+                }
+                
+                switch response.result {
+                case .success(let data):
+                    self.logger.info("Multiple invitations response received")
+                    
+                  
+                    do {
+                        let decodedResponse = try JSONDecoder().decode(SendInvitationsResponse.self, from: data)
+                        
+                        if let invitationResults = decodedResponse.data {
+                            for result in invitationResults {
+                              
+                                results[result.username] = (result.request_status == "added")
+                                self.logger.info("User \(result.username): \(result.request_status)")
+                            }
+                        }
+                        
+                    } catch {
+                        self.logger.error("Error decoding multiple invitations response: \(error)")
+                        
+                        
+                        if let responseString = String(data: data, encoding: .utf8) {
+                            self.logger.info("Raw response: \(responseString)")
+                        }
+                        
+              
+                       
+                        return
+                    }
+                    
+                    completion(results)
+                    
+                case .failure(let error):
+                    self.logger.error("Error sending multiple invitations: \(error)")
+                    
+                  
+                }
+            }
+        }
+    }
+
     // MARK: - Refresh Methods
     
     func refreshAllData(token: String, username: String) {
         fetchFriendsData(
-            from: "\(APIConstants.base_url)friends/\(username)/",
+            from: "\(APIConstants.base_urlv3)friends/\(username)/",
             token: token,
             loading: false
         )
         
         fetchCircleData(
-            from: "\(APIConstants.base_url)circles",
+            from: "\(APIConstants.base_urlv3)circles",
             token: token,
             loading: false
         )
@@ -601,7 +670,7 @@ class CommunityPageViewModel {
     }
     
     func generateJoinCode(circleId: String, token: String, completion: @escaping (Result<String, Error>) -> Void) {
-        let url = "\(APIConstants.base_url)circles/\(circleId)/generateJoinCode"
+        let url = "\(APIConstants.base_urlv3)circles/\(circleId)/generateJoinCode"
         
         print("Generating join code for circle: \(circleId)")
         print("Request URL: \(url)")
@@ -631,5 +700,6 @@ class CommunityPageViewModel {
                     }
                 }
             }
+        }
     }
-}
+

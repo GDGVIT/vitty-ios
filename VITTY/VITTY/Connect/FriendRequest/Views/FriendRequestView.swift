@@ -32,7 +32,7 @@ struct FriendRequestView: View {
 						.scrollContentBackground(.hidden)
 						.refreshable {
 							friendRequestViewModel.fetchFriendRequests(
-								from: URL(string: "\(APIConstants.base_url)/api/v2/requests/")!,
+								from: URL(string: "\(APIConstants.base_url)requests/")!,
 								authToken: authViewModel.loggedInBackendUser?.token ?? "",
 								loading: false
 							)

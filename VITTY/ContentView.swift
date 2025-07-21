@@ -38,7 +38,26 @@ struct ContentView: View {
         .environment(suggestedFriendsViewModel)
         .environment(friendRequestViewModel)
         .environment(academicsViewModel)
-        .environment(requestViewModel)
+        .environment(requestViewModel).alert("Update Available", isPresented: .constant(UpdateManager.shared.showUpdateAlert)) {
+            Button("Update Now") {
+                UpdateManager.shared.openAppStore()
+                UpdateManager.shared.dismissUpdateAlert()
+            }
+            
+            if let updateInfo = UpdateManager.shared.updateInfo, !updateInfo.isForced {
+                Button("Skip This Version") {
+                    UpdateManager.shared.skipThisVersion()
+                }
+                
+                Button("Later") {
+                    UpdateManager.shared.dismissUpdateAlert()
+                }
+            }
+        } message: {
+            if let updateInfo = UpdateManager.shared.updateInfo {
+                Text("Version \(updateInfo.latestVersion) is available.\n\n\(updateInfo.releaseNotes)")
+            }
+        }
     }
 }
 

@@ -60,6 +60,7 @@
 		4B7DA5F52D7237BE007354A3 /* CreateGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7DA5F42D7237B8007354A3 /* CreateGroup.swift */; };
 		4B80972B2E2947A300FF2F63 /* FriendsTimetableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B80972A2E29479800FF2F63 /* FriendsTimetableView.swift */; };
 		4B80972D2E2ABD8500FF2F63 /* CircleTimetable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B80972C2E2ABD8100FF2F63 /* CircleTimetable.swift */; };
+		4B8097552E2B7B6300FF2F63 /* UpdateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B8097542E2B7B5F00FF2F63 /* UpdateManager.swift */; };
 		4B8B32CA2D6D75F4004F01BA /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8B32C92D6D75F4004F01BA /* WidgetKit.framework */; };
 		4B8B32CB2D6D75F4004F01BA /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3105871C27A3ECBB00C2FC41 /* SwiftUI.framework */; };
 		4B8B32DC2D6D75F6004F01BA /* VittyWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 4B8B32C82D6D75F4004F01BA /* VittyWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -226,6 +227,7 @@
 		4B7DA5F42D7237B8007354A3 /* CreateGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroup.swift; sourceTree = "<group>"; };
 		4B80972A2E29479800FF2F63 /* FriendsTimetableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsTimetableView.swift; sourceTree = "<group>"; };
 		4B80972C2E2ABD8100FF2F63 /* CircleTimetable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleTimetable.swift; sourceTree = "<group>"; };
+		4B8097542E2B7B5F00FF2F63 /* UpdateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateManager.swift; sourceTree = "<group>"; };
 		4B8B32C82D6D75F4004F01BA /* VittyWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = VittyWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B8B32C92D6D75F4004F01BA /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		4B8B33742D7029A3004F01BA /* SideBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBar.swift; sourceTree = "<group>"; };
@@ -471,6 +473,7 @@
 		314A40A127383C0A0058082F /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				4B8097542E2B7B5F00FF2F63 /* UpdateManager.swift */,
 				31128D0A2773003C0084C9EA /* Constants */,
 				31128D052772FA030084C9EA /* Extensions */,
 				31128CF12772F55D0084C9EA /* Fonts */,
@@ -1211,6 +1214,7 @@
 				4BF03C992D7819E30098C803 /* Notes.swift in Sources */,
 				52DBBE882B47B6B30014C57A /* FriendCard.swift in Sources */,
 				4B47CD7B2D7DCB8B00A46FEF /* CreateReminder.swift in Sources */,
+				4B8097552E2B7B6300FF2F63 /* UpdateManager.swift in Sources */,
 				317715DE279F1431009A532E /* IndexedCollection.swift in Sources */,
 				4B7DA5E72D71AC54007354A3 /* CirclesRow.swift in Sources */,
 				4B7DA5E52D70B2CA007354A3 /* Circles.swift in Sources */,

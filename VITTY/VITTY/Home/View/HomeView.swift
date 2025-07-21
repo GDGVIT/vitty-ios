@@ -21,7 +21,7 @@ class CampusUpdateService {
     private init() {}
     
     func updateCampus(campus: String, token: String) async throws {
-        guard let url = URL(string: "\(APIConstants.base_url)users/campus") else {
+        guard let url = URL(string: "\(APIConstants.base_urlv3)users/campus") else {
             throw URLError(.badURL)
         }
         

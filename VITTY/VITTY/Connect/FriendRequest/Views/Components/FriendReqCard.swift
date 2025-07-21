@@ -38,7 +38,7 @@ struct FriendReqCard: View {
 					Task {
 						let url = URL(
 							string:
-								"\(APIConstants.base_url)/api/v2/requests/\(friend.username)/accept/"
+								"\(APIConstants.base_url)requests/\(friend.username)/accept/"
 						)!
 						var request = URLRequest(url: url)
 
@@ -50,7 +50,7 @@ struct FriendReqCard: View {
 						do {
 							let (_, _) = try await URLSession.shared.data(for: request)
 							friendRequestViewModel.fetchFriendRequests(
-								from: URL(string: "\(APIConstants.base_url)/api/v2/requests/")!,
+								from: URL(string: "\(APIConstants.base_url)requests/")!,
 								authToken: authViewModel.loggedInBackendUser?.token ?? "",
 								loading: false
 							)
@@ -68,7 +68,7 @@ struct FriendReqCard: View {
 					Task {
 						let url = URL(
 							string:
-								"\(APIConstants.base_url)/api/v2/requests/\(friend.username)/decline/"
+								"\(APIConstants.base_url)requests/\(friend.username)/decline/"
 						)!
 						var request = URLRequest(url: url)
 
@@ -80,7 +80,7 @@ struct FriendReqCard: View {
 						do {
 							let (_, _) = try await URLSession.shared.data(for: request)
 							friendRequestViewModel.fetchFriendRequests(
-								from: URL(string: "\(APIConstants.base_url)/api/v2/requests/")!,
+								from: URL(string: "\(APIConstants.base_url)requests/")!,
 								authToken: authViewModel.loggedInBackendUser?.token ?? "",
 								loading: false
 							)

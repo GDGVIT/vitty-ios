@@ -34,7 +34,7 @@ struct SuggestedFriendsView: View {
 				.scrollContentBackground(.hidden)
 				.refreshable {
 					suggestedFriendsViewModel.fetchData(
-						from: "\(APIConstants.base_url)/api/v2/users/suggested/",
+						from: "\(APIConstants.base_url)users/suggested/",
 						token: authViewModel.loggedInBackendUser?.token ?? "",
 						loading: false
 					)

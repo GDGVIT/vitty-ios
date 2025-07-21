@@ -233,7 +233,7 @@ struct ConnectCircleMenuView: View {
                         Image("joingroup")
                             .resizable()
                             .frame(width: 24, height: 24)
-                        Text("Join Group")
+                        Text("Join Circle")
                             .font(.custom("Poppins-Regular", size: 16))
                             .foregroundColor(.white)
                         Spacer()
@@ -252,7 +252,7 @@ struct ConnectCircleMenuView: View {
                     HStack {
                         Image(systemName: "person.badge.plus")
                             .foregroundColor(.white)
-                        Text("Group Requests")
+                        Text("Circle Requests")
                             .font(.custom("Poppins-Regular", size: 16))
                             .foregroundColor(.white)
                         Spacer()
@@ -301,7 +301,7 @@ struct AddCircleOptionsView: View {
                         Image("joingroup")
                             .resizable()
                             .frame(width: 55, height: 55)
-                        Text("Join Group")
+                        Text("Join Circle")
                             .font(.system(size: 15))
                             .foregroundStyle(Color.white)
                     }

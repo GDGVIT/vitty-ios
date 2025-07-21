@@ -10,7 +10,15 @@ import Foundation
 
 
 struct APIConstants {
+    
+    
+    
 	static let base_url = "https://visiting-eba-vitty-d61856bb.koyeb.app/api/v2/"
+    
+    static let base_urlv3 = "https://visiting-eba-vitty-d61856bb.koyeb.app/api/v3/"
+    
+    
+    
     static let createCircle = "circles/create/"
     static let sendRequest = "circles/sendRequest/"
     static let acceptRequest = "circles/acceptRequest/"

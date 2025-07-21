@@ -151,7 +151,7 @@ struct UserProfileSidebar: View {
         
        
         let endpoint = enabled ? "ghost" : "alive"
-        let urlString = "\(APIConstants.base_url)friends/\(endpoint)/\(username)"
+        let urlString = "\(APIConstants.base_urlv3)friends/\(endpoint)/\(username)"
         
         guard let url = URL(string: urlString) else {
             isUpdatingGhostMode = false

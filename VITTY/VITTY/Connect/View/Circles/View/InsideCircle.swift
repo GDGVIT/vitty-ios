@@ -506,7 +506,7 @@ struct InsideCircle: View {
         })
         .onAppear {
             communityPageViewModel.fetchCircleMemberData(
-                from: "\(APIConstants.base_url)circles/\(circle_id)",
+                from: "\(APIConstants.base_urlv3)circles/\(circle_id)",
                 token: authViewModel.loggedInBackendUser?.token ?? "",
                 loading: true
             )
@@ -517,13 +517,13 @@ struct InsideCircle: View {
                     LeaveCircleAlert(circleName: "\(circleName)", onCancel: {
                         showLeaveAlert = false
                     }, onLeave: {
-                        let url = "\(APIConstants.base_url)circles/leave/\(circle_id)"
+                        let url = "\(APIConstants.base_urlv3)circles/leave/\(circle_id)"
                         let token = authViewModel.loggedInBackendUser?.token ?? ""
 
                         communityPageViewModel.leaveCircle(from: url, token: token)
                         
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                            communityPageViewModel.fetchCircleData(from:"\(APIConstants.base_url)circles" , token: token)
+                            communityPageViewModel.fetchCircleData(from:"\(APIConstants.base_urlv3)circles" , token: token)
                             showLeaveAlert = false
                             presentationMode.wrappedValue.dismiss()
                         }
@@ -534,7 +534,7 @@ struct InsideCircle: View {
                     DeleteCircleAlert(circleName: "\(circleName)", onCancel: {
                         showDeleteAlert = false
                     }, onDelete: {
-                        let url = "\(APIConstants.base_url)circles/\(circle_id)"
+                        let url = "\(APIConstants.base_urlv3)circles/\(circle_id)"
                         let token = authViewModel.loggedInBackendUser?.token ?? ""
 
                         communityPageViewModel.deleteCircle(from: url, token: token)

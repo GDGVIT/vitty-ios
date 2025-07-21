@@ -7,13 +7,11 @@
 
 import SwiftUI
 
-
 struct CirclesView: View {
     @Binding var isCreatingGroup: Bool
     @State private var searchText = ""
     @Environment(CommunityPageViewModel.self) private var communityPageViewModel
     @Environment(AuthViewModel.self) private var authViewModel
-    
     
     @EnvironmentObject private var navigationCoordinator: NavigationCoordinator
     
@@ -56,7 +54,6 @@ struct CirclesView: View {
                         ScrollView {
                             VStack(spacing: 10) {
                                 ForEach(filteredCircles, id: \.circleID) { circle in
-                                    
                                     NavigationLink(destination: InsideCircle(circleName: circle.circleName, circle_id: circle.circleID, circle_join_code: circle.circleJoinCode, circle_role: circle.circleRole)) {
                                         CirclesRow(circle: circle)
                                     }
@@ -70,30 +67,34 @@ struct CirclesView: View {
                 }
             }
             .refreshable {
-                communityPageViewModel.fetchCircleData(
-                    from: "\(APIConstants.base_url)circles",
-                    token: authViewModel.loggedInBackendUser?.token ?? "",
-                    loading: true
-                )
+                fetchCircleData()
             }
             .onReceive(NotificationCenter.default.publisher(for: Notification.Name("CircleJoinedSuccessfully"))) { _ in
-               
-                communityPageViewModel.fetchCircleData(
-                    from: "\(APIConstants.base_url)circles",
-                    token: authViewModel.loggedInBackendUser?.token ?? "",
-                    loading: true
-                )
+                fetchCircleData()
             }
-           
             .onAppear {
+               
+                fetchCircleData()
                 
+               
                 if let pendingInvite = navigationCoordinator.pendingCircleInvite {
-                    
                     print("CirclesView appeared with pending invite: \(pendingInvite.code)")
-                    
-                    
                 }
             }
         }
+    }
+    
+    // MARK: - Helper Methods
+    private func fetchCircleData() {
+        guard let token = authViewModel.loggedInBackendUser?.token else {
+            print("No authentication token available")
+            return
+        }
+        
+        communityPageViewModel.fetchCircleData(
+            from: "\(APIConstants.base_urlv3)circles",
+            token: token,
+            loading: true
+        )
     }
 }

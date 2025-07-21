@@ -13,7 +13,7 @@ class EmptyClassRoomAPIService {
         slot: String,
         authToken: String
     ) async throws -> [String] {
-        let url = URL(string: "\(APIConstants.base_url)users/emptyClassRooms?slot=\(slot)")!
+        let url = URL(string: "\(APIConstants.base_urlv3)users/emptyClassRooms?slot=\(slot)")!
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         print(authToken)

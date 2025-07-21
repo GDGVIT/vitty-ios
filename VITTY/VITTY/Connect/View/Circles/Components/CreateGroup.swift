@@ -36,7 +36,7 @@ struct CreateGroup: View {
                 .frame(width: 80, height: 5)
                 .padding(.top, 10)
             
-            Text("Create Group")
+            Text("Create Circle")
                 .font(.system(size: 23, weight: .semibold))
                 .foregroundColor(.white)
             
@@ -72,11 +72,11 @@ struct CreateGroup: View {
             
             
             VStack(alignment: .leading, spacing: 10) {
-                Text("Enter group name")
+                Text("Enter circle name")
                     .font(.system(size: 18, weight: .bold))
                     .foregroundColor(Color("Accent"))
                 
-                TextField("Group Name", text: $groupName)
+                TextField("Circle Name", text: $groupName)
                     .padding()
                     .background(Color.black.opacity(0.3))
                     .cornerRadius(8)
@@ -93,7 +93,7 @@ struct CreateGroup: View {
                         }
                         
                    
-                        if groupName.count > 20 {
+                        if groupName.count > 50 {
                             groupName = String(groupName.prefix(20))
                         }
                     }
@@ -101,7 +101,7 @@ struct CreateGroup: View {
                     .textInputAutocapitalization(.never)
                 
               
-                Text("No spaces allowed • Max 20 characters")
+                Text("No spaces allowed • Max 50 characters")
                     .font(.system(size: 12))
                     .foregroundColor(.gray)
                     .padding(.leading, 5)

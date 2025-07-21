@@ -82,48 +82,54 @@ struct SearchView: View {
                             
                             Spacer()
                         }
-                        .frame(maxWidth: .infinity)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
                     } else if !hasSearched {
                         
-                        VStack(spacing: 20) {
+                    
+                        HStack {
                             Spacer()
-                            
-                            Image(systemName: "magnifyingglass.circle")
-                                .font(.system(size: 60))
-                                .foregroundColor(Color("Accent"))
-                            
-                            Text("Search for Friends")
-                                .font(Font.custom("Poppins-SemiBold", size: 20))
-                                .foregroundColor(Color.white)
-                            
-                            Text("Enter a username or name to find friends on VITTY")
-                                .multilineTextAlignment(.center)
-                                .font(Font.custom("Poppins-Regular", size: 14))
-                                .foregroundColor(Color.white.opacity(0.8))
-                                .padding(.horizontal, 40)
-                            
+                            VStack(spacing: 20) {
+                                Image(systemName: "magnifyingglass.circle")
+                                    .font(.system(size: 60))
+                                    .foregroundColor(Color("Accent"))
+                                
+                                Text("Search for Friends")
+                                    .font(Font.custom("Poppins-SemiBold", size: 20))
+                                    .foregroundColor(Color.white)
+                                
+                                Text("Enter a username or name to find friends on VITTY")
+                                    .multilineTextAlignment(.center)
+                                    .font(Font.custom("Poppins-Regular", size: 14))
+                                    .foregroundColor(Color.white.opacity(0.8))
+                                    .padding(.horizontal, 40)
+                            }
                             Spacer()
                         }
+                        .frame(maxHeight: .infinity)
+                        
                     } else if searchedFriends.isEmpty && !searchText.isEmpty {
-                        VStack(spacing: 20) {
+                       
+                        HStack {
                             Spacer()
-                            
-                            Image(systemName: "person.crop.circle.badge.questionmark")
-                                .font(.system(size: 60))
-                                .foregroundColor(Color("Accent"))
-                            
-                            Text("No Results Found")
-                                .font(Font.custom("Poppins-SemiBold", size: 20))
-                                .foregroundColor(Color.white)
-                            
-                            Text("No users found for '\(searchText)'. Try a different search term.")
-                                .multilineTextAlignment(.center)
-                                .font(Font.custom("Poppins-Regular", size: 14))
-                                .foregroundColor(Color.white.opacity(0.8))
-                                .padding(.horizontal, 40)
-                            
+                            VStack(spacing: 20) {
+                                Image(systemName: "person.crop.circle.badge.questionmark")
+                                    .font(.system(size: 60))
+                                    .foregroundColor(Color("Accent"))
+                                
+                                Text("No Results Found")
+                                    .font(Font.custom("Poppins-SemiBold", size: 20))
+                                    .foregroundColor(Color.white)
+                                
+                                Text("No users found for '\(searchText)'. Try a different search term.")
+                                    .multilineTextAlignment(.center)
+                                    .font(Font.custom("Poppins-Regular", size: 14))
+                                    .foregroundColor(Color.white.opacity(0.8))
+                                    .padding(.horizontal, 40)
+                            }
                             Spacer()
                         }
+                        .frame(maxHeight: .infinity)
+                        
                     } else {
                         List($searchedFriends, id: \.username) { searchfriend in
                             AddFriendCardSearch(friend: searchfriend , search: searchText)
@@ -222,7 +228,7 @@ struct SearchView: View {
         
         cancelSearch()
         
-        // Reset all states
+      
         searchText = ""
         searchedFriends = []
         hasSearched = false
@@ -334,7 +340,7 @@ struct SearchView: View {
         }
     }
 
-    // Update the cancelSearch function to work with Alamofire
+    
     func cancelSearch() {
         currentSearchTask?.cancel()
         currentSearchTask = nil

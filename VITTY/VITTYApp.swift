@@ -277,7 +277,7 @@ extension VITTYApp {
             return
         }
         
-        let urlString = "\(APIConstants.base_url)circles/join?code=\(invite.code)"
+        let urlString = "\(APIConstants.base_urlv3)circles/join?code=\(invite.code)"
         guard let url = URL(string: urlString) else {
             logger.error("Invalid URL: \(urlString)")
             showToast(message: "Error: Invalid URL", isError: true)

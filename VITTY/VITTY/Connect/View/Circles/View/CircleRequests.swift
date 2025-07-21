@@ -103,7 +103,7 @@ struct CircleRequestsView: View {
                 
                 Spacer()
                 
-                Text("Group Requests")
+                Text("Circle Requests")
                     .font(.custom("Poppins-SemiBold", size: 20))
                     .foregroundColor(.white)
                 

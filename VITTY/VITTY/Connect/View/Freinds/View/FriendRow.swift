@@ -28,6 +28,7 @@ struct FriendRow: View {
                 }
             }
             Spacer()
+           
         }
         .padding().frame(maxWidth: .infinity)
         .background(

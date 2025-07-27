@@ -162,7 +162,7 @@ struct NoteEditorView: View {
     }
     
     private func handleBackNavigation() {
-        // Check if there are unsaved changes or if it's a new note
+     
         if hasUnsavedChanges || (existingNote == nil && !isEmpty) {
             showTitleAlert = true
         } else {
@@ -256,6 +256,7 @@ struct NoteEditorView: View {
                     noteContent: dataString,
                     createdAt: Date.now
                 )
+                print("saved with a course id of \(courseCode)")
                 modelContext.insert(newNote)
             }
 

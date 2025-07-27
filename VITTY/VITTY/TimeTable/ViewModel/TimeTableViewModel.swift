@@ -431,7 +431,7 @@ extension TimeTableView {
                 )
             }
             
-            // Create new timetable with Saturday lectures
+            
             let newTimeTable = TimeTable(
                 monday: currentTimeTable.monday.map { $0.deepCopy() },
                 tuesday: currentTimeTable.tuesday.map { $0.deepCopy() },
@@ -449,7 +449,7 @@ extension TimeTableView {
                 context: context
             )
             
-            // Update UI
+          
             self.timeTable = newTimeTable
             changeDay()
             
@@ -458,7 +458,7 @@ extension TimeTableView {
         
         // MARK: - Utility Methods
         func resetSyncStatus() {
-            // Simple reset - just refresh current day
+     
             changeDay()
         }
         
@@ -473,7 +473,7 @@ extension TimeTableView {
             authToken: String,
             context: ModelContext
         ) async {
-            // Redirect to forceSync for consistency
+           
             await forceSync(
                 username: username,
                 authToken: authToken,

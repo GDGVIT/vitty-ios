@@ -66,6 +66,7 @@
 		4B8B32DC2D6D75F6004F01BA /* VittyWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 4B8B32C82D6D75F4004F01BA /* VittyWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		4B8B33752D7029AA004F01BA /* SideBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B8B33742D7029A3004F01BA /* SideBar.swift */; };
 		4BA03C1D2D7584F3000756B0 /* AddFriend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA03C1C2D7584EA000756B0 /* AddFriend.swift */; };
+		4BA6DFE92E33D5CE00B0411A /* NotesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBB00322D957A6A003B8FE2 /* NotesModel.swift */; };
 		4BBB00312D955163003B8FE2 /* AcademicsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBB00302D95515C003B8FE2 /* AcademicsViewModel.swift */; };
 		4BBB00332D957A6A003B8FE2 /* NotesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBB00322D957A6A003B8FE2 /* NotesModel.swift */; };
 		4BC853C32DF693780092B2E2 /* SaveTimeTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BC853C22DF6936E0092B2E2 /* SaveTimeTableView.swift */; };
@@ -1248,6 +1249,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4BA6DFE92E33D5CE00B0411A /* NotesModel.swift in Sources */,
 				4B5977482DFAC034009CC224 /* RemainderModel.swift in Sources */,
 				4BC853C42DF6DA7A0092B2E2 /* TimeTable.swift in Sources */,
 				4B2D64902E20BA6300412CB7 /* NetworkMonitor.swift in Sources */,

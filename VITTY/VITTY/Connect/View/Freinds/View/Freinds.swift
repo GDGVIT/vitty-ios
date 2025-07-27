@@ -99,7 +99,7 @@ struct FriendsView: View {
                     ScrollView {
                         VStack(spacing: 10) {
                             ForEach(filteredFriends, id: \.username) { friend in
-                                // Updated to use FriendsTimeTableView instead of TimeTableView
+                               
                                 NavigationLink(destination: FriendsTimeTableView(friend: friend)) {
                                     FriendRow(friend: friend)
                                 }

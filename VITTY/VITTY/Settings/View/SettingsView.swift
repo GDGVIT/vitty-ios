@@ -486,7 +486,8 @@ struct SettingsView: View {
         
         let lecturesToCopy = currentTimeTable.lectures(forDay: day)
         print("Found \(lecturesToCopy.count) lectures to copy from \(day)")
-     
+        
+        // Create backup data
         let backupData = (
             monday: currentTimeTable.monday.map { $0.deepCopy() },
             tuesday: currentTimeTable.tuesday.map { $0.deepCopy() },
@@ -499,9 +500,11 @@ struct SettingsView: View {
         )
         
         do {
+            // Delete existing timetable
             modelContext.delete(currentTimeTable)
             print("Deleted existing timetable")
             
+            // Create new Saturday lectures
             let newSaturdayLectures = lecturesToCopy.map { originalLecture in
                 Lecture(
                     name: originalLecture.name,
@@ -516,6 +519,7 @@ struct SettingsView: View {
             
             print("Created \(newSaturdayLectures.count) new lectures for Saturday")
             
+            // Create new timetable
             let newTimeTable = TimeTable(
                 monday: backupData.monday,
                 tuesday: backupData.tuesday,
@@ -527,19 +531,30 @@ struct SettingsView: View {
                 saturdaySourceDay: day
             )
             
+            // Insert new timetable
             modelContext.insert(newTimeTable)
             print("Inserted new timetable with Saturday lectures")
             
+            // Save changes
             try modelContext.save()
             
+            // Update local state IMMEDIATELY after successful save
             self.selectedDay = day
             
             print("Successfully recreated timetable with \(day) copied to Saturday")
             print("New Saturday has \(newTimeTable.saturday.count) lectures")
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            // Force immediate UI update
+            DispatchQueue.main.async {
+                // Send notification immediately
                 NotificationCenter.default.post(
                     name: NSNotification.Name("TimetableDidChange"),
+                    object: nil
+                )
+                
+                // Also send a refresh notification for the timetable view
+                NotificationCenter.default.post(
+                    name: NSNotification.Name("RefreshTimetableFromSettings"),
                     object: nil
                 )
             }
@@ -548,6 +563,7 @@ struct SettingsView: View {
             print("Error during timetable recreation: \(error)")
             modelContext.rollback()
             
+            // Restore backup data on error
             print("Attempting to restore backup data...")
             do {
                 let restoredTimeTable = TimeTable(
@@ -570,6 +586,7 @@ struct SettingsView: View {
         }
     }
 
+    // MARK: - Fixed resetSaturdayClasses method in SettingsView
     private func resetSaturdayClasses() {
         guard let currentTimeTable = timeTables.first else {
             print("No timetable found")
@@ -578,6 +595,7 @@ struct SettingsView: View {
         
         print("Starting SAFE reset of Saturday classes - DELETE & RECREATE approach")
         
+        // Create backup data
         let backupData = (
             monday: currentTimeTable.monday.map { $0.deepCopy() },
             tuesday: currentTimeTable.tuesday.map { $0.deepCopy() },
@@ -590,32 +608,45 @@ struct SettingsView: View {
         )
         
         do {
+            // Delete existing timetable
             modelContext.delete(currentTimeTable)
             print("Deleted existing timetable")
             
+            // Create new timetable with empty Saturday
             let newTimeTable = TimeTable(
                 monday: backupData.monday,
                 tuesday: backupData.tuesday,
                 wednesday: backupData.wednesday,
                 thursday: backupData.thursday,
                 friday: backupData.friday,
-                saturday: [],
+                saturday: [], // Empty Saturday
                 sunday: backupData.sunday,
-                saturdaySourceDay: nil
+                saturdaySourceDay: nil // Clear source day
             )
             
+            // Insert new timetable
             modelContext.insert(newTimeTable)
             print("Inserted new timetable with empty Saturday")
             
+            // Save changes
             try modelContext.save()
             
+            // Update local state IMMEDIATELY after successful save
             self.selectedDay = nil
             
             print("Successfully recreated timetable with empty Saturday")
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            // Force immediate UI update
+            DispatchQueue.main.async {
+                // Send notification immediately
                 NotificationCenter.default.post(
                     name: NSNotification.Name("TimetableDidChange"),
+                    object: nil
+                )
+                
+                // Also send a refresh notification for the timetable view
+                NotificationCenter.default.post(
+                    name: NSNotification.Name("RefreshTimetableFromSettings"),
                     object: nil
                 )
             }
@@ -624,6 +655,7 @@ struct SettingsView: View {
             print("Error during timetable reset: \(error)")
             modelContext.rollback()
             
+            // Restore backup data on error
             print("Attempting to restore backup data...")
             do {
                 let restoredTimeTable = TimeTable(
@@ -645,6 +677,7 @@ struct SettingsView: View {
             }
         }
     }
+
 
     private var headerView: some View {
         HStack {

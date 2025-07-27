@@ -8,7 +8,6 @@
 import SwiftUI
 import WidgetKit
 
-
 struct LargeDueWidgetView: View {
     var entry: SmartDueEntry
     private let provider = RemindersProvider()
@@ -20,7 +19,6 @@ struct LargeDueWidgetView: View {
             if !entry.isEmpty {
                 let categorizedAssignments = provider.categorizeAssignmentsForLargeWidget(entry.assignments, primaryTitle: entry.widgetTitle)
                 
-      
                 VStack(alignment: .leading, spacing: 6) {
                     Spacer().frame(height: 3)
                     
@@ -31,7 +29,6 @@ struct LargeDueWidgetView: View {
                     }
                 }
                 
-         
                 if !categorizedAssignments.secondary.isEmpty, let secondaryTitle = categorizedAssignments.secondaryTitle {
                     Spacer().frame(height: 5)
                     VStack(alignment: .leading, spacing: 6) {
@@ -93,7 +90,6 @@ struct ScheduleLargeWidgetView: View {
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                     }
                     else if entry.completed == entry.total {
-                       
                         VStack {
                             Spacer()
                             CircleProgressView(
@@ -124,7 +120,6 @@ struct ScheduleLargeWidgetView: View {
                         }
                         .frame(maxWidth: .infinity)
                     } else {
-                      
                         VStack {
                             Spacer()
                             CircleProgressView(
@@ -142,16 +137,16 @@ struct ScheduleLargeWidgetView: View {
                         Image("fourclassesline")
                         
                         VStack(alignment: .leading, spacing: 20) {
-                            let displayClasses = getDisplayClasses()
-                            
-                            ForEach(displayClasses, id: \.title) { classItem in
+                          
+                            ForEach(entry.classes, id: \.title) { classItem in
                                 ScheduleItemView(
                                     title: classItem.title,
                                     time: "\(classItem.time) | \(classItem.slot ?? "")"
                                 )
                             }
                             
-                            let remainingCount = getUpcomingClasses().count - displayClasses.count
+                           
+                            let remainingCount = getRemainingClassesCount()
                             if remainingCount > 0 {
                                 Text("+\(remainingCount) More")
                                     .foregroundColor(.white.opacity(0.6))
@@ -168,66 +163,10 @@ struct ScheduleLargeWidgetView: View {
         .padding(.vertical, 6).ignoresSafeArea()
     }
     
-    private func getUpcomingClasses() -> [Classes] {
-        let currentTime = Date()
-        let calendar = Calendar.current
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "h:mm a"
-        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-        
-      
-        let sortedClasses = entry.classes.sorted { class1, class2 in
-            let time1Components = class1.time.components(separatedBy: " - ")
-            let time2Components = class2.time.components(separatedBy: " - ")
-            
-            guard time1Components.count == 2, time2Components.count == 2 else {
-                return false
-            }
-            
-            let startTime1Str = time1Components[0].trimmingCharacters(in: .whitespaces)
-            let startTime2Str = time2Components[0].trimmingCharacters(in: .whitespaces)
-            
-            guard let startTime1 = dateFormatter.date(from: startTime1Str),
-                  let startTime2 = dateFormatter.date(from: startTime2Str) else {
-                return false
-            }
-            
-            return startTime1 < startTime2
-        }
-        
-       
-        let now = Date()
-        let upcomingClasses = sortedClasses.filter { classItem in
-            let timeComponents = classItem.time.components(separatedBy: " - ")
-            guard timeComponents.count == 2 else { return true }
-            
-            let endTimeStr = timeComponents[1].trimmingCharacters(in: .whitespaces)
-            guard let endTime = dateFormatter.date(from: endTimeStr) else { return true }
-            
-            
-            let todayEnd = calendar.date(
-                bySettingHour: calendar.component(.hour, from: endTime),
-                minute: calendar.component(.minute, from: endTime),
-                second: 0,
-                of: now
-            )
-            
-        
-            if let todayEnd = todayEnd {
-                return now <= todayEnd
-            }
-            
-            return true
-        }
-        
-        return upcomingClasses
-    }
     
-    private func getDisplayClasses() -> [Classes] {
-        let upcomingClasses = getUpcomingClasses()
-        
-      
-        let maxDisplay = min(4, upcomingClasses.count)
-        return Array(upcomingClasses.prefix(maxDisplay))
+    private func getRemainingClassesCount() -> Int {
+        let totalUpcoming = entry.total - entry.completed
+        let currentBatchSize = entry.classes.count
+        return max(0, totalUpcoming - currentBatchSize)
     }
 }

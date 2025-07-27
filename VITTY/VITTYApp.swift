@@ -25,18 +25,20 @@ struct VITTYApp: App {
     @State private var showJoinCircleAlert = false
     @State private var pendingCircleInvite: (code: String, circleName: String?)?
     
-    
     @State private var isProcessingDeepLink = false
+    @State private var isLaunchedFromWidget = false
     
- 
     @StateObject private var navigationCoordinator = NavigationCoordinator()
-    
-   
     @StateObject private var toastManager = ToastManager()
 
     init() {
         setupFirebase()
         NotificationManager.shared.requestAuthorization()
+        
+      
+        if ProcessInfo.processInfo.environment["LAUNCHED_FROM_WIDGET"] != nil {
+            self._isLaunchedFromWidget = State(initialValue: true)
+        }
     }
 
     var body: some Scene {
@@ -47,6 +49,11 @@ struct VITTYApp: App {
                     .environmentObject(navigationCoordinator)
                     .task {
                         try? Tips.configure([.displayFrequency(.immediate), .datastoreLocation(.applicationDefault)])
+                        
+                        
+                        if isLaunchedFromWidget {
+                            await handleWidgetLaunch()
+                        }
                     }
                     .onOpenURL { url in
                         handleDeepLink(url)
@@ -67,7 +74,6 @@ struct VITTYApp: App {
                         }
                     }
                 
-               
                 if toastManager.isShowing {
                     CircleToastView(
                         message: toastManager.message,
@@ -85,10 +91,44 @@ struct VITTYApp: App {
 
     var sharedModelContainer: ModelContainer {
         let schema = Schema([TimeTable.self, Remainder.self, CreateNoteModel.self, UploadedFile.self])
+        
+        
+        let appGroupContainerID = "group.com.gdscvit.vittyioswidget"
         let config = ModelConfiguration(
-            "group.com.gdscvit.vittyioswidget"
+            appGroupContainerID,
+            schema: schema,
+            isStoredInMemoryOnly: false,
+            allowsSave: true
         )
-        return try! ModelContainer(for: schema, configurations: config)
+        
+        do {
+            let container = try ModelContainer(for: schema, configurations: config)
+            logger.info("Model container created successfully with app group: \(appGroupContainerID)")
+            return container
+        } catch {
+            logger.error(" Failed to create model container: \(error)")
+            fatalError("Failed to create model container: \(error)")
+        }
+    }
+    
+    // MARK: - Widget Launch Handling
+    
+    private func handleWidgetLaunch() async {
+        logger.info(" App launched from widget, performing data sync...")
+        
+        
+        try? await Task.sleep(nanoseconds: 500_000_000)
+        
+
+        await MainActor.run {
+            NotificationCenter.default.post(
+                name: Notification.Name("RefreshTimetableFromWidget"),
+                object: nil
+            )
+        }
+        
+     
+        isLaunchedFromWidget = false
     }
 }
 
@@ -101,7 +141,6 @@ class ToastManager: ObservableObject {
     private var hideTimer: Timer?
     
     init() {
-        
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(showToastNotification),
@@ -126,7 +165,6 @@ class ToastManager: ObservableObject {
             self.isError = isError
             self.isShowing = true
             
-          
             self.hideTimer?.invalidate()
             self.hideTimer = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { _ in
                 self.hideToast()
@@ -208,7 +246,6 @@ extension VITTYApp {
     private func handleDeepLink(_ url: URL) {
         logger.info("Deep link received: \(url.absoluteString)")
         
-       
         guard !isProcessingDeepLink else {
             logger.info("Already processing a deep link, ignoring")
             return
@@ -247,12 +284,10 @@ extension VITTYApp {
             logger.info("Parsed circle name: \(name)")
         }
         
-       
         navigationCoordinator.navigateToCirclesForInvite(code: code, circleName: circleName)
         
         let invite = (code: code, circleName: circleName)
         
-     
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             self.pendingCircleInvite = invite
             self.showJoinCircleAlert = true
@@ -317,7 +352,6 @@ extension VITTYApp {
                     let impactFeedback = UIImpactFeedbackGenerator(style: .medium)
                     impactFeedback.impactOccurred()
                     
-                  
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                         NotificationCenter.default.post(
                             name: Notification.Name("CircleJoinedSuccessfully"),
@@ -350,7 +384,6 @@ extension VITTYApp {
 
     // MARK: - Helper Methods
     
-    
     private func cleanup() {
         pendingCircleInvite = nil
         isProcessingDeepLink = false
@@ -377,7 +410,6 @@ extension VITTYApp {
     }
     
     private func showToast(message: String, isError: Bool) {
-        // NEW: Use ToastManager directly
         toastManager.showToast(message: message, isError: isError)
         
         if isError {

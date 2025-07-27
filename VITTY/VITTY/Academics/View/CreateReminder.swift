@@ -43,6 +43,28 @@ struct ReminderView: View {
                     Spacer()
 
                     Button("Add") {
+                        // Combine selected date with start and end times
+                        let calendar = Calendar.current
+                        let dateComponents = calendar.dateComponents([.year, .month, .day], from: selectedDate)
+                        let startTimeComponents = calendar.dateComponents([.hour, .minute], from: startTime)
+                        let endTimeComponents = calendar.dateComponents([.hour, .minute], from: endTime)
+                        
+                        let finalStartTime = calendar.date(from: DateComponents(
+                            year: dateComponents.year,
+                            month: dateComponents.month,
+                            day: dateComponents.day,
+                            hour: startTimeComponents.hour,
+                            minute: startTimeComponents.minute
+                        )) ?? startTime
+                        
+                        let finalEndTime = calendar.date(from: DateComponents(
+                            year: dateComponents.year,
+                            month: dateComponents.month,
+                            day: dateComponents.day,
+                            hour: endTimeComponents.hour,
+                            minute: endTimeComponents.minute
+                        )) ?? endTime
+
                         let newReminder = Remainder(
                             title: title,
                             subject: courseName,
@@ -51,8 +73,8 @@ struct ReminderView: View {
                             date: selectedDate,
                             isCompleted: false,
                             subjectDescription: description,
-                            startTime: startTime,
-                            endTime: endTime
+                            startTime: finalStartTime,
+                            endTime: finalEndTime
                         )
 
                         do {
@@ -60,10 +82,9 @@ struct ReminderView: View {
                             try modelContext.save()
                             print("Saved successfully")
 
-                          
                             NotificationManager.shared.scheduleReminderNotifications(
                                 title: title,
-                                date: startTime,
+                                date: finalStartTime,
                                 subject: courseName
                             )
 
@@ -84,6 +105,14 @@ struct ReminderView: View {
                             .font(.system(size: 32, weight: .bold))
                             .foregroundColor(.white)
                             .padding(.bottom)
+                            .onTapGesture {
+                                // Close pickers when tapping on title
+                                withAnimation(.easeInOut(duration: 0.3)) {
+                                    showDatePicker = false
+                                    showStartTimePicker = false
+                                    showEndTimePicker = false
+                                }
+                            }
 
                         TextField("Title", text: $title)
                             .padding()
@@ -114,16 +143,15 @@ struct ReminderView: View {
                                 Spacer()
                                 Text(selectedDate, style: .date)
                                     .foregroundColor(.gray)
+                                    .id(selectedDate)
                                 Image(systemName: showDatePicker ? "chevron.down" : "chevron.right")
                                     .foregroundColor(.gray)
-                                    .rotationEffect(.degrees(showDatePicker ? 0 : 0))
                             }
                             .padding()
                             .background(Color("Secondary"))
                             .cornerRadius(10)
                             .onTapGesture {
                                 withAnimation(.easeInOut(duration: 0.3)) {
-                                   
                                     showStartTimePicker = false
                                     showEndTimePicker = false
                                     showDatePicker.toggle()
@@ -131,27 +159,34 @@ struct ReminderView: View {
                             }
 
                             if showDatePicker {
-                                DatePicker(
-                                    "Select Date",
-                                    selection: $selectedDate,
-                                    displayedComponents: [.date]
-                                )
-                                .datePickerStyle(.graphical)
-                                .colorScheme(.dark)
-                                .labelsHidden()
-                                .onChange(of: selectedDate) {
+                                VStack(spacing: 12) {
+                                    DatePicker(
+                                        "Select Date",
+                                        selection: $selectedDate,
+                                        displayedComponents: [.date]
+                                    )
+                                    .datePickerStyle(.graphical)
+                                    .colorScheme(.dark)
+                                    .labelsHidden()
+                                    .onChange(of: selectedDate) { oldValue, newValue in
+                                        print("Date changed from \(oldValue) to \(newValue)")
+                                    }
                                     
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                    Button("Done") {
                                         withAnimation(.easeInOut(duration: 0.3)) {
                                             showDatePicker = false
                                         }
                                     }
+                                    .foregroundColor(.red)
+                                    .frame(maxWidth: .infinity, alignment: .trailing)
                                 }
+                                .padding()
+                                .background(Color("Secondary"))
+                                .cornerRadius(10)
                                 .transition(.opacity.combined(with: .scale))
                             }
                         }
 
-                       
                         VStack(alignment: .leading, spacing: 8) {
                             HStack {
                                 Text("Start Time")
@@ -167,7 +202,6 @@ struct ReminderView: View {
                             .cornerRadius(10)
                             .onTapGesture {
                                 withAnimation(.easeInOut(duration: 0.3)) {
-                                 
                                     showDatePicker = false
                                     showEndTimePicker = false
                                     showStartTimePicker.toggle()
@@ -195,11 +229,13 @@ struct ReminderView: View {
                                     .foregroundColor(.red)
                                     .frame(maxWidth: .infinity, alignment: .trailing)
                                 }
+                                .padding()
+                                .background(Color("Secondary"))
+                                .cornerRadius(10)
                                 .transition(.opacity.combined(with: .scale))
                             }
                         }
 
-                     
                         VStack(alignment: .leading, spacing: 8) {
                             HStack {
                                 Text("End Time")
@@ -215,7 +251,6 @@ struct ReminderView: View {
                             .cornerRadius(10)
                             .onTapGesture {
                                 withAnimation(.easeInOut(duration: 0.3)) {
-                                   
                                     showDatePicker = false
                                     showStartTimePicker = false
                                     showEndTimePicker.toggle()
@@ -243,6 +278,9 @@ struct ReminderView: View {
                                     .foregroundColor(.red)
                                     .frame(maxWidth: .infinity, alignment: .trailing)
                                 }
+                                .padding()
+                                .background(Color("Secondary"))
+                                .cornerRadius(10)
                                 .transition(.opacity.combined(with: .scale))
                             }
                         }
@@ -252,13 +290,5 @@ struct ReminderView: View {
             }
         }
         .preferredColorScheme(.dark)
-        .onTapGesture {
-       
-            withAnimation(.easeInOut(duration: 0.3)) {
-                showDatePicker = false
-                showStartTimePicker = false
-                showEndTimePicker = false
-            }
-        }
     }
 }

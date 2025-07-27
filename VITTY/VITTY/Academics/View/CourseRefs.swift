@@ -268,10 +268,10 @@ struct OCourseRefs: View {
                         
                         // Expandable FAB
                         VStack(spacing: 16) {
-                            // Action buttons (shown when expanded)
+                        
                             if showExpandedFAB {
                                 VStack(spacing: 12) {
-                                    // Set Reminder Button
+                                   
                                     ExpandableFABButton(
                                         icon: "bell.fill",
                                         title: "Set Reminder",

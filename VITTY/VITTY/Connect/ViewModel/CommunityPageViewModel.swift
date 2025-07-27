@@ -35,14 +35,20 @@ class CommunityPageViewModel {
     var memberTimetable: TimeTable?
     var loadingMemberTimetable = false
     var errorMemberTimetable = false
+    
+    //MARK: ghost mode
+    var ghostedFriends = Set<String>()
+    var activeFriends = Set<String>()
+    var loadingGhostAction = false
 
     private let logger = Logger(
         subsystem: Bundle.main.bundleIdentifier!,
         category: String(describing: CommunityPageViewModel.self)
     )
+    
+    var hasInitialActiveFriendsFetch = false
 
     func fetchFriendsData(from url: String, token: String, loading: Bool = false) {
-       
         if loading || friends.isEmpty {
             self.loadingFreinds = true
         }
@@ -62,6 +68,9 @@ class CommunityPageViewModel {
                         self.friends = data.data
                         self.errorFreinds = false
                         
+                      
+                        self.syncGhostStatusWithFriends()
+                        
                     case .failure(let error):
                         self.logger.error("Error fetching friends: \(error)")
                         if self.friends.isEmpty {
@@ -71,6 +80,7 @@ class CommunityPageViewModel {
                 }
             }
     }
+
     
     //MARK: Circle DATA
     
@@ -475,7 +485,7 @@ class CommunityPageViewModel {
                         if data.detail.lowercased().contains("successfully") {
                             self.logger.info("Successfully created circle: \(name)")
                             
-                            // Now fetch the updated circles data and wait for completion
+                          
                             self.fetchCircleDataWithCompletion(
                                 from: "\(APIConstants.base_urlv3)circles",
                                 token: token,
@@ -530,7 +540,7 @@ class CommunityPageViewModel {
             }
     }
     
-    // MARK: - Updated Circle Invitations with New Endpoint
+   
    
     func sendCircleInvitation(circleId: String, username: String, token: String, completion: @escaping (Bool) -> Void) {
         
@@ -701,5 +711,213 @@ class CommunityPageViewModel {
                 }
             }
         }
+    
+    // MARK: unfreind a user
+    func unfriendUser(username: String, token: String, completion: @escaping (Bool) -> Void) {
+        let url = "\(APIConstants.base_url)friends/\(username)/"
+        
+        AF.request(url, method: .delete, headers: ["Authorization": "Token \(token)"])
+            .validate()
+            .responseDecodable(of: APIResponse.self) { response in
+                DispatchQueue.main.async {
+                    switch response.result {
+                    case .success(let data):
+                        self.logger.info("Successfully unfriended: \(username) - \(data.data)")
+                        
+                     
+                        self.friends.removeAll { $0.username == username }
+                        self.removeFromGhosted(username)
+                        self.activeFriends.remove(username)
+                        self.saveGhostStateToUserDefaults()
+                        
+                        completion(true)
+                        
+                    case .failure(let error):
+                        self.logger.error("Error unfriending \(username): \(error)")
+                        completion(false)
+                    }
+                }
+            }
+    }
+    
+    // MARK: ghost mode funcs
+    
+    func fetchActiveFriends(token: String, forceRefresh: Bool = false, completion: @escaping (Bool) -> Void = { _ in }) {
+        
+        guard forceRefresh || !hasInitialActiveFriendsFetch else {
+            completion(true)
+            return
+        }
+        
+        let url = "\(APIConstants.base_url)friends/active"
+        
+        AF.request(url, method: .get, headers: ["Authorization": "Token \(token)"])
+            .validate()
+            .responseDecodable(of: ActiveFriendsResponse.self) { response in
+                DispatchQueue.main.async {
+                    switch response.result {
+                    case .success(let data):
+                        self.activeFriends = Set(data.data)
+                        self.hasInitialActiveFriendsFetch = true
+                        self.logger.info("Successfully fetched active friends: \(data.data)")
+                        
+                      
+                        if !self.friends.isEmpty {
+                            let allFriendUsernames = Set(self.friends.map { $0.username })
+                            let activeSet = Set(data.data)
+                            let friendsToGhost = allFriendUsernames.subtracting(activeSet)
+                            
+                            
+                            self.ghostedFriends.formUnion(friendsToGhost)
+                            self.saveGhostStateToUserDefaults()
+                            
+                            self.logger.info("Active friends: \(data.data)")
+                            self.logger.info("Ghosted friends: \(Array(self.ghostedFriends))")
+                        }
+                        
+                        completion(true)
+                        
+                    case .failure(let error):
+                        self.logger.error("Error fetching active friends: \(error)")
+                       
+                        self.loadGhostStateFromUserDefaults()
+                        completion(false)
+                    }
+                }
+            }
+    }
+    
+    private func syncGhostStatusWithFriends() {
+        guard !friends.isEmpty && !activeFriends.isEmpty else { return }
+        
+        let allFriendUsernames = Set(friends.map { $0.username })
+        let friendsToGhost = allFriendUsernames.subtracting(activeFriends)
+        
+       
+        ghostedFriends.formUnion(friendsToGhost)
+        saveGhostStateToUserDefaults()
     }
 
+
+    func ghostFriend(username: String, token: String, completion: @escaping (Bool) -> Void) {
+        let url = "\(APIConstants.base_url)friends/ghost/\(username)"
+        self.loadingGhostAction = true
+        
+        AF.request(url, method: .post, headers: ["Authorization": "Token \(token)"])
+            .validate()
+            .responseDecodable(of: APIResponse.self) { response in
+                DispatchQueue.main.async {
+                    self.loadingGhostAction = false
+                    
+                    switch response.result {
+                    case .success(let data):
+                        self.logger.info("Successfully ghosted: \(username) - \(data.data)")
+                        
+                       
+                        self.ghostedFriends.insert(username)
+                        self.activeFriends.remove(username)
+                        self.saveGhostStateToUserDefaults()
+                        
+                        completion(true)
+                        
+                    case .failure(let error):
+                        self.logger.error("Error ghosting \(username): \(error)")
+                        completion(false)
+                    }
+                }
+            }
+    }
+    func makeAlive(username: String, token: String, completion: @escaping (Bool) -> Void) {
+        let url = "\(APIConstants.base_url)friends/alive/\(username)"
+        self.loadingGhostAction = true
+        
+        AF.request(url, method: .post, headers: ["Authorization": "Token \(token)"])
+            .validate()
+            .responseDecodable(of: APIResponse.self) { response in
+                DispatchQueue.main.async {
+                    self.loadingGhostAction = false
+                    
+                    switch response.result {
+                    case .success(let data):
+                        self.logger.info("Successfully made alive: \(username) - \(data.data)")
+                        
+                        
+                        self.ghostedFriends.remove(username)
+                        self.activeFriends.insert(username)
+                        self.saveGhostStateToUserDefaults()
+                        
+                        completion(true)
+                        
+                    case .failure(let error):
+                        self.logger.error("Error making alive \(username): \(error)")
+                        completion(false)
+                    }
+                }
+            }
+    }
+
+    func isGhosted(_ username: String) -> Bool {
+        return ghostedFriends.contains(username)
+    }
+
+    func isActive(_ username: String) -> Bool {
+        return activeFriends.contains(username) && !ghostedFriends.contains(username)
+    }
+
+    private func removeFromGhosted(_ username: String) {
+        ghostedFriends.remove(username)
+    }
+
+
+    private func saveGhostStateToUserDefaults() {
+        UserDefaults.standard.set(Array(ghostedFriends), forKey: "ghostedFriends")
+    }
+
+    private func loadGhostStateFromUserDefaults() {
+        if let savedGhosted = UserDefaults.standard.array(forKey: "ghostedFriends") as? [String] {
+            ghostedFriends = Set(savedGhosted)
+        }
+    }
+    func refreshAllDataWithActiveCheck(token: String, username: String) {
+       
+        fetchActiveFriends(token: token) { [weak self] success in
+            if success {
+               
+                self?.fetchFriendsData(
+                    from: "\(APIConstants.base_url)friends/\(username)/",
+                    token: token,
+                    loading: false
+                )
+                
+                self?.fetchCircleData(
+                    from: "\(APIConstants.base_urlv3)circles",
+                    token: token,
+                    loading: false
+                )
+                
+                self?.fetchCircleRequests(token: token, loading: false)
+            }
+        }
+    }
+    func initializeGhostState() {
+        loadGhostStateFromUserDefaults()
+    }
+
+    struct ActiveFriendsResponse: Codable {
+        let data: [String]
+    }
+
+    struct APIResponse: Codable {
+        let data: String
+    }
+    
+    
+    }
+
+extension CommunityPageViewModel {
+    
+ 
+    func dismissAllMenus() {
+        NotificationCenter.default.post(name: .dismissMenus, object: nil)
+    }
+}

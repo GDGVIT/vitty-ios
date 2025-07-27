@@ -8,8 +8,7 @@ import SwiftData
 struct UserProfileSidebar: View {
     @Environment(AuthViewModel.self) private var authViewModel
     @Binding var isPresented: Bool
-    @State private var ghostMode: Bool = false
-    @State private var isUpdatingGhostMode: Bool = false
+
     @Environment(\.modelContext) private var modelContext
     @State private var isLoggingOut: Bool = false
     
@@ -65,31 +64,7 @@ struct UserProfileSidebar: View {
                 
                 Divider().background(Color.clear)
                 
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("Ghost Mode")
-                        .font(Font.custom("Poppins-Medium", size: 16))
-                        .foregroundColor(.white)
-                    Text("(your timetable will be visible only to you)")
-                        .font(Font.custom("Poppins-Regular", size: 12))
-                        .foregroundColor(.white.opacity(0.7))
-                    
-                    HStack {
-                        Toggle("", isOn: $ghostMode)
-                            .labelsHidden()
-                            .toggleStyle(SwitchToggleStyle(tint: Color("Accent")))
-                            .disabled(isUpdatingGhostMode)
-                            .padding(.top, 4)
-                            .onChange(of: ghostMode) { oldValue, newValue in
-                                updateGhostMode(enabled: newValue)
-                            }
-                        
-                        if isUpdatingGhostMode {
-                            ProgressView()
-                                .scaleEffect(0.8)
-                                .foregroundColor(.white)
-                        }
-                    }
-                }
+               
                 
                 Spacer()
                 
@@ -128,66 +103,13 @@ struct UserProfileSidebar: View {
             .transition(.move(edge: .trailing))
         }
         .animation(.easeInOut(duration: 0.3), value: isPresented)
-        .onAppear {
-            loadGhostModeState()
-        }
+        
     }
     
     // MARK: - Ghost Mode Functions
     
-    private func loadGhostModeState() {
-        
-        let username = authViewModel.loggedInBackendUser?.username ?? ""
-        ghostMode = UserDefaults.standard.bool(forKey: "ghostMode_\(username)")
-    }
-    
-    private func updateGhostMode(enabled: Bool) {
-        guard let username = authViewModel.loggedInBackendUser?.username,
-              let token = authViewModel.loggedInBackendUser?.token else {
-            return
-        }
-        
-        isUpdatingGhostMode = true
-        
-       
-        let endpoint = enabled ? "ghost" : "alive"
-        let urlString = "\(APIConstants.base_urlv3)friends/\(endpoint)/\(username)"
-        
-        guard let url = URL(string: urlString) else {
-            isUpdatingGhostMode = false
-            return
-        }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            DispatchQueue.main.async {
-                isUpdatingGhostMode = false
-                
-                if let error = error {
-                    print("Ghost mode update failed: \(error.localizedDescription)")
-                    
-                    ghostMode = !enabled
-                    return
-                }
-                
-                if let httpResponse = response as? HTTPURLResponse {
-                    if httpResponse.statusCode == 200 {
-                       
-                        UserDefaults.standard.set(enabled, forKey: "ghostMode_\(username)")
-                        print("Ghost mode \(enabled ? "enabled" : "disabled") successfully")
-                    } else {
-                        print("Ghost mode update failed with status code: \(httpResponse.statusCode)")
-                      
-                        ghostMode = !enabled
-                    }
-                }
-            }
-        }.resume()
-    }
+  
+  
     private func performLogout() async {
         isLoggingOut = true
         
@@ -220,8 +142,6 @@ struct UserProfileSidebar: View {
                     print("Failed to delete local data: \(error)")
                 }
             }.value
-        } catch {
-            print("Failed to clear local data: \(error)")
         }
     }
 }

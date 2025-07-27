@@ -162,9 +162,14 @@ struct NoteEditorView: View {
     }
     
     private func handleBackNavigation() {
-     
+        
         if hasUnsavedChanges || (existingNote == nil && !isEmpty) {
-            showTitleAlert = true
+            
+            if existingNote != nil && !noteTitle.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                saveNoteWithTitle()
+            } else {
+                showTitleAlert = true
+            }
         } else {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                 if presentationMode.wrappedValue.isPresented {
@@ -230,8 +235,16 @@ struct NoteEditorView: View {
     }
 
     func saveContent() {
-        showTitleAlert = true
+        
+        if existingNote != nil && !noteTitle.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            saveNoteWithTitle()
+        } else {
+            
+            showTitleAlert = true
+        }
     }
+
+   
     
     private func saveNoteWithTitle() {
         guard !noteTitle.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {

@@ -13,7 +13,7 @@ import WidgetKit
 struct Provider: TimelineProvider {
     
     private func getSharedContainer() -> ModelContainer? {
-        let appGroupContainerID = "group.com.gdscvit.vittyios.widget"
+        let appGroupContainerID = "\(AppConstants.VITTYappgroup)"
         
       
         let schema = Schema([TimeTable.self, Remainder.self, CreateNoteModel.self, UploadedFile.self])

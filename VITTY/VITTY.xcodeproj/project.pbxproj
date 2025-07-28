@@ -65,6 +65,7 @@
 		4B8B32CB2D6D75F4004F01BA /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3105871C27A3ECBB00C2FC41 /* SwiftUI.framework */; };
 		4B8B32DC2D6D75F6004F01BA /* VittyWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 4B8B32C82D6D75F4004F01BA /* VittyWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		4B8B33752D7029AA004F01BA /* SideBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B8B33742D7029A3004F01BA /* SideBar.swift */; };
+		4B8FB2C42E374A6700E50AE2 /* AppStorageConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3109639E27824F6F0009A29C /* AppStorageConstants.swift */; };
 		4BA03C1D2D7584F3000756B0 /* AddFriend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA03C1C2D7584EA000756B0 /* AddFriend.swift */; };
 		4BA6DFE92E33D5CE00B0411A /* NotesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBB00322D957A6A003B8FE2 /* NotesModel.swift */; };
 		4BBB00312D955163003B8FE2 /* AcademicsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBB00302D95515C003B8FE2 /* AcademicsViewModel.swift */; };
@@ -1252,6 +1253,7 @@
 				4BA6DFE92E33D5CE00B0411A /* NotesModel.swift in Sources */,
 				4B5977482DFAC034009CC224 /* RemainderModel.swift in Sources */,
 				4BC853C42DF6DA7A0092B2E2 /* TimeTable.swift in Sources */,
+				4B8FB2C42E374A6700E50AE2 /* AppStorageConstants.swift in Sources */,
 				4B2D64902E20BA6300412CB7 /* NetworkMonitor.swift in Sources */,
 				4B74D8732E0BDF2100B390E9 /* CourseFile.swift in Sources */,
 				4B74D8732E0BDF2100B390E9 /* CourseFile.swift in Sources */,
@@ -1401,7 +1403,7 @@
 				CURRENT_PROJECT_VERSION = 7;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "\"VITTY/Preview Content\"";
-				DEVELOPMENT_TEAM = 2TS98F9X52;
+				DEVELOPMENT_TEAM = C7RX29D33F;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = VITTY/Info.plist;
@@ -1443,7 +1445,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_ASSET_PATHS = "\"VITTY/Preview Content\"";
-				DEVELOPMENT_TEAM = 2TS98F9X52;
+				DEVELOPMENT_TEAM = C7RX29D33F;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = VITTY/Info.plist;
@@ -1485,7 +1487,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 2TS98F9X52;
+				DEVELOPMENT_TEAM = C7RX29D33F;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1520,7 +1522,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 2TS98F9X52;
+				DEVELOPMENT_TEAM = C7RX29D33F;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;

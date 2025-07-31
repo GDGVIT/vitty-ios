@@ -8,7 +8,5 @@
 import Foundation
 
 struct AppConstants {
-
-	static let VITTYappgroup = "group.com.gdscvit.vittyioswidget"
-    
+	static let VITTYappgroup = "group.com.gdscvit.vittyios.shared"    
 }

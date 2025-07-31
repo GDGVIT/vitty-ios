@@ -610,7 +610,7 @@ struct CompactFileCard: View {
                     if let image = fileImage {
                         Image(uiImage: image)
                             .resizable()
-                            .aspectRatio(contentMode: .fill)
+                            .aspectRatio(contentMode: .fit)
                     } else if isLoading {
                         Rectangle()
                             .fill(Color.gray.opacity(0.3))

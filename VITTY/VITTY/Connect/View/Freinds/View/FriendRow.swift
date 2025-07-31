@@ -71,6 +71,7 @@ struct ActionResultAlert: View {
                     .foregroundColor(.white)
                     .multilineTextAlignment(.center)
                 
+                
                 Button(action: {
                     onDismiss()
                 }) {
@@ -79,7 +80,7 @@ struct ActionResultAlert: View {
                         .padding(.vertical, 8)
                         .frame(maxWidth: .infinity)
                         .background(Color("Accent"))
-                        .foregroundColor(.white)
+                        .foregroundColor(.black)
                         .cornerRadius(8)
                 }
             }

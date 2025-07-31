@@ -11,7 +11,7 @@ import SwiftData
 struct RemindersProvider: TimelineProvider {
     
     private func getSharedContainer() -> ModelContainer? {
-        let appGroupContainerID = "group.com.gdscvit.vittyios.shared"
+        let appGroupContainerID = "\(AppConstants.VITTYappgroup)"
         let config = ModelConfiguration(appGroupContainerID)
         
         return try? ModelContainer(for: TimeTable.self, Remainder.self, configurations: config)

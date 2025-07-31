@@ -93,7 +93,7 @@ struct VITTYApp: App {
         let schema = Schema([TimeTable.self, Remainder.self, CreateNoteModel.self, UploadedFile.self])
         
         
-        let appGroupContainerID = "group.com.gdscvit.vittyioswidget"
+        let appGroupContainerID = "\(AppConstants.VITTYappgroup)"
         let config = ModelConfiguration(
             appGroupContainerID,
             schema: schema,

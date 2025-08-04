@@ -45,8 +45,6 @@ struct FriendsTimeTableView: View {
                         .foregroundColor(.white)
                     
                     Spacer()
-                    
-                   
                 }
                 .padding(.horizontal)
                 .padding(.bottom, 8)
@@ -61,42 +59,6 @@ struct FriendsTimeTableView: View {
                             .font(.caption)
                             .foregroundColor(.secondary)
                             .padding(.top, 8)
-                        Spacer()
-                    }
-                    
-                case .error:
-                    VStack {
-                        Spacer()
-                        Image(systemName: "exclamationmark.triangle")
-                            .font(.system(size: 50))
-                            .foregroundColor(.orange)
-                            .padding(.bottom, 16)
-                        
-                        Text("Can't show timetable right now")
-                            .font(Font.custom("Poppins-Bold", size: 24))
-                            .padding(.bottom, 8)
-                        
-                        Text("Unable to display \(friend.name ?? friend.username)'s timetable at the moment")
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
-                            .multilineTextAlignment(.center)
-                            .padding(.horizontal)
-                            .padding(.bottom, 20)
-                        
-                        Button(action: {
-                           
-                        }) {
-                            HStack {
-                                Image(systemName: "arrow.clockwise")
-                                Text("Try Again")
-                            }
-                            .foregroundColor(.black)
-                            .padding()
-                            .background(Color("Accent"))
-                            .cornerRadius(10)
-                        }
-                        .disabled(isRefreshing)
-                        
                         Spacer()
                     }
                     
@@ -123,7 +85,7 @@ struct FriendsTimeTableView: View {
                     
                 case .data:
                     VStack(spacing: 0) {
-                        // Day selector
+                     
                         ScrollViewReader { proxy in
                             ScrollView(.horizontal) {
                                 HStack {
@@ -200,6 +162,7 @@ struct FriendsTimeTableView: View {
                                 .padding(.top, 12)
                                 .padding(.bottom, 100)
                             }
+                            .scrollIndicators(.hidden)
                         }
                     }
                 }
@@ -219,7 +182,6 @@ struct FriendsTimeTableView: View {
     private func loadFriendsTimetable() {
         logger.debug("Loading friend's timetable from API")
         
-       
         let calendar = Calendar.current
         let today = calendar.component(.weekday, from: Date())
         let dayIndex = (today == 1) ? 6 : today - 2
@@ -297,7 +259,7 @@ extension FriendsTimeTableView {
             
             guard !friendUsername.isEmpty && !authToken.isEmpty else {
                 logger.error("Missing friend username or auth token")
-                stage = .error
+                stage = .empty
                 return
             }
             
@@ -330,11 +292,13 @@ extension FriendsTimeTableView {
             do {
                 logger.info("Fetching friend's timetable from API using /users/\(friendUsername) endpoint")
                 
-              
-                let friendTimeTable = try await TimeTableAPIService.shared.getFriendTimeTable(
+                let friendResponse = try await TimeTableAPIService.shared.getFriendResponse(
                     username: friendUsername,
                     authToken: authToken
                 )
+                
+                // Extract the timetable from the response
+                let friendTimeTable = friendResponse.timetable.data
                
                 if isTimeTableEmpty(friendTimeTable) {
                     logger.info("Friend's timetable is empty")
@@ -354,7 +318,7 @@ extension FriendsTimeTableView {
                 logger.error("Failed to fetch friend's timetable: \(error.localizedDescription)")
                 
                
-                stage = .error
+                stage = .empty
             }
         }
         
@@ -370,28 +334,68 @@ extension FriendsTimeTableView {
     }
 }
 
-
 extension FriendsTimeTableView {
     enum Stage {
         case loading
         case data
         case empty
-        case error
     }
 }
-
 
 enum APIError: Error {
     case serverError(code: String, message: String)
     case networkError
     case decodingError
     case unauthorized
-   
+}
+
+// MARK: - Friend Response Models
+struct FriendResponse: Codable {
+    let campus: String
+    let email: String
+    let friendStatus: String
+    let friendsCount: Int
+    let mutualFriendsCount: Int
+    let name: String
+    let picture: String
+    let timetable: FriendTimetableWrapper
+    let username: String
+    
+    enum CodingKeys: String, CodingKey {
+        case campus, email, name, picture, timetable, username
+        case friendStatus = "friend_status"
+        case friendsCount = "friends_count"
+        case mutualFriendsCount = "mutual_friends_count"
+    }
+}
+
+struct FriendTimetableWrapper: Codable {
+    let data: TimeTable
 }
 
 
+struct TimeTableFromAPI: Codable {
+    let monday: [Lecture]
+    let tuesday: [Lecture]
+    let wednesday: [Lecture]
+    let thursday: [Lecture]
+    let friday: [Lecture]
+    let saturday: [Lecture]
+    let sunday: [Lecture]
+    
+    enum CodingKeys: String, CodingKey {
+        case monday = "Monday"
+        case tuesday = "Tuesday"
+        case wednesday = "Wednesday"
+        case thursday = "Thursday"
+        case friday = "Friday"
+        case saturday = "Saturday"
+        case sunday = "Sunday"
+    }
+}
+
 extension TimeTableAPIService {
-    func getFriendTimeTable(username: String, authToken: String) async throws -> TimeTable {
+    func getFriendResponse(username: String, authToken: String) async throws -> FriendResponse {
         guard let url = URL(string: "\(APIConstants.base_urlv3)users/\(username)") else {
             throw APIError.networkError
         }
@@ -404,12 +408,9 @@ extension TimeTableAPIService {
         let (data, response) = try await URLSession.shared.data(for: request)
         
         if let httpResponse = response as? HTTPURLResponse {
-            if httpResponse.statusCode == 500 {
-              
-                if let errorResponse = try? JSONDecoder().decode(ErrorResponse.self, from: data),
-                   errorResponse.code == "1811" {
-                    throw APIError.serverError(code: errorResponse.code, message: errorResponse.error)
-                }
+           
+            guard httpResponse.statusCode != 500 else {
+                throw APIError.serverError(code: "500", message: "Server error")
             }
             
             guard httpResponse.statusCode == 200 else {
@@ -418,10 +419,40 @@ extension TimeTableAPIService {
         }
         
         let decoder = JSONDecoder()
-        return try decoder.decode(TimeTable.self, from: data)
+        
+       
+        var friendResponse = try decoder.decode(FriendResponse.self, from: data)
+        
+        
+        let apiTimeTable = try JSONDecoder().decode(TimeTableFromAPI.self, from:
+            try JSONEncoder().encode(friendResponse.timetable.data))
+        
+        let convertedTimeTable = TimeTable(
+            monday: apiTimeTable.monday,
+            tuesday: apiTimeTable.tuesday,
+            wednesday: apiTimeTable.wednesday,
+            thursday: apiTimeTable.thursday,
+            friday: apiTimeTable.friday,
+            saturday: apiTimeTable.saturday,
+            sunday: apiTimeTable.sunday
+        )
+        
+        
+        friendResponse = FriendResponse(
+            campus: friendResponse.campus,
+            email: friendResponse.email,
+            friendStatus: friendResponse.friendStatus,
+            friendsCount: friendResponse.friendsCount,
+            mutualFriendsCount: friendResponse.mutualFriendsCount,
+            name: friendResponse.name,
+            picture: friendResponse.picture,
+            timetable: FriendTimetableWrapper(data: convertedTimeTable),
+            username: friendResponse.username
+        )
+        
+        return friendResponse
     }
 }
-
 
 struct ErrorResponse: Codable {
     let code: String

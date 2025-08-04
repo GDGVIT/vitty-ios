@@ -27,6 +27,8 @@
 		4B183EE82D7C78B600C9D801 /* Courses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B183EE72D7C78B300C9D801 /* Courses.swift */; };
 		4B183EEA2D7C793800C9D801 /* RemindersData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B183EE92D7C791400C9D801 /* RemindersData.swift */; };
 		4B183EEC2D7CB15800C9D801 /* CourseRefs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B183EEB2D7CB11500C9D801 /* CourseRefs.swift */; };
+		4B1A500F2E3E61530060314D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4B1A500E2E3E61530060314D /* GoogleService-Info.plist */; };
+		4B1A50112E409F8C0060314D /* ServerStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B1A50102E409F860060314D /* ServerStatus.swift */; };
 		4B1BDBCC2E1396B1008C2DE9 /* ToolTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B1BDBCB2E1396A9008C2DE9 /* ToolTip.swift */; };
 		4B2D648F2E20BA6300412CB7 /* NetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2D648E2E20BA5A00412CB7 /* NetworkMonitor.swift */; };
 		4B2D64902E20BA6300412CB7 /* NetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2D648E2E20BA5A00412CB7 /* NetworkMonitor.swift */; };
@@ -197,6 +199,8 @@
 		4B183EE72D7C78B300C9D801 /* Courses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Courses.swift; sourceTree = "<group>"; };
 		4B183EE92D7C791400C9D801 /* RemindersData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemindersData.swift; sourceTree = "<group>"; };
 		4B183EEB2D7CB11500C9D801 /* CourseRefs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseRefs.swift; sourceTree = "<group>"; };
+		4B1A500E2E3E61530060314D /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		4B1A50102E409F860060314D /* ServerStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerStatus.swift; sourceTree = "<group>"; };
 		4B1BDBCB2E1396A9008C2DE9 /* ToolTip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolTip.swift; sourceTree = "<group>"; };
 		4B2D648E2E20BA5A00412CB7 /* NetworkMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitor.swift; sourceTree = "<group>"; };
 		4B2DD6942E0A702D00BC3B67 /* CircleRequests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleRequests.swift; sourceTree = "<group>"; };
@@ -414,10 +418,12 @@
 			isa = PBXGroup;
 			children = (
 				4BC853C52DF6F71B0092B2E2 /* VittyWidgetExtension.entitlements */,
+				4B1A500E2E3E61530060314D /* GoogleService-Info.plist */,
 				4B8FB2C72E39D29F00E50AE2 /* GoogleService-Info.plist */,
 				5251A7FF2B46E3C000D44CFE /* .swift-format */,
 				314A408E27383BEC0058082F /* VITTYApp.swift */,
 				314A409027383BEC0058082F /* ContentView.swift */,
+				4B1A50102E409F860060314D /* ServerStatus.swift */,
 				314A409227383BEE0058082F /* Assets.xcassets */,
 				AFEFCB6C27C90233007B2029 /* VITTY.entitlements */,
 				AFEFCB6B27C90042007B2029 /* VITTYRelease.entitlements */,
@@ -1122,6 +1128,7 @@
 				31128CFA2772F57E0084C9EA /* Poppins-SemiBoldItalic.ttf in Resources */,
 				31128CFC2772F57E0084C9EA /* Poppins-Regular.ttf in Resources */,
 				4B8FB2C82E39D29F00E50AE2 /* GoogleService-Info.plist in Resources */,
+				4B1A500F2E3E61530060314D /* GoogleService-Info.plist in Resources */,
 				314A409627383BEE0058082F /* Preview Assets.xcassets in Resources */,
 				314A409327383BEE0058082F /* Assets.xcassets in Resources */,
 			);
@@ -1213,6 +1220,7 @@
 				4B7DA5E72D71AC54007354A3 /* CirclesRow.swift in Sources */,
 				4B7DA5E52D70B2CA007354A3 /* Circles.swift in Sources */,
 				525F759D2B809F8400E3B418 /* LectureDetailView.swift in Sources */,
+				4B1A50112E409F8C0060314D /* ServerStatus.swift in Sources */,
 				520BA6432B47FFF900124850 /* SuggestedFriendsViewModel.swift in Sources */,
 				314A408F27383BEC0058082F /* VITTYApp.swift in Sources */,
 				52978F8E2C3A7924008CF46C /* BottomBarView.swift in Sources */,

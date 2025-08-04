@@ -13,13 +13,16 @@ struct APIConstants {
     
     
     
-//	static let base_url = "https://visiting-eba-vitty-d61856bb.koyeb.app/api/v2/"
+	static let base_url = "https://00951cf40596.ngrok-free.app/api/v2/"
+    
+    static let base_urlv3 = "https://00951cf40596.ngrok-free.app/api/v3/"
+    
+//    static let base_url = "http://68.233.117.217:3000/api/v2/"
 //    
-//    static let base_urlv3 = "https://visiting-eba-vitty-d61856bb.koyeb.app/api/v3/"
-    
-    static let base_url = "http://68.233.117.217:3000/api/v2/"
-    
-    static let base_urlv3 = "http://68.233.117.217:3000/api/v3/"
+//    static let base_urlv3 = "http://68.233.117.217:3000/api/v3/"
+//    
+//    static let base_url = "https://50e460598f74.ngrok-fre.app/api/v2/"
+//    static let base_urlv3 = "https://50e460598f74.ngrok-fre.app/api/v3/"
     
     
     static let createCircle = "circles/create/"

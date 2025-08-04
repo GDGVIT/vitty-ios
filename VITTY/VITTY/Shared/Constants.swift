@@ -12,7 +12,7 @@ class Constants {
     
 //    "https://visiting-eba-vitty-d61856bb.koyeb.app/api/v2/"
     
-    "https://visiting-eba-vitty-d61856bb.koyeb.app/api/v2/"
+    "https://53392be09f64.ngrok-free.app/api/v2/"
     
 //    "https://f4df-2409-40e3-30a4-8539-6d49-631b-ddd8-60a3.ngrok-free.app/api/v2/"
     

@@ -29,6 +29,8 @@ struct ConnectPage: View {
     @Environment(CommunityPageViewModel.self) private var communityPageViewModel
     @Environment(FriendRequestViewModel.self) private var friendRequestViewModel
     @Environment(RequestsViewModel.self) private var requestsViewModel
+    @State private var serverStatusManager = ServerStatusManager()
+    
     @State private var isShowingRequestView = false
     @State var isCircleView = false
     @State private var activeSheet: SheetType?
@@ -41,6 +43,7 @@ struct ConnectPage: View {
     @State private var isAddFriendsViewPresented = false
     @State private var selectedTab = 0
     @State private var hasLoadedInitialData = false
+    @State private var hasCheckedServer = false
     
     var body: some View {
         ZStack {
@@ -71,7 +74,9 @@ struct ConnectPage: View {
             
             if isCircleView == false {
                 Button(action: {
-                    isShowingRequestView.toggle()
+                    checkServerAndExecute {
+                        isShowingRequestView.toggle()
+                    }
                 }) {
                     ZStack {
                         
@@ -104,7 +109,9 @@ struct ConnectPage: View {
                 .offset(x: UIScreen.main.bounds.width*0.4228, y: UIScreen.main.bounds.height*0.38901*(-1))
             } else {
                 Button(action: {
-                    showCircleMenu = true
+                    checkServerAndExecute {
+                        showCircleMenu = true
+                    }
                 }) {
                     Image(systemName: "ellipsis")
                         .foregroundColor(.white)
@@ -112,19 +119,43 @@ struct ConnectPage: View {
                 }
                 .offset(x: UIScreen.main.bounds.width*0.4228, y: UIScreen.main.bounds.height*0.38901*(-1))
             }
+            
+           
+            if serverStatusManager.showMaintenanceAlert {
+                MaintenanceAlertView(
+                    isPresented: $serverStatusManager.showMaintenanceAlert,
+                    onRetry: {
+                        serverStatusManager.retryServerCheck { isServerUp in
+                            if isServerUp {
+                                loadInitialData()
+                            }
+                        }
+                    },
+                    onContinue: {
+                      
+                        serverStatusManager.hideMaintenanceAlert()
+                    }
+                )
+            }
         }
         .overlay(
             Group {
                 if showCircleMenu {
                     ConnectCircleMenuView(
                         onCreateGroup: {
-                            activeSheet = .createGroup
+                            checkServerAndExecute {
+                                activeSheet = .createGroup
+                            }
                         },
                         onJoinGroup: {
-                            activeSheet = .joinGroup
+                            checkServerAndExecute {
+                                activeSheet = .joinGroup
+                            }
                         },
                         onGroupRequests: {
-                            activeSheet = .groupRequests
+                            checkServerAndExecute {
+                                activeSheet = .groupRequests
+                            }
                         },
                         onCancel: {
                             showCircleMenu = false
@@ -144,55 +175,86 @@ struct ConnectPage: View {
             case .groupRequests:
                 CircleRequestsView()
             }
-        }.onChange(of: navigationCoordinator.shouldNavigateToCircles) { _, shouldNavigate in
+        }
+        .onChange(of: navigationCoordinator.shouldNavigateToCircles) { _, shouldNavigate in
             if shouldNavigate {
                 selectedTab = 0
             }
-            communityPageViewModel.fetchCircleData(
-                from: "\(APIConstants.base_urlv3)circles",
-                token: authViewModel.loggedInBackendUser?.token ?? "",
-                loading: true
-            )
-        }
-        .onAppear {
-            if navigationCoordinator.shouldNavigateToCircles {
-                            selectedTab = 0
-                        }
-            let shouldShowLoading = !hasLoadedInitialData
-            
-        
-          requestsViewModel.fetchFriendRequests(
-                token: authViewModel.loggedInBackendUser?.token ?? "",
-                loading: shouldShowLoading
-            )
-            
-            
-            if communityPageViewModel.friends.isEmpty || !hasLoadedInitialData {
-                communityPageViewModel.fetchFriendsData(
-                    from: "\(APIConstants.base_url)friends/\(authViewModel.loggedInBackendUser?.username ?? "")/",
-                    token: authViewModel.loggedInBackendUser?.token ?? "",
-                    loading: shouldShowLoading
-                )
-            }
-            
-            if communityPageViewModel.circles.isEmpty || !hasLoadedInitialData {
+            checkServerAndExecute {
                 communityPageViewModel.fetchCircleData(
                     from: "\(APIConstants.base_urlv3)circles",
                     token: authViewModel.loggedInBackendUser?.token ?? "",
-                    loading: shouldShowLoading
+                    loading: true
                 )
             }
-            
-            if communityPageViewModel.circleRequests.isEmpty || !hasLoadedInitialData {
-                friendRequestViewModel.fetchFriendRequests(
-                    from: URL(string: "\(APIConstants.base_urlv3)requests/")!,
-                    authToken: authViewModel.loggedInBackendUser?.token ?? "",
-                    loading: shouldShowLoading
-                )
-            }
-            
-            hasLoadedInitialData = true
         }
+        .onAppear {
+            if !hasCheckedServer {
+                checkServerAndLoadData()
+            }
+        }
+    }
+    
+    // MARK: - Helper Methods
+    
+    private func checkServerAndLoadData() {
+        hasCheckedServer = true
+        serverStatusManager.checkServerStatus { isServerUp in
+            if isServerUp || !serverStatusManager.showMaintenanceAlert {
+                loadInitialData()
+            }
+        }
+    }
+    
+    private func checkServerAndExecute(_ action: @escaping () -> Void) {
+        if serverStatusManager.isServerDown {
+            serverStatusManager.showMaintenanceAlert = true
+        } else {
+            serverStatusManager.checkServerStatus { isServerUp in
+                if isServerUp {
+                    action()
+                }
+            }
+        }
+    }
+    
+    private func loadInitialData() {
+        if navigationCoordinator.shouldNavigateToCircles {
+            selectedTab = 0
+        }
+        
+        let shouldShowLoading = !hasLoadedInitialData
+        
+        requestsViewModel.fetchFriendRequests(
+            token: authViewModel.loggedInBackendUser?.token ?? "",
+            loading: shouldShowLoading
+        )
+        
+        if communityPageViewModel.friends.isEmpty || !hasLoadedInitialData {
+            communityPageViewModel.fetchFriendsData(
+                from: "\(APIConstants.base_url)friends/\(authViewModel.loggedInBackendUser?.username ?? "")/",
+                token: authViewModel.loggedInBackendUser?.token ?? "",
+                loading: shouldShowLoading
+            )
+        }
+        
+        if communityPageViewModel.circles.isEmpty || !hasLoadedInitialData {
+            communityPageViewModel.fetchCircleData(
+                from: "\(APIConstants.base_urlv3)circles",
+                token: authViewModel.loggedInBackendUser?.token ?? "",
+                loading: shouldShowLoading
+            )
+        }
+        
+        if communityPageViewModel.circleRequests.isEmpty || !hasLoadedInitialData {
+            friendRequestViewModel.fetchFriendRequests(
+                from: URL(string: "\(APIConstants.base_urlv3)requests/")!,
+                authToken: authViewModel.loggedInBackendUser?.token ?? "",
+                loading: shouldShowLoading
+            )
+        }
+        
+        hasLoadedInitialData = true
     }
 }
 struct ConnectCircleMenuView: View {

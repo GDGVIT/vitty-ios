@@ -757,21 +757,22 @@ class CommunityPageViewModel {
                 DispatchQueue.main.async {
                     switch response.result {
                     case .success(let data):
-                        self.activeFriends = Set(data.data)
-                        self.hasInitialActiveFriendsFetch = true
-                        self.logger.info("Successfully fetched active friends: \(data.data)")
                         
-                      
+                        let activeUsernames = data.data.map { $0.friend_username }
+                        self.activeFriends = Set(activeUsernames)
+                        self.hasInitialActiveFriendsFetch = true
+                        self.logger.info("Successfully fetched active friends: \(activeUsernames)")
+                        
+                       
                         if !self.friends.isEmpty {
                             let allFriendUsernames = Set(self.friends.map { $0.username })
-                            let activeSet = Set(data.data)
+                            let activeSet = Set(activeUsernames)
                             let friendsToGhost = allFriendUsernames.subtracting(activeSet)
-                            
                             
                             self.ghostedFriends.formUnion(friendsToGhost)
                             self.saveGhostStateToUserDefaults()
                             
-                            self.logger.info("Active friends: \(data.data)")
+                            self.logger.info("Active friends: \(activeUsernames)")
                             self.logger.info("Ghosted friends: \(Array(self.ghostedFriends))")
                         }
                         
@@ -779,7 +780,6 @@ class CommunityPageViewModel {
                         
                     case .failure(let error):
                         self.logger.error("Error fetching active friends: \(error)")
-                       
                         self.loadGhostStateFromUserDefaults()
                         completion(false)
                     }
@@ -904,8 +904,14 @@ class CommunityPageViewModel {
     }
 
     struct ActiveFriendsResponse: Codable {
-        let data: [String]
+        let data: [ActiveFriend]
     }
+
+    struct ActiveFriend: Codable {
+        let friend_username: String
+        let hide: Bool
+    }
+
 
     struct APIResponse: Codable {
         let data: String

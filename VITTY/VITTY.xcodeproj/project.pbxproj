@@ -75,6 +75,7 @@
 		4BD63D742D70547E00EEF5D7 /* EmptyClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD63D722D70547E00EEF5D7 /* EmptyClass.swift */; };
 		4BD63D772D70610B00EEF5D7 /* EmptyClassAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD63D762D70610000EEF5D7 /* EmptyClassAPIService.swift */; };
 		4BD63D7A2D70636400EEF5D7 /* EmptyClassRoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD63D792D70635D00EEF5D7 /* EmptyClassRoomViewModel.swift */; };
+		4BD77EA22EBBCE050027F234 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4BD77EA12EBBCE050027F234 /* GoogleService-Info.plist */; };
 		4BF03C992D7819E30098C803 /* Notes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF03C982D7819E00098C803 /* Notes.swift */; };
 		4BF03C9B2D7838C80098C803 /* NotesHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF03C9A2D7838C50098C803 /* NotesHelper.swift */; };
 		4BF0C77B2D93108B00016202 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF0C77A2D93108500016202 /* SearchBar.swift */; };
@@ -241,6 +242,7 @@
 		4BD63D722D70547E00EEF5D7 /* EmptyClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyClass.swift; sourceTree = "<group>"; };
 		4BD63D762D70610000EEF5D7 /* EmptyClassAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyClassAPIService.swift; sourceTree = "<group>"; };
 		4BD63D792D70635D00EEF5D7 /* EmptyClassRoomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyClassRoomViewModel.swift; sourceTree = "<group>"; };
+		4BD77EA12EBBCE050027F234 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		4BF03C982D7819E00098C803 /* Notes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notes.swift; sourceTree = "<group>"; };
 		4BF03C9A2D7838C50098C803 /* NotesHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesHelper.swift; sourceTree = "<group>"; };
 		4BF0C77A2D93108500016202 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
@@ -418,6 +420,7 @@
 			children = (
 				4BC853C52DF6F71B0092B2E2 /* VittyWidgetExtension.entitlements */,
 				4B1A500E2E3E61530060314D /* GoogleService-Info.plist */,
+				4BD77EA12EBBCE050027F234 /* GoogleService-Info.plist */,
 				4B8FB2C72E39D29F00E50AE2 /* GoogleService-Info.plist */,
 				5251A7FF2B46E3C000D44CFE /* .swift-format */,
 				314A408E27383BEC0058082F /* VITTYApp.swift */,
@@ -1127,6 +1130,7 @@
 				31128CFA2772F57E0084C9EA /* Poppins-SemiBoldItalic.ttf in Resources */,
 				31128CFC2772F57E0084C9EA /* Poppins-Regular.ttf in Resources */,
 				4B8FB2C82E39D29F00E50AE2 /* GoogleService-Info.plist in Resources */,
+				4BD77EA22EBBCE050027F234 /* GoogleService-Info.plist in Resources */,
 				314A409627383BEE0058082F /* Preview Assets.xcassets in Resources */,
 				314A409327383BEE0058082F /* Assets.xcassets in Resources */,
 			);
@@ -1437,6 +1441,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"VITTY/Preview Content\"";
+				DEVELOPMENT_TEAM = C7RX29D33F;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = VITTY/Info.plist;

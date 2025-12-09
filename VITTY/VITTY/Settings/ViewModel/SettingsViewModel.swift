@@ -10,21 +10,46 @@ class SettingsViewModel: ObservableObject {
                
                 requestPermissionAndSchedule()
             } else {
-       
+                
                 UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
-                print("All pending notifications have been cleared.")
+                print("All pending notifications have been cleared (notifications disabled).")
                 showNotificationDisabledAlert = true
             }
         }
     }
 
-    @Published var timetable: TimeTable?
+    @Published var timetable: TimeTable? {
+        didSet {
+           
+            if notificationsEnabled, let timetable = timetable {
+                
+                UNUserNotificationCenter.current().getNotificationSettings { settings in
+                    DispatchQueue.main.async {
+                        if settings.authorizationStatus == .authorized {
+                            self.scheduleAllNotifications(from: timetable)
+                        }
+                    }
+                }
+            }
+        }
+    }
     @Published var showNotificationDisabledAlert = false
 
     init(timetable: TimeTable? = nil) {
         self.timetable = timetable
         
         checkNotificationAuthorization()
+        
+       
+        if notificationsEnabled, let timetable = timetable {
+            UNUserNotificationCenter.current().getNotificationSettings { settings in
+                DispatchQueue.main.async {
+                    if settings.authorizationStatus == .authorized {
+                        self.scheduleAllNotifications(from: timetable)
+                    }
+                }
+            }
+        }
     }
 
   
@@ -58,8 +83,14 @@ class SettingsViewModel: ObservableObject {
 
   
     func scheduleAllNotifications(from timetable: TimeTable) {
+        
+        guard notificationsEnabled else {
+            print("Notifications are disabled. Skipping scheduling.")
+            return
+        }
       
-        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+        
+        removeClassNotifications()
 
         let weekdays: [(Int, [Lecture])] = [
             (1, timetable.sunday), (2, timetable.monday), (3, timetable.tuesday),
@@ -69,65 +100,98 @@ class SettingsViewModel: ObservableObject {
 
         for (weekday, lectures) in weekdays {
             for lecture in lectures {
-              
-                scheduleNotificationForNextOccurence(lecture: lecture, weekday: weekday)
+                scheduleRecurringNotification(lecture: lecture, weekday: weekday)
             }
         }
-        print("Scheduled all notifications for the next 7 days.")
+        print("Scheduled all recurring weekly notifications.")
+    }
+    
+    /// Remove only class notifications, preserving reminder notifications
+    private func removeClassNotifications() {
+        UNUserNotificationCenter.current().getPendingNotificationRequests { requests in
+            let classNotificationIdentifiers = requests
+                .filter { request in
+                    
+                    let identifier = request.identifier
+                    return !identifier.hasPrefix("reminder-") && 
+                           (identifier.contains("-reminder-") || identifier.contains("-start-"))
+                }
+                .map { $0.identifier }
+            
+            if !classNotificationIdentifiers.isEmpty {
+                UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: classNotificationIdentifiers)
+                print("Removed \(classNotificationIdentifiers.count) class notification(s)")
+            }
+        }
     }
 
   
-    private func scheduleNotificationForNextOccurence(lecture: Lecture, weekday: Int) {
+    private func scheduleRecurringNotification(lecture: Lecture, weekday: Int) {
         guard let time = parseTime(from: lecture.startTime) else { return }
 
-        var dateComponents = DateComponents()
-        dateComponents.hour = Calendar.current.component(.hour, from: time)
-        dateComponents.minute = Calendar.current.component(.minute, from: time)
-        dateComponents.weekday = weekday
+        let hour = Calendar.current.component(.hour, from: time)
+        let minute = Calendar.current.component(.minute, from: time)
         
-        
-        guard let nextTriggerDate = Calendar.current.nextDate(after: Date(), matching: dateComponents, matchingPolicy: .nextTime) else { return }
 
-     
-        scheduleNotification(
-            lectureName: lecture.name,
-            date: nextTriggerDate,
-            title: "Upcoming Class",
-            body: "\(lecture.name) starts in 10 minutes.",
-            minutesBefore: 10
-        )
+        var reminderComponents = DateComponents()
+        reminderComponents.weekday = weekday
+        
+
+        if minute >= 10 {
+            reminderComponents.hour = hour
+            reminderComponents.minute = minute - 10
+        } else {
+           
+            reminderComponents.hour = hour > 0 ? hour - 1 : 23
+            reminderComponents.minute = 60 + minute - 10
+        }
         
       
-        scheduleNotification(
+        var startComponents = DateComponents()
+        startComponents.weekday = weekday
+        startComponents.hour = hour
+        startComponents.minute = minute
+        
+        scheduleWeeklyNotification(
             lectureName: lecture.name,
-            date: nextTriggerDate,
+            components: reminderComponents,
+            title: "Upcoming Class",
+            body: "\(lecture.name) starts in 10 minutes.",
+            identifier: "\(lecture.name)-reminder-\(weekday)"
+        )
+        
+        scheduleWeeklyNotification(
+            lectureName: lecture.name,
+            components: startComponents,
             title: "Class Starting!",
             body: "\(lecture.name) is starting now.",
-            minutesBefore: 0
+            identifier: "\(lecture.name)-start-\(weekday)"
         )
     }
     
     
-    private func scheduleNotification(lectureName: String, date: Date, title: String, body: String, minutesBefore: Int) {
+    private func scheduleWeeklyNotification(
+        lectureName: String,
+        components: DateComponents,
+        title: String,
+        body: String,
+        identifier: String
+    ) {
         let content = UNMutableNotificationContent()
         content.title = title
         content.body = body
         content.sound = .default
-
-       
-        guard let triggerDate = Calendar.current.date(byAdding: .minute, value: -minutesBefore, to: date) else { return }
-        let triggerComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: triggerDate)
         
-        let trigger = UNCalendarNotificationTrigger(dateMatching: triggerComponents, repeats: false)
-
-        let identifier = "\(lectureName)-\(title)-\(triggerDate.timeIntervalSince1970)"
+       
+        let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: true)
+        
         let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
 
         UNUserNotificationCenter.current().add(request) { error in
             if let error = error {
-                print("Error scheduling notification for \(lectureName): \(error.localizedDescription)")
+                print("Error scheduling recurring notification for \(lectureName): \(error.localizedDescription)")
             } else {
-                print("Successfully scheduled notification: '\(title)' for \(lectureName)")
+                print("Successfully scheduled recurring notification: '\(title)' for \(lectureName) on weekday \(components.weekday ?? 0)")
             }
         }
     }

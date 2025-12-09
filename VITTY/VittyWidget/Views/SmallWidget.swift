@@ -5,13 +5,6 @@
 //  Created by Rujin Devkota on 2/25/25.
 //
 
-//
-//  SmallWidget.swift
-//  VITTY
-//
-//  Created by Rujin Devkota on 2/25/25.
-//
-
 import WidgetKit
 import SwiftUI
 

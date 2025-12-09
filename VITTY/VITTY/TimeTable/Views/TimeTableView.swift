@@ -55,6 +55,10 @@ struct TimeTableView: View {
         .onChange(of: scenePhase) { _, newPhase in
             handleScenePhaseChange(newPhase)
         }
+        .onReceive(NotificationCenter.default.publisher(for: Notification.Name("RefreshTimetableFromSettings"))) { _ in
+            logger.debug("Received refresh notification from settings")
+            loadTimetable()
+        }
     }
     
     @ViewBuilder

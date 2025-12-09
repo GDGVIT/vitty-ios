@@ -28,19 +28,21 @@ struct JoinGroup: View {
 
     var body: some View {
         ZStack {
-            VStack(spacing: 20) {
+            VStack(spacing: 0) {
+                // Drag indicator
                 Capsule()
                     .fill(Color.gray.opacity(0.5))
                     .frame(width: 50, height: 5)
-                    .padding(.top, 10)
+                    .padding(.top, 8)
                 
-                Spacer().frame(height: 7)
+                // Title
                 Text("Join Circle")
                     .font(.system(size: 21, weight: .bold))
                     .foregroundColor(.white)
+                    .padding(.top, 20)
+                    .padding(.bottom, 24)
 
-                Spacer().frame(width: 20)
-
+                // Input section
                 VStack(alignment: .leading, spacing: 10) {
                     Text("Enter circle code")
                         .font(.system(size: 16, weight: .bold))
@@ -63,54 +65,9 @@ struct JoinGroup: View {
                 }
                 .padding(.horizontal, 20)
 
-                HStack {
-                    Rectangle()
-                        .fill(Color.gray.opacity(0.5))
-                        .frame(height: 1)
-                    Text("OR")
-                        .font(.system(size: 16, weight: .bold))
-                        .foregroundColor(.white)
-                        .padding(.horizontal, 10)
-                    Rectangle()
-                        .fill(Color.gray.opacity(0.5))
-                        .frame(height: 1)
-                }
-                .padding(.horizontal, 20)
-
-                HStack {
-                    Text("Scan QR Code")
-                        .font(.system(size: 16, weight: .bold))
-                        .foregroundColor(Color("Accent"))
-                        .padding(.leading, 20)
-                    Spacer()
-                }
-
-                Button(action: {
-                    openCameraApp()
-                }) {
-                    VStack {
-                        Image(systemName: "qrcode.viewfinder")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 100, height: 100)
-                            .foregroundColor(Color.white)
-
-                        Text("Tap to open camera")
-                            .font(.system(size: 14))
-                            .foregroundColor(.gray)
-                    }
-                    .frame(width: screenWidth * 0.8, height: screenHeight * 0.25)
-                    .background(Color.black.opacity(0.3))
-                    .cornerRadius(12)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 12)
-                            .stroke(Color.gray.opacity(0.5), lineWidth: 1)
-                    )
-                }
-                .disabled(isJoining)
-
                 Spacer()
                 
+                // Join button
                 HStack {
                     Spacer()
                     Button(action: {
@@ -135,7 +92,7 @@ struct JoinGroup: View {
                 }
                 .padding(.bottom, 20)
             }
-            .presentationDetents([.height(screenHeight * 0.65)])
+            .presentationDetents([.height(screenHeight * 0.35)])
             .background(Color("Secondary"))
 
             if showToast {
@@ -174,26 +131,6 @@ struct JoinGroup: View {
         }
     }
 
-    // MARK: - Open Camera App
-    
-    private func openCameraApp() {
-        guard let url = URL(string: "camera:") else {
-            showToast(message: "Camera not available", isError: true)
-            return
-        }
-        
-        if UIApplication.shared.canOpenURL(url) {
-            UIApplication.shared.open(url)
-        } else {
-            
-            if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
-                showToast(message: "Please open Camera app manually", isError: false)
-            } else {
-                showToast(message: "Camera app not available", isError: true)
-            }
-        }
-    }
-    
     // MARK: - Handle Deep Link
     
     private func handleDeepLink(_ url: URL) {

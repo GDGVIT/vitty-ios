@@ -417,7 +417,7 @@ struct HomeView: View {
         ZStack {
             if !showProfileSidebar {
                 Button {
-                    withAnimation(.easeInOut(duration: 0.8)) {
+                    withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
                         showProfileSidebar = true
                     }
                 } label: {
@@ -455,7 +455,7 @@ struct HomeView: View {
                 .ignoresSafeArea()
                 .transition(.opacity)
                 .onTapGesture {
-                    withAnimation(.easeInOut(duration: 0.8)) {
+                    withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
                         showProfileSidebar = false
                     }
                 }
@@ -468,7 +468,7 @@ struct HomeView: View {
                     showLogoutAlert: $showLogoutAlert
                 )
                 .frame(width: UIScreen.main.bounds.width * 0.75)
-                .transition(.move(edge: .trailing))
+                .transition(.move(edge: .trailing).combined(with: .opacity))
             }
         }
     }

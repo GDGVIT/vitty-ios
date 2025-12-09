@@ -270,22 +270,21 @@ struct SettingsView: View {
         isSyncing = true
         
         Task {
-            let syncViewModel = TimeTableView.TimeTableViewModel()
-            
-            await syncViewModel.forceSync(
-                username: username,
-                authToken: authToken,
-                context: modelContext
-            )
-            
-            await MainActor.run {
-                isSyncing = false
+            do {
+                // Fetch updated timetable from API
+                let remoteTimeTable = try await TimeTableAPIService.shared.getTimeTable(
+                    with: username,
+                    authToken: authToken
+                )
                 
-              
-                if syncViewModel.stage == .data {
-                    showSyncMessage("Timetable synced successfully!", success: true)
-                } else {
-                    showSyncMessage("Sync failed. Please try again.", success: false)
+                await MainActor.run {
+                    updateLocalTimetable(with: remoteTimeTable)
+                }
+                
+            } catch {
+                await MainActor.run {
+                    isSyncing = false
+                    showSyncMessage("Sync failed: \(error.localizedDescription)", success: false)
                 }
             }
         }
@@ -340,10 +339,22 @@ struct SettingsView: View {
             isSyncing = false
             showSyncMessage("Timetable synced successfully!", success: true)
             
-            NotificationCenter.default.post(
-                name: NSNotification.Name("TimetableDidChange"),
-                object: nil
-            )
+            // Update viewModel timetable to trigger notification rescheduling
+            viewModel.timetable = finalTimeTable
+            
+            // Post notification to update TimeTableView
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                NotificationCenter.default.post(
+                    name: NSNotification.Name("TimetableDidChange"),
+                    object: nil
+                )
+                
+                // Also post a refresh notification
+                NotificationCenter.default.post(
+                    name: NSNotification.Name("RefreshTimetableFromSettings"),
+                    object: nil
+                )
+            }
             
         } catch {
             isSyncing = false
@@ -359,6 +370,9 @@ struct SettingsView: View {
             
             isSyncing = false
             showSyncMessage("Timetable synced successfully!", success: true)
+            
+            // Update viewModel timetable to trigger notification rescheduling
+            viewModel.timetable = timeTable
             
             NotificationCenter.default.post(
                 name: NSNotification.Name("TimetableDidChange"),

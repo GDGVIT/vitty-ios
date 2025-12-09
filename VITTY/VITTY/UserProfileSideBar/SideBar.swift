@@ -119,9 +119,8 @@ struct UserProfileSidebar: View {
             .frame(width: UIScreen.main.bounds.width * 0.75, alignment: .leading)
             .frame(maxHeight: .infinity)
             .background(Color("Background"))
-            .transition(.move(edge: .trailing))
+            .transition(.move(edge: .trailing).combined(with: .opacity))
         }
-        .animation(.easeInOut(duration: 0.3), value: isPresented)
         .sheet(isPresented: $showSupportDialog) {
             SupportDialog()
         }

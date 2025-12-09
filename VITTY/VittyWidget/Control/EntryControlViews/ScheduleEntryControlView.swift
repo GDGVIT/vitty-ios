@@ -13,23 +13,34 @@ struct VittyWidgetEntryView: View {
     @Environment(\.widgetFamily) var family
 
     var body: some View {
-        ZStack {
-            Color(hex: "#041727")
-                .ignoresSafeArea()
+        switch family {
+        case .accessoryCircular:
+            CircularLockScreenWidgetView(entry: entry)
+            
+        case .accessoryRectangular:
+            RectangularLockScreenWidgetView(entry: entry)
+            
+        case .accessoryInline:
+            InlineLockScreenWidgetView(entry: entry)
 
-            switch family {
-            case .systemSmall:
-                ScheduleSmallWidgetView(entry: entry)
-            case .systemMedium:
-                ScheduleMediumWidgetView(entry: entry)
-            case .systemLarge:
-                ScheduleLargeWidgetView(entry: entry)
+        default:
+            ZStack {
+                Color(hex: "#041727")
+                    .ignoresSafeArea()
 
-            default:
-                Text("Unsupported size")
+                switch family {
+                case .systemSmall:
+                    ScheduleSmallWidgetView(entry: entry)
+                case .systemMedium:
+                    ScheduleMediumWidgetView(entry: entry)
+                case .systemLarge:
+                    ScheduleLargeWidgetView(entry: entry)
+                default:
+                    EmptyView()
+                }
             }
+            
         }
-        .containerBackground(for: .widget) { Color(hex: "#041727") }
     }
 }
 
@@ -44,6 +55,13 @@ struct VittyWidget: Widget {
         }
         .configurationDisplayName("Vitty Widget")
         .description("Widget with different designs based on size.")
-        .supportedFamilies([.systemSmall, .systemMedium,.systemLarge])
+        .supportedFamilies([
+            .systemSmall,
+            .systemMedium,
+            .systemLarge,
+            .accessoryCircular,
+            .accessoryRectangular,
+            .accessoryInline
+        ])
     }
 }
